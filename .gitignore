@@ -241,4 +241,10 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+### Visual Paradigm ###
+.Use Case for LocalFarm.vpp.lck
+Use Case for LocalFarm.vpp.bak_000f
+Use Case for LocalFarm.vpp.bak_001d
+Use Case for LocalFarm.vpp.bak_002d
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,linux,windows,macos,intellij
