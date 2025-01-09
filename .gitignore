@@ -242,9 +242,6 @@ gradle-app.setting
 *.hprof
 
 ### Visual Paradigm ###
-.Use Case for LocalFarm.vpp.lck
-Use Case for LocalFarm.vpp.bak_000f
-Use Case for LocalFarm.vpp.bak_001d
-Use Case for LocalFarm.vpp.bak_002d
+*.vpp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,linux,windows,macos,intellij
