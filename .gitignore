@@ -241,4 +241,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+### Visual Paradigm ###
+*.vpp.*
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,linux,windows,macos,intellij
