@@ -1,5 +1,7 @@
 package com.github.countrybros.model;
 
+import com.github.countrybros.application.InvitationManager;
+
 import java.time.LocalDate;
 
 /**
@@ -35,15 +37,33 @@ public class Invitation implements IBinaryChoiceable {
      * Subscribes the reciver Company into the Event's guests
      */
     @Override
-    public void onApproval() {
+    public boolean onApproval() {
 
+        if (expirationDate.isAfter(LocalDate.now())) {
+            event.addGuest(reciver);
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Deletes the invitation from the Manager without doing other tasks
      */
     @Override
-    public void onRevocation() {
+    public boolean onRevocation() {
+        return true;
+    }
 
+    /**
+     * Prints all the details about the event.
+     */
+    public void getDetails() {
+        //TODO: This method is pure shit, must change with a better pattern
+
+        System.out.println("ID: " + id);
+        System.out.println("Event: " + event);
+        System.out.println("Expiration date: " + expirationDate);
+        System.out.println("Reciver: " + reciver);
     }
 }

@@ -5,18 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="339983d5-f8c2-468d-8566-880177708827" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/application/EventManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/application/InvitationManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Company.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/EventState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/IBinaryChoiceable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Invitation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Organizer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/countrybros/application/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/application/EventManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/countrybros/application/InvitationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/application/InvitationManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Company.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/IBinaryChoiceable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/IBinaryChoiceable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Invitation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/countrybros/model/Invitation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +35,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -51,20 +49,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;event&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "event",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -85,11 +86,23 @@
       <workItem from="1746641866531" duration="988000" />
       <workItem from="1746648377318" duration="3659000" />
       <workItem from="1746652641614" duration="136000" />
-      <workItem from="1746657431798" duration="589000" />
+      <workItem from="1746657431798" duration="1616000" />
+      <workItem from="1746783855702" duration="3016000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

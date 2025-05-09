@@ -8,10 +8,10 @@ public interface IBinaryChoiceable {
     /**
      * Action to perform if it is accepted
      */
-    void onApproval();
+    boolean onApproval();
 
     /**
      * Action to perform if it is denied
      */
-    void onRevocation();
+    boolean onRevocation();
 }
