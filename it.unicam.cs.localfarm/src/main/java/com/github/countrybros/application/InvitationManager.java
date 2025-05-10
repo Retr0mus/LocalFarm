@@ -92,4 +92,7 @@ public class InvitationManager {
     public void openInvitation(int invitationId) {
         getInvitationById(invitationId).getDetails();
     }
+
+
+
 }

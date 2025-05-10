@@ -103,4 +103,8 @@ public class Event {
     public boolean removeGuest(Company company){
         return guests.remove(company);
     }
+
+    public void setState(EventState eventState) {
+        state = eventState;
+    }
 }
