@@ -1,34 +1,21 @@
 package com.github.countrybros.application;
 
-<<<<<<< Updated upstream
-=======
-import com.github.countrybros.application.errors.NotFoundInRepositoryException;
->>>>>>> Stashed changes
 import com.github.countrybros.model.Company;
 import com.github.countrybros.model.Event;
 import com.github.countrybros.model.EventState;
 import com.github.countrybros.model.User;
-
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 
 import java.util.ArrayList;
-<<<<<<< Updated upstream
 import java.util.HashMap;
-=======
-import java.util.HashSet;
->>>>>>> Stashed changes
 import java.util.List;
 import java.util.Map;
-import com.github.countrybros.model.EventState;
 
 
 /**
-<<<<<<< Updated upstream
  * Service that performs all the tasks related to the management of the events.
-=======
- * Service that performs all the tasks releted to the managemnent of the events.
  *
  * TODO cercare un modo per usare solo gli ID come parametri
->>>>>>> Stashed changes
  */
 public class EventManager {
 
@@ -44,38 +31,6 @@ public class EventManager {
      */
     public List<Event> getEvents() {
         return new ArrayList<>(eventRepository.values());
-    }
-
-    /**
-<<<<<<< Updated upstream
-     * Returns the event specified in the request.
-=======
-     * Returns all the public events in the website.
-     *
-     * @return a list with the public events.
-     */
-    public List<Event> getPublicEvents() {
-
-        List<Event> list = new ArrayList<>(eventRepository.values());
-
-        for (Event event : eventRepository.values()) {
-
-            if (event.getState().equals(EventState.currentlyPublic))
-                list.add(event);
-        }
-
-        return list;
-    }
-
-    /**
-     * Adds an event into the repository
->>>>>>> Stashed changes
-     *
-     * @param eventId the requested event.
-     * @return the event.
-     */
-    public Event getEventById(int eventId) {
-        return eventRepository.get(eventId);
     }
 
     /**
