@@ -10,6 +10,8 @@ public class Company {
     private String address;
     private String phone;
     private String email;
+    private String password;
+    //TODO add location
 
     public int getId() {
         return id;

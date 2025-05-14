@@ -1,7 +1,10 @@
 package com.github.countrybros.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Class that represents a user of the website.
+ * Class to rapresent a user
  */
 public class User {
 
@@ -9,8 +12,17 @@ public class User {
 
     private int id;
     private String name;
-    private String email;
     //TODO: see if it is possible to remove the password from the object, keppeing it only on a future DB
+    private String password;
+    private String email;
+    private List<String> roles = new ArrayList<>();
+
+    public User(int id, String name, String password, String email) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+    }
 
     public int getId() {
         return id;
@@ -23,4 +35,9 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public List<String> getRoles() {
+        return roles;
+    }
 }
+
