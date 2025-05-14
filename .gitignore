@@ -239,7 +239,6 @@ $RECYCLE.BIN/
 # JDT-specific (Eclipse Java Development Tools)
 **/.classpath
 
-**/build.gradle
 
 ### Gradle Patch ###
 # Java heap dump
