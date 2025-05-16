@@ -1,21 +1,42 @@
 package com.github.countrybros.application;
 
+import com.github.countrybros.infrastructure.IInvitationRepository;
+import com.github.countrybros.infrastructure.local.LocalInvitationRepository;
 import com.github.countrybros.model.Invitation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Service that performs all the tasks related to the management of the invitations.
+ *
+ * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
 public class InvitationManager {
 
     private static final InvitationManager instance = new InvitationManager();
-    private final Map<Integer, Invitation> invitationRepository = new HashMap<Integer, Invitation>();
+    private final IInvitationRepository invitationRepository = new LocalInvitationRepository();
 
     public static InvitationManager getInstance() {return instance;}
+
+    /**
+     * Adds an invitation to the repository
+     *
+     * @param invitation the invitation to add.
+     * @return if the invitation was added or not.
+     */
+    public Boolean addInvitation(Invitation invitation) {
+        return invitationRepository.addInvitation(invitation);
+    }
+
+    /**
+     * Removes an invitation from the repository.
+     *
+     * @param invitationId the ID of the invitation to remove.
+     * @return if the task succeeded or not.
+     */
+    public Boolean deleteInvitation(int invitationId) {
+        return invitationRepository.deleteInvitation(invitationId);
+    }
 
     /**
      * Gives the invitation with the specified ID.
@@ -24,7 +45,7 @@ public class InvitationManager {
      * @return the corresponding invitation.
      */
     public Invitation getInvitationById(int invitationId) {
-        return invitationRepository.get(invitationId);
+        return invitationRepository.getInvitation(invitationId);
     }
 
     /**
@@ -34,28 +55,11 @@ public class InvitationManager {
      * @return a List with all the related invitations.
      */
     public List<Invitation> getInvitationsByCompany(int companyId) {
-
-        List<Invitation> invitations = new ArrayList<>();
-
-        for (Invitation invitation : invitationRepository.values())
-            if(invitation.getReciver().getId() == companyId)
-                invitations.add(invitation);
-
-        return invitations;
+        return invitationRepository.getInvitationsByCompany(companyId);
     }
 
     /**
-     * Removes an invitation from the repository.
-     *
-     * @param invitationId the ID of the invitation to remove.
-     * @return if the task succeeded or not.
-     */
-    public boolean deleteInvitation(int invitationId) {
-        return invitationRepository.remove(invitationId) != null;
-    }
-
-    /**
-     * Accepts an invitation.
+     * Accepts an invitation, subscribing the said receiver into the Event's guests.
      *
      * @param invitationId the invitation to accept.
      * @return if the task succeeded or not.
@@ -64,24 +68,25 @@ public class InvitationManager {
 
         //TODO: Remind to implement proper authorization with Spring.
 
-        boolean result = getInvitationById(invitationId).onApproval();
-        InvitationManager.getInstance().deleteInvitation(invitationId);
+        Invitation invitation = getInvitationById(invitationId);
+        boolean isExpired = invitation.isExpired();
 
-        return result;
+        if(!isExpired)
+            EventManager.getInstance().confirmCompanyPartecipation(invitation.getEvent().getId(), invitation.getReciver().getId());
+
+        deleteInvitation(invitationId);
+
+        return !isExpired;
     }
 
     /**
-     * Refuses an invitation.
+     * Refuses an invitation by simply deleting it.
      *
      * @param invitationId the invitation to refuse.
      * @return if the task succeeded or not.
      */
     public boolean refuseInvitation(int invitationId) {
-
-        boolean result = getInvitationById(invitationId).onRevocation();
-        InvitationManager.getInstance().deleteInvitation(invitationId);
-
-        return result;
+        return deleteInvitation(invitationId);
     }
 
     /**

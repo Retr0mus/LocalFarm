@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * Class that represents an invitation for a certain company to
  * participate as a guest into an event.
  */
-public class Invitation implements IBinaryChoiceable {
+public class Invitation {
 
     private int id;
     private final Event event;
@@ -20,6 +20,8 @@ public class Invitation implements IBinaryChoiceable {
         this.expirationDate = expirationDate;
         this.reciver = reciver;
     }
+
+    public int getId() {return id;}
 
     public Event getEvent() {
         return event;
@@ -34,28 +36,6 @@ public class Invitation implements IBinaryChoiceable {
     }
 
     /**
-     * Subscribes the reciver Company into the Event's guests
-     */
-    @Override
-    public boolean onApproval() {
-
-        if (expirationDate.isAfter(LocalDate.now())) {
-            event.addGuest(reciver);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Deletes the invitation from the Manager without doing other tasks
-     */
-    @Override
-    public boolean onRevocation() {
-        return true;
-    }
-
-    /**
      * Prints all the details about the event.
      */
     public void getDetails() {
@@ -65,5 +45,14 @@ public class Invitation implements IBinaryChoiceable {
         System.out.println("Event: " + event);
         System.out.println("Expiration date: " + expirationDate);
         System.out.println("Reciver: " + reciver);
+    }
+
+    /**
+     * Tells if the invitation is expired or not.
+     *
+     * @return if the invitation is expired or not.
+     */
+    public boolean isExpired() {
+        return expirationDate.isAfter(LocalDate.now());
     }
 }
