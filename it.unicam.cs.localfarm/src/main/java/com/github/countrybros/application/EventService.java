@@ -17,16 +17,16 @@ import java.util.List;
  * TODO: remember to use only IDs as parameters (when possible of course)
  * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
-public class EventManager {
+public class EventService implements IEventService {
 
-    private static final EventManager instance = new EventManager(new LocalEventRepository());
+    private static final EventService instance = new EventService(new LocalEventRepository());
     private final IEventRepository eventRepository;
 
-    public EventManager(IEventRepository eventRepository) {
+    public EventService(IEventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
-    public static EventManager getInstance() {return instance;}
+    public static EventService getInstance() {return instance;}
 
     /**
      * Returns all the events in the website.
@@ -35,16 +35,6 @@ public class EventManager {
      */
     public List<Event> getEvents() {
         return null;
-    }
-
-    /**
-     * Adds an event into the repository.
-     *
-     * @param event the event to add.
-     * @return if the event was added or not.
-     */
-    public boolean addEvent(Event event) {
-        return eventRepository.addEvent(event);
     }
 
     /**
@@ -118,7 +108,7 @@ public class EventManager {
             eventRepository.getEventById(eventDetails.getId());
         }catch (NotFoundInRepositoryException e) { return false; }
 
-        eventDetails.setState(EventState.currentlyPublic);
+        eventDetails.setState(EventState.planning);
         eventRepository.addEvent(eventDetails);
 
         //TODO invitation part
@@ -176,6 +166,13 @@ public class EventManager {
         return true;
     }
 
+    /**
+     * Confirms the participation of a certain company to an event.
+     *
+     * @param eventId the event to participate to.
+     * @param companyId the company who decided to participate
+     * @return if the company was successfully added as a guest.
+     */
     public boolean confirmCompanyPartecipation(int eventId, int companyId) {
         //TODO: Finish implementation when the CompanyManager is in this branch.
         // Also, the same thing said about the editEvent applies here.

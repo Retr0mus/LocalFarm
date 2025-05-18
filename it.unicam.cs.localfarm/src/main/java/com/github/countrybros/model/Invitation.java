@@ -1,7 +1,5 @@
 package com.github.countrybros.model;
 
-import com.github.countrybros.application.InvitationManager;
-
 import java.time.LocalDate;
 
 /**

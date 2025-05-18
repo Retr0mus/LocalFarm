@@ -11,12 +11,12 @@ import java.util.List;
  *
  * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
-public class InvitationManager {
+public class InvitationService implements IInvitationService {
 
-    private static final InvitationManager instance = new InvitationManager();
+    private static final InvitationService instance = new InvitationService();
     private final IInvitationRepository invitationRepository = new LocalInvitationRepository();
 
-    public static InvitationManager getInstance() {return instance;}
+    public static InvitationService getInstance() {return instance;}
 
     /**
      * Adds an invitation to the repository
@@ -72,7 +72,7 @@ public class InvitationManager {
         boolean isExpired = invitation.isExpired();
 
         if(!isExpired)
-            EventManager.getInstance().confirmCompanyPartecipation(invitation.getEvent().getId(), invitation.getReciver().getId());
+            EventService.getInstance().confirmCompanyPartecipation(invitation.getEvent().getId(), invitation.getReciver().getId());
 
         deleteInvitation(invitationId);
 
@@ -88,16 +88,4 @@ public class InvitationManager {
     public boolean refuseInvitation(int invitationId) {
         return deleteInvitation(invitationId);
     }
-
-    /**
-     * Prints the details of the event.
-     *
-     * @param invitationId the invitation to open.
-     */
-    public void openInvitation(int invitationId) {
-        getInvitationById(invitationId).getDetails();
-    }
-
-
-
 }
