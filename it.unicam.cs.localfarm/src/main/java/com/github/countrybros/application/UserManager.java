@@ -30,9 +30,11 @@ public class UserManager {
     public boolean addUserRole(int userId, String role) {
         return false;
     }
+
     public boolean removeUserRole(int userId, String role) {
         return false;
     }
+
 
 
 }

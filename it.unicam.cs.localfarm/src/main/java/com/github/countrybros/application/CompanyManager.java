@@ -15,7 +15,7 @@ public class CompanyManager {
         return false;
     }
 
-    public boolean getCompany(int id) {
+    public boolean getCompany(int companyId) {
         return false;
     }
 
@@ -23,7 +23,7 @@ public class CompanyManager {
         return false;
     }
 
-    public boolean deleteCompany(int id) {
+    public boolean deleteCompany(int companyId) {
         return false;
     }
 

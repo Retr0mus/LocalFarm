@@ -1,6 +1,7 @@
 package com.github.countrybros.application;
 
 
+import com.github.countrybros.model.Cart;
 import com.github.countrybros.model.Order;
 
 import java.util.List;
@@ -10,21 +11,16 @@ import java.util.List;
  */
 public class ShoppingManager {
     private UserManager userManager;
-    //TODO implement itemManager in class diagram first
-    //private ItemManager itemManager;
+    private ItemManager itemManager;
 
-    //TODO add getCart
+    public Cart getCart(int userId) { return null; }
 
-    public boolean addItemToCart(int userId, int itemId, int qty) {
-        return false;
-    }
+    public boolean addItemToCart(int userId, int itemId, int qty) { return false; }
 
-    public boolean removeItemFromCart(int userId, int itemId, int qty) {
-        return false;
-    }
+    public boolean editQuantityOfItemInCart(int userId, int itemId, int newQuantity) { return false; }
 
-    public List<Order> getOrders(int userId) {
-        return null;
-    }
+    public boolean removeItemFromCart(int userId, int itemId, int qty) { return false; }
+
+    public List<Order> getOrders(int userId) { return null; }
 
 }

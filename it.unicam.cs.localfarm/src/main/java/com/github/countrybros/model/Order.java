@@ -6,22 +6,35 @@ import java.util.Map;
 /**
  * Class to represent a order.
  */
+import java.util.Date;
+
+/**
+ * Class that represents an order.
+ */
 public class Order {
     private int orderId;
-    //private Map<Item, Integer> items;
+    private User user;
+    private Cart cart;
     private Date orderDate;
     private String orderStatus;
     private double totalAmount;
+    private ShippingAddress address;
 
     public int getOrderId() {
         return orderId;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
     public Date getOrderDate() {
         return orderDate;
     }
-
-    //TODO add getItems
 
     public String getOrderStatus() {
         return orderStatus;
@@ -29,5 +42,9 @@ public class Order {
 
     public double getTotalAmount() {
         return totalAmount;
+    }
+
+    public ShippingAddress getAddress() {
+        return address;
     }
 }
