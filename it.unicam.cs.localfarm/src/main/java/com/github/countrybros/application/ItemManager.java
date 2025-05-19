@@ -9,6 +9,7 @@ import java.util.List;
  * Service that performs all the tasks related to the management of the item.
  */
 public class ItemManager {
+  
     private CompanyManager companyManager;
     private IItemRepository itemRepository;
 

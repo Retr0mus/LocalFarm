@@ -1,7 +1,7 @@
 package com.github.countrybros.model;
 
 /**
- * Class to represent a item.
+ * Class that represent the ownership of a stock of item by a company that wants to sell it.
  */
 public class Item {
     private Company seller;
