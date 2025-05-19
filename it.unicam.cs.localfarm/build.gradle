@@ -3,6 +3,7 @@ plugins {
     id 'java'
 }
 
+
 group = 'com.github.countrybros'
 version = '1.0-SNAPSHOT'
 

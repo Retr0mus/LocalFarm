@@ -1,8 +1,10 @@
 package com.github.countrybros.application;
 
 import com.github.countrybros.model.BundleDetails;
+import com.github.countrybros.model.Item;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,17 +18,19 @@ public class BundleDetailsManager {
         return bundleRepository.get(id);
     }
 
-    /**
-     * Add a bundle in the repository.
-     *
-     * @param bundle the bundle to insert.
-     *
-     * @return true if success.
-     */
-    public boolean addBundle(BundleDetails bundle) {
+    public boolean modifyProduct(BundleDetails product) {
+        return false;
+    }
 
-        bundleRepository.put(bundle.getId(), bundle);
+    public boolean removeProduct(String id) {
+        return false;
+    }
 
-        return true;
+    public boolean addProduct(BundleDetails product) {
+        return false;
+    }
+
+    public List<Item> getCompanyProducts(String companyId) {
+        return null;
     }
 }

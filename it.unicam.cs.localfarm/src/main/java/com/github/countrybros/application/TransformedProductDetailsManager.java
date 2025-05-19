@@ -1,9 +1,11 @@
 package com.github.countrybros.application;
 
+import com.github.countrybros.model.Item;
 import com.github.countrybros.model.TransformedProductDetails;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the TransformedProductDetails.
@@ -15,17 +17,20 @@ public class TransformedProductDetailsManager {
         return trasformedPrductRepository.get(id);
     }
 
-    /**
-     * Add a product in the repository.
-     *
-     * @param product the bundle to insert.
-     *
-     * @return true if success.
-     */
-    public boolean addProduct(TransformedProductDetails product) {
-
-        trasformedPrductRepository.put(product.getId(), product);
-
-        return true;
+    public boolean modifyProduct(TransformedProductDetails product) {
+        return false;
     }
+
+    public boolean removeProduct(String id) {
+        return false;
+    }
+
+    public boolean addProduct(TransformedProductDetails product) {
+        return false;
+    }
+
+    public List<Item> getCompanyProducts(String companyId) {
+        return null;
+    }
+
 }

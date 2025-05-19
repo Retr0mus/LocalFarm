@@ -8,14 +8,8 @@ import java.util.ArrayList;
 public class TransformedProductDetailsFactory implements ItemDetailsFactory {
 
     @Override
-    public TransformedProductDetails create(String name, String description, Company company) {
-
-        TransformedProductDetails product = new TransformedProductDetails(name, description, company);
-
-        ArrayList<TransformationSteps> steps = new ArrayList<>();
-        product.setSteps(steps);
-
-        return product;
+    public TransformedProductDetails create() {
+        return null;
 
     }
 }

@@ -1,29 +1,15 @@
 package com.github.countrybros.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Details for a simple product.
  */
 public class SimpleProductDetails extends ItemDetails {
 
-    /**
-     * List of the certifications that the product contains
-     */
-    private ArrayList<Certification> certifications;
+    private List<Certification> certifications = new ArrayList<>();
 
-    public SimpleProductDetails(String name, String description, Company producer) {
+    public List<Certification> getCertifications() { return certifications; }
 
-        super(name, description, producer);
-    }
-
-    public ArrayList<Certification> getCertifications() {
-
-        return certifications;
-    }
-
-    public void setCertifications(ArrayList<Certification> certifications) {
-
-        this.certifications = certifications;
-    }
 }

@@ -1,8 +1,10 @@
 package com.github.countrybros.application;
 
+import com.github.countrybros.model.Item;
 import com.github.countrybros.model.SimpleProductDetails;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,17 +18,20 @@ public class SimpleProductDetailsManager {
         return simpleProductRepository.get(id);
     }
 
-    /**
-     * Add a product in the repository.
-     *
-     * @param productDetails the bundle to insert.
-     *
-     * @return true if success.
-     */
-    public boolean addSimpleProductDetails(SimpleProductDetails productDetails) {
-
-        simpleProductRepository.put(productDetails.getId(), productDetails);
-
-        return true;
+    public boolean modifyProduct(SimpleProductDetails product) {
+        return false;
     }
+
+    public boolean removeProduct(String id) {
+        return false;
+    }
+
+    public boolean addProduct(SimpleProductDetails product) {
+        return false;
+    }
+
+    public List<Item> getCompanyProducts(String companyId) {
+        return null;
+    }
+
 }
