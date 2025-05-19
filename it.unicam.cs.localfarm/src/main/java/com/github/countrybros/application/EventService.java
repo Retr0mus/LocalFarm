@@ -1,28 +1,32 @@
 package com.github.countrybros.application;
 
+import com.github.countrybros.infrastructure.IEventRepository;
+import com.github.countrybros.infrastructure.local.LocalEventRepository;
 import com.github.countrybros.model.Company;
 import com.github.countrybros.model.Event;
 import com.github.countrybros.model.EventState;
 import com.github.countrybros.model.User;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * Service that performs all the tasks related to the management of the events.
  *
- * TODO cercare un modo per usare solo gli ID come parametri
+ * TODO: remember to use only IDs as parameters (when possible of course)
+ * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
-public class EventManager {
+public class EventService implements IEventService {
 
-    private static final EventManager instance = new EventManager();
-    private final Map<Integer, Event> eventRepository = new HashMap<Integer, Event>();
+    private static final EventService instance = new EventService(new LocalEventRepository());
+    private final IEventRepository eventRepository;
 
-    public static EventManager getInstance() {return instance;}
+    public EventService(IEventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
+    public static EventService getInstance() {return instance;}
 
     /**
      * Returns all the events in the website.
@@ -30,36 +34,17 @@ public class EventManager {
      * @return a list with all the events.
      */
     public List<Event> getEvents() {
-        return new ArrayList<>(eventRepository.values());
-    }
-
-    /**
-     * Adds an event into the repository.
-     *
-     * @param event the event to add.
-     * @return if the event was added or not.
-     */
-    public boolean addEvent(Event event) {
-
-        if (eventRepository.containsKey(event.getId())) {
-            return false;
-        }
-        eventRepository.put(eventRepository.size(), event);
-        return true;
+        return null;
     }
 
     /**
      * Removes an event from the repository.
      *
-     * @param eventId the identifier of the event to subscribe to.
+     * @param eventId the identifier of the event to remove.
      * @return if the event was removed or not.
      */
     public boolean removeEvent(int eventId) {
-        if (!eventRepository.containsKey(eventId)){
-            return false;
-        }
-        eventRepository.remove(eventId);
-        return true;
+        return eventRepository.removeEvent(eventId);
     }
 
     /**
@@ -90,23 +75,18 @@ public class EventManager {
      * @return list of events with status PUBLIC.
      */
     public List<Event> getPublicEvents() {
-
-        List<Event> publicEvents = new ArrayList<>();
-        for (Event event : eventRepository.values()) {
-            if (event.getState() == EventState.currentlyPublic) {
-                publicEvents.add(event);
-            }
-        }
-        return publicEvents;
+        return eventRepository.getPublicEvents();
     }
 
     /**
-     * Cancels an event by setting its status to CANCELED.
+     * Cancels an event by setting its status as CANCELED.
      *
      * @param eventId the ID of the event to cancel.
      * @return true if the event was successfully canceled, false otherwise.
      */
     public boolean cancelEvent(int eventId) {
+        //TODO: We should make this work with the editEvent method, and maybe change the
+        // name to setEventAsCanceled due to ambiguous interpretations
         Event event = getEventById(eventId);
         if (event == null || event.getState() == EventState.canceled || event.getState() == EventState.completed) {
             return false;
@@ -123,12 +103,13 @@ public class EventManager {
      * @return true if event was created successfully, false otherwise.
      */
     public boolean createEvent(Event eventDetails, List<Company> companiesToInvite) {
-        if (eventRepository.containsKey(eventDetails.getId())) {
-            return false;
-        }
+        //TODO: We should make this work with the addEvent method
+        try {
+            eventRepository.getEventById(eventDetails.getId());
+        }catch (NotFoundInRepositoryException e) { return false; }
 
-        eventDetails.setState(EventState.currentlyPublic);
-        eventRepository.put(eventDetails.getId(), eventDetails);
+        eventDetails.setState(EventState.planning);
+        eventRepository.addEvent(eventDetails);
 
         //TODO invitation part
 
@@ -142,6 +123,7 @@ public class EventManager {
      * @return true if successfully published, false otherwise.
      */
     public boolean confirmEventPublication(int eventId) {
+        //TODO: We should make this work with the editEvent method
         Event event = getEventById(eventId);
         if (event == null ) {
             return false;
@@ -159,12 +141,7 @@ public class EventManager {
      * @throws NotFoundInRepositoryException if the event is not found.
      */
     public Event getEventById(int eventId) {
-
-        if (!eventRepository.containsKey(eventId)) {
-            throw new NotFoundInRepositoryException("Event not found");
-        }
-
-        return eventRepository.get(eventId);
+        return eventRepository.getEventById(eventId);
     }
 
     /**
@@ -176,7 +153,7 @@ public class EventManager {
      * @throws RuntimeException if the company is not included among the event's guests
      */
     public boolean cancelCompanyParticipation(Company company, int eventId) {
-
+        //TODO: We should make this work with the editEvent method
         Event event = getEventById(eventId);
         List<Company> guests = event.getGuests();
 
@@ -186,6 +163,25 @@ public class EventManager {
         }
 
         guests.remove(company);
+        return true;
+    }
+
+    /**
+     * Confirms the participation of a certain company to an event.
+     *
+     * @param eventId the event to participate to.
+     * @param companyId the company who decided to participate
+     * @return if the company was successfully added as a guest.
+     */
+    public boolean confirmCompanyPartecipation(int eventId, int companyId) {
+        //TODO: Finish implementation when the CompanyManager is in this branch.
+        // Also, the same thing said about the editEvent applies here.
+
+        Event event = getEventById(eventId);
+        List<Company> guests = event.getGuests();
+
+        //if (!guests.contains(company)) {}
+
         return true;
     }
 }
