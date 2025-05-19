@@ -1,4 +1,4 @@
-package com.github.countrybros.model.product;
+package com.github.countrybros.model;
 
 /**
  * Certification details.

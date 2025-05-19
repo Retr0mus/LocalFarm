@@ -1,6 +1,4 @@
-package com.github.countrybros.model.product;
-
-import com.github.countrybros.model.Company;
+package com.github.countrybros.model;
 
 /**
  * Class to represent a item.

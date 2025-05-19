@@ -1,6 +1,6 @@
 package com.github.countrybros.application;
 
-import com.github.countrybros.model.product.TransformedProductDetails;
+import com.github.countrybros.model.TransformedProductDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,4 +15,17 @@ public class TransformedProductDetailsManager {
         return trasformedPrductRepository.get(id);
     }
 
+    /**
+     * Add a product in the repository.
+     *
+     * @param product the bundle to insert.
+     *
+     * @return true if success.
+     */
+    public boolean addProduct(TransformedProductDetails product) {
+
+        trasformedPrductRepository.put(product.getId(), product);
+
+        return true;
+    }
 }
