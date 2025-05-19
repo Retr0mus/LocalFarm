@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Service that performs all the tasks related to the management of the company.
+ * Service that performs all the tasks related to the management of the companies.
  */
 public class CompanyManager {
     private Map<Integer, Company> companies = new HashMap<>();
