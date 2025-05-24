@@ -10,4 +10,7 @@ public interface IAcceptanceSubmissionRepository {
     public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
     public List<AcceptanceSubmission> getAcceptanceSubmissionsById(int submissionId);
 
+    boolean onAcceptance(int submissionId);
+
+    boolean onRefusal(int submissionId);
 }
