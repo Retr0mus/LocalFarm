@@ -1,19 +1,23 @@
-package com.github.countrybros.application;
+package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
 import com.github.countrybros.model.AcceptanceSubmission;
 
 import java.util.List;
+import java.util.Map;
 
-/**
- * Service that performs all the tasks related to the management of the product acceptance submissions.
- */
-public class AcceptanceSubmissionManager implements IAcceptanceSubmissionRepository {
-    private List<AcceptanceSubmission> acceptanceSubmissions;
+public class LocalAcceptanceSubmissionRepository implements IAcceptanceSubmissionRepository {
+
+    private Map<Integer, AcceptanceSubmission> acceptanceSubmissions;
 
 
     @Override
     public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAcceptanceSubmission(int acceptanceSubmissionId) {
         return false;
     }
 
@@ -27,10 +31,7 @@ public class AcceptanceSubmissionManager implements IAcceptanceSubmissionReposit
     }
 
     @Override
-    public List<AcceptanceSubmission> getAcceptanceSubmissionsById(int submissionId) {
+    public AcceptanceSubmission getAcceptanceSubmission(int submissionId) {
         return null;
     }
-
-
-
 }
