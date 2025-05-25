@@ -4,6 +4,7 @@ package com.github.countrybros.model;
  * Class to represent a company
  */
 public class Company {
+    private int id;
     private String name;
     private String email;
     private String password;
@@ -26,5 +27,8 @@ public class Company {
         return description;
     }
 
+    public int getId() {
+        return id;
+    }
 }
 

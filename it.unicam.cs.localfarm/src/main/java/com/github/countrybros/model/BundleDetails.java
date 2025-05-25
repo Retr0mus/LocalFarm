@@ -1,15 +1,30 @@
 package com.github.countrybros.model;
 
 import java.util.HashMap;
-import java.util.Map;
+
 
 /**
- * Details for a product bundle.
+ * Represents the details of a single bundle of items,
+ * contains the @Item correlated with respective quantity.
  */
 public class BundleDetails extends ItemDetails {
-    private int id;
-    private Map<ItemDetails, Integer> itemMap = new HashMap<>();
 
-    public int getId() { return id; }
-    public Map<ItemDetails, Integer> getItemMap() { return itemMap; }
+    /**
+     * Represents all the @ItemDetails that
+     */
+    private HashMap<Item, Integer> itemsMap;
+
+    public BundleDetails() {
+
+        super();
+    }
+
+    public HashMap<Item, Integer> getItemsMap() {
+
+        return itemsMap;
+    }
+
+    public void setItemsMap(HashMap<Item, Integer> itemsMap) {
+        this.itemsMap = itemsMap;
+    }
 }

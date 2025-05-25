@@ -7,7 +7,7 @@ public class Item {
     private Company seller;
     private double price;
     private ItemDetails itemDetails;
-    private int qta;
+    private int qty;
 
     public Company getSeller() {
         return seller;
@@ -21,7 +21,11 @@ public class Item {
         return itemDetails;
     }
 
-    public int getQta() {
-        return qta;
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 }
