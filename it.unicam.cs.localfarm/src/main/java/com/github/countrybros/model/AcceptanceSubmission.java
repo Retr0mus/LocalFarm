@@ -7,6 +7,15 @@ public abstract class AcceptanceSubmission {
     private Company sender;
     private User curator;
 
+    public User getCurator() {
+        return curator;
+    }
+
+    public Company getSender() {
+        return sender;
+    }
+
+    //TODO: Change this shit immediately!
     public abstract String getDetails();
 
 }
