@@ -44,4 +44,7 @@ public interface IAcceptanceSubmissionRepository {
      */
     public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
 
+    boolean onAcceptance(int submissionId);
+
+    boolean onRefusal(int submissionId);
 }

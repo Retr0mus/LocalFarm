@@ -23,6 +23,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
         return false;
     }
 
+
     /**
      * Deletes an AcceptanceSubmission.
      *
@@ -37,7 +38,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
     /**
      * Gets the required AcceptanceSubmissions.
      *
-     * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
+     * @param acceptanceSubmissionId the id of the wanted AcceptanceSubmission.
      * @return the said AcceptanceSubmission.
      */
     @Override
@@ -58,11 +59,33 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
     /**
      * Gets all the AcceptanceSubmissions assigned to a certain Curator.
      *
-     * @param curatorId the Id of the User with the Curator privileges.
+     * @param curatorId the id of the User with the Curator privileges.
      * @return a list with all the curator's AcceptanceSubmission.
      */
     @Override
     public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId) {
         return acceptanceSubmissionRepository.getAcceptanceSubmissionsByCurator(curatorId);
+    }
+
+    /**
+     * Accepts the specified AcceptanceSubmission.
+     *
+     * @param submissionId the id of the AcceptanceSubmission.
+     * @return if the task succeeded or not.
+     */
+    @Override
+    public boolean onAcceptance(int submissionId) {
+        return false;
+    }
+
+    /**
+     * Accepts the specified AcceptanceSubmission.
+     *
+     * @param submissionId the id of the AcceptanceSubmission.
+     * @return if the task succeeded or not.
+     */
+    @Override
+    public boolean onRefusal(int submissionId) {
+        return false;
     }
 }

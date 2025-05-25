@@ -4,6 +4,7 @@ import com.github.countrybros.model.AcceptanceSubmission;
 
 import java.util.List;
 
+
 /**
  * Interface that represents every possible implementation of AcceptanceSubmissionService
  */
@@ -48,4 +49,19 @@ public interface IAcceptanceSubmissionService {
      */
     public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
 
+    /**
+     * Accepts the specified AcceptanceSubmission.
+     *
+     * @param submissionId the id of the AcceptanceSubmission.
+     * @return if the task succeeded or not.
+     */
+    boolean onAcceptance(int submissionId);
+
+    /**
+     * Accepts the specified AcceptanceSubmission.
+     *
+     * @param submissionId the id of the AcceptanceSubmission.
+     * @return if the task succeeded or not.
+     */
+    boolean onRefusal(int submissionId);
 }
