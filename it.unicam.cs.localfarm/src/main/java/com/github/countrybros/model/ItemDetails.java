@@ -14,11 +14,7 @@ public class ItemDetails {
     private Map<Item, Integer> availability = new HashMap<>();
 
 
-    public ItemDetails(String name, String description, Company producer) {
-
-        this.name = name;
-        this.description = description;
-        this.producer = producer;
+    public ItemDetails() {
 
         this.availability = new HashMap<Item, Integer>();
         this.status = ItemDetailsStatus.awaitingReview;

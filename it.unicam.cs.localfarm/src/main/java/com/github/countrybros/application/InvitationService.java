@@ -55,6 +55,7 @@ public class InvitationService implements IInvitationService {
      * @return a List with all the related invitations.
      */
     public List<Invitation> getInvitationsByCompany(int companyId) {
+        //TODO: this doesn't works
         return invitationRepository.getInvitationsByCompany(companyId);
     }
 
@@ -67,12 +68,13 @@ public class InvitationService implements IInvitationService {
     public boolean acceptInvitation(int invitationId) {
 
         //TODO: Remind to implement proper authorization with Spring.
+        //TODO: manage the singleton of EventService
 
         Invitation invitation = getInvitationById(invitationId);
         boolean isExpired = invitation.isExpired();
 
         if(!isExpired)
-            EventService.getInstance().confirmCompanyPartecipation(invitation.getEvent().getId(), invitation.getReciver().getId());
+            //EventService.getInstance().confirmCompanyPartecipation(invitation.getEvent().getId(), invitation.getReciver().getId());
 
         deleteInvitation(invitationId);
 

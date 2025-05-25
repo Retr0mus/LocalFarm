@@ -1,13 +1,17 @@
 package com.github.countrybros.model;
 
+import java.util.ArrayList;
+
 /**
  * Class to represent a company
  */
 public class Company {
+    private int id;
     private String name;
     private String email;
     private String password;
     private String description;
+    private ArrayList<Invitation> invitations;
    //TODO add location
 
     public String getName() {
@@ -26,5 +30,8 @@ public class Company {
         return description;
     }
 
+    public int getId() {
+        return id;
+    }
 }
 
