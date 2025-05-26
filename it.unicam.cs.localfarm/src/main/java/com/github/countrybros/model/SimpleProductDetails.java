@@ -12,4 +12,8 @@ public class SimpleProductDetails extends ItemDetails {
 
     public List<Certification> getCertifications() { return certifications; }
 
+    public void setCertifications(ArrayList<Certification> certifications) {
+
+        this.certifications = certifications;
+    }
 }

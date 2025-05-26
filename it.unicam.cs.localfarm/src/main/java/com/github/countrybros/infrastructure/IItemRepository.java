@@ -7,15 +7,6 @@ import java.util.List;
 /**
  * Interface for item data access and manipulation.
  */
-public interface  IItemRepository {
+public interface  IItemRepository extends IRepository<Item>{
 
-    boolean addItem(Item item);
-
-    boolean removeItem(String itemId);
-
-    boolean setItemQuantity(String itemId, int quantity);
-
-    Item getItemById(String itemId);
-
-    List<Item> getItemsBySeller(String sellerId);
 }
