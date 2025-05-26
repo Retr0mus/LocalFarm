@@ -1,5 +1,8 @@
 package com.github.countrybros.infrastructure;
 
+
+import java.util.List;
+
 /**
  * Generic repository that woks with Integer IDs
  */
@@ -29,4 +32,12 @@ public interface IRepository<T> {
     public void save(T obj);
 
     boolean exists(int id);
+
+    /**
+     * Returns all the elements in the repository.
+     *
+     * @return A list with every element.
+     */
+    List<T> getAll();
 }
+

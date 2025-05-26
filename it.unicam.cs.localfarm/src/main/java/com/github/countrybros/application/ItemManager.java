@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ItemManager {
   
-    private CompanyManager companyManager;
+    private CompanyService companyManager;
     private IItemRepository itemRepository;
 
 

@@ -8,8 +8,8 @@ import com.github.countrybros.model.EventState;
 import com.github.countrybros.model.User;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Service that performs all the tasks related to the management of the events.
@@ -19,14 +19,14 @@ import java.util.List;
  */
 public class EventService implements IEventService {
 
-    private static final EventService instance = new EventService(new LocalEventRepository());
     private final IEventRepository eventRepository;
+    private final ICompanyService companyService;
 
-    public EventService(IEventRepository eventRepository) {
+    public EventService(IEventRepository eventRepository, ICompanyService companyService) {
+
         this.eventRepository = eventRepository;
+        this.companyService = companyService;
     }
-
-    public static EventService getInstance() {return instance;}
 
     /**
      * Returns all the events in the website.
@@ -34,39 +34,48 @@ public class EventService implements IEventService {
      * @return a list with all the events.
      */
     public List<Event> getEvents() {
-        return null;
+
+        return this.eventRepository.getAll();
+    }
+
+    public void editEvent(Event event) {
+
+        if (!this.eventRepository.exists(event.getId()))
+            throw new NotFoundInRepositoryException("Event not found");
+
+        this.eventRepository.save(event);
     }
 
     /**
      * Removes an event from the repository.
      *
      * @param eventId the identifier of the event to remove.
-     * @return if the event was removed or not.
      */
-    public boolean removeEvent(int eventId) {
-        return eventRepository.removeEvent(eventId);
+    public void removeEvent(int eventId) {
+        eventRepository.delete(eventId);
     }
 
     /**
      * Subscribes a user on an event.
      *
-     * @param user the user who wants to subscribe.
+     * @param userId the user ID who wants to subscribe.
      * @param eventId the identifier of the event to subscribe to.
      * @return if the operation succeeded or not.
      */
-    public boolean subscribeOnEvent(User user, int eventId) {
-        return getEventById(eventId).subscribe(user);
+    public boolean subscribeOnEvent(int userId, int eventId) {
+
+        return false;
     }
 
     /**
      * Unsubscribes a user on an event.
      *
-     * @param user the user who wants to unsubscribe.
+     * @param userId the user who wants to unsubscribe.
      * @param eventId the identifier of the event to unsubscribe to.
      * @return if the operation succeeded or not.
      */
-    public boolean unsubscribeOnEvent(User user, int eventId) {
-        return getEventById(eventId).unsubscribe(user);
+    public boolean unsubscribeOnEvent(int userId, int eventId) {
+        return false;
     }
 
     /**
@@ -75,7 +84,12 @@ public class EventService implements IEventService {
      * @return list of events with status PUBLIC.
      */
     public List<Event> getPublicEvents() {
-        return eventRepository.getPublicEvents();
+
+        ArrayList<Event> events = new ArrayList<>(this.getEvents());
+
+        events.removeIf(e -> !(e.getState().equals(EventState.currentlyPublic)));
+
+        return events;
     }
 
     /**
@@ -85,13 +99,14 @@ public class EventService implements IEventService {
      * @return true if the event was successfully canceled, false otherwise.
      */
     public boolean cancelEvent(int eventId) {
-        //TODO: We should make this work with the editEvent method, and maybe change the
-        // name to setEventAsCanceled due to ambiguous interpretations
-        Event event = getEventById(eventId);
+        //TODO: change setEventAsCanceled due to ambiguous interpretations
+        Event event = getEvent(eventId);
         if (event == null || event.getState() == EventState.canceled || event.getState() == EventState.completed) {
             return false;
         }
+
         event.setState(EventState.canceled);
+        this.eventRepository.save(event);
         return true;
     }
 
@@ -103,13 +118,13 @@ public class EventService implements IEventService {
      * @return true if event was created successfully, false otherwise.
      */
     public boolean createEvent(Event eventDetails, List<Company> companiesToInvite) {
-        //TODO: We should make this work with the addEvent method
+
         try {
-            eventRepository.getEventById(eventDetails.getId());
+            eventRepository.get(eventDetails.getId());
         }catch (NotFoundInRepositoryException e) { return false; }
 
         eventDetails.setState(EventState.planning);
-        eventRepository.addEvent(eventDetails);
+        eventRepository.save(eventDetails);
 
         //TODO invitation part
 
@@ -123,12 +138,11 @@ public class EventService implements IEventService {
      * @return true if successfully published, false otherwise.
      */
     public boolean confirmEventPublication(int eventId) {
-        //TODO: We should make this work with the editEvent method
-        Event event = getEventById(eventId);
-        if (event == null ) {
-            return false;
-        }
+
+        Event event = getEvent(eventId);
+
         event.setState(EventState.currentlyPublic);
+        this.editEvent(event);
         return true;
     }
 
@@ -140,29 +154,31 @@ public class EventService implements IEventService {
      *
      * @throws NotFoundInRepositoryException if the event is not found.
      */
-    public Event getEventById(int eventId) {
-        return eventRepository.getEventById(eventId);
+    public Event getEvent(int eventId) {
+
+        return eventRepository.get(eventId);
     }
 
     /**
      * Cancels the participation of a company on an event in which is already joined in.
      *
-     * @param company the company that signs out.
+     * @param companyId the company that signs out.
      * @param eventId the event.
      *
      * @throws RuntimeException if the company is not included among the event's guests
      */
-    public boolean cancelCompanyParticipation(Company company, int eventId) {
-        //TODO: We should make this work with the editEvent method
-        Event event = getEventById(eventId);
-        List<Company> guests = event.getGuests();
+    public boolean cancelCompanyParticipation(int companyId, int eventId) {
 
-        if (!guests.contains(company)) {
+        Event event = getEvent(eventId);
+        Company company = this.companyService.getCompany(companyId);
+
+        if (!event.getGuests().contains(company)) {
 
             throw new RuntimeException("Company not included in event guest list");
         }
 
-        guests.remove(company);
+        event.getGuests().remove(company);
+        this.companyService.editCompany(company);
         return true;
     }
 
@@ -174,14 +190,15 @@ public class EventService implements IEventService {
      * @return if the company was successfully added as a guest.
      */
     public boolean confirmCompanyPartecipation(int eventId, int companyId) {
-        //TODO: Finish implementation when the CompanyManager is in this branch.
-        // Also, the same thing said about the editEvent applies here.
 
-        Event event = getEventById(eventId);
-        List<Company> guests = event.getGuests();
+        Event event = getEvent(eventId);
+        Company company = this.companyService.getCompany(companyId);
 
-        //if (!guests.contains(company)) {}
+        if(event.getGuests().contains(company))
+            throw new RuntimeException("Company already included in event guest list");
 
+        event.getGuests().add(company);
+        this.eventRepository.save(event);
         return true;
     }
 }

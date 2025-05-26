@@ -27,7 +27,7 @@ public interface IEventService {
      * @param eventId the identifier of the event to remove.
      * @return if the event was removed or not.
      */
-    public boolean removeEvent(int eventId);
+    public void removeEvent(int eventId);
 
     /**
      * Returns the event associated with the specified ID.
@@ -37,7 +37,7 @@ public interface IEventService {
      *
      * @throws NotFoundInRepositoryException if the event is not found.
      */
-    public Event getEventById(int eventId);
+    public Event getEvent(int eventId);
 
     /**
      * Returns a list of all public events.
@@ -56,20 +56,20 @@ public interface IEventService {
     /**
      * Subscribes a user on an event.
      *
-     * @param user the user who wants to subscribe.
+     * @param userId the user ID who wants to subscribe.
      * @param eventId the identifier of the event to subscribe to.
      * @return if the operation succeeded or not.
      */
-    public boolean subscribeOnEvent(User user, int eventId);
+    public boolean subscribeOnEvent(int userId, int eventId);
 
     /**
      * Unsubscribes a user on an event.
      *
-     * @param user the user who wants to unsubscribe.
+     * @param userId the user ID who wants to unsubscribe.
      * @param eventId the identifier of the event to unsubscribe to.
      * @return if the operation succeeded or not.
      */
-    public boolean unsubscribeOnEvent(User user, int eventId);
+    public boolean unsubscribeOnEvent(int userId, int eventId);
 
     /**
      * Cancels an event by setting its status as CANCELED.
@@ -90,12 +90,12 @@ public interface IEventService {
     /**
      * Cancels the participation of a company on an event in which is already joined in.
      *
-     * @param company the company that signs out.
+     * @param companyId the company ID that signs out.
      * @param eventId the event.
      *
      * @throws RuntimeException if the company is not included among the event's guests
      */
-    public boolean cancelCompanyParticipation(Company company, int eventId);
+    public boolean cancelCompanyParticipation(int companyId, int eventId);
 
     /**
      * Confirms the participation of a certain company to an event.
