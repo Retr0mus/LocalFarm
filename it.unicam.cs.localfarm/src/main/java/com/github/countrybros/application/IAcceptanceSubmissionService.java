@@ -1,9 +1,14 @@
-package com.github.countrybros.infrastructure;
+package com.github.countrybros.application;
 
 import com.github.countrybros.model.AcceptanceSubmission;
+
 import java.util.List;
 
-public interface IAcceptanceSubmissionRepository {
+
+/**
+ * Interface that represents every possible implementation of AcceptanceSubmissionService
+ */
+public interface IAcceptanceSubmissionService {
 
     /**
      * Adds an AcceptanceSubmission.
@@ -14,12 +19,20 @@ public interface IAcceptanceSubmissionRepository {
     public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission);
 
     /**
+     * Deletes an AcceptanceSubmission.
+     *
+     * @param acceptanceSubmissionId the submission to delete.
+     * @return if the task was successful or not.
+     */
+    public boolean deleteAcceptanceSubmission(int acceptanceSubmissionId);
+
+    /**
      * Gets the required AcceptanceSubmissions.
      *
      * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
      * @return the said AcceptanceSubmission.
      */
-    public boolean removeAcceptanceSubmission(int  acceptanceSubmissionId);
+    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
 
     /**
      * Gets all the free AcceptanceSubmissions.
@@ -37,14 +50,18 @@ public interface IAcceptanceSubmissionRepository {
     public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
 
     /**
-     * Gets the required AcceptanceSubmissions.
+     * Accepts the specified AcceptanceSubmission.
      *
-     * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
-     * @return the said AcceptanceSubmission.
+     * @param submissionId the id of the AcceptanceSubmission.
+     * @return if the task succeeded or not.
      */
-    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
-
     boolean onAcceptance(int submissionId);
 
+    /**
+     * Accepts the specified AcceptanceSubmission.
+     *
+     * @param submissionId the id of the AcceptanceSubmission.
+     * @return if the task succeeded or not.
+     */
     boolean onRefusal(int submissionId);
 }
