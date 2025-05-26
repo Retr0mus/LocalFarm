@@ -1,7 +1,6 @@
 package com.github.countrybros.infrastructure;
 
-import com.github.countrybros.model.ItemDetails;
-import com.github.countrybros.model.SimpleProductDetails;
+import com.github.countrybros.model.product.SimpleProductDetails;
 
 /**
  * Repository of @SimpleProductDetails

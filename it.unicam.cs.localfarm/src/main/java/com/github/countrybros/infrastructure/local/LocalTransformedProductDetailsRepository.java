@@ -1,10 +1,11 @@
 package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.infrastructure.ITransformedProductDetailsRepository;
-import com.github.countrybros.model.SimpleProductDetails;
-import com.github.countrybros.model.TransformedProductDetails;
+import com.github.countrybros.model.product.TransformedProductDetails;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Local repository of @TransformedProductDetails
@@ -35,5 +36,10 @@ public class LocalTransformedProductDetailsRepository implements ITransformedPro
     public boolean exists(int id) {
 
         return repository.containsKey(id);
+    }
+
+    @Override
+    public List<TransformedProductDetails> getAll() {
+        return new ArrayList<TransformedProductDetails>(repository.values());
     }
 }

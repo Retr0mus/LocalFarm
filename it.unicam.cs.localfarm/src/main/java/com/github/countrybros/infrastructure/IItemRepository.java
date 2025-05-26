@@ -1,8 +1,6 @@
 package com.github.countrybros.infrastructure;
 
-import com.github.countrybros.model.Item;
-
-import java.util.List;
+import com.github.countrybros.model.product.Item;
 
 /**
  * Interface for item data access and manipulation.

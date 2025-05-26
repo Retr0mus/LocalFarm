@@ -1,9 +1,11 @@
 package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.infrastructure.ISimpleProductDetailsRepository;
-import com.github.countrybros.model.SimpleProductDetails;
+import com.github.countrybros.model.product.SimpleProductDetails;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Local repository of @SimpleProductdetails
@@ -34,5 +36,10 @@ public class LocalSimpleProductDetailsRepository implements ISimpleProductDetail
     public boolean exists(int id) {
 
         return repository.containsKey(id);
+    }
+
+    @Override
+    public List<SimpleProductDetails> getAll() {
+        return new ArrayList<SimpleProductDetails>(repository.values());
     }
 }

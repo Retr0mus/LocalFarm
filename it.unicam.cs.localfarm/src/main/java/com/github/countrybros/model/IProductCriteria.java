@@ -1,5 +1,7 @@
 package com.github.countrybros.model;
 
+import com.github.countrybros.model.product.SimpleProductDetails;
+
 /**
  * Criteria interface for product filtering.
  */

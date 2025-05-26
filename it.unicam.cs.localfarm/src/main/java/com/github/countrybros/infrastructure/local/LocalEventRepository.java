@@ -2,7 +2,7 @@ package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.IEventRepository;
-import com.github.countrybros.model.Event;
+import com.github.countrybros.model.event.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;

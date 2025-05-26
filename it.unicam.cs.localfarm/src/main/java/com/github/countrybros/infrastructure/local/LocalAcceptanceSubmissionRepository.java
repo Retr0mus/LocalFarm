@@ -1,7 +1,7 @@
 package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
-import com.github.countrybros.model.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 
 import java.util.ArrayList;
 import java.util.HashMap;

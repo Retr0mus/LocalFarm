@@ -1,6 +1,6 @@
 package com.github.countrybros.infrastructure;
 
-import com.github.countrybros.model.TransformedProductDetails;
+import com.github.countrybros.model.product.TransformedProductDetails;
 
 /**
  * Repository of @TransformedProductDetails

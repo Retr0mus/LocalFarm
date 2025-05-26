@@ -1,6 +1,6 @@
 package com.github.countrybros.infrastructure;
 
-import com.github.countrybros.model.BundleDetails;
+import com.github.countrybros.model.product.BundleDetails;
 
 /**
  * Repo of @BundleDetails

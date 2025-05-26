@@ -1,6 +1,6 @@
 package com.github.countrybros.infrastructure;
 
-import com.github.countrybros.model.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 import java.util.List;
 
 public interface IAcceptanceSubmissionRepository {

@@ -1,7 +1,7 @@
 package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.infrastructure.IInvitationRepository;
-import com.github.countrybros.model.Invitation;
+import com.github.countrybros.model.event.Invitation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

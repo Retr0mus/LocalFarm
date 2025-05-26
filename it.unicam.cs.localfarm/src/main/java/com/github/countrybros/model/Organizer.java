@@ -1,5 +1,7 @@
 package com.github.countrybros.model;
 
+import com.github.countrybros.model.event.Event;
+
 import java.util.List;
 
 /**

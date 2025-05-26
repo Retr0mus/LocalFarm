@@ -1,9 +1,11 @@
 package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.infrastructure.IBundleDetailsRepository;
-import com.github.countrybros.model.BundleDetails;
+import com.github.countrybros.model.product.BundleDetails;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Local repo of @BundleDetails
@@ -34,5 +36,10 @@ public class LocalBundleDetailsRepository implements IBundleDetailsRepository {
     public boolean exists(int id) {
 
         return repository.containsKey(id);
+    }
+
+    @Override
+    public List<BundleDetails> getAll() {
+        return new ArrayList<>(repository.values());
     }
 }
