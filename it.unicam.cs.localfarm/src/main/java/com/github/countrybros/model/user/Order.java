@@ -14,9 +14,15 @@ public class Order {
     private User user;
     private Cart cart;
     private Date orderDate;
-    private String orderStatus;
-    private double totalAmount;
+    private OrderStatus orderStatus;
     private ShippingAddress address;
+
+    public Order() {
+
+        //TODO: date of today
+        setOrderDate(new Date());
+        setOrderStatus(OrderStatus.picking);
+    }
 
     public int getOrderId() {
         return orderId;
@@ -34,15 +40,35 @@ public class Order {
         return orderDate;
     }
 
-    public String getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
     public double getTotalAmount() {
-        return totalAmount;
+        return cart.getTotalAmount();
     }
 
     public ShippingAddress getAddress() {
         return address;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setAddress(ShippingAddress address) {
+        this.address = address;
     }
 }
