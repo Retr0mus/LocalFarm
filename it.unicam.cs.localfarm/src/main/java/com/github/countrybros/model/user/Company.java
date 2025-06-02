@@ -1,5 +1,6 @@
 package com.github.countrybros.model.user;
 
+import com.github.countrybros.application.user.IPaymentMethod;
 import com.github.countrybros.model.event.Invitation;
 
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ public class Company {
     private String password;
     private String description;
     private ArrayList<Invitation> invitations;
-   //TODO add location
+    private IPaymentMethod method;
+
+    //TODO add location
 
     public String getName() {
         return name;

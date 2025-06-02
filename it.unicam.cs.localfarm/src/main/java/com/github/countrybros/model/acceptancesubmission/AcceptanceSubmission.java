@@ -9,6 +9,7 @@ import com.github.countrybros.model.user.User;
 public abstract class AcceptanceSubmission {
     private Company sender;
     private User curator;
+    private boolean accepted;
 
     public User getCurator() {
         return curator;
@@ -20,5 +21,10 @@ public abstract class AcceptanceSubmission {
 
     //TODO: Change this shit immediately!
     public abstract String getDetails();
+
+
+    public void accept() {
+        this.accepted = true;
+    }
 
 }

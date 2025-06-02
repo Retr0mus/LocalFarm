@@ -6,27 +6,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/submissions")
+@RequestMapping("/submissions")
 public class AcceptanceSubmissionController {
-    private IAcceptanceSubmissionService acceptanceSubmissionService;
+    private final IAcceptanceSubmissionService acceptanceSubmissionService;
 
     @Autowired
-    public AcceptanceSubmissionController(IAcceptanceSubmissionService service) {
-        this.acceptanceSubmissionService = service;
+    public AcceptanceSubmissionController(IAcceptanceSubmissionService acceptanceSubmissionService) {
+        this.acceptanceSubmissionService = acceptanceSubmissionService;
     }
 
     @GetMapping("/{submissionId}")
-    public AcceptanceSubmission getAcceptanceSubmission(int submissionId) {
+    public AcceptanceSubmission getAcceptanceSubmission(@RequestParam int submissionId) {
         return acceptanceSubmissionService.getAcceptanceSubmission(submissionId);
     }
 
     @PostMapping("/{submissionId}/accept")
-    public boolean onAcceptance(int submissionId) {
+    public boolean onAcceptance( @RequestParam int submissionId) {
         return acceptanceSubmissionService.onAcceptance(submissionId);
     }
 
     @PostMapping("/{submissionId}/refuse")
-    public boolean onRefusal(int submissionId) {
+    public boolean onRefusal(@RequestParam int submissionId) {
         return acceptanceSubmissionService.onRefusal(submissionId);
     }
+
+
 }

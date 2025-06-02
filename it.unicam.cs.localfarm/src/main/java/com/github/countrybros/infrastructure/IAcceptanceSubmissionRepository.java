@@ -44,7 +44,16 @@ public interface IAcceptanceSubmissionRepository {
      */
     public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
 
+    /**
+     * Gets all the AcceptanceSubmissions of seller.
+     *
+     * @param senderId the Id of the User with the seller privileges.
+     * @return a list with all the seller's AcceptanceSubmission.
+     */
+    List<AcceptanceSubmission> getAcceptanceSubmissionsBySender(int senderId);
+
     boolean onAcceptance(int submissionId);
 
     boolean onRefusal(int submissionId);
+
 }
