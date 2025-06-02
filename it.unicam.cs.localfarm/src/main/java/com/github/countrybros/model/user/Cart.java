@@ -1,7 +1,6 @@
 package com.github.countrybros.model.user;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -14,12 +13,16 @@ public class Cart {
         return false;
     }
 
-    float getTotalAmount() {
+    public float getTotalAmount() {
 
         AtomicReference<Float> t = new AtomicReference<>((float) 0);
         items.iterator().forEachRemaining(item->{
             t.updateAndGet(v -> (float) (v + item.getQuantity() * item.getItem().getPrice()));});
         return t.get();
+    }
+
+    public void setItems(ArrayList<ShoppingItem> items) {
+        this.items = items;
     }
 
     public ArrayList<ShoppingItem> getItems() {

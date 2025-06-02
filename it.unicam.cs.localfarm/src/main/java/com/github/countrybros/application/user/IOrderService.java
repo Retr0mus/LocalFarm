@@ -26,10 +26,8 @@ public interface IOrderService {
      * @param userId The user.
      * @param method The method chosen by the user.
      * @param address The address chosen by the user.
-     *
-     * @return the order.
      */
-    Order checkout(int userId, IPaymentMethod method, ShippingAddress address);
+    void checkout(int userId, IPaymentMethod method, ShippingAddress address);
 
     /**
      * Returns all the order made since the specified date.

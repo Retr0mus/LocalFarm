@@ -1,5 +1,7 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.application.errors.FoundInRepositoryException;
+import com.github.countrybros.application.errors.NotEnoughItemsException;
 import com.github.countrybros.infrastructure.IOrderRepository;
 import com.github.countrybros.model.user.*;
 
@@ -12,6 +14,7 @@ public class OrderService implements IOrderService {
     private ShoppingService shoppingService;
     //TODO: update with IUserService
     private UserService userService;
+    private IPaymentService paymentService;
 
     private IOrderRepository orderRepository;
 
@@ -22,23 +25,41 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order checkout(int userId, IPaymentMethod method, ShippingAddress address) {
+    public void checkout(int userId, IPaymentMethod method, ShippingAddress address) {
 
         Cart cart = shoppingService.getCart(userId);
+        Cart excessCart = shoppingService.getExcessItems(cart);
 
-        //TODO: continue checkout
-        //if (shoppingManager.)
+        if (excessCart.getItems().isEmpty())
+            throw new NotEnoughItemsException("Item quantity not available", excessCart);
+
+        //TODO: User as parameter, maybe
+        paymentService.buy(userId, method, cart.getTotalAmount());
+
         User user = userService.getUser(userId);
         Order order = new Order();
-
         order.setCart(cart);
         order.setAddress(address);
         order.setUser(user);
-        return order;
+        this.addOrder(order);
     }
 
     @Override
     public List<Order> getOrdersSince(Date date) {
-        return List.of();
+
+        return orderRepository.findByOrderDate(date);
+    }
+
+    /**
+     * Saves an order in the repository.
+     *
+     * @param order The order to save.
+     */
+    private void addOrder(Order order) {
+
+        if (orderRepository.exists(order.getOrderId()))
+            throw new FoundInRepositoryException("Order already exists");
+
+        orderRepository.save(order);
     }
 }

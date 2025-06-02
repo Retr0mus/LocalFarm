@@ -4,6 +4,7 @@ import com.github.countrybros.infrastructure.IOrderRepository;
 import com.github.countrybros.model.user.Order;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,4 +50,13 @@ public class LocalOrderRepository implements IOrderRepository {
         orders.removeIf(o -> o.getUser().getId() == userId);
         return orders;
     }
+
+    @Override
+    public List<Order> findByOrderDate(Date orderDate) {
+        //TODO: filter from today
+        return this.getAll();
+        //.removeIf(o -> o.getOrderDate() >= );
+    }
+
+
 }

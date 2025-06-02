@@ -12,6 +12,7 @@ import java.util.Date;
 public class Order {
     private int orderId;
     private User user;
+    private Company seller;
     private Cart cart;
     private Date orderDate;
     private OrderStatus orderStatus;
@@ -70,5 +71,13 @@ public class Order {
 
     public void setAddress(ShippingAddress address) {
         this.address = address;
+    }
+
+    public Company getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Company seller) {
+        this.seller = seller;
     }
 }

@@ -10,6 +10,8 @@ public class ShoppingItem {
     private Item item;
     private int quantity;
 
+    public ShoppingItem(Cart cart, Item item, int quantity) {}
+
     public Cart getCart() {
         return cart;
     }
