@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * Generic repository that woks with Integer IDs
  */
+@Deprecated
 public interface IRepository<T> {
 
     /**

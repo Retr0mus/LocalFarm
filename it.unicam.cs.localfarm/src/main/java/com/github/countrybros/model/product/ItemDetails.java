@@ -1,6 +1,7 @@
 package com.github.countrybros.model.product;
 
 import com.github.countrybros.model.user.Company;
+import jakarta.persistence.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,52 +9,31 @@ import java.util.Map;
 /**
  * Represents the details of a generic @Item that can be sold in the marketplace.
  */
-public class ItemDetails {
+@MappedSuperclass
+public abstract class ItemDetails {
 
-    /**
-     * ID of the item:
-     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
-    /**
-     * Name of the item.
-     */
     private String name;
 
-    /**
-     * Description of the item.
-     */
     private String description;
 
-    /**
-     * Status of the item.
-     */
     private ItemDetailsStatus status;
 
-    /**
-     * Represents the visibility of the item,
-     * true if it can be selled, false otherwise.
-     */
     private boolean visibleByPublic = false;
 
-    /**
-     * Map that contains every @Item that contains this item
-     */
-    private Map<Item, Integer> availability = new HashMap<>();
+    // It does not work because it needs @Entity on Company, remind to put it.
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Company producer;
 
 
     public ItemDetails() {
-
-        this.availability = new HashMap<Item, Integer>();
         this.status = ItemDetailsStatus.awaitingReview;
-        //TODO AcceptanceSubmission creation
         this.visibleByPublic = false;
     }
 
-    /**
-     * The producer of the item.
-     */
-    private Company producer;
 
     public String getName() {
         return name;
@@ -79,10 +59,6 @@ public class ItemDetails {
     }
 
     public void setVisibleByPublic(boolean visibleByPublic) {}
-
-    public Map<Item, Integer> getAvailability() {
-        return availability;
-    }
 
     public void setAvailability(Map<Item, Integer> availability) {}
 

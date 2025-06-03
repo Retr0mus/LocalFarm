@@ -1,23 +1,29 @@
 package com.github.countrybros.application.product;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.infrastructure.ITransformedProductDetailsRepository;
-import com.github.countrybros.infrastructure.local.LocalTransformedProductDetailsRepository;
+import com.github.countrybros.infrastructure.product.TransformedProductDetailsRepository;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.TransformedProductDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the TransformedProductDetails.
  */
+@Service
 public class TransformedProductDetailsService implements ITransformedProductDetailsService {
 
     /**
      * Repository of @TransformedProductDetails
      */
-    private final ITransformedProductDetailsRepository TransformedProductRepository = new LocalTransformedProductDetailsRepository();
+    private final TransformedProductDetailsRepository TransformedProductRepository;
 
+    @Autowired
+    public TransformedProductDetailsService(TransformedProductDetailsRepository transformedProductRepository) {
+        TransformedProductRepository = transformedProductRepository;
+    }
 
     /**
      * Returns the specified element.
@@ -27,7 +33,7 @@ public class TransformedProductDetailsService implements ITransformedProductDeta
      * @return the requested element.
      */
     public TransformedProductDetails getProduct(int id) {
-        return TransformedProductRepository.get(id);
+        return (TransformedProductDetails) TransformedProductRepository.findById(id).orElse(null);
     }
 
     /**
@@ -37,9 +43,9 @@ public class TransformedProductDetailsService implements ITransformedProductDeta
      *
      * @throws NotFoundInRepositoryException if the element is not present
      */
-    public void modifyProduct(TransformedProductDetails product) {
+    public void editProduct(TransformedProductDetails product) {
 
-        if (!this.TransformedProductRepository.exists(product.getId()))
+        if (!this.TransformedProductRepository.existsById(product.getId()))
             throw new NotFoundInRepositoryException("Product not found");
 
         this.TransformedProductRepository.save(product);
@@ -54,10 +60,10 @@ public class TransformedProductDetailsService implements ITransformedProductDeta
      */
     public boolean removeProduct(int id) {
 
-        if (!this.TransformedProductRepository.exists(id))
+        if (!this.TransformedProductRepository.existsById(id))
             return false;
 
-        this.TransformedProductRepository.delete(id);
+        this.TransformedProductRepository.deleteById(id);
         return true;
     }
 
@@ -70,13 +76,14 @@ public class TransformedProductDetailsService implements ITransformedProductDeta
      */
     public boolean addProduct(TransformedProductDetails product) {
 
-        if (this.TransformedProductRepository.exists(product.getId()))
+        if (this.TransformedProductRepository.existsById(product.getId()))
             return false;
 
         this.TransformedProductRepository.save(product);
         return true;
     }
 
+    //TODO: Implement
     public List<Item> getCompanyProducts(String companyId) {
         return null;
     }

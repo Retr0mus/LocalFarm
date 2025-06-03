@@ -2,18 +2,20 @@ package com.github.countrybros.application.product;
 
 import com.github.countrybros.application.user.CompanyService;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.infrastructure.IItemRepository;
+import com.github.countrybros.infrastructure.product.ItemRepository;
 import com.github.countrybros.model.product.Item;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the item.
  */
-public class ItemManager {
+@Service
+public class ItemService {
   
-    private CompanyService companyManager;
-    private IItemRepository itemRepository;
+    private CompanyService companyService;
+    private ItemRepository itemRepository;
 
 
     public boolean addItem(Item item) {

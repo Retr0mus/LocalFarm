@@ -27,7 +27,7 @@ public interface ITransformedProductDetailsService {
      *
      * @throws NotFoundInRepositoryException if the element is not present
      */
-    public void modifyProduct(TransformedProductDetails product);
+    public void editProduct(TransformedProductDetails product);
 
     /**
      * Deletes the selected element.

@@ -1,5 +1,7 @@
 package com.github.countrybros.model.product;
 
+import jakarta.persistence.Entity;
+
 import java.util.HashMap;
 
 
@@ -7,6 +9,7 @@ import java.util.HashMap;
  * Represents the details of a single bundle of items,
  * contains the @Item correlated with respective quantity.
  */
+@Entity
 public class BundleDetails extends ItemDetails {
 
     /**

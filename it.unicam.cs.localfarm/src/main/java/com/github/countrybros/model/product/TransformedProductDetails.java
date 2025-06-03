@@ -1,11 +1,14 @@
 package com.github.countrybros.model.product;
 
 
+import jakarta.persistence.Entity;
+
 import java.util.ArrayList;
 
 /**
  * Details for a transformed product, composed of simple products.
  */
+@Entity
 public class TransformedProductDetails extends SimpleProductDetails {
 
     /**

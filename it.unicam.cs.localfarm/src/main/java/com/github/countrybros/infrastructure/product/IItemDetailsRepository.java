@@ -1,0 +1,9 @@
+package com.github.countrybros.infrastructure.product;
+
+import com.github.countrybros.model.product.ItemDetails;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+
+@NoRepositoryBean
+public interface IItemDetailsRepository extends CrudRepository<ItemDetails, Integer> {
+}

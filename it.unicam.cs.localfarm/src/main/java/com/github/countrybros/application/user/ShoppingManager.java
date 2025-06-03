@@ -1,7 +1,7 @@
 package com.github.countrybros.application.user;
 
 
-import com.github.countrybros.application.product.ItemManager;
+import com.github.countrybros.application.product.ItemService;
 import com.github.countrybros.model.user.Cart;
 import com.github.countrybros.model.user.Order;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ShoppingManager {
     private UserManager userManager;
-    private ItemManager itemManager;
+    private ItemService itemService;
 
     public Cart getCart(int userId) { return null; }
 
