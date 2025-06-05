@@ -3,6 +3,8 @@ package com.github.countrybros.application.event;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.event.Event;
+import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.application.errors.FoundInRepositoryException;
 
 import java.util.List;
 
@@ -16,15 +18,17 @@ public interface IEventService {
      * and delegates sending invitations.
      *
      * @param eventDetails the event to create.
-     * @return true if event was created successfully, false otherwise.
+     *
+     * @throws FoundInRepositoryException if the event existed.
      */
-    public boolean createEvent(Event eventDetails, List<Company> companiesToInvite);
+    public void createEvent(Event eventDetails, List<Company> companiesToInvite);
 
     /**
      * Removes an event from the repository.
      *
      * @param eventId the identifier of the event to remove.
-     * @return if the event was removed or not.
+     *
+     * @
      */
     public void removeEvent(int eventId);
 
@@ -37,6 +41,15 @@ public interface IEventService {
      * @throws NotFoundInRepositoryException if the event is not found.
      */
     public Event getEvent(int eventId);
+
+    /**
+     * Modifies the event specified, if present.
+     *
+     * @param event The event to modify.
+     *
+     * @throws NotFoundInRepositoryException if the event was not in the repo.
+     */
+    public void editEvent(Event event);
 
     /**
      * Returns a list of all public events.
@@ -57,34 +70,38 @@ public interface IEventService {
      *
      * @param userId the user ID who wants to subscribe.
      * @param eventId the identifier of the event to subscribe to.
-     * @return if the operation succeeded or not.
+     *
+     * @throws RequestAlreadySatisfiedException if already subscribed.
      */
-    public boolean subscribeOnEvent(int userId, int eventId);
+    public void subscribeOnEvent(int userId, int eventId);
 
     /**
      * Unsubscribes a user on an event.
      *
      * @param userId the user ID who wants to unsubscribe.
      * @param eventId the identifier of the event to unsubscribe to.
-     * @return if the operation succeeded or not.
+     *
+     * @throws RequestAlreadySatisfiedException if not subscribed
      */
-    public boolean unsubscribeOnEvent(int userId, int eventId);
+    public void unsubscribeOnEvent(int userId, int eventId);
 
     /**
      * Cancels an event by setting its status as CANCELED.
      *
      * @param eventId the ID of the event to cancel.
-     * @return true if the event was successfully canceled, false otherwise.
+     *
+     * @throws RequestAlreadySatisfiedException if the event is already canceled
      */
-    public boolean cancelEvent(int eventId);
+    public void setAsCanceled(int eventId);
 
     /**
      * Confirms the publication of an event by changing its status to PUBLIC.
      *
      * @param eventId the ID of the event to publish.
-     * @return true if successfully published, false otherwise.
+     *
+     * @throws RequestAlreadySatisfiedException if the event is already public.
      */
-    public boolean confirmEventPublication(int eventId);
+    public void confirmEventPublication(int eventId);
 
     /**
      * Cancels the participation of a company on an event in which is already joined in.
@@ -94,15 +111,16 @@ public interface IEventService {
      *
      * @throws RuntimeException if the company is not included among the event's guests
      */
-    public boolean cancelCompanyParticipation(int companyId, int eventId);
+    public void cancelCompanyParticipation(int companyId, int eventId);
 
     /**
      * Confirms the participation of a certain company to an event.
      *
      * @param eventId the event to participate to.
      * @param companyId the company who decided to participate
-     * @return if the company was successfully added as a guest.
+     *
+     * @throws RuntimeException if the company was already included among the event's guests
      */
-    public boolean confirmCompanyPartecipation(int eventId, int companyId);
+    public void confirmCompanyParticipation(int eventId, int companyId);
 
 }

@@ -1,6 +1,7 @@
 package com.github.countrybros.model.event;
 
 import com.github.countrybros.model.user.Company;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 

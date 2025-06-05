@@ -1,11 +1,16 @@
 package com.github.countrybros.application.event;
 
+import com.github.countrybros.application.errors.FoundInRepositoryException;
+import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
+import com.github.countrybros.application.user.UserManager;
 import com.github.countrybros.infrastructure.IEventRepository;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.model.user.User;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +18,20 @@ import java.util.List;
 /**
  * Service that performs all the tasks related to the management of the events.
  *
- * TODO: remember to use only IDs as parameters (when possible of course)
  * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
+@Service
 public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
     private final ICompanyService companyService;
+    private final UserManager userService;
 
-    public EventService(IEventRepository eventRepository, ICompanyService companyService) {
+    public EventService(IEventRepository eventRepository, ICompanyService companyService, UserManager userService) {
 
         this.eventRepository = eventRepository;
         this.companyService = companyService;
+        this.userService = userService;
     }
 
     /**
@@ -59,11 +66,17 @@ public class EventService implements IEventService {
      *
      * @param userId the user ID who wants to subscribe.
      * @param eventId the identifier of the event to subscribe to.
-     * @return if the operation succeeded or not.
+     *
      */
-    public boolean subscribeOnEvent(int userId, int eventId) {
+    public void subscribeOnEvent(int userId, int eventId) {
 
-        return false;
+        Event event = eventRepository.get(eventId);
+        User user = userService.getUser(userId);
+
+        if (event.getSubscribers().contains(user))
+            throw new RequestAlreadySatisfiedException("User already subscribed");
+
+        event.subscribe(user);
     }
 
     /**
@@ -71,10 +84,10 @@ public class EventService implements IEventService {
      *
      * @param userId the user who wants to unsubscribe.
      * @param eventId the identifier of the event to unsubscribe to.
-     * @return if the operation succeeded or not.
+     *
+     * @throws RequestAlreadySatisfiedException if the user was not subscribed.
      */
-    public boolean unsubscribeOnEvent(int userId, int eventId) {
-        return false;
+    public void unsubscribeOnEvent(int userId, int eventId) {
     }
 
     /**
@@ -95,18 +108,17 @@ public class EventService implements IEventService {
      * Cancels an event by setting its status as CANCELED.
      *
      * @param eventId the ID of the event to cancel.
-     * @return true if the event was successfully canceled, false otherwise.
+     *
+     * @throws RequestAlreadySatisfiedException if the event was already canceled.
      */
-    public boolean cancelEvent(int eventId) {
-        //TODO: change setEventAsCanceled due to ambiguous interpretations
+    public void setAsCanceled(int eventId) {
+
         Event event = getEvent(eventId);
-        if (event == null || event.getState() == EventState.canceled || event.getState() == EventState.completed) {
-            return false;
-        }
+        if (event == null || event.getState() == EventState.canceled || event.getState() == EventState.completed)
+            throw new RequestAlreadySatisfiedException("Event already canceled");
 
         event.setState(EventState.canceled);
         this.eventRepository.save(event);
-        return true;
     }
 
     /**
@@ -116,33 +128,33 @@ public class EventService implements IEventService {
      * @param eventDetails the event to create.
      * @return true if event was created successfully, false otherwise.
      */
-    public boolean createEvent(Event eventDetails, List<Company> companiesToInvite) {
+    public void createEvent(Event eventDetails, List<Company> companiesToInvite) {
 
-        try {
-            eventRepository.get(eventDetails.getId());
-        }catch (NotFoundInRepositoryException e) { return false; }
+        if (eventRepository.get(eventDetails.getId()) != null)
+            throw new FoundInRepositoryException("Event already exists.");
 
         eventDetails.setState(EventState.planning);
         eventRepository.save(eventDetails);
 
         //TODO invitation part
 
-        return true;
+
     }
 
     /**
      * Confirms the publication of an event by changing its status to PUBLIC.
      *
      * @param eventId the ID of the event to publish.
-     * @return true if successfully published, false otherwise.
      */
-    public boolean confirmEventPublication(int eventId) {
+    public void confirmEventPublication(int eventId) {
 
         Event event = getEvent(eventId);
 
+        if (event.getState().equals(EventState.currentlyPublic))
+            throw new RequestAlreadySatisfiedException("Event is already public");
+
         event.setState(EventState.currentlyPublic);
         this.editEvent(event);
-        return true;
     }
 
     /**
@@ -166,19 +178,18 @@ public class EventService implements IEventService {
      *
      * @throws RuntimeException if the company is not included among the event's guests
      */
-    public boolean cancelCompanyParticipation(int companyId, int eventId) {
+    public void cancelCompanyParticipation(int companyId, int eventId) {
 
         Event event = getEvent(eventId);
         Company company = this.companyService.getCompany(companyId);
 
         if (!event.getGuests().contains(company)) {
 
-            throw new RuntimeException("Company not included in event guest list");
+            throw new RequestAlreadySatisfiedException("Participation not found");
         }
 
         event.getGuests().remove(company);
         this.companyService.editCompany(company);
-        return true;
     }
 
     /**
@@ -186,9 +197,8 @@ public class EventService implements IEventService {
      *
      * @param eventId the event to participate to.
      * @param companyId the company who decided to participate
-     * @return if the company was successfully added as a guest.
      */
-    public boolean confirmCompanyPartecipation(int eventId, int companyId) {
+    public void confirmCompanyParticipation(int eventId, int companyId) {
 
         Event event = getEvent(eventId);
         Company company = this.companyService.getCompany(companyId);
@@ -198,6 +208,5 @@ public class EventService implements IEventService {
 
         event.getGuests().add(company);
         this.eventRepository.save(event);
-        return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.github.countrybros.application.user;
 
 import com.github.countrybros.model.user.User;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 /**
  * Service that performs all the tasks related to the management of the user
  */
+@Service
 public class UserManager {
     private Map<Integer, User> users = new HashMap<>();
 

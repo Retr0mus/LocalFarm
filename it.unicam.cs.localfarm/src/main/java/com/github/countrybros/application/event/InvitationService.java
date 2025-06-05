@@ -1,8 +1,16 @@
 package com.github.countrybros.application.event;
 
+import com.github.countrybros.application.errors.ImpossibleRequestException;
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.infrastructure.IInvitationRepository;
 import com.github.countrybros.infrastructure.local.LocalInvitationRepository;
+import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.Invitation;
+import com.github.countrybros.model.user.Company;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,41 +19,61 @@ import java.util.List;
  *
  * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
+@Service
 public class InvitationService implements IInvitationService {
 
-    private static final InvitationService instance = new InvitationService();
     private final IInvitationRepository invitationRepository = new LocalInvitationRepository();
 
-    public static InvitationService getInstance() {return instance;}
+    private final IEventService eventService;
+
+    private final ICompanyService companyService;
+
+    public InvitationService(final IEventService eventService, ICompanyService companyService) {
+
+        this.eventService = eventService;
+        this.companyService = companyService;
+    }
 
     /**
      * Adds an invitation to the repository
      *
      * @param invitation the invitation to add.
-     * @return if the invitation was added or not.
      */
-    public Boolean addInvitation(Invitation invitation) {
-        return invitationRepository.addInvitation(invitation);
+    public void addInvitation(Invitation invitation) {
+
+        invitationRepository.save(invitation);
     }
 
     /**
      * Removes an invitation from the repository.
      *
      * @param invitationId the ID of the invitation to remove.
-     * @return if the task succeeded or not.
+     *
+     * @throws NotFoundInRepositoryException if the invitation doesn't exist.
      */
-    public Boolean deleteInvitation(int invitationId) {
-        return invitationRepository.deleteInvitation(invitationId);
+    public void deleteInvitation(int invitationId) {
+
+        if (!invitationRepository.exists(invitationId))
+            throw new NotFoundInRepositoryException("Invitation not found");
+
+        invitationRepository.delete(invitationId);
     }
 
     /**
      * Gives the invitation with the specified ID.
      *
      * @param invitationId the specified ID.
+     *
      * @return the corresponding invitation.
+     *
+     * @throws NotFoundInRepositoryException if the invitation doesn't exist.
      */
-    public Invitation getInvitationById(int invitationId) {
-        return invitationRepository.getInvitation(invitationId);
+    public Invitation getInvitation(int invitationId) {
+
+        if (!invitationRepository.exists(invitationId))
+            throw new NotFoundInRepositoryException("Invitation not found");
+
+        return invitationRepository.get(invitationId);
     }
 
     /**
@@ -55,7 +83,9 @@ public class InvitationService implements IInvitationService {
      * @return a List with all the related invitations.
      */
     public List<Invitation> getInvitationsByCompany(int companyId) {
-        //TODO: this doesn't works
+
+        Company company = companyService.getCompany(companyId);
+
         return invitationRepository.getInvitationsByCompany(companyId);
     }
 
@@ -63,31 +93,41 @@ public class InvitationService implements IInvitationService {
      * Accepts an invitation, subscribing the said receiver into the Event's guests.
      *
      * @param invitationId the invitation to accept.
-     * @return if the task succeeded or not.
+     *
+     *
      */
-    public boolean acceptInvitation(int invitationId) {
+    public void acceptInvitation(int invitationId) {
 
         //TODO: Remind to implement proper authorization with Spring.
-        //TODO: manage the singleton of EventService
 
-        Invitation invitation = getInvitationById(invitationId);
+        Invitation invitation = getInvitation(invitationId);
         boolean isExpired = invitation.isExpired();
 
-        if(!isExpired)
-            //EventService.getInstance().confirmCompanyPartecipation(invitation.getEvent().getId(), invitation.getReciver().getId());
+        if (isExpired) {
+
+            invitationRepository.delete(invitationId);
+            throw new ImpossibleRequestException("The invitation is expired");
+        }
+
+        Event event = eventService.getEvent(invitation.getEvent().getId());
+        Company company = invitation.getReciver();
+
+        if (event.getGuests().contains(company))
+            throw new RequestAlreadySatisfiedException("Invitation is already satisfied");
+
+        event.getGuests().add(company);
+        eventService.editEvent(event);
 
         deleteInvitation(invitationId);
-
-        return !isExpired;
     }
 
     /**
      * Refuses an invitation by simply deleting it.
      *
      * @param invitationId the invitation to refuse.
-     * @return if the task succeeded or not.
      */
-    public boolean refuseInvitation(int invitationId) {
-        return deleteInvitation(invitationId);
+    public void refuseInvitation(int invitationId) {
+
+        deleteInvitation(invitationId);
     }
 }
