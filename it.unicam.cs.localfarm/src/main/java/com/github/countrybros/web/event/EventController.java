@@ -1,20 +1,16 @@
-package com.github.countrybros.web;
+package com.github.countrybros.web.event;
 
-import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.event.IEventService;
 import com.github.countrybros.model.event.Event;
-import com.github.countrybros.model.user.Company;
 import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:63342")
-@RequestMapping("/api/{event}")
+@RequestMapping(value = "event")
 public class EventController {
 
     private IEventService eventService;
@@ -65,10 +61,9 @@ public class EventController {
     }
 
     @RequestMapping(value = "create")
-    public ResponseEntity<Object> createEvent(@RequestBody Event request,
-                                              @RequestBody ArrayList<Company> invited){
+    public ResponseEntity<Object> createEvent(@RequestBody CreateEventRequest request){
 
-        eventService.createEvent(request, invited);
+        eventService.createEvent(request.event, request.invitedCompanies);
         return new ResponseEntity<>("Event created", HttpStatus.OK);
     }
 

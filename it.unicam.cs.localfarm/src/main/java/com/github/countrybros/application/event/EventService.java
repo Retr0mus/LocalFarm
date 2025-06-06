@@ -1,6 +1,7 @@
 package com.github.countrybros.application.event;
 
 import com.github.countrybros.application.errors.FoundInRepositoryException;
+import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.application.user.UserManager;
@@ -122,8 +123,12 @@ public class EventService implements IEventService {
     public void setAsCanceled(int eventId) {
 
         Event event = getEvent(eventId);
-        if (event == null || event.getState() == EventState.canceled || event.getState() == EventState.completed)
+
+        if (event.getState() == EventState.canceled)
             throw new RequestAlreadySatisfiedException("Event already canceled");
+
+        if (event.getState().equals(EventState.completed))
+            throw new ImpossibleRequestException("Event already completed");
 
         event.setState(EventState.canceled);
         this.eventRepository.save(event);
@@ -136,9 +141,6 @@ public class EventService implements IEventService {
      * @param eventDetails the event to create.
      */
     public void createEvent(Event eventDetails, List<Company> companiesToInvite) {
-
-        if (eventRepository.existsById(eventDetails.getId()))
-            throw new FoundInRepositoryException("Event already exists.");
 
         eventDetails.setState(EventState.planning);
         eventRepository.save(eventDetails);
@@ -174,7 +176,12 @@ public class EventService implements IEventService {
      */
     public Event getEvent(int eventId) {
 
-        return eventRepository.getById(eventId);
+        Event event = this.eventRepository.findById(eventId).orElse(null);
+
+        if (event == null)
+            throw new NotFoundInRepositoryException("Event not found");
+
+        return eventRepository.getEventById(eventId);
     }
 
     /**

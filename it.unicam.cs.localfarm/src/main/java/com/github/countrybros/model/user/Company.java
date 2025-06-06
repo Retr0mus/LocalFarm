@@ -1,12 +1,16 @@
 package com.github.countrybros.model.user;
 
 import com.github.countrybros.model.event.Invitation;
+import jakarta.persistence.Embeddable;
 
 import java.util.ArrayList;
 
 /**
  * Class to represent a company
+ *
+ * TODO: remove embeddable
  */
+@Embeddable
 public class Company {
     private int id;
     private String name;

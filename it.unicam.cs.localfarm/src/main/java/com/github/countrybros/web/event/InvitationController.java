@@ -1,4 +1,4 @@
-package com.github.countrybros.web;
+package com.github.countrybros.web.event;
 
 import com.github.countrybros.application.event.IInvitationService;
 import com.github.countrybros.model.event.Invitation;

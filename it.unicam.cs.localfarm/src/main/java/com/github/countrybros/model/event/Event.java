@@ -5,112 +5,132 @@ import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.user.User;
 import jakarta.persistence.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Class that represents an event.
  */
+@Entity
 public class Event {
 
-        private int id;
-        private String title;
-        private Map<LocalDateTime, LocalDateTime> dates;
-        private User organizer;
-        private List<Company> guests;
-        private int maxSposts;
-        private List<User> subscribers;
-        //TODO: Add Location class
-        private EventState state;
+    //TODO: togli i commenti alle annotazioni e metti gli attributi-classi come entity
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-        public int getId() {
-            return id;
-        }
+    private String title;
 
-        public String getTitle() {
-            return title;
-        }
+    @ElementCollection
+    private List<TimeInterval> dates;
 
-        public Map<LocalDateTime, LocalDateTime> getDates() {
-            return dates;
-        }
+    @Transient
+    private User organizer;
 
-        public User getOrganizer() {
-            return organizer;
-        }
+    //@OneToMany
+    @Transient
+    private List<Company> guests;
 
-        public List<Company> getGuests() {
-            return guests;
-        }
+    private int maxSposts;
 
-        public int getMaxSposts() {
-            return maxSposts;
-        }
+    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Transient
+    private List<User> subscribers = new ArrayList<>();
 
-        public List<User> getSubscribers() {
-            return subscribers;
-        }
+    //TODO: Add Location class
+    private EventState state;
 
-        public EventState getState() {
-            return state;
-        }
 
-        /**
-         * Tells if the event is full of subscribers.
-         *
-         * @return the boolean variable representing this condition.
-         */
-        public boolean isFull(){
-            return maxSposts >= subscribers.size();
-        }
+    public int getId() {
+        return id;
+    }
 
-        /**
-         * Subscribes a user to this event.
-         *
-         * @param user the user to subscribe.
-         * @return if the task was successful or not.
-         */
-        public boolean subscribe(User user){
+    public String getTitle() {
+        return title;
+    }
 
-            if((state != EventState.currentlyPublic) || (isFull()) || (subscribers.contains(user)))
-                return false;
+    public List<TimeInterval> getDates() {
+        return dates;
+    }
 
-            return subscribers.add(user);
-        }
+    public User getOrganizer() {
+        return organizer;
+    }
 
-        /**
-         * Unsubscribes a user from this event.
-         *
-         * @param user the user to unsubscribe.
-         * @return if the task was successful or not.
-         */
-        public boolean unsubscribe(User user){
-            return subscribers.remove(user);
-        }
+    public List<Company> getGuests() {
+        return guests;
+    }
 
-        /**
-         * Adds a guest company to the event.
-         *
-         * @param company the company to add.
-         * @return if the task was successful or not.
-         */
-        public boolean addGuest(Company company){
-            return guests.add(company);
-        }
+    public int getMaxSposts() {
+        return maxSposts;
+    }
 
-        /**
-         * Removes a guest company to the event.
-         *
-         * @param company the company to remove.
-         * @return if the task was successful or not.
-         */
-        public boolean removeGuest(Company company){
-            return guests.remove(company);
-        }
+    public List<User> getSubscribers() {
+        return subscribers;
+    }
 
-        public void setState(EventState eventState) {
-            state = eventState;
-        }
+    public EventState getState() {
+        return state;
+    }
+
+    /**
+     * Tells if the event is full of subscribers.
+     *
+     * @return the boolean variable representing this condition.
+     */
+    public boolean isFull(){
+        return maxSposts >= subscribers.size();
+    }
+
+    /**
+     * Subscribes a user to this event.
+     *
+     * @param user the user to subscribe.
+     * @return if the task was successful or not.
+     */
+    public boolean subscribe(User user){
+
+        if((state != EventState.currentlyPublic) || (isFull()) || (subscribers.contains(user)))
+            return false;
+
+        return subscribers.add(user);
+    }
+
+    /**
+     * Unsubscribes a user from this event.
+     *
+     * @param user the user to unsubscribe.
+     * @return if the task was successful or not.
+     */
+    public boolean unsubscribe(User user){
+        return subscribers.remove(user);
+    }
+
+    /**
+     * Adds a guest company to the event.
+     *
+     * @param company the company to add.
+     * @return if the task was successful or not.
+     */
+    public boolean addGuest(Company company){
+        return guests.add(company);
+    }
+
+    /**
+     * Removes a guest company to the event.
+     *
+     * @param company the company to remove.
+     * @return if the task was successful or not.
+     */
+    public boolean removeGuest(Company company){
+        return guests.remove(company);
+    }
+
+    public void setState(EventState eventState) {
+        state = eventState;
+    }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Class to represent a user
  */
+@Embeddable
 public class User {
 
     //TODO: See if there is a better way to manage users than this plain object
