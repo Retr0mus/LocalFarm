@@ -2,30 +2,29 @@ package com.github.countrybros.application.user;
 
 import com.github.countrybros.application.errors.FoundInRepositoryException;
 import com.github.countrybros.application.errors.NotEnoughItemsException;
-import com.github.countrybros.infrastructure.IOrderRepository;
+import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.model.user.*;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class OrderService implements IOrderService {
 
-    //TODO: update with IUserService
-    private ShoppingService shoppingService;
-    //TODO: update with IUserService
-    private UserService userService;
+    private IShoppingService shoppingService;
+    private IUserService userService;
     private IPaymentService paymentService;
 
     private IOrderRepository orderRepository;
 
     @Override
-    public List<Order> getOrders(int userId) {
-
-        return orderRepository.findByCustomer(userId);
+    public List<Order> getOrders(User user) {
+        return orderRepository.findByCustomer(user);
     }
 
     @Override
-    public void checkout(int userId, IPaymentMethod method, ShippingAddress address) {
+    public Order checkout(int userId, IPaymentMethod method, ShippingAddress address) {
 
         Cart cart = shoppingService.getCart(userId);
         Cart excessCart = shoppingService.getExcessItems(cart);
@@ -40,8 +39,9 @@ public class OrderService implements IOrderService {
         Order order = new Order();
         order.setCart(cart);
         order.setAddress(address);
-        order.setUser(user);
+        order.setCustomer(user);
         this.addOrder(order);
+        return order;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class OrderService implements IOrderService {
      */
     private void addOrder(Order order) {
 
-        if (orderRepository.exists(order.getOrderId()))
+        if (orderRepository.existsById(order.getOrderId()))
             throw new FoundInRepositoryException("Order already exists");
 
         orderRepository.save(order);

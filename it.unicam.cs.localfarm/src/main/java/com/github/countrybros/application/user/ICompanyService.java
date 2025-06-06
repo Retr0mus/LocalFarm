@@ -7,11 +7,11 @@ import com.github.countrybros.model.user.Company;
  */
 public interface ICompanyService {
 
-    public boolean addCompany(Company company);
+     boolean addCompany(Company company);
 
-    public Company getCompany(int companyId);
+     Company getCompany(int companyId);
 
-    public boolean editCompany(Company company);
+     boolean editCompany(Company company);
 
-    public boolean deleteCompany(int companyId);
+     boolean deleteCompany(int companyId);
 }

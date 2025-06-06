@@ -47,7 +47,7 @@ public class LocalOrderRepository implements IOrderRepository {
     public List<Order> findByCustomer(int userId) {
 
         ArrayList<Order> orders = new ArrayList<>(repository.values());
-        orders.removeIf(o -> o.getUser().getId() == userId);
+        orders.removeIf(o -> o.getCustomer().getUserId() == userId);
         return orders;
     }
 

@@ -13,7 +13,7 @@ public interface IPaymentService {
      * @param userId        ID of the user.
      * @param paymentMethod method chosen by the user.
      */
-    void buy(int userId, IPaymentMethod paymentMethod, float amount);
+    boolean buy(int userId, IPaymentMethod paymentMethod, float amount);
 
     /**
      * Payment of all the orders delivered by the companies since

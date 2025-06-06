@@ -2,6 +2,7 @@ package com.github.countrybros.application.user;
 
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.model.user.ShippingAddress;
+import com.github.countrybros.model.user.User;
 
 import java.util.Date;
 import java.util.List;
@@ -14,11 +15,12 @@ public interface IOrderService {
     /**
      * Returns all the Orders made by a user.
      *
-     * @param userId The user.
+     * @param user The user.
      *
      * @return a list of orders.
      */
-    List<Order> getOrders(int userId);
+    List<Order> getOrders(User user);
+
 
     /**
      * Create an order when a user decides to buy the item inside his cart.
@@ -27,7 +29,7 @@ public interface IOrderService {
      * @param method The method chosen by the user.
      * @param address The address chosen by the user.
      */
-    void checkout(int userId, IPaymentMethod method, ShippingAddress address);
+    Order checkout(int userId, IPaymentMethod method, ShippingAddress address);
 
     /**
      * Returns all the order made since the specified date.

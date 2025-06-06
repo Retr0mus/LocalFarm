@@ -1,11 +1,12 @@
 package com.github.countrybros.application.user;
 
 
-import com.github.countrybros.application.product.ItemManager;
+import com.github.countrybros.application.product.ItemService;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.user.Cart;
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.model.user.ShoppingItem;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,12 @@ import java.util.List;
 /**
  * Service that performs all the tasks related to the management of the shopping cart and orders.
  */
+@Service
 public class ShoppingService implements IShoppingService {
+
+    private IUserService  userService;
     //TODO: update with interface
-    private UserService userService;
-    //TODO: update with interface
-    private ItemManager itemManager;
+    private ItemService itemService;
 
     @Override
     public Cart getCart(int userId) { return null; }
@@ -48,8 +50,8 @@ public class ShoppingService implements IShoppingService {
         ArrayList<ShoppingItem> excessItems = new ArrayList<ShoppingItem>();
         Cart excessCart = new Cart();
 
-        for (ShoppingItem shoppingItem : cart.getItems()) {
-            Item item = itemManager.getItem(shoppingItem.getItem().getId());
+        for (ShoppingItem shoppingItem : cart.getItems().values()) {
+            Item item = itemService.getItem(shoppingItem.getItem().getId());
             int diff = item.getQty() - shoppingItem.getQuantity();
             if (diff < 0)
                 excessItems.add(new ShoppingItem(excessCart, item, diff));

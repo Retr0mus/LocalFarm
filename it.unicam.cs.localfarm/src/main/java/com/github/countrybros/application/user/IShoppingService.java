@@ -10,15 +10,15 @@ import java.util.List;
  */
 public interface IShoppingService {
 
-    public Cart getCart(int userId);
+     Cart getCart(int userId);
 
-    public boolean addItemToCart(int userId, int itemId, int qty);
+     boolean addItemToCart(int userId, int itemId, int qty);
 
-    public boolean editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
+     boolean editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
 
-    public boolean removeItemFromCart(int userId, int itemId, int qty);
+     boolean removeItemFromCart(int userId, int itemId, int qty);
 
-    public List<Order> getOrders(int userId);
+     List<Order> getOrders(int userId);
 
     /**
      * returns the list of Items that cannot be bought because there is not enough.
@@ -27,5 +27,5 @@ public interface IShoppingService {
      *
      * @return the list of items that cannot be bought.
      */
-    public Cart getExcessItems(Cart cart);
+     Cart getExcessItems(Cart cart);
 }

@@ -1,5 +1,8 @@
 package com.github.countrybros.model.user;
 
+
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 /**
@@ -9,13 +12,25 @@ import java.util.Date;
 /**
  * Class that represents an order.
  */
+@Entity
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    private User user;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User customer;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
     private Company seller;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @Embedded
     private ShippingAddress address;
 
     public Order() {
@@ -29,8 +44,8 @@ public class Order {
         return orderId;
     }
 
-    public User getUser() {
-        return user;
+    public User getCustomer() {
+        return customer;
     }
 
     public Cart getCart() {
@@ -53,8 +68,8 @@ public class Order {
         return address;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(User user) {
+        this.customer = user;
     }
 
     public void setCart(Cart cart) {

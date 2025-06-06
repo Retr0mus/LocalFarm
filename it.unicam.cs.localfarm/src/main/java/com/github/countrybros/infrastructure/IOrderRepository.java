@@ -5,6 +5,7 @@ import com.github.countrybros.model.user.Order;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 public interface IOrderRepository extends IRepository<Order>{
 
     /**
