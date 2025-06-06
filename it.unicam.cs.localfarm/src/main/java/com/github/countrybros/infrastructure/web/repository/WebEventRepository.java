@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WebEventRepository extends CrudRepository<Event, Integer> {
 
+    Event getById(int id);
 }
 

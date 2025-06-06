@@ -5,6 +5,7 @@ import com.github.countrybros.application.errors.RequestAlreadySatisfiedExceptio
 import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.application.user.UserManager;
 import com.github.countrybros.infrastructure.IEventRepository;
+import com.github.countrybros.infrastructure.web.repository.WebEventRepository;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.EventState;
@@ -18,16 +19,15 @@ import java.util.List;
 /**
  * Service that performs all the tasks related to the management of the events.
  *
- * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
 @Service
 public class EventService implements IEventService {
 
-    private final IEventRepository eventRepository;
+    private final WebEventRepository eventRepository;
     private final ICompanyService companyService;
     private final UserManager userService;
 
-    public EventService(IEventRepository eventRepository, ICompanyService companyService, UserManager userService) {
+    public EventService(WebEventRepository eventRepository, ICompanyService companyService, UserManager userService) {
 
         this.eventRepository = eventRepository;
         this.companyService = companyService;
@@ -41,12 +41,14 @@ public class EventService implements IEventService {
      */
     public List<Event> getEvents() {
 
-        return this.eventRepository.getAll();
+        List<Event> events = new ArrayList<>();
+        eventRepository.findAll().forEach(events::add);
+        return events;
     }
 
     public void editEvent(Event event) {
 
-        if (!this.eventRepository.exists(event.getId()))
+        if (!this.eventRepository.existsById(event.getId()))
             throw new NotFoundInRepositoryException("Event not found");
 
         this.eventRepository.save(event);
@@ -58,7 +60,13 @@ public class EventService implements IEventService {
      * @param eventId the identifier of the event to remove.
      */
     public void removeEvent(int eventId) {
-        eventRepository.delete(eventId);
+
+        Event event = this.eventRepository.findById(eventId).orElse(null);
+
+        if (event == null)
+            throw new NotFoundInRepositoryException("Event not found");
+
+        eventRepository.delete(event);
     }
 
     /**
@@ -70,7 +78,7 @@ public class EventService implements IEventService {
      */
     public void subscribeOnEvent(int userId, int eventId) {
 
-        Event event = eventRepository.get(eventId);
+        Event event = getEvent(eventId);
         User user = userService.getUser(userId);
 
         if (event.getSubscribers().contains(user))
@@ -126,11 +134,10 @@ public class EventService implements IEventService {
      * and delegates sending invitations.
      *
      * @param eventDetails the event to create.
-     * @return true if event was created successfully, false otherwise.
      */
     public void createEvent(Event eventDetails, List<Company> companiesToInvite) {
 
-        if (eventRepository.get(eventDetails.getId()) != null)
+        if (eventRepository.existsById(eventDetails.getId()))
             throw new FoundInRepositoryException("Event already exists.");
 
         eventDetails.setState(EventState.planning);
@@ -167,7 +174,7 @@ public class EventService implements IEventService {
      */
     public Event getEvent(int eventId) {
 
-        return eventRepository.get(eventId);
+        return eventRepository.getById(eventId);
     }
 
     /**
