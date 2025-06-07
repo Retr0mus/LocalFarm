@@ -3,10 +3,6 @@ package com.github.countrybros.model.user;
 import java.util.Date;
 
 /**
- * Class to represent a order.
- */
-
-/**
  * Class that represents an order.
  */
 public class Order {

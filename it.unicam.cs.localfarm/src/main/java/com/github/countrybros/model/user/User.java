@@ -1,10 +1,13 @@
 package com.github.countrybros.model.user;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
 /**
  * Class to rapresent a user
  */
+@Embeddable
 public class User {
 
     //TODO: See if there is a better way to manage users than this plain object
@@ -13,14 +16,13 @@ public class User {
     private String name;
     private String password;
     private String email;
+    @ElementCollection
     private List<String> roles;
+    @Embedded
     private Cart cart;
 
+    public User() {
 
-    public User(int id, String name, String password, String email) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
     }
 
 

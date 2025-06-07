@@ -1,10 +1,13 @@
 package com.github.countrybros.model.user;
 
+import jakarta.persistence.Embeddable;
+
 import java.util.Map;
 
 /**
  * Class that represents an cart.
  */
+@Embeddable
 public class Cart {
     private Map<Integer, ShoppingItem> items;
 

@@ -1,6 +1,6 @@
 package com.github.countrybros.application.acceptancesubmission;
 
-import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
+import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 import org.springframework.stereotype.Service;
 

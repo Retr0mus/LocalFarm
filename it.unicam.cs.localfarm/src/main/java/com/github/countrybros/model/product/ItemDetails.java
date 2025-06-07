@@ -1,6 +1,7 @@
 package com.github.countrybros.model.product;
 
 import com.github.countrybros.model.user.Company;
+import jakarta.persistence.Embeddable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 /**
  * Represents the details of a generic @Item that can be sold in the marketplace.
  */
+@Embeddable
 public class ItemDetails {
 
     /**
