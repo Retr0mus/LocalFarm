@@ -8,6 +8,11 @@ import java.util.List;
 
 @Repository
 public interface IAcceptanceSubmissionRepository extends CrudRepository<AcceptanceSubmission, Integer> {
+    List<AcceptanceSubmission> getAcceptanceSubmissionByAcceptedNot(boolean accepted);
+
+    List<AcceptanceSubmission> getAcceptanceSubmissionByAccepted(boolean accepted);
+
+    List<AcceptanceSubmission> getAcceptanceSubmissionById(int id);
 
       /*
         Default function of CrudRepository
@@ -19,54 +24,4 @@ public interface IAcceptanceSubmissionRepository extends CrudRepository<Acceptan
         exists(…) – verify if an entity exists based on the passed primary key value
      */
 
-    /**
-     * Adds an AcceptanceSubmission.
-     *
-     * @param acceptanceSubmission the submission to add.
-     * @return if the task was successful.
-     */
-    public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission);
-
-    /**
-     * Gets the required AcceptanceSubmissions.
-     *
-     * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
-     * @return the said AcceptanceSubmission.
-     */
-    public boolean removeAcceptanceSubmission(int  acceptanceSubmissionId);
-
-    /**
-     * Gets all the free AcceptanceSubmissions.
-     *
-     * @return a list with all the said AcceptanceSubmission.
-     */
-    public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions();
-
-    /**
-     * Gets all the AcceptanceSubmissions assigned to a certain Curator.
-     *
-     * @param curatorId the Id of the User with the Curator privileges.
-     * @return a list with all the curator's AcceptanceSubmission.
-     */
-    public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
-
-    /**
-     * Gets the required AcceptanceSubmissions.
-     *
-     * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
-     * @return the said AcceptanceSubmission.
-     */
-    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
-
-    /**
-     * Gets all the AcceptanceSubmissions of seller.
-     *
-     * @param senderId the Id of the User with the seller privileges.
-     * @return a list with all the seller's AcceptanceSubmission.
-     */
-    List<AcceptanceSubmission> getAcceptanceSubmissionsBySender(int senderId);
-
-    boolean onAcceptance(int submissionId);
-
-    boolean onRefusal(int submissionId);
 }

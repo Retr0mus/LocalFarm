@@ -7,7 +7,6 @@ import java.util.Map;
 /**
  * Class that represents an cart.
  */
-@Embeddable
 public class Cart {
     private Map<Integer, ShoppingItem> items;
 

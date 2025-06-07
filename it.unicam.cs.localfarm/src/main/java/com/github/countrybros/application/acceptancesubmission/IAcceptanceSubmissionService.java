@@ -16,7 +16,7 @@ public interface IAcceptanceSubmissionService {
      * @param acceptanceSubmission the submission to add.
      * @return if the task was successful.
      */
-    public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission);
+     void addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission);
 
     /**
      * Deletes an AcceptanceSubmission.
@@ -24,7 +24,7 @@ public interface IAcceptanceSubmissionService {
      * @param acceptanceSubmissionId the submission to delete.
      * @return if the task was successful or not.
      */
-    public boolean deleteAcceptanceSubmission(int acceptanceSubmissionId);
+     void deleteAcceptanceSubmission(int acceptanceSubmissionId);
 
     /**
      * Gets the required AcceptanceSubmissions.
@@ -32,14 +32,14 @@ public interface IAcceptanceSubmissionService {
      * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
      * @return the said AcceptanceSubmission.
      */
-    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
+     AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
 
     /**
      * Gets all the free AcceptanceSubmissions.
      *
      * @return a list with all the said AcceptanceSubmission.
      */
-    public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions();
+     List<AcceptanceSubmission> getAvailableAcceptanceSubmissions();
 
     /**
      * Gets all the AcceptanceSubmissions assigned to a certain Curator.
@@ -47,7 +47,7 @@ public interface IAcceptanceSubmissionService {
      * @param curatorId the Id of the User with the Curator privileges.
      * @return a list with all the curator's AcceptanceSubmission.
      */
-    public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
+     List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
 
     /**
      * Accepts the specified AcceptanceSubmission.
@@ -55,7 +55,7 @@ public interface IAcceptanceSubmissionService {
      * @param submissionId the id of the AcceptanceSubmission.
      * @return if the task succeeded or not.
      */
-    boolean onAcceptance(int submissionId);
+    void onAcceptance(int submissionId);
 
     /**
      * Accepts the specified AcceptanceSubmission.
@@ -63,5 +63,5 @@ public interface IAcceptanceSubmissionService {
      * @param submissionId the id of the AcceptanceSubmission.
      * @return if the task succeeded or not.
      */
-    boolean onRefusal(int submissionId);
+    void onRefusal(int submissionId);
 }

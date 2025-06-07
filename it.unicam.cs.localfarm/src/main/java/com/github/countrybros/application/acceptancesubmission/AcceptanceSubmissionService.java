@@ -14,6 +14,9 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
 
     private IAcceptanceSubmissionRepository acceptanceSubmissionRepository;
 
+    public AcceptanceSubmissionService(IAcceptanceSubmissionRepository acceptanceSubmissionRepository) {
+        this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
+    }
     /**
      * Adds an AcceptanceSubmission.
      *
@@ -21,8 +24,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return if the task was successful.
      */
     @Override
-    public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission) {
-        return false;
+    public void addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission) {
+        acceptanceSubmissionRepository.save(acceptanceSubmission);
     }
 
 
@@ -33,8 +36,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return if the task was successful or not.
      */
     @Override
-    public boolean deleteAcceptanceSubmission(int acceptanceSubmissionId) {
-        return false;
+    public void deleteAcceptanceSubmission(int acceptanceSubmissionId) {
+        acceptanceSubmissionRepository.deleteById(acceptanceSubmissionId);
     }
 
     /**
@@ -55,7 +58,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions() {
-        return acceptanceSubmissionRepository.getAvailableAcceptanceSubmissions();
+        //TODO check if is correct
+        return acceptanceSubmissionRepository.getAcceptanceSubmissionByAccepted(false);
     }
 
     /**
@@ -66,7 +70,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId) {
-        return acceptanceSubmissionRepository.getAcceptanceSubmissionsByCurator(curatorId);
+        //TODO fix acceptanceSubmissionsbyCurator
+        return acceptanceSubmissionRepository.getAcceptanceSubmissionById(curatorId);
     }
 
     /**
@@ -76,8 +81,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return if the task succeeded or not.
      */
     @Override
-    public boolean onAcceptance(int submissionId) {
-        return false;
+    public void onAcceptance(int submissionId) {
+
     }
 
     /**
@@ -87,7 +92,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return if the task succeeded or not.
      */
     @Override
-    public boolean onRefusal(int submissionId) {
-        return false;
+    public void onRefusal(int submissionId) {
+
     }
 }

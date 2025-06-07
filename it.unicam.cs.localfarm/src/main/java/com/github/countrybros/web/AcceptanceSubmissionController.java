@@ -2,6 +2,7 @@ package com.github.countrybros.web;
 
 import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.AddProductAcceptanceSubmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +36,23 @@ public class AcceptanceSubmissionController {
     }
 
     @PostMapping("/accept")
-    public boolean onAcceptance( @RequestParam int submissionId) {
-        return acceptanceSubmissionService.onAcceptance(submissionId);
+    public void onAcceptance( @RequestParam int submissionId) {
+
     }
 
     @DeleteMapping("/refuse")
-    public boolean onRefusal(@RequestParam int submissionId) {
-        return acceptanceSubmissionService.onRefusal(submissionId);
+    public void onRefusal(@RequestParam int submissionId) {
+
+    }
+
+    @PostMapping("/add")
+    public void addAcceptanceSubmission(@RequestBody AcceptanceSubmission acceptanceSubmission) {
+        acceptanceSubmissionService.addAcceptanceSubmission(acceptanceSubmission);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteAcceptanceSubmission(@RequestParam int acceptanceSubmissionId) {
+        acceptanceSubmissionService.deleteAcceptanceSubmission(acceptanceSubmissionId);
     }
 
 
