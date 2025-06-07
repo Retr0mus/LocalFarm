@@ -1,4 +1,4 @@
-package com.github.countrybros.web;
+package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.model.user.Company;
@@ -13,23 +13,23 @@ public class CompanyController {
     private ICompanyService companyService;
 
     @PostMapping
-    public boolean addCompany(@RequestBody Company company) {
-        return companyService.addCompany(company);
+    public void addCompany(@RequestBody Company company) {
+         companyService.addCompany(company);
     }
 
     @GetMapping
     public Company getCompany(@RequestParam int companyId) {
-        return companyService.getCompany(companyId);
+         return companyService.getCompany(companyId);
     }
 
     @PutMapping
-    public boolean editCompany(@RequestParam Company company) {
-        return companyService.editCompany(company);
+    public void editCompany(@RequestParam Company company) {
+         companyService.editCompany(company);
     }
 
     @DeleteMapping
-    public boolean deleteCompany(@RequestParam int companyId) {
-        return companyService.deleteCompany(companyId);
+    public void deleteCompany(@RequestParam int companyId) {
+         companyService.deleteCompany(companyId);
     }
 
 

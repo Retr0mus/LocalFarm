@@ -3,11 +3,16 @@ package com.github.countrybros.infrastructure.repository;
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.model.user.User;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface IOrderRepository extends CrudRepository<Order, Integer> {
+    List<Order> findOrderByCustomer(User customer);
+
+    List<Order> findOrderByOrderDate(Date orderDate);
 
     /*
         Default function of CrudRepository
@@ -19,21 +24,5 @@ public interface IOrderRepository extends CrudRepository<Order, Integer> {
         exists(…) – verify if an entity exists based on the passed primary key value
      */
 
-    /**
-     * Returns the orders of the user.
-     *
-     * @param user user.
-     *
-     * @return the list of his orders.
-     */
-    List<Order> findByCustomer(User user);
 
-    /**
-     * Returns all the order made since the specified date.
-     *
-     * @param orderDate The date.
-     *
-     * @return a list of all order selected.
-     */
-    List<Order> findByOrderDate(Date orderDate);
 }

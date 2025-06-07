@@ -15,36 +15,37 @@ import java.util.Map;
 public class UserService implements IUserService {
     @Autowired
     private IUserRepository userRepository;
-    private Map<Integer, User> users = new HashMap<>();
 
     @Override
     public User getUser(int userId) {
-        return users.get(userId);
+        return userRepository.getUsersByUserId(userId);
     }
 
     @Override
-    public boolean addUser(User user) {
-        return false;
+    public void addUser(User user) {
+        userRepository.save(user);
     }
 
     @Override
-    public boolean deleteUser(int userId) {
-        return false;
+    public void deleteUser(int userId) {
+        userRepository.deleteById(userId);
+
     }
 
     @Override
-    public boolean editUser(User user) {
-        return false;
+    public void editUser(User user) {
+
+        userRepository.save(user);
     }
 
     @Override
-    public boolean addUserRole(int userId, String role) {
-        return false;
+    public void addUserRole(int userId, String role) {
+
     }
 
     @Override
-    public boolean removeUserRole(int userId, String role) {
-        return false;
+    public void removeUserRole(int userId, String role) {
+
     }
 
     //TODO checks if the email is already present on the marketplace

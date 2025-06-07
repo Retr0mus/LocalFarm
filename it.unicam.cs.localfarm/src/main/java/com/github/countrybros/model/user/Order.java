@@ -13,6 +13,7 @@ import java.util.Date;
  * Class that represents an order.
  */
 @Entity
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

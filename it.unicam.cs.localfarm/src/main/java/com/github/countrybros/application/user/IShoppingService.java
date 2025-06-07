@@ -12,11 +12,11 @@ public interface IShoppingService {
 
      Cart getCart(int userId);
 
-     boolean addItemToCart(int userId, int itemId, int qty);
+     void addItemToCart(int userId, int itemId, int qty);
 
-     boolean editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
+     void editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
 
-     boolean removeItemFromCart(int userId, int itemId, int qty);
+     void removeItemFromCart(int userId, int itemId, int qty);
 
      List<Order> getOrders(int userId);
 

@@ -1,4 +1,4 @@
-package com.github.countrybros.web;
+package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.user.IUserService;
 import com.github.countrybros.model.user.User;
@@ -13,13 +13,13 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/add")
-    public boolean addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public void addUser(@RequestBody User user) {
+         userService.addUser(user);
     }
 
     @DeleteMapping("/delete")
-    public boolean deleteUser(@RequestParam int userId) {
-        return userService.deleteUser(userId);
+    public void deleteUser(@RequestParam int userId) {
+         userService.deleteUser(userId);
     }
 
     @GetMapping("/get")
@@ -28,18 +28,18 @@ public class UserController {
     }
 
     @PutMapping("/edit")
-    public boolean editUser(@RequestParam User user) {
-        return userService.editUser(user);
+    public void editUser(@RequestParam User user) {
+         userService.editUser(user);
     }
 
     @PostMapping("/addRole")
-    public boolean addRole(@RequestParam String role,@RequestParam int userId) {
-        return userService.addUserRole(userId, role);
+    public void addRole(@RequestParam String role,@RequestParam int userId) {
+        userService.addUserRole(userId, role);
     }
 
     @DeleteMapping("/removeRole")
-    public boolean removeUserRole(@RequestParam int userId,@RequestParam String role) {
-        return userService.removeUserRole(userId, role);
+    public void removeUserRole(@RequestParam int userId,@RequestParam String role) {
+         userService.removeUserRole(userId, role);
     }
 
     @GetMapping("/emailExists")

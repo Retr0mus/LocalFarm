@@ -9,15 +9,15 @@ public interface IUserService {
 
      User getUser(int userId);
 
-     boolean addUser(User user);
+     void addUser(User user);
 
-     boolean deleteUser(int userId);
+     void deleteUser(int userId);
 
-     boolean editUser(User user);
+     void editUser(User user);
 
-     boolean addUserRole(int userId, String role);
+     void addUserRole(int userId, String role);
 
-     boolean removeUserRole(int userId, String role);
+     void removeUserRole(int userId, String role);
 
      boolean checkEmailExists(String email);
 

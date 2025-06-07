@@ -20,7 +20,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getOrders(User user) {
-        return orderRepository.findByCustomer(user);
+        return orderRepository.findOrderByCustomer(user);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class OrderService implements IOrderService {
     @Override
     public List<Order> getOrdersSince(Date date) {
 
-        return orderRepository.findByOrderDate(date);
+        return orderRepository.findOrderByOrderDate(date);
     }
 
     /**

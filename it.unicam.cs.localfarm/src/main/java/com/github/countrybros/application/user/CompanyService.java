@@ -1,5 +1,6 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.infrastructure.repository.ICompanyRepository;
 import com.github.countrybros.model.user.Company;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +12,22 @@ import java.util.Map;
  */
 @Service
 public class CompanyService implements ICompanyService {
-    private Map<Integer, Company> companies = new HashMap<>();
+    private ICompanyRepository companyRepository;
 
-    public boolean addCompany(Company company) {
-        return false;
+    public void addCompany(Company company) {
+
     }
 
     public Company getCompany(int companyId) {
-        return null;
+            return companyRepository.getCompaniesById(companyId);
     }
 
-    public boolean editCompany(Company company) {
-        return false;
+    public void editCompany(Company company) {
+
     }
 
-    public boolean deleteCompany(int companyId) {
-        return false;
+    public void deleteCompany(int companyId) {
+
     }
 
 

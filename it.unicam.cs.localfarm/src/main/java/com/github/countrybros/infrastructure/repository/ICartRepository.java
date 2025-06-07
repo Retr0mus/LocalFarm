@@ -2,7 +2,9 @@ package com.github.countrybros.infrastructure.repository;
 
 import com.github.countrybros.model.user.Cart;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ICartRepository extends CrudRepository<Cart, Integer> {
     /*
         Default function of CrudRepository

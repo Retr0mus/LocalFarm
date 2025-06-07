@@ -1,4 +1,4 @@
-package com.github.countrybros.web;
+package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.user.IShoppingService;
 import com.github.countrybros.model.user.Cart;
@@ -19,18 +19,18 @@ public class ShoppingController {
     }
 
     @PostMapping("/cart/add")
-    public boolean addItemToCart(@RequestParam int userId,@RequestParam  int itemIdm,@RequestParam  int qty) {
-        return shoppingService.addItemToCart(userId, itemIdm, qty);
+    public void addItemToCart(@RequestParam int userId,@RequestParam  int itemIdm,@RequestParam  int qty) {
+         shoppingService.addItemToCart(userId, itemIdm, qty);
     }
 
     @PutMapping("/cart/edit")
-    public boolean editQuantityOfItemInCart(@RequestParam int userId,@RequestParam int itemIdm,@RequestParam int qty) {
-        return shoppingService.editQuantityOfItemInCart(userId, itemIdm, qty);
+    public void editQuantityOfItemInCart(@RequestParam int userId,@RequestParam int itemIdm,@RequestParam int qty) {
+         shoppingService.editQuantityOfItemInCart(userId, itemIdm, qty);
     }
 
     @DeleteMapping("/cart/remove")
-    public boolean removeItemFromCart(@RequestParam int userId,@RequestParam int itemIdm,@RequestParam int qty) {
-        return shoppingService.removeItemFromCart(userId, itemIdm, qty);
+    public void removeItemFromCart(@RequestParam int userId,@RequestParam int itemIdm,@RequestParam int qty) {
+         shoppingService.removeItemFromCart(userId, itemIdm, qty);
     }
 
     @PostMapping("/cart/excess")

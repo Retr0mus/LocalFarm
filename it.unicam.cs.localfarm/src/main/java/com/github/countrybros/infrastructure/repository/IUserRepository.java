@@ -2,8 +2,11 @@ package com.github.countrybros.infrastructure.repository;
 
 import com.github.countrybros.model.user.User;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface IUserRepository extends CrudRepository<User, Integer> {
+    User getUsersByUserId(int userId);
     /*
         Default function of CrudRepository
         save(…) – save an Iterable of entities. Here, we can pass multiple objects to save them in a batch

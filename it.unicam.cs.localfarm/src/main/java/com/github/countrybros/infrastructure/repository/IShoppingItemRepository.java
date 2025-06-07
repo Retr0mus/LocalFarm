@@ -2,7 +2,9 @@ package com.github.countrybros.infrastructure.repository;
 
 import com.github.countrybros.model.user.ShoppingItem;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface IShoppingItemRepository extends CrudRepository<ShoppingItem, Integer> {
     /*
         Default function of CrudRepository

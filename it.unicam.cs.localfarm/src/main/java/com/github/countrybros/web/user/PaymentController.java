@@ -1,4 +1,4 @@
-package com.github.countrybros.web;
+package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.user.IPaymentMethod;
 import com.github.countrybros.application.user.IPaymentService;

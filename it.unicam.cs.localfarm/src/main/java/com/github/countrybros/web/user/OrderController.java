@@ -1,4 +1,4 @@
-package com.github.countrybros.web;
+package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.user.IOrderService;
 import com.github.countrybros.application.user.IPaymentMethod;
@@ -23,8 +23,8 @@ public class OrderController {
     }
 
     @PostMapping("/checkout")
-    public Order checkout(@RequestParam int userId,@RequestBody IPaymentMethod paymentMethod,@RequestBody ShippingAddress shippingAddress) {
-        return orderService.checkout(userId,paymentMethod,shippingAddress);
+    public Order checkout(@RequestParam int userId,@RequestBody CheckoutRequest checkoutRequest) {
+        return orderService.checkout(userId, checkoutRequest.getPaymentMethod(), checkoutRequest.getShippingAddress());
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
  * Class to rapresent a user
  */
 @Entity
+@Table(name = "users")
 public class User {
 
     //TODO: See if there is a better way to manage users than this plain object
@@ -16,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int UserId;
+    private int userId;
     private String name;
     private String password;
     private String email;
@@ -46,7 +47,7 @@ public class User {
     }
 
     public int getUserId() {
-        return UserId;
+        return userId;
     }
 }
 

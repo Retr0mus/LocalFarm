@@ -25,13 +25,13 @@ public class ShoppingService implements IShoppingService {
     public Cart getCart(int userId) { return null; }
 
     @Override
-    public boolean addItemToCart(int userId, int itemId, int qty) { return false; }
+    public void addItemToCart(int userId, int itemId, int qty) {  }
 
     @Override
-    public boolean editQuantityOfItemInCart(int userId, int itemId, int newQuantity) { return false; }
+    public void editQuantityOfItemInCart(int userId, int itemId, int newQuantity) {  }
 
     @Override
-    public boolean removeItemFromCart(int userId, int itemId, int qty) { return false; }
+    public void removeItemFromCart(int userId, int itemId, int qty) {  }
 
     @Override
     public List<Order> getOrders(int userId) { return null; }
