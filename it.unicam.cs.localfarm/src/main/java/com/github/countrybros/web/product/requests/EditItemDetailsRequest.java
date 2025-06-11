@@ -1,0 +1,13 @@
+package com.github.countrybros.web.product.requests;
+
+/**
+ * DTO for request of editing an ItemDetails
+ */
+public class EditItemDetailsRequest {
+
+    public int itemId;
+    public String name;
+    public String description;
+    public int producerId;
+    public String status;
+}

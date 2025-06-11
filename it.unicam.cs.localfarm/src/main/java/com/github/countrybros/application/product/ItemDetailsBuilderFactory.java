@@ -6,10 +6,9 @@ import com.github.countrybros.model.product.ItemType;
 /**
  * Creates all the items by their type
  */
-@Deprecated
 public class ItemDetailsBuilderFactory {
 
-    ItemDetailsBuilder getBuilder(ItemType type) {
+    public IItemDetailsBuilder getBuilder(ItemType type) {
 
         switch (type) {
 
