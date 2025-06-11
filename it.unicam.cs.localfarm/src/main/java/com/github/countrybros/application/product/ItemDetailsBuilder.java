@@ -1,13 +1,14 @@
 package com.github.countrybros.application.product;
 
 import com.github.countrybros.application.user.CompanyService;
+import com.github.countrybros.model.product.ItemDetailsStatus;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.product.ItemDetails;
 
 /**
  * Creates an @ItemDetails
  */
-public abstract class ItemDetailsBuilder<T extends ItemDetails> {
+public abstract class ItemDetailsBuilder<T extends ItemDetails> implements IItemDetailsBuilder {
 
     /**
      * The Item to build.
@@ -32,35 +33,34 @@ public abstract class ItemDetailsBuilder<T extends ItemDetails> {
         this.reset();
     }
 
-    /**
-     * resets teh building, prepare for another object to being created.
-     */
+    @Override
     public void reset() {
 
         product = this.createInstance();
     }
 
-    /**
-     * Returns the built element.
-     *
-     * @return the element
-     */
+    @Override
     public ItemDetails build() {
 
+        //TODO: impostare a awaitingReview, o cambiare gli stati
+        product.setVisibleByPublic(false);
+        product.setStatus(ItemDetailsStatus.awaitingReview);
         return product;
     }
 
+    @Override
     public void setName(String productName) {
 
         product.setName(productName);
     }
 
-
+    @Override
     public void setDescription(String productDescription) {
 
         product.setDescription(productDescription);
     }
 
+    @Override
     public void setProducer(Company producer) {
 
         product.setProducer(producer);

@@ -1,8 +1,9 @@
 package com.github.countrybros.model.product;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -10,24 +11,26 @@ import java.util.HashMap;
  * contains the @Item correlated with respective quantity.
  */
 @Entity
+@DiscriminatorValue("bundleDetails")
 public class BundleDetails extends ItemDetails {
 
     /**
      * Represents all the @ItemDetails that
      */
-    private HashMap<Item, Integer> itemsMap;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ItemDetailsQuantity> itemsQta = new ArrayList<>();
 
     public BundleDetails() {
 
         super();
     }
 
-    public HashMap<Item, Integer> getItemsMap() {
+    public List<ItemDetailsQuantity> getItemsQta() {
 
-        return itemsMap;
+        return itemsQta;
     }
 
-    public void setItemsMap(HashMap<Item, Integer> itemsMap) {
-        this.itemsMap = itemsMap;
+    public void setItemsQta(List<ItemDetailsQuantity> itemsQta) {
+        this.itemsQta = itemsQta;
     }
 }
