@@ -1,6 +1,7 @@
 package com.github.countrybros.application.acceptancesubmission;
 
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
 
 import java.util.List;
 
@@ -13,10 +14,10 @@ public interface IAcceptanceSubmissionService {
     /**
      * Adds an AcceptanceSubmission.
      *
-     * @param acceptanceSubmission the submission to add.
+     * @param request the submission to add.
      * @return if the task was successful.
      */
-     void addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission);
+     void addAcceptanceSubmission(AcceptanceSubmissionRequest request);
 
     /**
      * Deletes an AcceptanceSubmission.
@@ -55,7 +56,7 @@ public interface IAcceptanceSubmissionService {
      * @param submissionId the id of the AcceptanceSubmission.
      * @return if the task succeeded or not.
      */
-    void onAcceptance(int submissionId);
+    boolean onAcceptance(int submissionId);
 
     /**
      * Accepts the specified AcceptanceSubmission.
@@ -63,5 +64,5 @@ public interface IAcceptanceSubmissionService {
      * @param submissionId the id of the AcceptanceSubmission.
      * @return if the task succeeded or not.
      */
-    void onRefusal(int submissionId);
+    boolean onRefusal(int submissionId);
 }

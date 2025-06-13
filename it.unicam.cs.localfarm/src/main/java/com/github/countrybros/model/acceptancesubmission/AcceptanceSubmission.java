@@ -45,12 +45,18 @@ public abstract class AcceptanceSubmission {
         return sender;
     }
 
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
     //TODO: Change this shit immediately!
     //public abstract String getDetails();
 
-
+    //TODO aggiungi la logica del controllo con il curatore
     public void accept() {
         this.accepted = true;
     }
 
+    public boolean isAccepted() {
+        return accepted;
+    }
 }

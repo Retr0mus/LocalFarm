@@ -14,6 +14,8 @@ public interface IAcceptanceSubmissionRepository extends CrudRepository<Acceptan
 
     List<AcceptanceSubmission> getAcceptanceSubmissionById(int id);
 
+   // List<AcceptanceSubmission> getAcceptanceSubmissionByCuratorUserId(int id);
+
       /*
         Default function of CrudRepository
         save(…) – save an Iterable of entities. Here, we can pass multiple objects to save them in a batch
