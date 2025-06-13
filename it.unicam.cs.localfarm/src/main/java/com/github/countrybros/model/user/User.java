@@ -3,6 +3,7 @@ package com.github.countrybros.model.user;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,9 +23,8 @@ public class User {
     private String password;
     private String email;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private List<String> roles;
+    @Enumerated(EnumType.STRING)
+    private List<UserRole> roles = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cart_id")
     private Cart cart;
@@ -33,6 +33,25 @@ public class User {
 
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     public String getName() {
         return name;
@@ -42,12 +61,16 @@ public class User {
         return email;
     }
 
-    public List<String> getRoles() {
+    public List<UserRole> getRoles() {
         return roles;
     }
 
     public int getUserId() {
         return userId;
+    }
+
+    public Cart getCart() {
+        return cart;
     }
 }
 

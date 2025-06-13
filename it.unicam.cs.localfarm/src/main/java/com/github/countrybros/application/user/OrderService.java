@@ -2,8 +2,13 @@ package com.github.countrybros.application.user;
 
 import com.github.countrybros.application.errors.FoundInRepositoryException;
 import com.github.countrybros.application.errors.NotEnoughItemsException;
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.infrastructure.repository.ICartRepository;
+import com.github.countrybros.infrastructure.repository.ICompanyRepository;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.model.user.*;
+import com.github.countrybros.web.user.request.OrderRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,11 +17,17 @@ import java.util.List;
 @Service
 public class OrderService implements IOrderService {
 
+    @Autowired
     private IShoppingService shoppingService;
+    @Autowired
     private IUserService userService;
     private IPaymentService paymentService;
-
+    @Autowired
     private IOrderRepository orderRepository;
+    @Autowired
+    private ICartRepository cartRepository;
+    @Autowired
+    private ICompanyRepository companyRepository;
 
     @Override
     public List<Order> getOrders(User user) {
@@ -40,7 +51,9 @@ public class OrderService implements IOrderService {
         order.setCart(cart);
         order.setAddress(address);
         order.setCustomer(user);
-        this.addOrder(order);
+        order.setOrderDate(new Date());
+        order.setOrderStatus(OrderStatus.picking);
+        orderRepository.save(order);
         return order;
     }
 
@@ -53,13 +66,28 @@ public class OrderService implements IOrderService {
     /**
      * Saves an order in the repository.
      *
-     * @param order The order to save.
+     * @param request The order to save.
      */
-    private void addOrder(Order order) {
+    public void addOrder(OrderRequest request) {
+        User user = userService.getUser(request.getUserId());
+        Cart cart = cartRepository.findById(request.getCartId())
+                .orElseThrow(() -> new NotFoundInRepositoryException("Cart not found with ID " + request.getCartId()));
 
-        if (orderRepository.existsById(order.getOrderId()))
+        Company seller = companyRepository.getCompaniesById(request.getSellerId());
+        if (seller == null) throw new NotFoundInRepositoryException("Seller not found with ID " + request.getSellerId());
+
+        Order order = new Order();
+        order.setCustomer(user);
+        order.setCart(cart);
+        order.setSeller(seller);
+        order.setAddress(request.getAddress());
+        order.setOrderDate(new Date());
+        order.setOrderStatus(request.getOrderStatus() != null ? request.getOrderStatus() : OrderStatus.picking);
+
+        if (orderRepository.existsById(order.getOrderId())) {
             throw new FoundInRepositoryException("Order already exists");
-
+        }
         orderRepository.save(order);
     }
+
 }

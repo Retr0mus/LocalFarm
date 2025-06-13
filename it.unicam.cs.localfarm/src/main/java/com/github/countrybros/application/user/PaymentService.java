@@ -1,9 +1,8 @@
 package com.github.countrybros.application.user;
 
-import com.github.countrybros.model.user.Company;
-import com.github.countrybros.model.user.Order;
-import com.github.countrybros.model.user.OrderStatus;
-import com.github.countrybros.model.user.ShoppingItem;
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.model.user.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,14 +14,28 @@ import java.util.Date;
 @Service
 public class PaymentService implements IPaymentService {
 
+    @Autowired
     private IShoppingService shoppingService;
+    @Autowired
     private IUserService userService;
+    @Autowired
     private ICompanyService companyService;
+    @Autowired
     private IOrderService orderService;
 
     @Override
     public boolean buy(int userId, IPaymentMethod paymentMethod, float paymentAmount) {
-        return false;
+        User user = userService.getUser(userId);
+        if (user == null) {
+            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
+        }
+
+        try {
+            //TODO inserire la logica di pagamento
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

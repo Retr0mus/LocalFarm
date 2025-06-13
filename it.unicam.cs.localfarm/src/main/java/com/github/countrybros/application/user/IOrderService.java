@@ -3,6 +3,7 @@ package com.github.countrybros.application.user;
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.model.user.ShippingAddress;
 import com.github.countrybros.model.user.User;
+import com.github.countrybros.web.user.request.OrderRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -39,4 +40,11 @@ public interface IOrderService {
      * @return the list of the order.
      */
     List<Order> getOrdersSince(Date date);
+
+    /**
+     * Saves an order in the repository.
+     *
+     * @param request The order to save.
+     */
+    void addOrder(OrderRequest request);
 }

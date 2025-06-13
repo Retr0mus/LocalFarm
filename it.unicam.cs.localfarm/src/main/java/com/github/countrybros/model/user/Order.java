@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-/**
- * Class to represent a order.
- */
 
 /**
  * Class that represents an order.

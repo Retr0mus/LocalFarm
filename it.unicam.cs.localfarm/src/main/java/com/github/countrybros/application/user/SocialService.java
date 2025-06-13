@@ -1,5 +1,7 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.application.event.IEventService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

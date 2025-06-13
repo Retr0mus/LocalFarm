@@ -14,6 +14,9 @@ public interface IOrderRepository extends CrudRepository<Order, Integer> {
 
     List<Order> findOrderByOrderDate(Date orderDate);
 
+    List<Order> findByCustomerUserId(int userId);
+
+
     /*
         Default function of CrudRepository
         save(…) – save an Iterable of entities. Here, we can pass multiple objects to save them in a batch
