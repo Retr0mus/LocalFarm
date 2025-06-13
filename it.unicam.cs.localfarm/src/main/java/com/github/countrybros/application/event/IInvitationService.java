@@ -3,6 +3,7 @@ package com.github.countrybros.application.event;
 import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
+import com.github.countrybros.web.event.requests.CreateInvitationRequest;
 
 import java.util.List;
 
@@ -14,14 +15,14 @@ public interface IInvitationService {
     /**
      * Adds an invitation to the repository
      *
-     * @param invitation the invitation to add.
+     * @param request The request to add invitation.
      */
-    public void addInvitation(Invitation invitation);
+    public Invitation addInvitation(CreateInvitationRequest request);
 
     /**
-     * Removes an invitation from the repository.
+     * Refuses/cancels an invitation.
      *
-     * @param invitationId the ID of the invitation to remove.
+     * @param invitationId the ID of the invitation to cancel.
      *
      */
     public void deleteInvitation(int invitationId);
@@ -52,11 +53,4 @@ public interface IInvitationService {
      * @throws ImpossibleRequestException if the invitation is expired.
      */
     public void acceptInvitation(int invitationId);
-
-    /**
-     * Refuses an invitation by simply deleting it.
-     *
-     * @param invitationId the invitation to refuse.
-     */
-    public void refuseInvitation(int invitationId);
 }

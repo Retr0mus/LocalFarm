@@ -49,7 +49,7 @@ public class LocalInvitationRepository implements IInvitationRepository {
         List<Invitation> invitations = new ArrayList<>(invitationRepository.values());
 
         invitations.removeIf(
-                i -> i.getReciver().getId() != companyId);
+                i -> i.getReceiver().getId() != companyId);
 
         return invitations;
     }

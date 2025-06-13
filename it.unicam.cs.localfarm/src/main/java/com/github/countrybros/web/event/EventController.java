@@ -2,6 +2,7 @@ package com.github.countrybros.web.event;
 
 import com.github.countrybros.application.event.IEventService;
 import com.github.countrybros.model.event.Event;
+import com.github.countrybros.web.event.requests.CreateEventRequest;
 import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,73 +21,79 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @RequestMapping(value="/events")
+    @GetMapping(value="/events")
     public ResponseEntity<List<Event>> getEvents(){
 
-        return new ResponseEntity<>(eventService.getEvents(), HttpStatus.OK);
+        return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/edit")
+    @PutMapping(value="/edit")
     public ResponseEntity<Object> editEvent(@RequestBody Event request){
 
         eventService.editEvent(request);
         return new ResponseEntity<>("Event modified.", HttpStatus.OK);
     }
 
-    @RequestMapping(value="subscribe")
+    @PutMapping(value="subscribe")
     public ResponseEntity<Object> subscribeOnEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId){
 
         eventService.subscribeOnEvent(userId, eventId);
         return new ResponseEntity<>("Subscription successful", HttpStatus.OK);
     }
 
-    @RequestMapping(value="unsubscribe")
+    @PutMapping(value="unsubscribe")
     public ResponseEntity<Object> unSubscribeOnEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId){
 
         eventService.unsubscribeOnEvent(userId, eventId);
         return new ResponseEntity<>("Unsubscription successful", HttpStatus.OK);
     }
 
-    @RequestMapping(value="publicEvents")
+    @GetMapping(value="publicEvents")
     public ResponseEntity<List<Event>> getPublicEvents(){
 
         return new ResponseEntity<>(eventService.getPublicEvents(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "cancel")
+    @PutMapping(value = "cancel")
     public ResponseEntity<Object> cancelEvent(@PathParam("eventId") int eventId){
 
         eventService.setAsCanceled(eventId);
         return new ResponseEntity<>("Event cancelled.", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "create")
+    @PostMapping(value = "create")
     public ResponseEntity<Object> createEvent(@RequestBody CreateEventRequest request){
 
-        eventService.createEvent(request.event, request.invitedCompanies);
+        eventService.createEvent(request);
         return new ResponseEntity<>("Event created", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "confirm")
+    @PutMapping(value = "confirm")
     public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId){
 
         eventService.confirmEventPublication(eventId);
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "cancelParicipation")
-    public ResponseEntity<Object> cancelParicipation(@PathParam("eventID") int eventId
+    @PutMapping(value = "cancelParicipation")
+    public ResponseEntity<Object> cancelParticipation(@PathParam("eventId") int eventId
                                                     ,@PathParam("userId") int userId){
 
-        eventService.cancelCompanyParticipation(eventId, userId);
+        eventService.cancelCompanyParticipation(userId, eventId);
         return new ResponseEntity<>("Participation cancelled", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "confirmParticipation")
+    @PutMapping(value = "confirmParticipation")
     public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
                                                             ,@PathParam("userId") int userId){
 
         eventService.confirmCompanyParticipation(eventId, userId);
         return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "get")
+    public ResponseEntity<Object> getEvent(@PathParam("eventId") int eventId){
+
+        return new ResponseEntity<>(eventService.getEvent(eventId), HttpStatus.OK);
     }
 }

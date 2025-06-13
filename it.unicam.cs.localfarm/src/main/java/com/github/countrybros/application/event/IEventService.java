@@ -5,6 +5,7 @@ import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.errors.FoundInRepositoryException;
+import com.github.countrybros.web.event.requests.CreateEventRequest;
 
 import java.util.List;
 
@@ -17,18 +18,16 @@ public interface IEventService {
      * Creates an event, assigns it to the organizer, sets initial status,
      * and delegates sending invitations.
      *
-     * @param eventDetails the event to create.
-     *
-     * @throws FoundInRepositoryException if the event existed.
+     * @param request the request of the event to create.
      */
-    public void createEvent(Event eventDetails, List<Company> companiesToInvite);
+    public void createEvent(CreateEventRequest request);
 
     /**
      * Removes an event from the repository.
      *
      * @param eventId the identifier of the event to remove.
      *
-     * @
+     * @throws NotFoundInRepositoryException if the event searched doesn't exist
      */
     public void removeEvent(int eventId);
 
@@ -49,7 +48,7 @@ public interface IEventService {
      *
      * @throws NotFoundInRepositoryException if the event was not in the repo.
      */
-    public void editEvent(Event event);
+        public void editEvent(Event event);
 
     /**
      * Returns a list of all public events.
@@ -63,7 +62,7 @@ public interface IEventService {
      *
      * @return a list with all the events.
      */
-    public List<Event> getEvents();
+    public List<Event> getAllEvents();
 
     /**
      * Subscribes a user on an event.
@@ -104,12 +103,10 @@ public interface IEventService {
     public void confirmEventPublication(int eventId);
 
     /**
-     * Cancels the participation of a company on an event in which is already joined in.
+     * The invitation of a company on an event will be refused/deleted;
      *
      * @param companyId the company ID that signs out.
      * @param eventId the event.
-     *
-     * @throws RuntimeException if the company is not included among the event's guests
      */
     public void cancelCompanyParticipation(int companyId, int eventId);
 

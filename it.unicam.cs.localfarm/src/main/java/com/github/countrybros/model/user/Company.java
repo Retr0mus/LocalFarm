@@ -10,7 +10,6 @@ import java.util.ArrayList;
  *
  * TODO: remove embeddable
  */
-@Embeddable
 public class Company {
     private int id;
     private String name;

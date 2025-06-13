@@ -4,44 +4,42 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.infrastructure.IInvitationRepository;
-import com.github.countrybros.infrastructure.local.LocalInvitationRepository;
-import com.github.countrybros.model.event.Event;
+import com.github.countrybros.infrastructure.web.InvitationRepository;
 import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.model.user.Company;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import com.github.countrybros.web.event.requests.CreateInvitationRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the invitations.
- *
- * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
 @Service
 public class InvitationService implements IInvitationService {
 
-    private final IInvitationRepository invitationRepository = new LocalInvitationRepository();
-
-    private final IEventService eventService;
+    private final InvitationRepository invitationRepository;
 
     private final ICompanyService companyService;
 
-    public InvitationService(final IEventService eventService, ICompanyService companyService) {
+    public InvitationService(ICompanyService companyService, InvitationRepository invitationRepository) {
 
-        this.eventService = eventService;
         this.companyService = companyService;
+        this.invitationRepository = invitationRepository;
     }
 
-    /**
-     * Adds an invitation to the repository
-     *
-     * @param invitation the invitation to add.
-     */
-    public void addInvitation(Invitation invitation) {
+    @Override
+    public Invitation addInvitation(CreateInvitationRequest request) {
 
-        invitationRepository.save(invitation);
+        Company company = companyService.getCompany(request.receiverId);
+
+        Invitation invitation = new Invitation();
+        invitation.setEvent(request.event);
+        invitation.setReceiver(company);
+        invitation.setExpiration(request.expiration);
+
+        return invitationRepository.save(invitation);
     }
 
     /**
@@ -53,10 +51,14 @@ public class InvitationService implements IInvitationService {
      */
     public void deleteInvitation(int invitationId) {
 
-        if (!invitationRepository.exists(invitationId))
-            throw new NotFoundInRepositoryException("Invitation not found");
+        Invitation invitation = getInvitation(invitationId);
+        Company company = invitation.getReceiver();
 
-        invitationRepository.delete(invitationId);
+        //TODO: when company springboot service is available
+        //company.getInvitation().remove(invitation);
+        //companyService.editCompany(company.getId()):
+
+        invitationRepository.deleteById(invitationId);
     }
 
     /**
@@ -70,10 +72,10 @@ public class InvitationService implements IInvitationService {
      */
     public Invitation getInvitation(int invitationId) {
 
-        if (!invitationRepository.exists(invitationId))
+        if (!invitationRepository.existsById(invitationId))
             throw new NotFoundInRepositoryException("Invitation not found");
 
-        return invitationRepository.get(invitationId);
+        return invitationRepository.getInvitationById(invitationId);
     }
 
     /**
@@ -86,7 +88,10 @@ public class InvitationService implements IInvitationService {
 
         Company company = companyService.getCompany(companyId);
 
-        return invitationRepository.getInvitationsByCompany(companyId);
+        //TODO: complete when Company is available.
+        //return invitationRepository.;
+
+        return new ArrayList<>();
     }
 
     /**
@@ -101,33 +106,14 @@ public class InvitationService implements IInvitationService {
         //TODO: Remind to implement proper authorization with Spring.
 
         Invitation invitation = getInvitation(invitationId);
-        boolean isExpired = invitation.isExpired();
 
-        if (isExpired) {
+        if (invitation.isExpired()) {
 
-            invitationRepository.delete(invitationId);
+            invitationRepository.deleteById(invitationId);
             throw new ImpossibleRequestException("The invitation is expired");
         }
 
-        Event event = eventService.getEvent(invitation.getEvent().getId());
-        Company company = invitation.getReciver();
-
-        if (event.getGuests().contains(company))
-            throw new RequestAlreadySatisfiedException("Invitation is already satisfied");
-
-        event.getGuests().add(company);
-        eventService.editEvent(event);
-
-        deleteInvitation(invitationId);
-    }
-
-    /**
-     * Refuses an invitation by simply deleting it.
-     *
-     * @param invitationId the invitation to refuse.
-     */
-    public void refuseInvitation(int invitationId) {
-
-        deleteInvitation(invitationId);
+        invitation.setAccepted(true);
+        invitationRepository.save(invitation);
     }
 }
