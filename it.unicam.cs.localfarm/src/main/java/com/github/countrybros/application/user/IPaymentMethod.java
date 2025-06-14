@@ -28,3 +28,4 @@ public interface IPaymentMethod {
      */
     boolean buy(User user, float price);
 }
+}

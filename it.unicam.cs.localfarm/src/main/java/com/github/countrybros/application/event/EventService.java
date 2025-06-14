@@ -177,7 +177,8 @@ public class EventService implements IEventService {
         }
 
         event.getGuests().remove(company);
-        this.companyService.editCompany(company);
+        //TODO cambiare con il dto del editCompany
+        // this.companyService.editCompany(company);
         return true;
     }
 
