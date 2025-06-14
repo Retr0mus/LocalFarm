@@ -6,7 +6,6 @@ import com.github.countrybros.application.errors.RequestAlreadySatisfiedExceptio
 import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.*;
 import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
-import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 import org.springframework.stereotype.Service;
 

@@ -2,6 +2,7 @@ package com.github.countrybros.model.user;
 
 import com.github.countrybros.application.user.IPaymentMethod;
 import com.github.countrybros.model.event.Invitation;
+import jakarta.persistence.Embeddable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import jakarta.persistence.Id;
 
 /**
  * Class to represent a company
+ *
+ * TODO: remove embeddable
  */
 @Entity
 public class Company {

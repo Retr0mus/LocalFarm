@@ -1,6 +1,8 @@
 package com.github.countrybros.model.event;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.countrybros.model.user.Company;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -8,17 +10,30 @@ import java.time.LocalDate;
  * Class that represents an invitation for a certain company to
  * participate as a guest into an event.
  */
+@Entity
 public class Invitation {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private final Event event;
-    private final LocalDate expirationDate;
-    private final Company reciver;
+
+    @ManyToOne
+    @JsonBackReference
+    private Event event;
+
+    private LocalDate expiration;
+
+    private boolean accepted;
+
+    @Transient
+    private Company receiver;
+
+    public Invitation() {}
 
     public Invitation(Event event, LocalDate expirationDate, Company reciver) {
         this.event = event;
-        this.expirationDate = expirationDate;
-        this.reciver = reciver;
+        this.expiration = expirationDate;
+        this.receiver = reciver;
     }
 
     public int getId() {return id;}
@@ -27,24 +42,24 @@ public class Invitation {
         return event;
     }
 
-    public LocalDate getExpirationDate() {
-        return expirationDate;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public Company getReciver() {
-        return reciver;
+    public void setExpiration(LocalDate expiration) {
+        this.expiration = expiration;
     }
 
-    /**
-     * Prints all the details about the event.
-     */
-    public void getDetails() {
-        //TODO: This method is pure shit, must change with a better pattern
+    public LocalDate getExpiration() {
+        return expiration;
+    }
 
-        System.out.println("ID: " + id);
-        System.out.println("Event: " + event);
-        System.out.println("Expiration date: " + expirationDate);
-        System.out.println("Reciver: " + reciver);
+    public void setReceiver(Company receiver) {
+        this.receiver = receiver;
+    }
+
+    public Company getReceiver() {
+        return receiver;
     }
 
     /**
@@ -53,6 +68,14 @@ public class Invitation {
      * @return if the invitation is expired or not.
      */
     public boolean isExpired() {
-        return expirationDate.isAfter(LocalDate.now());
+        return expiration.isAfter(LocalDate.now());
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }

@@ -1,50 +1,73 @@
 package com.github.countrybros.model.event;
 
-import com.github.countrybros.model.Organizer;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.user.User;
+import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class that represents an event.
  */
+@Entity
 public class Event {
 
+    //TODO: togli i commenti alle annotazioni e metti gli attributi-classi come entity
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String title;
-    private Map<LocalDateTime, LocalDateTime> dates;
-    private Organizer organizer;
-    private List<Company> guests;
-    private int maxSposts;
-    private List<User> subscribers;
-    //TODO: Add Location class
+
+    private String name;
+
+    private int maxSpots;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Invitation> invitations = new ArrayList<>();
+
+    @Embedded
+    private Location location;
+
+    @ElementCollection
+    private List<TimeInterval> dates;
+
+    //@OneToOne
+    @Transient
+    private Company organizer;
+
+    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Transient
+    private List<User> subscribers = new ArrayList<>();
+
     private EventState state;
+
+    public Event(String name, int maxSpots) {
+
+        state = EventState.planning;
+    }
+
+    public Event() {}
 
     public int getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public Map<LocalDateTime, LocalDateTime> getDates() {
+    public List<TimeInterval> getDates() {
         return dates;
     }
 
-    public Organizer getOrganizer() {
+    public Company getOrganizer() {
         return organizer;
     }
 
-    public List<Company> getGuests() {
-        return guests;
-    }
-
-    public int getMaxSposts() {
-        return maxSposts;
+    public int getMaxSpots() {
+        return maxSpots;
     }
 
     public List<User> getSubscribers() {
@@ -55,60 +78,101 @@ public class Event {
         return state;
     }
 
+    public List<Invitation> getInvitations() {
+        return invitations;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
     /**
      * Tells if the event is full of subscribers.
      *
      * @return the boolean variable representing this condition.
      */
     public boolean isFull(){
-        return maxSposts >= subscribers.size();
+        return maxSpots >= subscribers.size();
     }
 
     /**
      * Subscribes a user to this event.
      *
      * @param user the user to subscribe.
-     * @return if the task was successful or not.
      */
-    public boolean subscribe(User user){
+    public void subscribe(User user){
 
-        if((state != EventState.currentlyPublic) || (isFull()) || (subscribers.contains(user)))
-            return false;
-
-        return subscribers.add(user);
+        subscribers.add(user);
     }
 
     /**
      * Unsubscribes a user from this event.
      *
      * @param user the user to unsubscribe.
-     * @return if the task was successful or not.
      */
-    public boolean unsubscribe(User user){
-        return subscribers.remove(user);
+    public void unsubscribe(User user){
+
+        subscribers.remove(user);
     }
 
-    /**
-     * Adds a guest company to the event.
-     *
-     * @param company the company to add.
-     * @return if the task was successful or not.
-     */
-    public boolean addGuest(Company company){
-        return guests.add(company);
-    }
+    public List<Company> getGuests() {
 
-    /**
-     * Removes a guest company to the event.
-     *
-     * @param company the company to remove.
-     * @return if the task was successful or not.
-     */
-    public boolean removeGuest(Company company){
-        return guests.remove(company);
+        List<Company> guests = new ArrayList<>();
+
+        for (Invitation invitation : invitations)
+            if (invitation.isAccepted())
+                guests.add(invitation.getReceiver());
+
+        return guests;
     }
 
     public void setState(EventState eventState) {
         state = eventState;
+    }
+
+    public void setDates(List<TimeInterval> dates) {
+        this.dates = dates;
+    }
+
+    public void setOrganizer(Company organizer) {
+        this.organizer = organizer;
+    }
+
+    public void setMaxSpots(int maxSpots) {
+        this.maxSpots = maxSpots;
+    }
+
+    public void setSubscribers(List<User> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setInvitations(List<Invitation> invitations) {
+        this.invitations = invitations;
+    }
+
+    /**
+     * Returns the invitation of a company.
+     *
+     * @param guest The company.
+     */
+    public Invitation getGuestInvitation(Company guest){
+
+        return invitations.stream()
+                .filter(obj -> obj.getReceiver() == guest)
+                .findFirst()
+                .get();
+    }
+
+    public void cancelInvitation(Company guest){
+
+        invitations.removeIf(obj -> obj.getReceiver() == guest);
     }
 }

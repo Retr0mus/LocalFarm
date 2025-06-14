@@ -1,204 +1,195 @@
 package com.github.countrybros.application.event;
 
+import com.github.countrybros.application.errors.ImpossibleRequestException;
+import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.infrastructure.IEventRepository;
+import com.github.countrybros.application.user.UserManager;
+import com.github.countrybros.infrastructure.web.EventRepository;
+import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.model.user.User;
+import com.github.countrybros.web.event.requests.CreateEventRequest;
+import com.github.countrybros.web.event.requests.CreateInvitationRequest;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the events.
  *
- * TODO: remember to use only IDs as parameters (when possible of course)
- * TODO: remember to remove the Singleton pattern when porting to SpringBoot
  */
+@Service
 public class EventService implements IEventService {
 
-    private final IEventRepository eventRepository;
+    private final EventRepository eventRepository;
     private final ICompanyService companyService;
+    private final UserManager userService;
+    private final IInvitationService invitationService;
 
-    public EventService(IEventRepository eventRepository, ICompanyService companyService) {
+    public EventService(EventRepository eventRepository, ICompanyService companyService,
+                        UserManager userService, IInvitationService invitationService) {
 
         this.eventRepository = eventRepository;
         this.companyService = companyService;
+        this.userService = userService;
+        this.invitationService = invitationService;
     }
 
-    /**
-     * Returns all the events in the website.
-     *
-     * @return a list with all the events.
-     */
-    public List<Event> getEvents() {
+    @Override
+    public List<Event> getAllEvents() {
 
-        return this.eventRepository.getAll();
+        List<Event> events = new ArrayList<>();
+        eventRepository.findAll().forEach(events::add);
+        return events;
     }
 
+    @Override
     public void editEvent(Event event) {
 
-        if (!this.eventRepository.exists(event.getId()))
+        if (!this.eventRepository.existsById(event.getId()))
             throw new NotFoundInRepositoryException("Event not found");
 
         this.eventRepository.save(event);
     }
 
-    /**
-     * Removes an event from the repository.
-     *
-     * @param eventId the identifier of the event to remove.
-     */
+    @Override
     public void removeEvent(int eventId) {
-        eventRepository.delete(eventId);
+
+        Event event = this.eventRepository.findById(eventId).orElse(null);
+
+        if (event == null)
+            throw new NotFoundInRepositoryException("Event not found");
+
+        eventRepository.delete(event);
     }
 
-    /**
-     * Subscribes a user on an event.
-     *
-     * @param userId the user ID who wants to subscribe.
-     * @param eventId the identifier of the event to subscribe to.
-     * @return if the operation succeeded or not.
-     */
-    public boolean subscribeOnEvent(int userId, int eventId) {
+    @Override
+    public void subscribeOnEvent(int userId, int eventId) {
 
-        return false;
+        Event event = getEvent(eventId);
+        User user = userService.getUser(userId);
+
+        if (event.getSubscribers().contains(user))
+            throw new RequestAlreadySatisfiedException("User already subscribed");
+
+        event.subscribe(user);
+        eventRepository.save(event);
     }
 
-    /**
-     * Unsubscribes a user on an event.
-     *
-     * @param userId the user who wants to unsubscribe.
-     * @param eventId the identifier of the event to unsubscribe to.
-     * @return if the operation succeeded or not.
-     */
-    public boolean unsubscribeOnEvent(int userId, int eventId) {
-        return false;
+    @Override
+    public void unsubscribeOnEvent(int userId, int eventId) {
+
+        Event event = getEvent(eventId);
+        User user = userService.getUser(userId);
+
+        if (!event.getSubscribers().contains(user))
+            throw new RequestAlreadySatisfiedException("User was unsubscribed");
+
+        event.unsubscribe(user);
+        eventRepository.save(event);
     }
 
-    /**
-     * Returns a list of all public events.
-     *
-     * @return list of events with status PUBLIC.
-     */
+    @Override
     public List<Event> getPublicEvents() {
 
-        ArrayList<Event> events = new ArrayList<>(this.getEvents());
-
-        events.removeIf(e -> !(e.getState().equals(EventState.currentlyPublic)));
-
-        return events;
+        return eventRepository.getAllByState(EventState.currentlyPublic);
     }
 
-    /**
-     * Cancels an event by setting its status as CANCELED.
-     *
-     * @param eventId the ID of the event to cancel.
-     * @return true if the event was successfully canceled, false otherwise.
-     */
-    public boolean cancelEvent(int eventId) {
-        //TODO: change setEventAsCanceled due to ambiguous interpretations
+    @Override
+    public void setAsCanceled(int eventId) {
+
         Event event = getEvent(eventId);
-        if (event == null || event.getState() == EventState.canceled || event.getState() == EventState.completed) {
-            return false;
-        }
+
+        if (event.getState() == EventState.canceled)
+            throw new RequestAlreadySatisfiedException("Event already canceled");
+
+        if (event.getState().equals(EventState.completed))
+            throw new ImpossibleRequestException("Event already completed");
 
         event.setState(EventState.canceled);
         this.eventRepository.save(event);
-        return true;
     }
 
-    /**
-     * Creates an event, assigns it to the organizer, sets initial status,
-     * and delegates sending invitations.
-     *
-     * @param eventDetails the event to create.
-     * @return true if event was created successfully, false otherwise.
-     */
-    public boolean createEvent(Event eventDetails, List<Company> companiesToInvite) {
+    @Override
+    public void createEvent(CreateEventRequest request) {
 
-        try {
-            eventRepository.get(eventDetails.getId());
-        }catch (NotFoundInRepositoryException e) { return false; }
+        Company organizer = companyService.getCompany(request.organizerId);
 
-        eventDetails.setState(EventState.planning);
-        eventRepository.save(eventDetails);
+        Event event = new Event(request.name, request.maxSpots);
+        event.setDates(request.dates);
+        event.setLocation(request.location);
+        event.setOrganizer(organizer);
 
-        //TODO invitation part
+        eventRepository.save(event);
 
-        return true;
+        //create and retrieve invitations
+        ArrayList<Invitation> invitations = new ArrayList<>();
+        for (Integer companyId : request.guestsId) {
+
+            CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
+            invitationRequest.event = event;
+            invitationRequest.expiration = LocalDate.now().plusDays(7);
+            invitationRequest.receiverId = companyId;
+            invitations.add(invitationService.addInvitation(invitationRequest));
+        }
     }
 
-    /**
-     * Confirms the publication of an event by changing its status to PUBLIC.
-     *
-     * @param eventId the ID of the event to publish.
-     * @return true if successfully published, false otherwise.
-     */
-    public boolean confirmEventPublication(int eventId) {
+    @Override
+    public void confirmEventPublication(int eventId) {
 
         Event event = getEvent(eventId);
+
+        if (event.getState().equals(EventState.currentlyPublic))
+            throw new RequestAlreadySatisfiedException("Event is already public");
+
+        if (event.getState().equals(EventState.completed))
+            throw new ImpossibleRequestException("Event is completed");
+
+        if (event.getState().equals(EventState.canceled))
+            throw new RequestAlreadySatisfiedException("Event is canceled");
 
         event.setState(EventState.currentlyPublic);
         this.editEvent(event);
-        return true;
     }
 
-    /**
-     * Returns the event associated with the specified ID.
-     *
-     * @param eventId ID of the event.
-     * @return the event requested.
-     *
-     * @throws NotFoundInRepositoryException if the event is not found.
-     */
+    @Override
     public Event getEvent(int eventId) {
 
-        return eventRepository.get(eventId);
+        Event event = this.eventRepository.findById(eventId).orElse(null);
+
+        if (event == null)
+            throw new NotFoundInRepositoryException("Event not found");
+
+        return event;
     }
 
-    /**
-     * Cancels the participation of a company on an event in which is already joined in.
-     *
-     * @param companyId the company that signs out.
-     * @param eventId the event.
-     *
-     * @throws RuntimeException if the company is not included among the event's guests
-     */
-    public boolean cancelCompanyParticipation(int companyId, int eventId) {
+    @Override
+    public void cancelCompanyParticipation(int companyId, int eventId) {
 
         Event event = getEvent(eventId);
         Company company = this.companyService.getCompany(companyId);
 
-        if (!event.getGuests().contains(company)) {
+        Invitation invitation = event.getGuestInvitation(company);
+        event.getInvitations().remove(invitation);
 
-            throw new RuntimeException("Company not included in event guest list");
-        }
+        invitationService.deleteInvitation(invitation.getId());
 
-        event.getGuests().remove(company);
-        //TODO cambiare con il dto del editCompany
-        // this.companyService.editCompany(company);
-        return true;
     }
 
-    /**
-     * Confirms the participation of a certain company to an event.
-     *
-     * @param eventId the event to participate to.
-     * @param companyId the company who decided to participate
-     * @return if the company was successfully added as a guest.
-     */
-    public boolean confirmCompanyPartecipation(int eventId, int companyId) {
+    @Override
+    public void confirmCompanyParticipation(int eventId, int companyId) {
 
         Event event = getEvent(eventId);
         Company company = this.companyService.getCompany(companyId);
 
-        if(event.getGuests().contains(company))
-            throw new RuntimeException("Company already included in event guest list");
+        if (event.getGuests().contains(company))
+            throw new RequestAlreadySatisfiedException("Company already included in event guest list");
 
-        event.getGuests().add(company);
-        this.eventRepository.save(event);
-        return true;
+        invitationService.acceptInvitation(event.getGuestInvitation(company).getId());
     }
 }

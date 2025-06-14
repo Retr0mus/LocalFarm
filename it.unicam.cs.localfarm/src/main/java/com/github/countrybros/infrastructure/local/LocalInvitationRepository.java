@@ -12,52 +12,44 @@ public class LocalInvitationRepository implements IInvitationRepository {
 
     private final Map<Integer, Invitation> invitationRepository = new HashMap<>();
 
-    /**
-     * Adds an invitation to the repository
-     *
-     * @param invitation the invitation to add.
-     * @return if the invitation was added or not.
-     */
+
     @Override
-    public boolean addInvitation(Invitation invitation) {
-        return invitationRepository.put(invitation.getId(), invitation) == null;
+    public Invitation get(int id) {
+
+        return invitationRepository.get(id);
     }
 
-    /**
-     * Deletes an invitation from the repository.
-     *
-     * @param invitationId the ID of the invitation to remove.
-     * @return if the invitation was removed or not.
-     */
     @Override
-    public boolean deleteInvitation(int invitationId) {
-        return invitationRepository.remove(invitationId) != null;
+    public void delete(int id) {
+
+        invitationRepository.remove(id);
     }
 
-    /**
-     * Returns the required invitation.
-     *
-     * @param invitationId the ID of the invitation to return.
-     * @return the invitation specified.
-     */
     @Override
-    public Invitation getInvitation(int invitationId) {
-        return invitationRepository.get(invitationId);
+    public void save(Invitation obj) {
+
+        invitationRepository.put(obj.getId(), obj);
     }
 
-    /**
-     * Returns all the invitations sent to a certain Company.
-     *
-     * @param companyId the ID of the said Company.
-     * @return a list with all the invitation sent to the Company.
-     */
+    @Override
+    public boolean exists(int id) {
+
+        return invitationRepository.containsKey(id);
+    }
+
+    @Override
+    public List<Invitation> getAll() {
+
+        return new ArrayList<>(invitationRepository.values());
+    }
+
     @Override
     public List<Invitation> getInvitationsByCompany(int companyId) {
-        List<Invitation> invitations = new ArrayList<>();
 
-        for (Invitation invitation : invitationRepository.values())
-            if(invitation.getReciver().getId() == companyId)
-                invitations.add(invitation);
+        List<Invitation> invitations = new ArrayList<>(invitationRepository.values());
+
+        invitations.removeIf(
+                i -> i.getReceiver().getId() != companyId);
 
         return invitations;
     }
