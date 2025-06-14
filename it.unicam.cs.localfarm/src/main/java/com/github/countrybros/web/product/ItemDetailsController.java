@@ -32,10 +32,7 @@ public class ItemDetailsController {
     @PostMapping(value = "add")
     public ResponseEntity<Object> addItemDetails(@RequestBody AddItemDetailsRequest request) {
 
-        ItemDetailsBuilderFactory factory = new ItemDetailsBuilderFactory();
-        ItemDetailsBuilderDirector director = new ItemDetailsBuilderDirector(companyService, factory, itemDetailsService);
-
-        itemDetailsService.addItemDetails(director.createItemDetails(request));
+        itemDetailsService.addItemDetails(request);
         return new ResponseEntity<>("ItemDetails successfully created", HttpStatus.OK);
     }
 

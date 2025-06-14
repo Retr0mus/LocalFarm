@@ -5,6 +5,8 @@ import com.github.countrybros.application.errors.RequestAlreadySatisfiedExceptio
 import com.github.countrybros.model.product.ItemDetails;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.product.ItemDetailsStatus;
+import com.github.countrybros.web.product.requests.AddItemDetailsRequest;
+import com.github.countrybros.web.product.requests.EditItemDetailsRequest;
 
 import java.util.List;
 
@@ -16,9 +18,10 @@ public interface IItemDetailsService {
     /**
      * Create a new ItemDetails.
      *
-     * @param itemDetails The new ItemDetails.
+     * @param request The new ItemDetails request.
+     * @return
      */
-    void addItemDetails(ItemDetails itemDetails);
+    ItemDetails addItemDetails(AddItemDetailsRequest request);
 
     /**
      * Deletes an existing ItemDetails.
@@ -42,6 +45,14 @@ public interface IItemDetailsService {
      * @throws ImpossibleRequestException if the subtypes are incompatible.
      */
     void acceptChanges(int existingItemDetailsId, int changedItemDetailsId);
+
+    /**
+     * Create a new ItemDetails with the changes regards a certain existing one.
+     * This will generate a request that a Curator will review.
+     *
+     * @param request The edit request
+     */
+    void editItemDetails(EditItemDetailsRequest request);
 
     /**
      * Changes the status of an ItemDetails according to the previous one.

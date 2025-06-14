@@ -1,12 +1,16 @@
 package com.github.countrybros.application.product;
 
+import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
+import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
 import com.github.countrybros.infrastructure.product.IItemDetailsRepository;
 import com.github.countrybros.model.product.ItemDetails;
 import com.github.countrybros.model.product.ItemDetailsStatus;
+import com.github.countrybros.web.product.requests.AddItemDetailsRequest;
+import com.github.countrybros.web.product.requests.EditItemDetailsRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
 
@@ -22,17 +26,28 @@ public class ItemDetailsService implements IItemDetailsService {
     private final IItemDetailsRepository itemDetailsRepository;
     //TODO: remove if it's not necessary
     private final ICompanyService companyService;
+    private final IAcceptanceSubmissionService acceptanceSubmissionService;
 
-    public ItemDetailsService(IItemDetailsRepository repository, ICompanyService companyService) {
+    public ItemDetailsService(IItemDetailsRepository repository, ICompanyService companyService,
+                              IAcceptanceSubmissionService acceptanceSubmissionService) {
 
         this.itemDetailsRepository = repository;
         this.companyService = companyService;
+        this.acceptanceSubmissionService = acceptanceSubmissionService;
     }
 
     @Override
-    public void addItemDetails(ItemDetails itemDetails) {
+    public ItemDetails addItemDetails(AddItemDetailsRequest request) {
 
-        itemDetailsRepository.save(itemDetails);
+        ItemDetailsBuilderFactory factory = new ItemDetailsBuilderFactory();
+        ItemDetailsBuilderDirector director = new ItemDetailsBuilderDirector(companyService, factory, this);
+
+        ItemDetails itemDetails = itemDetailsRepository.save(director.createItemDetails(request));
+
+        //TODO: when the service works with springboot
+        //acceptanceSubmissionService.addAcceptanceSubmission();
+
+        return itemDetails;
     }
 
     @Override
@@ -71,6 +86,13 @@ public class ItemDetailsService implements IItemDetailsService {
         //the order of this two lines does matter because of the light copy
         deleteItemDetails(changedItemDetailsId);
         itemDetailsRepository.save(existingItemDetails);
+    }
+
+    @Override
+    public void editItemDetails(EditItemDetailsRequest request) {
+
+        ItemDetails changes = addItemDetails(request.changesToItemDetails);
+        //TODO: complete if accSub will be created here.
     }
 
     @Override

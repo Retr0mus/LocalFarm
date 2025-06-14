@@ -5,7 +5,9 @@ import com.github.countrybros.application.user.CompanyService;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.product.ItemRepository;
 import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.ItemDetails;
 import com.github.countrybros.model.user.Company;
+import com.github.countrybros.web.product.requests.AddItemRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,16 +21,29 @@ public class ItemService implements IItemService {
   
     private final CompanyService companyService;
     private final ItemRepository itemRepository;
+    private final IItemDetailsService itemDetailsService;
 
-    public ItemService(CompanyService companyService, ItemRepository itemRepository) {
+    public ItemService(CompanyService companyService, ItemRepository itemRepository,
+                       IItemDetailsService itemDetailsService) {
 
         this.companyService = companyService;
         this.itemRepository = itemRepository;
+        this.itemDetailsService = itemDetailsService;
     }
 
-    public void addItem(Item item) {
+    public Item addItem(AddItemRequest request) {
 
-        itemRepository.save(item);
+        //TODO: change when Company is not transient.
+        //Company seller = companyService.getCompany(request.sellerId);
+        ItemDetails itemDetails = itemDetailsService.getItemDetails(request.itemDetailsId);
+
+        Item item = new Item();
+        //item.setSeller(seller);
+        item.setItemDetails(itemDetails);
+        item.setQty(request.qty);
+        item.setPrice(request.price);
+
+        return itemRepository.save(item);
     }
 
     /**

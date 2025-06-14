@@ -42,7 +42,7 @@ public class ItemDetailsBuilderDirector {
 
             case simpleProduct -> buildSimpleProductDetails((AddSimpleProductDetailsRequest) request, (SimpleProductDetailsBuilder) detailsBuilder);
 
-            case transformedProduct -> buildTransformedProductDetails((AddTransformedProductDetails) request, (TransformedProductDetailsBuilder) detailsBuilder);
+            case transformedProduct -> buildTransformedProductDetails((AddTransformedProductDetailsRequest) request, (TransformedProductDetailsBuilder) detailsBuilder);
 
             default -> throw new IllegalArgumentException("Unsupported item type");
         }
@@ -78,7 +78,7 @@ public class ItemDetailsBuilderDirector {
         builder.setCertifications(request.certifications);
     }
 
-    private void buildTransformedProductDetails (AddTransformedProductDetails request, TransformedProductDetailsBuilder builder) {
+    private void buildTransformedProductDetails (AddTransformedProductDetailsRequest request, TransformedProductDetailsBuilder builder) {
 
         buildSimpleProductDetails(request, builder);
         builder.setTransformationSteps(request.steps);

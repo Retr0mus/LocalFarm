@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AddBundleDetailsRequest.class, name = "bundle"),
         @JsonSubTypes.Type(value = AddSimpleProductDetailsRequest.class, name = "simpleProduct"),
-        @JsonSubTypes.Type(value = AddTransformedProductDetails.class, name = "transformedProduct")
+        @JsonSubTypes.Type(value = AddTransformedProductDetailsRequest.class, name = "transformedProduct")
 })
 public abstract class AddItemDetailsRequest {
     public String name;

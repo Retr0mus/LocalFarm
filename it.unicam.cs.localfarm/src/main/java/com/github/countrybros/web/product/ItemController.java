@@ -36,17 +36,7 @@ public class ItemController {
     @PostMapping(value = "add")
     public ResponseEntity<Object> addItem(@RequestBody AddItemRequest request) {
 
-        //TODO: change when Company is not transient.
-        //Company seller = companyService.getCompany(request.sellerId);
-        ItemDetails itemDetails = itemDetailsService.getItemDetails(request.itemDetailsId);
-
-        Item newItem = new Item();
-        //newItem.setSeller(seller);
-        newItem.setItemDetails(itemDetails);
-        newItem.setQty(request.qty);
-        newItem.setPrice(request.price);
-
-        itemService.addItem(newItem);
+        itemService.addItem(request);
         return new ResponseEntity<>("Item successfully added", HttpStatus.OK);
     }
 

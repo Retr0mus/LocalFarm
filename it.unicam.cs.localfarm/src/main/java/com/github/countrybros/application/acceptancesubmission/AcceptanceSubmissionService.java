@@ -2,12 +2,14 @@ package com.github.countrybros.application.acceptancesubmission;
 
 import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the product acceptance submissions.
  */
+@Service
 public class AcceptanceSubmissionService implements IAcceptanceSubmissionService {
 
     private IAcceptanceSubmissionRepository acceptanceSubmissionRepository;

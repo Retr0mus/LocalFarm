@@ -3,6 +3,7 @@ package com.github.countrybros.application.product;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.product.Item;
+import com.github.countrybros.web.product.requests.AddItemRequest;
 
 import java.util.List;
 
@@ -14,9 +15,9 @@ public interface IItemService {
     /**
      * Inserts an Item in the repo.
      *
-     * @param item The Item.
+     * @param request The addItem request.
      */
-    public void addItem(Item item);
+    public Item addItem(AddItemRequest request);
 
     /**
      * Adds the specified quantity to an @Item.
