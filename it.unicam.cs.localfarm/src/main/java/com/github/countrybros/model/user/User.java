@@ -25,8 +25,7 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<UserRole> roles = new ArrayList<>();
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "cart_id")
+    @OneToOne
     private Cart cart;
 
     public User() {
@@ -54,6 +53,22 @@ public class User {
 
     public Cart getCart() {
         return cart;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

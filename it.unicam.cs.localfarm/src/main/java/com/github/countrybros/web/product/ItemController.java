@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "item")
+@RequestMapping( "item")
 public class ItemController {
 
     private final IItemService itemService;
@@ -33,14 +33,14 @@ public class ItemController {
         this.itemDetailsService = itemDetailsService;
     }
 
-    @PostMapping(value = "add")
+    @PostMapping( "add")
     public ResponseEntity<Object> addItem(@RequestBody AddItemRequest request) {
 
         itemService.addItem(request);
         return new ResponseEntity<>("Item successfully added", HttpStatus.OK);
     }
 
-    @PutMapping(value = "addQuantity")
+    @PutMapping( "addQuantity")
     public ResponseEntity<Object> addItemQuantity(@PathParam("itemId") int itemId,
                                                   @PathParam("quantity") int quantity) {
         try {
@@ -51,7 +51,7 @@ public class ItemController {
         return new ResponseEntity<>("Quantity successfully added", HttpStatus.OK);
     }
 
-    @PutMapping(value = "removeQuantity")
+    @PutMapping( "removeQuantity")
     public ResponseEntity<Object> removeItemQuantity(@PathParam("itemId") int itemId,
                                                      @PathParam("quantity") int quantity) {
         try {
@@ -63,14 +63,14 @@ public class ItemController {
         return new ResponseEntity<>("Quantity successfully removed", HttpStatus.OK);
     }
 
-    @PutMapping(value = "setPrice")
+    @PutMapping( "setPrice")
     public ResponseEntity<Object> setItemPrice(@PathParam("itemId") int itemId,
                                                @PathParam("price") Float price) {
         itemService.setPrice(itemId, price);
         return new ResponseEntity<>("Price successfully set", HttpStatus.OK);
     }
 
-    @GetMapping(value = "getBySeller")
+    @GetMapping( "getBySeller")
     public ResponseEntity<Object> getItem(@PathParam("sellerId") int sellerId) {
 
         return new ResponseEntity<>(itemService.getItemsBySeller(sellerId), HttpStatus.OK);

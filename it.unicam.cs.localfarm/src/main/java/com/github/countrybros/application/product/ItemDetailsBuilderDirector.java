@@ -2,6 +2,7 @@ package com.github.countrybros.application.product;
 
 import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.model.product.*;
+import com.github.countrybros.model.user.Company;
 import com.github.countrybros.web.product.requests.*;
 
 import java.util.ArrayList;
@@ -52,11 +53,10 @@ public class ItemDetailsBuilderDirector {
 
     private void buildBaseItemDetails (AddItemDetailsRequest request) {
 
-        //TODO: complete when Company is not Transient anymore
-        //Company producer = companyService.getCompany(request.producerId);
+        Company producer = companyService.getCompany(request.producerId);
         detailsBuilder.setName(request.name);
         detailsBuilder.setDescription(request.description);
-        //itemDetailsBuilder.setProducer(producer);
+        detailsBuilder.setProducer(producer);
     }
 
     private void buildBundleDetails (AddBundleDetailsRequest request, BundleDetailsBuilder builder) {

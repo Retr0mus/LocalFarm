@@ -5,7 +5,6 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
 import com.github.countrybros.infrastructure.product.IItemDetailsRepository;
 import com.github.countrybros.model.product.ItemDetails;
 import com.github.countrybros.model.product.ItemDetailsStatus;
@@ -14,7 +13,6 @@ import com.github.countrybros.web.product.requests.EditItemDetailsRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +22,6 @@ import java.util.List;
 public class ItemDetailsService implements IItemDetailsService {
 
     private final IItemDetailsRepository itemDetailsRepository;
-    //TODO: remove if it's not necessary
     private final ICompanyService companyService;
     private final IAcceptanceSubmissionService acceptanceSubmissionService;
 
@@ -136,7 +133,6 @@ public class ItemDetailsService implements IItemDetailsService {
     @Override
     public List<ItemDetails> getCompanyItemDetails(int companyId) {
 
-        //TODO: create query when Company is not Transient anymore.
-        return new ArrayList<>();
+        return itemDetailsRepository.findAllByProducer_Id(companyId);
     }
 }

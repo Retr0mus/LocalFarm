@@ -8,6 +8,7 @@ import com.github.countrybros.infrastructure.web.InvitationRepository;
 import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.web.event.requests.CreateInvitationRequest;
+import com.github.countrybros.web.user.request.EditCompanyRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,11 +53,6 @@ public class InvitationService implements IInvitationService {
     public void deleteInvitation(int invitationId) {
 
         Invitation invitation = getInvitation(invitationId);
-        Company company = invitation.getReceiver();
-
-        //TODO: when company springboot service is available
-        //company.getInvitation().remove(invitation);
-        //companyService.editCompany(company.getId()):
 
         invitationRepository.deleteById(invitationId);
     }
@@ -86,12 +82,7 @@ public class InvitationService implements IInvitationService {
      */
     public List<Invitation> getInvitationsByCompany(int companyId) {
 
-        Company company = companyService.getCompany(companyId);
-
-        //TODO: complete when Company is available.
-        //return invitationRepository.;
-
-        return new ArrayList<>();
+        return invitationRepository.findAllByReceiver_Id(companyId);
     }
 
     /**
@@ -102,8 +93,6 @@ public class InvitationService implements IInvitationService {
      *
      */
     public void acceptInvitation(int invitationId) {
-
-        //TODO: Remind to implement proper authorization with Spring.
 
         Invitation invitation = getInvitation(invitationId);
 

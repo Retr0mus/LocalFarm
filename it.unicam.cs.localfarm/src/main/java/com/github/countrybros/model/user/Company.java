@@ -1,13 +1,12 @@
 package com.github.countrybros.model.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.countrybros.application.user.IPaymentMethod;
 import com.github.countrybros.model.event.Invitation;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,9 +23,10 @@ public class Company {
     private String email;
     private String password;
     private String description;
-    private ArrayList<Invitation> invitations;
-    private IPaymentMethod method;
 
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Invitation> invitations = new ArrayList<>();
     //TODO add location
 
     public String getName() {
@@ -63,6 +63,14 @@ public class Company {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Invitation> getInvitations() {
+        return invitations;
+    }
+
+    public void setInvitations(List<Invitation> invitations) {
+        this.invitations = invitations;
     }
 }
 

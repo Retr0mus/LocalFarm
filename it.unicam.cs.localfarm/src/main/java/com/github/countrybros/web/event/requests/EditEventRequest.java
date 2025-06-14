@@ -2,18 +2,19 @@ package com.github.countrybros.web.event.requests;
 
 import com.github.countrybros.model.event.Location;
 import com.github.countrybros.model.event.TimeInterval;
+
 import java.util.List;
 
 /**
- * DTO for requesting the creation of an event
+ * DTO to request an updating an event.
  */
-public class CreateEventRequest {
+public class EditEventRequest {
+
+    public int eventId;
 
     public String name;
 
     public int maxSpots;
-
-    public List<Integer> guestsId;
 
     public Location location;
 

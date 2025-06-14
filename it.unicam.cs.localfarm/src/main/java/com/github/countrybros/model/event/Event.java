@@ -14,7 +14,6 @@ import java.util.List;
 @Entity
 public class Event {
 
-    //TODO: togli i commenti alle annotazioni e metti gli attributi-classi come entity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -33,12 +32,10 @@ public class Event {
     @ElementCollection
     private List<TimeInterval> dates;
 
-    //@OneToOne
-    @Transient
+    @ManyToOne
     private Company organizer;
 
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @Transient
+    @OneToMany
     private List<User> subscribers = new ArrayList<>();
 
     private EventState state;

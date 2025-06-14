@@ -39,13 +39,13 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public void editCompany(EditCompanyRequest request) {
-        Company company = companyRepository.findById(request.getId())
-                .orElseThrow(() -> new NotFoundInRepositoryException("Company with ID " + request.getId() + " not found."));
+        Company company = companyRepository.findById(request.id)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Company with ID " + request.id + " not found."));
 
-        company.setName(request.getName());
-        company.setEmail(request.getEmail());
-        company.setPassword(request.getPassword());
-        company.setDescription(request.getDescription());
+        company.setName(request.name);
+        company.setEmail(request.email);
+        company.setPassword(request.password);
+        company.setDescription(request.description);
 
         companyRepository.save(company);
     }

@@ -16,7 +16,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     private Map<Integer, ShoppingItem> items = new HashMap<>();
 
     public boolean containsItem(int itemId){
@@ -33,4 +33,6 @@ public class Cart {
 
     public void setItems(ArrayList<ShoppingItem> excessItems) {
     }
+
+
 }

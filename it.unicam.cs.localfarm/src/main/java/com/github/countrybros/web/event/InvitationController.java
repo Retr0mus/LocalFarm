@@ -17,15 +17,22 @@ public class InvitationController {
         this.invitationService = invitationService;
     }
 
-    @GetMapping(value = "get")
+    @GetMapping("get")
     public ResponseEntity<Object> getInvitation(@PathParam("invitationId") int invitation) {
 
         return new ResponseEntity<>(invitationService.getInvitation(invitation), HttpStatus.OK);
     }
 
-    @GetMapping(value = "getCompanyInvitations")
+    @GetMapping("getCompanyInvitations")
     public ResponseEntity<Object> getCompanyInvitations(@PathParam("companyId") int companyId) {
 
         return new ResponseEntity<>(invitationService.getInvitationsByCompany(companyId), HttpStatus.OK);
+    }
+
+    @PutMapping("accept")
+    public ResponseEntity<Object> accept(@PathParam("invitationId") int invitationId) {
+
+        invitationService.acceptInvitation(invitationId);
+        return new ResponseEntity<>("Invitation accepted", HttpStatus.OK);
     }
 }

@@ -1,7 +1,5 @@
 package com.github.countrybros.web.product;
 
-import com.github.countrybros.application.product.ItemDetailsBuilderDirector;
-import com.github.countrybros.application.product.ItemDetailsBuilderFactory;
 import com.github.countrybros.application.product.ItemDetailsService;
 import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.model.product.ItemDetailsStatus;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * Controller for management of ItemDetails
  */
 @RestController
-@RequestMapping(value = "itemDetails")
+@RequestMapping( "itemDetails")
 public class ItemDetailsController {
 
     private final ItemDetailsService itemDetailsService;
@@ -29,34 +27,34 @@ public class ItemDetailsController {
         this.companyService = companyService;
     }
 
-    @PostMapping(value = "add")
+    @PostMapping( "add")
     public ResponseEntity<Object> addItemDetails(@RequestBody AddItemDetailsRequest request) {
 
         itemDetailsService.addItemDetails(request);
         return new ResponseEntity<>("ItemDetails successfully created", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "delete")
+    @DeleteMapping( "delete")
     public ResponseEntity<Object> deleteItemDetails(@PathParam("itemDetailsId") int itemDetailsId) {
 
         itemDetailsService.deleteItemDetails(itemDetailsId);
         return new ResponseEntity<>("ItemDetails successfully deleted", HttpStatus.OK);
     }
 
-    @GetMapping(value = "get")
+    @GetMapping( "get")
     public ResponseEntity<Object> getItemDetails(@PathParam("itemDetailsId") int itemDetailsId) {
 
         return new ResponseEntity<>(itemDetailsService.getItemDetails(itemDetailsId), HttpStatus.OK);
     }
 
-    @PutMapping(value = "acceptChanges")
+    @PutMapping( "acceptChanges")
     public ResponseEntity<Object> acceptChanges(@PathParam("targetId") int targetId,
                                                   @PathParam("changesId") int changesId) {
         itemDetailsService.acceptChanges(targetId, changesId);
         return new ResponseEntity<>("Item successfully updated", HttpStatus.OK);
     }
 
-    @PutMapping(value = "changeStatus")
+    @PutMapping( "changeStatus")
     public ResponseEntity<Object> changeStatus(@PathParam("status")ItemDetailsStatus status,
                                                @PathParam("itemDetailsId") int itemDetailsId) {
         itemDetailsService.setStatus(status, itemDetailsId);

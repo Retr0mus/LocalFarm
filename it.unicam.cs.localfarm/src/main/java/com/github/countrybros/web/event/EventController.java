@@ -3,6 +3,8 @@ package com.github.countrybros.web.event;
 import com.github.countrybros.application.event.IEventService;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.web.event.requests.CreateEventRequest;
+import com.github.countrybros.web.event.requests.EditEventRequest;
+import com.github.countrybros.web.event.requests.EventElement;
 import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "event")
+@RequestMapping("*")
 public class EventController {
 
     private IEventService eventService;
@@ -22,60 +24,60 @@ public class EventController {
     }
 
     @GetMapping(value="/events")
-    public ResponseEntity<List<Event>> getEvents(){
+    public ResponseEntity<List<EventElement>> getEvents(){
 
         return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
     }
 
-    @PutMapping(value="/edit")
-    public ResponseEntity<Object> editEvent(@RequestBody Event request){
+    @PutMapping("edit")
+    public ResponseEntity<Object> editEvent(@RequestBody EditEventRequest request){
 
         eventService.editEvent(request);
         return new ResponseEntity<>("Event modified.", HttpStatus.OK);
     }
 
-    @PutMapping(value="subscribe")
+    @PutMapping("subscribe")
     public ResponseEntity<Object> subscribeOnEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId){
 
         eventService.subscribeOnEvent(userId, eventId);
         return new ResponseEntity<>("Subscription successful", HttpStatus.OK);
     }
 
-    @PutMapping(value="unsubscribe")
+    @PutMapping("unsubscribe")
     public ResponseEntity<Object> unSubscribeOnEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId){
 
         eventService.unsubscribeOnEvent(userId, eventId);
         return new ResponseEntity<>("Unsubscription successful", HttpStatus.OK);
     }
 
-    @GetMapping(value="publicEvents")
-    public ResponseEntity<List<Event>> getPublicEvents(){
+    @GetMapping("publicEvents")
+    public ResponseEntity<List<EventElement>> getPublicEvents(){
 
         return new ResponseEntity<>(eventService.getPublicEvents(), HttpStatus.OK);
     }
 
-    @PutMapping(value = "cancel")
+    @PutMapping("delete")
     public ResponseEntity<Object> cancelEvent(@PathParam("eventId") int eventId){
 
         eventService.setAsCanceled(eventId);
         return new ResponseEntity<>("Event cancelled.", HttpStatus.OK);
     }
 
-    @PostMapping(value = "create")
+    @PostMapping( "create")
     public ResponseEntity<Object> createEvent(@RequestBody CreateEventRequest request){
 
         eventService.createEvent(request);
         return new ResponseEntity<>("Event created", HttpStatus.OK);
     }
 
-    @PutMapping(value = "confirm")
+    @PutMapping("confirm")
     public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId){
 
         eventService.confirmEventPublication(eventId);
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 
-    @PutMapping(value = "cancelParicipation")
+    @PutMapping("cancelParicipation")
     public ResponseEntity<Object> cancelParticipation(@PathParam("eventId") int eventId
                                                     ,@PathParam("userId") int userId){
 
@@ -83,7 +85,7 @@ public class EventController {
         return new ResponseEntity<>("Participation cancelled", HttpStatus.OK);
     }
 
-    @PutMapping(value = "confirmParticipation")
+    @PutMapping("confirmParticipation")
     public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
                                                             ,@PathParam("userId") int userId){
 
@@ -91,9 +93,15 @@ public class EventController {
         return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
     }
 
-    @GetMapping(value = "get")
+    @GetMapping("get")
     public ResponseEntity<Object> getEvent(@PathParam("eventId") int eventId){
 
-        return new ResponseEntity<>(eventService.getEvent(eventId), HttpStatus.OK);
+        //TODO: use a different DTO and implement mapper
+        Event event = eventService.getEvent(eventId);
+        EventElement dto  = new EventElement();
+        dto.id = eventId;
+        dto.name = event.getName();
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }

@@ -36,9 +36,7 @@ public abstract class ItemDetails {
 
     private boolean visibleByPublic = false;
 
-    // It does not work because it needs @Entity on Company, remind to put it.
-    //@ManyToOne(fetch = FetchType.EAGER)
-    @Transient
+    @OneToOne
     private Company producer;
 
     public ItemDetails() {

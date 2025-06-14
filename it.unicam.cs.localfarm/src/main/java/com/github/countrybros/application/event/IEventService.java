@@ -1,11 +1,11 @@
 package com.github.countrybros.application.event;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.model.user.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
-import com.github.countrybros.application.errors.FoundInRepositoryException;
 import com.github.countrybros.web.event.requests.CreateEventRequest;
+import com.github.countrybros.web.event.requests.EditEventRequest;
+import com.github.countrybros.web.event.requests.EventElement;
 
 import java.util.List;
 
@@ -44,25 +44,25 @@ public interface IEventService {
     /**
      * Modifies the event specified, if present.
      *
-     * @param event The event to modify.
+     * @param request The request to modify an event.
      *
      * @throws NotFoundInRepositoryException if the event was not in the repo.
      */
-        public void editEvent(Event event);
+    public void editEvent(EditEventRequest request);
 
     /**
      * Returns a list of all public events.
      *
      * @return list of events with status PUBLIC.
      */
-    public List<Event> getPublicEvents();
+    public List<EventElement> getPublicEvents();
 
     /**
      * Returns all the events in the website.
      *
      * @return a list with all the events.
      */
-    public List<Event> getAllEvents();
+    public List<EventElement> getAllEvents();
 
     /**
      * Subscribes a user on an event.

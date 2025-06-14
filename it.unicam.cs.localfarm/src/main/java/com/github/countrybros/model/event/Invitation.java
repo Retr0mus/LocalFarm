@@ -25,7 +25,8 @@ public class Invitation {
 
     private boolean accepted;
 
-    @Transient
+    @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company receiver;
 
     public Invitation() {}
@@ -68,7 +69,7 @@ public class Invitation {
      * @return if the invitation is expired or not.
      */
     public boolean isExpired() {
-        return expiration.isAfter(LocalDate.now());
+        return expiration.isBefore(LocalDate.now());
     }
 
     public boolean isAccepted() {
