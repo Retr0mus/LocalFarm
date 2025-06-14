@@ -1,5 +1,6 @@
 package com.github.countrybros.model.user;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

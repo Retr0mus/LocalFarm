@@ -1,5 +1,7 @@
 package com.github.countrybros.model.user;
 
+import com.github.countrybros.application.user.IPaymentMethod;
+import com.github.countrybros.model.event.Invitation;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +21,10 @@ public class Company {
     private String email;
     private String password;
     private String description;
-   //TODO add location
+    private ArrayList<Invitation> invitations;
+    private IPaymentMethod method;
+
+    //TODO add location
 
     public String getName() {
         return name;

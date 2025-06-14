@@ -2,7 +2,7 @@ package com.github.countrybros.model.user;
 
 
 import jakarta.persistence.*;
-
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,23 +30,6 @@ public class User {
     private Cart cart;
 
     public User() {
-
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRoles(List<UserRole> roles) {
-        this.roles = roles;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setCart(Cart cart) {

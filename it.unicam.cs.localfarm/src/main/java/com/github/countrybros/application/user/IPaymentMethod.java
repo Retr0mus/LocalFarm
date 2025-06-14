@@ -8,7 +8,6 @@ import com.github.countrybros.model.user.User;
  *
  * TODO: definire meglio la responsabilità.
  */
-
 public interface IPaymentMethod {
 
     /**
@@ -28,4 +27,5 @@ public interface IPaymentMethod {
      * @param price The price to pay.
      */
     boolean buy(User user, float price);
+}
 }

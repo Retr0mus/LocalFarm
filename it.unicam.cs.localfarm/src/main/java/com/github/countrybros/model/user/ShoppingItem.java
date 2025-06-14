@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 /**
  * Represents an item in the shopping cart.
  */
+
 @Entity
 public class ShoppingItem {
     @Id
