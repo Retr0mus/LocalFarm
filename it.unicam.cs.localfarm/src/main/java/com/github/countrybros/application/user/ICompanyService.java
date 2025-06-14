@@ -1,17 +1,19 @@
 package com.github.countrybros.application.user;
 
 import com.github.countrybros.model.user.Company;
+import com.github.countrybros.web.user.request.AddComapanyRequest;
+import com.github.countrybros.web.user.request.EditCompanyRequest;
 
 /**
  * Defines the responabiliti of management of companies.
  */
 public interface ICompanyService {
 
-    public boolean addCompany(Company company);
+     void addCompany(AddComapanyRequest request);
 
-    public Company getCompany(int companyId);
+     Company getCompany(int companyId);
 
-    public boolean editCompany(Company company);
+     void editCompany(EditCompanyRequest request);
 
-    public boolean deleteCompany(int companyId);
+     void deleteCompany(int companyId);
 }

@@ -6,6 +6,7 @@ import com.github.countrybros.model.user.Company;
  * Class that represent the ownership of a stock of item by a company that wants to sell it.
  */
 public class Item {
+    private int id;
     private Company seller;
     private double price;
     private ItemDetails itemDetails;
@@ -29,5 +30,9 @@ public class Item {
 
     public void setQty(int qty) {
         this.qty = qty;
+    }
+
+    public int getId() {
+        return id;
     }
 }
