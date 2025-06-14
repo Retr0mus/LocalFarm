@@ -74,7 +74,7 @@ public class InvitationService implements IInvitationService {
         boolean isExpired = invitation.isExpired();
 
         if(!isExpired)
-            //EventService.getInstance().confirmCompanyPartecipation(invitation.getEvent().getId(), invitation.getReciver().getId());
+            //EventService.getInstance().confirmCompanyPartecipation(invitation.getEvent().getUserId(), invitation.getReciver().getUserId());
 
         deleteInvitation(invitationId);
 

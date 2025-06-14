@@ -2,13 +2,14 @@ package com.github.countrybros.infrastructure.local;
 
 import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Repository
 public class LocalAcceptanceSubmissionRepository implements IAcceptanceSubmissionRepository {
 
     private final Map<Integer, AcceptanceSubmission> acceptanceSubmissions = new HashMap<Integer, AcceptanceSubmission>();
@@ -74,6 +75,11 @@ public class LocalAcceptanceSubmissionRepository implements IAcceptanceSubmissio
     @Override
     public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId) {
         return null;
+    }
+
+    @Override
+    public List<AcceptanceSubmission> getAcceptanceSubmissionsBySender(int senderId) {
+        return List.of();
     }
 
     @Override

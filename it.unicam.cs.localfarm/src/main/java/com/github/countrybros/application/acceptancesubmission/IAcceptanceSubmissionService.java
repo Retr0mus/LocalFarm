@@ -1,6 +1,7 @@
 package com.github.countrybros.application.acceptancesubmission;
 
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
 
 import java.util.List;
 
@@ -13,10 +14,10 @@ public interface IAcceptanceSubmissionService {
     /**
      * Adds an AcceptanceSubmission.
      *
-     * @param acceptanceSubmission the submission to add.
+     * @param request the submission to add.
      * @return if the task was successful.
      */
-    public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission);
+     void addAcceptanceSubmission(AcceptanceSubmissionRequest request);
 
     /**
      * Deletes an AcceptanceSubmission.
@@ -24,7 +25,7 @@ public interface IAcceptanceSubmissionService {
      * @param acceptanceSubmissionId the submission to delete.
      * @return if the task was successful or not.
      */
-    public boolean deleteAcceptanceSubmission(int acceptanceSubmissionId);
+     void deleteAcceptanceSubmission(int acceptanceSubmissionId);
 
     /**
      * Gets the required AcceptanceSubmissions.
@@ -32,14 +33,14 @@ public interface IAcceptanceSubmissionService {
      * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
      * @return the said AcceptanceSubmission.
      */
-    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
+     AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
 
     /**
      * Gets all the free AcceptanceSubmissions.
      *
      * @return a list with all the said AcceptanceSubmission.
      */
-    public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions();
+     List<AcceptanceSubmission> getAvailableAcceptanceSubmissions();
 
     /**
      * Gets all the AcceptanceSubmissions assigned to a certain Curator.
@@ -47,7 +48,7 @@ public interface IAcceptanceSubmissionService {
      * @param curatorId the Id of the User with the Curator privileges.
      * @return a list with all the curator's AcceptanceSubmission.
      */
-    public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
+     List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
 
     /**
      * Accepts the specified AcceptanceSubmission.
