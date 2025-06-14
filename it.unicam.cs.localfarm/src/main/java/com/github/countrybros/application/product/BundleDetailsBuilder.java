@@ -1,9 +1,9 @@
 package com.github.countrybros.application.product;
 
 import com.github.countrybros.model.product.BundleDetails;
-import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.ItemDetailsQuantity;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class BundleDetailsBuilder extends ItemDetailsBuilder<BundleDetails>{
 
@@ -29,8 +29,8 @@ public class BundleDetailsBuilder extends ItemDetailsBuilder<BundleDetails>{
      *
      * @param items map of the items linked to their quantity
      */
-    public void setItemsMap(HashMap<Item, Integer> items) {
+    public void setItemsQta(ArrayList<ItemDetailsQuantity> items) {
 
-        this.product.setItemsMap(items);
+        this.product.setItemsQta(items);
     }
 }

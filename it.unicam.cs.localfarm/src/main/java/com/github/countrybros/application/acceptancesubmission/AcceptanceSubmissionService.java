@@ -8,6 +8,7 @@ import com.github.countrybros.model.acceptancesubmission.*;
 import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
 import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import org.springframework.stereotype.Service;
 
 import org.springframework.stereotype.Service;
 

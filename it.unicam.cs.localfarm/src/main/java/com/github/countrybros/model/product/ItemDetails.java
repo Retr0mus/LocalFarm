@@ -1,61 +1,51 @@
 package com.github.countrybros.model.product;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.countrybros.model.user.Company;
-import jakarta.persistence.Embeddable;
-
-import java.util.HashMap;
-import java.util.Map;
+import jakarta.persistence.*;
 
 /**
  * Represents the details of a generic @Item that can be sold in the marketplace.
  */
-@Embeddable
-public class ItemDetails {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,            // Specifies that the type information will be included as a logical name (simple string) identifying the concrete class.
+        include = JsonTypeInfo.As.PROPERTY,   // Specifies that this type information will be included as a property inside the JSON object.
+        property = "type"                      // Defines the name of the JSON property that will hold the type information (here, "type").
+)
+@JsonSubTypes({
+        // Defines the possible subtypes and associates each subtype with a specific name value in the "type" property.
+        @JsonSubTypes.Type(value = SimpleProductDetails.class, name = "simpleProductDetails"),
+        @JsonSubTypes.Type(value = TransformedProductDetails.class, name = "transformedProductDetails"),
+        @JsonSubTypes.Type(value = BundleDetails.class, name = "bundleDetails")
+})
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "submission_type")
+public abstract class ItemDetails {
 
-    /**
-     * ID of the item:
-     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
-    /**
-     * Name of the item.
-     */
     private String name;
 
-    /**
-     * Description of the item.
-     */
     private String description;
 
-    /**
-     * Status of the item.
-     */
     private ItemDetailsStatus status;
 
-    /**
-     * Represents the visibility of the item,
-     * true if it can be selled, false otherwise.
-     */
     private boolean visibleByPublic = false;
 
-    /**
-     * Map that contains every @Item that contains this item
-     */
-    private Map<Item, Integer> availability = new HashMap<>();
-
+    // It does not work because it needs @Entity on Company, remind to put it.
+    //@ManyToOne(fetch = FetchType.EAGER)
+    @Transient
+    private Company producer;
 
     public ItemDetails() {
-
-        this.availability = new HashMap<Item, Integer>();
         this.status = ItemDetailsStatus.awaitingReview;
-        //TODO AcceptanceSubmission creation
         this.visibleByPublic = false;
     }
 
-    /**
-     * The producer of the item.
-     */
-    private Company producer;
 
     public String getName() {
         return name;
@@ -74,19 +64,19 @@ public class ItemDetails {
         return status;
     }
 
-    public void setStatus(ItemDetailsStatus status) {}
+    public void setStatus(ItemDetailsStatus status) {
 
-    public boolean isVisibleByPublic() {
+        this.status = status;
+    }
+
+    public boolean getIsVisibleByPublic() {
         return visibleByPublic;
     }
 
-    public void setVisibleByPublic(boolean visibleByPublic) {}
+    public void setVisibleByPublic(boolean visibleByPublic) {
 
-    public Map<Item, Integer> getAvailability() {
-        return availability;
+        this.visibleByPublic = visibleByPublic;
     }
-
-    public void setAvailability(Map<Item, Integer> availability) {}
 
     public Company getProducer() {
         return producer;
@@ -94,10 +84,6 @@ public class ItemDetails {
 
     public int getId() {
         return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
     }
 
     public void setProducer(Company producer) {
