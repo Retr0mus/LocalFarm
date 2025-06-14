@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Represents a single step of a @TransformedProductDetails production,
  * contains a description of the step, the ingredients used, and the location.
  */
+@Deprecated
 public class TransformationSteps {
 
     /**

@@ -1,21 +1,36 @@
 package com.github.countrybros.model.user;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Class that represents a cart.
- *
- * TODO: remove embeddable? and make items back
- *
  */
-@Embeddable
+@Entity
 public class Cart {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  int id;
 
-    //private Map<Integer, ShoppingItem> items;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Map<Integer, ShoppingItem> items = new HashMap<>();
 
     public boolean containsItem(int itemId){
         return false;
+    }
+
+    public float getTotalAmount() {
+        return 0;
+    }
+
+    public Map<Integer, ShoppingItem> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<ShoppingItem> excessItems) {
     }
 }

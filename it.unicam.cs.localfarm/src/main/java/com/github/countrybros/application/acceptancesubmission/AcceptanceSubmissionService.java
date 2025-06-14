@@ -1,7 +1,14 @@
 package com.github.countrybros.application.acceptancesubmission;
 
-import com.github.countrybros.infrastructure.IAcceptanceSubmissionRepository;
+
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
+import com.github.countrybros.model.acceptancesubmission.*;
+import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import org.springframework.stereotype.Service;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +21,44 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
 
     private IAcceptanceSubmissionRepository acceptanceSubmissionRepository;
 
+
+    public AcceptanceSubmissionService(IAcceptanceSubmissionRepository acceptanceSubmissionRepository) {
+        this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
+    }
     /**
      * Adds an AcceptanceSubmission.
      *
-     * @param acceptanceSubmission the submission to add.
+     * @param request the submission to add.
      * @return if the task was successful.
      */
     @Override
-    public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission) {
-        return false;
+    public void addAcceptanceSubmission(AcceptanceSubmissionRequest request) {
+        AcceptanceSubmission submission;
+
+        switch (request.getType()) {
+            case "addProduct":
+                submission = new AddProductAcceptanceSubmission();
+                break;
+            case "editProduct":
+                submission = new EditProductAcceptanceSubmission();
+                break;
+            case "recogniseProduct":
+                submission = new RecogniseProductAcceptanceSubmission();
+                break;
+            case "removeProduct":
+                submission = new RemoveProductAcceptanceSubmission();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown submission type");
+        }
+
+
+        //TODO recuperare e aggiungere la comapny
+        //companyRepository.findById(request.getSenderId()).ifPresent(submission::setSender);
+
+        submission.setAccepted(request.isAccepted());
+
+        acceptanceSubmissionRepository.save(submission);
     }
 
 
@@ -33,8 +69,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return if the task was successful or not.
      */
     @Override
-    public boolean deleteAcceptanceSubmission(int acceptanceSubmissionId) {
-        return false;
+    public void deleteAcceptanceSubmission(int acceptanceSubmissionId) {
+        acceptanceSubmissionRepository.deleteById(acceptanceSubmissionId);
     }
 
     /**
@@ -45,7 +81,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId) {
-        return null;
+        return acceptanceSubmissionRepository.findById(acceptanceSubmissionId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + acceptanceSubmissionId));
     }
 
     /**
@@ -55,7 +92,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions() {
-        return acceptanceSubmissionRepository.getAvailableAcceptanceSubmissions();
+        return acceptanceSubmissionRepository.getAcceptanceSubmissionByAccepted(false);
     }
 
     /**
@@ -66,7 +103,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId) {
-        return acceptanceSubmissionRepository.getAcceptanceSubmissionsByCurator(curatorId);
+//        return acceptanceSubmissionRepository.getAcceptanceSubmissionByCuratorUserId(curatorId);
+        return null;
     }
 
     /**
@@ -77,7 +115,14 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public boolean onAcceptance(int submissionId) {
-        return false;
+        return acceptanceSubmissionRepository.findById(submissionId).map(submission -> {
+            if (submission.isAccepted()) {
+                throw new RequestAlreadySatisfiedException("Submission already accepted");
+            }
+            submission.accept();
+            acceptanceSubmissionRepository.save(submission);
+            return true;
+        }).orElseThrow(() -> new NotFoundInRepositoryException("Submission not found with id " + submissionId));
     }
 
     /**
@@ -88,6 +133,10 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public boolean onRefusal(int submissionId) {
+        if (acceptanceSubmissionRepository.existsById(submissionId)) {
+            acceptanceSubmissionRepository.deleteById(submissionId);
+            return true;
+        }
         return false;
     }
 }
