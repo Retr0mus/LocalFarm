@@ -5,6 +5,7 @@ import com.github.countrybros.model.product.SimpleProductDetails;
 /**
  * Criteria interface for product filtering.
  */
+@Deprecated
 public interface IProductCriteria {
     /**
      * Checks if the given product satisfies a specific criterion.

@@ -1,5 +1,7 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.model.user.IPaymentMethod;
+
 import java.util.Date;
 
 /**

@@ -2,8 +2,6 @@ package com.github.countrybros.model.acceptancesubmission;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.github.countrybros.model.user.Company;
-import com.github.countrybros.model.user.User;
 import jakarta.persistence.*;
 
 /**
@@ -29,34 +27,37 @@ public abstract class AcceptanceSubmission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Transient
-    private Company sender;
-    @Transient
-    private User curator;
+    private int senderId;
+    private int curatorId;
     private boolean accepted;
 
     public AcceptanceSubmission() {}
 
-    public User getCurator() {
-        return curator;
-    }
-
-    public Company getSender() {
-        return sender;
-    }
-
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
     }
-    //TODO: Change this shit immediately!
-    //public abstract String getDetails();
 
-    //TODO aggiungi la logica del controllo con il curatore
-    public void accept() {
-        this.accepted = true;
+    public void assignCurator(int curatorId) {
+        this.curatorId = curatorId;
     }
 
     public boolean isAccepted() {
         return accepted;
+    }
+
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
+    }
+
+    public int getSenderId() {
+        return senderId;
+    }
+
+    public int getCuratorId() {
+        return curatorId;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -15,7 +15,7 @@ public class ShoppingItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
-    @Transient
+    @OneToOne(fetch = FetchType.LAZY)
     private Item item;
     private int quantity;
 

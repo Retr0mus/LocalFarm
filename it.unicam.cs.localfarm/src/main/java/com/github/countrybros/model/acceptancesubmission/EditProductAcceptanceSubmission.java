@@ -1,10 +1,7 @@
 package com.github.countrybros.model.acceptancesubmission;
 
 import com.github.countrybros.model.product.ItemDetails;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 /**
  * Represents a submission to edit details of an existing product.
@@ -13,13 +10,24 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("editProduct")
 public class EditProductAcceptanceSubmission extends AcceptanceSubmission {
 
-    @Transient
-    private ItemDetails productToEdit;
+
+    private int productToEditId;
+
+    private int productChangeId;
 
     public EditProductAcceptanceSubmission() {}
 
-//    @Override
-//    public String getDetails() {
-//        return "";
-//    }
+    public int getProductToEditId() {
+        return productToEditId;
+    }
+
+    public int getProductChangeId() {
+        return productChangeId;
+    }
+
+    public void setProductToEditId(int productToEditId) {
+    }
+
+    public void setProductChangeId(int productChangeId) {
+    }
 }

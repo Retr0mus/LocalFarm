@@ -27,7 +27,7 @@ public class OrderController {
 
     @PostMapping("/checkout")
     public ResponseEntity<Order> checkout(@RequestParam int userId, @RequestBody CheckoutRequest checkoutRequest) {
-        Order order = orderService.checkout(userId, checkoutRequest.getPaymentMethod(), checkoutRequest.getShippingAddress());
+        Order order = orderService.checkout(userId, checkoutRequest.paymentMethod, checkoutRequest.shippingAddress);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 

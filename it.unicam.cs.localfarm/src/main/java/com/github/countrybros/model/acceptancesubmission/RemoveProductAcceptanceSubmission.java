@@ -1,10 +1,7 @@
 package com.github.countrybros.model.acceptancesubmission;
 
 import com.github.countrybros.model.product.ItemDetails;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 /**
  * Represents a submission to remove an existing product
@@ -13,12 +10,15 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("removeProduct")
 public class RemoveProductAcceptanceSubmission extends AcceptanceSubmission {
 
-    @Transient
-    private ItemDetails product;
+
+    private int productId;
 
     public RemoveProductAcceptanceSubmission() {}
-//    @Override
-//    public String getDetails() {
-//        return "";
-//    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+    }
 }

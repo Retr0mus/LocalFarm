@@ -31,10 +31,12 @@ public class ItemService implements IItemService {
         this.itemDetailsService = itemDetailsService;
     }
 
+    //TODO Recognise la richiesta di accetazione e la modifca di essa
+
     public Item addItem(AddItemRequest request) {
 
-        //TODO: change when Company is not transient.
-        //Company seller = companyService.getCompany(request.sellerId);
+
+        Company seller = companyService.getCompany(request.sellerId);
         ItemDetails itemDetails = itemDetailsService.getItemDetails(request.itemDetailsId);
 
         Item item = new Item();

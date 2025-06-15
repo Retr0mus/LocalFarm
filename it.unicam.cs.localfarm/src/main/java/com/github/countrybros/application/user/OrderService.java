@@ -69,20 +69,20 @@ public class OrderService implements IOrderService {
      * @param request The order to save.
      */
     public void addOrder(OrderRequest request) {
-        User user = userService.getUser(request.getUserId());
-        Cart cart = cartRepository.findById(request.getCartId())
-                .orElseThrow(() -> new NotFoundInRepositoryException("Cart not found with ID " + request.getCartId()));
+        User user = userService.getUser(request.userId);
+        Cart cart = cartRepository.findById(request.cartId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Cart not found with ID " + request.cartId));
 
-        Company seller = companyRepository.getCompaniesById(request.getSellerId());
-        if (seller == null) throw new NotFoundInRepositoryException("Seller not found with ID " + request.getSellerId());
+        Company seller = companyRepository.getCompaniesById(request.sellerId);
+        if (seller == null) throw new NotFoundInRepositoryException("Seller not found with ID " + request.sellerId);
 
         Order order = new Order();
         order.setCustomer(user);
         order.setCart(cart);
         order.setSeller(seller);
-        order.setAddress(request.getAddress());
+        order.setAddress(request.address);
         order.setOrderDate(new Date());
-        order.setOrderStatus(request.getOrderStatus() != null ? request.getOrderStatus() : OrderStatus.picking);
+        order.setOrderStatus(request.orderStatus != null ? request.orderStatus : OrderStatus.picking);
 
         if (orderRepository.existsById(order.getOrderId())) {
             throw new FoundInRepositoryException("Order already exists");

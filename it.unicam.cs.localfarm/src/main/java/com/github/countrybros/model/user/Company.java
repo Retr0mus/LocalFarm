@@ -1,7 +1,7 @@
 package com.github.countrybros.model.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.github.countrybros.application.user.IPaymentMethod;
+
 import com.github.countrybros.model.event.Invitation;
 import jakarta.persistence.*;
 
@@ -23,10 +23,9 @@ public class Company {
     private String email;
     private String password;
     private String description;
-
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Invitation> invitations = new ArrayList<>();
+    private ArrayList<Invitation> invitations;
     //TODO add location
 
     public String getName() {
@@ -69,7 +68,7 @@ public class Company {
         return invitations;
     }
 
-    public void setInvitations(List<Invitation> invitations) {
+    public void setInvitations(ArrayList<Invitation> invitations) {
         this.invitations = invitations;
     }
 }

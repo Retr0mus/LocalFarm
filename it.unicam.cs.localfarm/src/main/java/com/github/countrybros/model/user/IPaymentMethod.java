@@ -3,7 +3,7 @@ package com.github.countrybros.model.user;
 /**
  * Interface for payment methods.
  */
-public interface PaymentMethod {
+public interface IPaymentMethod {
     /**
      * Processes a payment for the specified user and amount.
      *

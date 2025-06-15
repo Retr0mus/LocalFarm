@@ -4,11 +4,9 @@ package com.github.countrybros.application.acceptancesubmission;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
-import com.github.countrybros.model.acceptancesubmission.*;
-import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
+import com.github.countrybros.infrastructure.repository.IUserRepository;
+import com.github.countrybros.web.acceptancesubmission.request.*;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
-import org.springframework.stereotype.Service;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +18,13 @@ import java.util.List;
 public class AcceptanceSubmissionService implements IAcceptanceSubmissionService {
 
     private IAcceptanceSubmissionRepository acceptanceSubmissionRepository;
+    private IUserRepository userRepository;
+    AcceptanceSubmissionFactory factory;
 
 
     public AcceptanceSubmissionService(IAcceptanceSubmissionRepository acceptanceSubmissionRepository) {
         this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
+        this.factory = new AcceptanceSubmissionFactory();
     }
     /**
      * Adds an AcceptanceSubmission.
@@ -33,32 +34,9 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public void addAcceptanceSubmission(AcceptanceSubmissionRequest request) {
-        AcceptanceSubmission submission;
-
-        switch (request.getType()) {
-            case "addProduct":
-                submission = new AddProductAcceptanceSubmission();
-                break;
-            case "editProduct":
-                submission = new EditProductAcceptanceSubmission();
-                break;
-            case "recogniseProduct":
-                submission = new RecogniseProductAcceptanceSubmission();
-                break;
-            case "removeProduct":
-                submission = new RemoveProductAcceptanceSubmission();
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown submission type");
-        }
-
-
-        //TODO recuperare e aggiungere la comapny
-        //companyRepository.findById(request.getSenderId()).ifPresent(submission::setSender);
-
-        submission.setAccepted(request.isAccepted());
-
+        AcceptanceSubmission submission = factory.create(request);
         acceptanceSubmissionRepository.save(submission);
+
     }
 
 
@@ -114,19 +92,26 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return if the task succeeded or not.
      */
     @Override
-    public boolean onAcceptance(int submissionId) {
-        return acceptanceSubmissionRepository.findById(submissionId).map(submission -> {
-            if (submission.isAccepted()) {
-                throw new RequestAlreadySatisfiedException("Submission already accepted");
-            }
-            submission.accept();
-            acceptanceSubmissionRepository.save(submission);
-            return true;
-        }).orElseThrow(() -> new NotFoundInRepositoryException("Submission not found with id " + submissionId));
+    public boolean onAcceptance(int submissionId, int curatorId) {
+        AcceptanceSubmission submission = acceptanceSubmissionRepository.findById(submissionId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Submission not found with id " + submissionId));
+
+        if (submission.isAccepted()) {
+            throw new RequestAlreadySatisfiedException("Submission already accepted");
+        }
+
+        userRepository.findById(curatorId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Curator not found"));
+
+        submission.setAccepted(true);
+        submission.assignCurator(curatorId);
+
+        acceptanceSubmissionRepository.save(submission);
+        return true;
     }
 
     /**
-     * Accepts the specified AcceptanceSubmission.
+     * Refuse the specified AcceptanceSubmission by deleting it.
      *
      * @param submissionId the id of the AcceptanceSubmission.
      * @return if the task succeeded or not.

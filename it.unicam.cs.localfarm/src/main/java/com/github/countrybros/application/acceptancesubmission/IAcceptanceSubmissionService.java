@@ -56,7 +56,7 @@ public interface IAcceptanceSubmissionService {
      * @param submissionId the id of the AcceptanceSubmission.
      * @return if the task succeeded or not.
      */
-    boolean onAcceptance(int submissionId);
+    boolean onAcceptance(int submissionId, int curatorId);
 
     /**
      * Accepts the specified AcceptanceSubmission.

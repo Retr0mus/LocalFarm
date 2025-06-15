@@ -1,7 +1,7 @@
 package com.github.countrybros.web.user;
 
-import com.github.countrybros.application.user.IPaymentMethod;
 import com.github.countrybros.application.user.IPaymentService;
+import com.github.countrybros.model.user.IPaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

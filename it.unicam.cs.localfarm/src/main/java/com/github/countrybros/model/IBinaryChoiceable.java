@@ -3,6 +3,7 @@ package com.github.countrybros.model;
 /**
  * Interface to identify objects that can be accepted or denied
  */
+@Deprecated
 public interface IBinaryChoiceable {
 
     /**

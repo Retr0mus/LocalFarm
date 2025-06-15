@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Class that represents an organizer of events
  */
+@Deprecated
 public class Organizer {
 
     private int id;

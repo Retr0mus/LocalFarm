@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/submissions")
 public class AcceptanceSubmissionController {
 
-    @Autowired
+
     private final IAcceptanceSubmissionService acceptanceSubmissionService;
 
     @Autowired
@@ -44,8 +44,8 @@ public class AcceptanceSubmissionController {
     }
 
     @PostMapping("/accept")
-    public ResponseEntity<String> onAcceptance(@RequestParam int submissionId) {
-        boolean success = acceptanceSubmissionService.onAcceptance(submissionId);
+    public ResponseEntity<String> onAcceptance(@RequestParam int submissionId, @RequestParam int curatorId) {
+        boolean success = acceptanceSubmissionService.onAcceptance(submissionId,curatorId);
         if (success) {
             return new ResponseEntity<>("Submission accepted", HttpStatus.OK);
         } else {

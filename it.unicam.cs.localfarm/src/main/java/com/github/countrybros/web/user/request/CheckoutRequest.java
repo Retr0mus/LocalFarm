@@ -1,6 +1,6 @@
 package com.github.countrybros.web.user.request;
 
-import com.github.countrybros.application.user.IPaymentMethod;
+import com.github.countrybros.model.user.IPaymentMethod;
 import com.github.countrybros.model.user.ShippingAddress;
 
 /**
@@ -9,15 +9,8 @@ import com.github.countrybros.model.user.ShippingAddress;
 
 public class CheckoutRequest {
 
-    private IPaymentMethod paymentMethod;
-    private ShippingAddress shippingAddress;
+    public IPaymentMethod paymentMethod;
+    public ShippingAddress shippingAddress;
 
-    //Json non accetta
-    public IPaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
 
-    public ShippingAddress getShippingAddress() {
-        return shippingAddress;
-    }
 }

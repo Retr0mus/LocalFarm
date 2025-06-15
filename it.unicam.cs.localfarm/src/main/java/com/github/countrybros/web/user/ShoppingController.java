@@ -24,7 +24,7 @@ public class ShoppingController {
 
     @PostMapping("/cart/add")
     public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
-        shoppingService.addItemToCart(request.getUserId(), request.getItemId(), request.getQuantity());
+        shoppingService.addItemToCart(request.userId, request.itemId, request.quantity);
         return new ResponseEntity<>("Item added to cart", HttpStatus.OK);
     }
 

@@ -21,10 +21,10 @@ public class CompanyService implements ICompanyService {
 
     public void addCompany(AddComapanyRequest request) {
         Company company = new Company();
-        company.setName(request.getName());
-        company.setEmail(request.getEmail());
-        company.setPassword(request.getPassword());
-        company.setDescription(request.getDescription());
+        company.setName(request.name);
+        company.setEmail(request.email);
+        company.setPassword(request.password);
+        company.setDescription(request.description);
         //TODO: location
 
         companyRepository.save(company);

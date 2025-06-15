@@ -1,10 +1,7 @@
 package com.github.countrybros.model.acceptancesubmission;
 
 import com.github.countrybros.model.product.ItemDetails;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 /**
  * Represents a submission to recognize an existing product
@@ -13,14 +10,25 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("recogniseProduct")
 public class RecogniseProductAcceptanceSubmission extends AcceptanceSubmission {
 
-    @Transient
-    private ItemDetails product;
+    //TODO
+    private int productId;
     private int qta;
 
     public RecogniseProductAcceptanceSubmission() {}
 
-//    @Override
-//    public String getDetails() {
-//        return "";
-//    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public int getQta() {
+        return qta;
+    }
+
+    public void setQta(int qta) {
+        this.qta = qta;
+    }
+
+    public void setProductId(int productId) {
+    }
 }

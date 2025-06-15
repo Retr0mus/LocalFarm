@@ -35,14 +35,14 @@ public class UserService implements IUserService {
     @Override
     public void addUser(AddUserRequest request) {
         User user = new User();
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setName(request.name);
+        user.setEmail(request.email);
+        user.setPassword(request.password);
 
         Cart cart = new Cart();
         user.setCart(cart);
         cartService.save(cart);
-        user.setRoles(request.getRoles());
+        user.setRoles(request.roles);
 
         userRepository.save(user);
 
@@ -59,15 +59,15 @@ public class UserService implements IUserService {
 
     @Override
     public void editUser(EditUserRequest request) {
-        User existingUser = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new NotFoundInRepositoryException("Cannot edit: User with ID " + request.getUserId() + " not found."));
+        User existingUser = userRepository.findById(request.userId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Cannot edit: User with ID " + request.userId + " not found."));
 
-        existingUser.setName(request.getName());
-        existingUser.setEmail(request.getEmail());
-        existingUser.setPassword(request.getPassword());
-        existingUser.setRoles(request.getRoles());
+        existingUser.setName(request.name);
+        existingUser.setEmail(request.email);
+        existingUser.setPassword(request.password);
+        existingUser.setRoles(request.roles);
 
-        Cart cart = cartService.getCartById(request.getCartId());
+        Cart cart = cartService.getCartById(request.cartId);
         existingUser.setCart(cart);
 
         userRepository.save(existingUser);

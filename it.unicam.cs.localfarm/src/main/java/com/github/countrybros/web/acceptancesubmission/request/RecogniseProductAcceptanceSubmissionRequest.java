@@ -1,0 +1,25 @@
+package com.github.countrybros.web.acceptancesubmission.request;
+
+import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+
+
+public class RecogniseProductAcceptanceSubmissionRequest extends AcceptanceSubmissionRequest {
+    private int productId;
+    private int qta;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getQta() {
+        return qta;
+    }
+
+    public void setQta(int qta) {
+        this.qta = qta;
+    }
+}
