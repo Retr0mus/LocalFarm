@@ -19,7 +19,8 @@ public interface IItemDetailsService {
      * Create a new ItemDetails.
      *
      * @param request The new ItemDetails request.
-     * @return
+     *
+     * @return The item details.
      */
     ItemDetails addItemDetails(AddItemDetailsRequest request);
 
@@ -31,7 +32,6 @@ public interface IItemDetailsService {
      * @throws NotFoundInRepositoryException if there is no ItemDetails with that id.
      */
     void deleteItemDetails(int itemDetailsId);
-
 
     /**
      * Sets all the base details of an ItemDetails equal to another one,

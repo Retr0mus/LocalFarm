@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * Controller for management of ItemDetails
  */
 @RestController
-@RequestMapping( "itemDetails")
+@RequestMapping( "/itemDetails")
 public class ItemDetailsController {
 
     private final ItemDetailsService itemDetailsService;

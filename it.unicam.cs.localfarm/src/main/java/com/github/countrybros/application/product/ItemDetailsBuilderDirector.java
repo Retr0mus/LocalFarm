@@ -48,7 +48,7 @@ public class ItemDetailsBuilderDirector {
             default -> throw new IllegalArgumentException("Unsupported item type");
         }
 
-        return detailsBuilder.build();
+        return detailsBuilder.getResult();
     }
 
     private void buildBaseItemDetails (AddItemDetailsRequest request) {
@@ -66,11 +66,11 @@ public class ItemDetailsBuilderDirector {
         for (IdQuantityWrapper wrapper : request.items) {
 
             ItemDetails itemDetails = itemDetailsService.getItemDetails(wrapper.id);
-            ItemDetailsQuantity itemQuantity = new ItemDetailsQuantity(itemDetails, wrapper.quantity);
+            ItemDetailsQuantity itemQuantity = new ItemDetailsQuantity(itemDetails, wrapper.qty);
             itemsQuantity.add(itemQuantity);
         }
 
-        builder.setItemsQta(itemsQuantity);
+        builder.setItemsQty(itemsQuantity);
     }
 
     private void buildSimpleProductDetails (AddSimpleProductDetailsRequest request, SimpleProductDetailsBuilder builder) {

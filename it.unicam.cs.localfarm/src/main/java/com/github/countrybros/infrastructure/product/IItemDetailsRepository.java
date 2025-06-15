@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface IItemDetailsRepository extends CrudRepository<ItemDetails, Integer> {
-    List<ItemDetails> findAllByProducer_Id(int producerId);
+
+        List<ItemDetails> findAllByProducer_Id(int producerId);
 }

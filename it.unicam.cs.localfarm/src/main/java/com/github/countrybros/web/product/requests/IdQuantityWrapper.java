@@ -6,5 +6,5 @@ package com.github.countrybros.web.product.requests;
 public class IdQuantityWrapper {
 
     public int id;
-    public int quantity;
+    public int qty;
 }

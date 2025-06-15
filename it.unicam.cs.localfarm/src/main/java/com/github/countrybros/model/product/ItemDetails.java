@@ -44,7 +44,6 @@ public abstract class ItemDetails {
         this.visibleByPublic = false;
     }
 
-
     public String getName() {
         return name;
     }

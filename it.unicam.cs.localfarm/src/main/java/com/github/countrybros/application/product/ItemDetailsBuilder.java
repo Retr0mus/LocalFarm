@@ -15,11 +15,8 @@ public abstract class ItemDetailsBuilder<T extends ItemDetails> implements IItem
      */
      T product;
 
-    /**
-     * service to request companies management
-     */
-    protected CompanyService companyManager;
 
+     //TODO: resolve create/get
     /**
      * Creates the right instance.
      *
@@ -40,7 +37,7 @@ public abstract class ItemDetailsBuilder<T extends ItemDetails> implements IItem
     }
 
     @Override
-    public ItemDetails build() {
+    public ItemDetails getResult() {
 
         //TODO: impostare a awaitingReview, o cambiare gli stati
         product.setVisibleByPublic(false);

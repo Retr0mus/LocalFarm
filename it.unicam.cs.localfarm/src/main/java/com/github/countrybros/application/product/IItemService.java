@@ -17,7 +17,7 @@ public interface IItemService {
      *
      * @param request The addItem request.
      */
-    public Item addItem(AddItemRequest request);
+    Item addItem(AddItemRequest request);
 
     /**
      * Adds the specified quantity to an @Item.
@@ -27,7 +27,7 @@ public interface IItemService {
      *
      * @throws NotFoundInRepositoryException if the item doesn't exist
      */
-    public void addQuantityToItem(int itemId, int quantity);
+    void addQuantityToItem(int itemId, int quantity);
 
     /**
      * Subtract the specified quantity to an @Item.
@@ -37,7 +37,7 @@ public interface IItemService {
      *
      * @throws ImpossibleRequestException if the subtraction is negative.
      */
-    public void removeQuantityToItem(int itemId, int quantity);
+    void removeQuantityToItem(int itemId, int quantity);
 
     /**
      * Sets a specific price for an item.
@@ -45,7 +45,7 @@ public interface IItemService {
      * @param itemId The item ID
      * @param price The price to put.
      */
-    public void setPrice(int itemId, float price);
+    void setPrice(int itemId, double price);
 
     /**
      * Returns the selected item, if exists.
@@ -55,7 +55,7 @@ public interface IItemService {
      *
      * @throws NotFoundInRepositoryException if the item doesn't exist.
      */
-    public Item getItem(int itemId);
+    Item getItem(int itemId);
 
     /**
      * Returns the list of items correlated to a company.
@@ -63,5 +63,5 @@ public interface IItemService {
      * @param companyId The company ID.
      * @return the list of items of that company.
      */
-    public List<Item> getItemsBySeller(int companyId);
+    List<Item> getItemsBySeller(int companyId);
 }

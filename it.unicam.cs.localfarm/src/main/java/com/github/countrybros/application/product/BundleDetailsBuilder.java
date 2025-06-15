@@ -29,8 +29,8 @@ public class BundleDetailsBuilder extends ItemDetailsBuilder<BundleDetails>{
      *
      * @param items map of the items linked to their quantity
      */
-    public void setItemsQta(ArrayList<ItemDetailsQuantity> items) {
+    public void setItemsQty(ArrayList<ItemDetailsQuantity> items) {
 
-        this.product.setItemsQta(items);
+        this.product.setItemsQty(items);
     }
 }

@@ -3,6 +3,7 @@ package com.github.countrybros.application.product;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.user.CompanyService;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.infrastructure.product.ItemRepository;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.ItemDetails;
@@ -19,7 +20,7 @@ import java.util.List;
 @Service
 public class ItemService implements IItemService {
   
-    private final CompanyService companyService;
+    private final ICompanyService companyService;
     private final ItemRepository itemRepository;
     private final IItemDetailsService itemDetailsService;
 
@@ -84,7 +85,7 @@ public class ItemService implements IItemService {
     /**
      * @inheritDoc
      */
-    public void setPrice(int itemId, float price) {
+    public void setPrice(int itemId, double price) {
 
         Item item = getItem(itemId);
         item.setPrice(price);

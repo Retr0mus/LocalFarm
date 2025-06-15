@@ -18,19 +18,19 @@ public class BundleDetails extends ItemDetails {
      * Represents all the @ItemDetails that
      */
     @OneToMany(cascade = CascadeType.ALL)
-    private List<ItemDetailsQuantity> itemsQta = new ArrayList<>();
+    private List<ItemDetailsQuantity> itemsQty = new ArrayList<>();
 
     public BundleDetails() {
 
         super();
     }
 
-    public List<ItemDetailsQuantity> getItemsQta() {
+    public List<ItemDetailsQuantity> getItemsQty() {
 
-        return itemsQta;
+        return itemsQty;
     }
 
-    public void setItemsQta(List<ItemDetailsQuantity> itemsQta) {
-        this.itemsQta = itemsQta;
+    public void setItemsQty(List<ItemDetailsQuantity> itemsQta) {
+        this.itemsQty = itemsQta;
     }
 }

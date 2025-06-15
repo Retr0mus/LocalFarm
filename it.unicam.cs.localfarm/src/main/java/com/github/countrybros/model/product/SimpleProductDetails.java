@@ -14,6 +14,7 @@ import java.util.List;
 @DiscriminatorValue("simpleProductDetails")
 public class SimpleProductDetails extends ItemDetails {
 
+    //TODO: ManyToMany
     @ElementCollection
     private List<Certification> certifications = new ArrayList<>();
 

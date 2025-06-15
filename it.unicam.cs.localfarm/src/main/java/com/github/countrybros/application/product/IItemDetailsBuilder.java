@@ -11,18 +11,18 @@ public interface IItemDetailsBuilder {
     /**
      * resets the building, prepare for another object to being created.
      */
-    public void reset();
+    void reset();
 
     /**
      * Returns the built element.
      *
      * @return the element
      */
-    public ItemDetails build();
+    ItemDetails getResult();
 
-    public void setName(String productName);
+    void setName(String productName);
 
-    public void setDescription(String productDescription);
+    void setDescription(String productDescription);
 
-    public void setProducer(Company producer);
+        void setProducer(Company producer);
 }

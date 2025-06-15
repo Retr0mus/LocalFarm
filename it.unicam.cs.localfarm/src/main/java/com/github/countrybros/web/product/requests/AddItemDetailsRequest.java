@@ -13,8 +13,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = AddTransformedProductDetailsRequest.class, name = "transformedProduct")
 })
 public abstract class AddItemDetailsRequest {
+
     public String name;
+
     public String description;
+
     public int producerId;
+
     public String type;
 }

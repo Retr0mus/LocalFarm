@@ -12,9 +12,11 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    //TODO: Remove Transient
     @Transient
     private Company seller;
     private double price;
+    //TODO: not OneToOne
     @OneToOne(cascade = CascadeType.ALL)
     private ItemDetails itemDetails;
     private int qty;

@@ -6,5 +6,6 @@ package com.github.countrybros.web.product.requests;
 public class EditItemDetailsRequest {
 
     public int itemId;
+
     public AddItemDetailsRequest changesToItemDetails;
 }

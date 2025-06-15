@@ -11,16 +11,17 @@ public class ItemDetailsQuantity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
+    //TODO not OneToOne
     @OneToOne(cascade = CascadeType.ALL)
     private ItemDetails itemDetails;
-    private int quantity;
+    private int qty;
 
     public ItemDetailsQuantity() {}
 
-    public ItemDetailsQuantity(ItemDetails item, int quantity) {
+    public ItemDetailsQuantity(ItemDetails item, int qty) {
 
         this.itemDetails = item;
-        this.quantity = quantity;
+        this.qty = qty;
     }
 
     public ItemDetails getItemDetails() {
@@ -31,11 +32,11 @@ public class ItemDetailsQuantity {
         this.itemDetails = itemDetails;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQty() {
+        return qty;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQty(int quantity) {
+        this.qty = quantity;
     }
 }
