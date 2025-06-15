@@ -32,8 +32,9 @@ public class ShoppingService implements IShoppingService {
     private IShoppingItemRepository shoppingItemRepository;
     @Autowired
     private IPaymentService paymentService;
-
+    @Autowired
     private ICartRepository cartRepository;
+    @Autowired
     private IOrderRepository orderRepository;
 
     @Override

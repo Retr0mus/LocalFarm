@@ -3,7 +3,10 @@ package com.github.countrybros.model.product;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.countrybros.model.user.Company;
+import com.github.countrybros.model.user.Postable;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 
 /**
  * Represents the details of a generic @Item that can be sold in the marketplace.
@@ -22,7 +25,7 @@ import jakarta.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "submission_type")
-public abstract class ItemDetails {
+public abstract class ItemDetails implements Postable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

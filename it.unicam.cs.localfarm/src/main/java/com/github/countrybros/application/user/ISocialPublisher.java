@@ -1,6 +1,6 @@
 package com.github.countrybros.application.user;
 
-import java.net.Socket;
+import com.github.countrybros.model.user.SocialPost;
 
 /**
  * Represents a generic social media API.

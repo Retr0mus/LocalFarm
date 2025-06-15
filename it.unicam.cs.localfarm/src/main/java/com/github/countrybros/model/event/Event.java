@@ -2,9 +2,12 @@ package com.github.countrybros.model.event;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.countrybros.model.user.Company;
+import com.github.countrybros.model.user.Postable;
+import com.github.countrybros.model.user.SocialPost;
 import com.github.countrybros.model.user.User;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,7 @@ import java.util.List;
  * Class that represents an event.
  */
 @Entity
-public class Event {
+public class Event implements Postable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -165,5 +168,11 @@ public class Event {
                 .filter(obj -> obj.getReceiver() == guest)
                 .findFirst()
                 .get();
+    }
+
+    //TODO
+    @Override
+    public SocialPost getPost() {
+        return null;
     }
 }

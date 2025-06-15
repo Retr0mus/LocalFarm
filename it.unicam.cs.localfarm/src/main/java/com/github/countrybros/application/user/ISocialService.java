@@ -17,9 +17,9 @@ public interface ISocialService {
      * Uses a @IsocialPublisher to create a post on a @ItemDetails.
      *
      * @param publisher The publisher to use
-     * @param productId ID of the product
+     * @param ItemDetailsId ID of the product
      */
-    void publishItemDetails(ISocialPublisher publisher, int productId);
+    void publishItemDetails(ISocialPublisher publisher, int ItemDetailsId);
 
 
 }

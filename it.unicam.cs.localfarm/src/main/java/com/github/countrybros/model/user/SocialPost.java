@@ -1,4 +1,4 @@
-package com.github.countrybros.application.user;
+package com.github.countrybros.model.user;
 
 /**
  * Represents a generic social post.

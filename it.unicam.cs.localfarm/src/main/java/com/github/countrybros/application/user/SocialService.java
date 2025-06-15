@@ -17,7 +17,7 @@ public class SocialService implements ISocialService{
     }
 
     @Override
-    public void publishItemDetails(ISocialPublisher publisher, int productId) {
+    public void publishItemDetails(ISocialPublisher publisher, int ItemDetailsId) {
 
     }
 }
