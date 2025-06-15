@@ -23,16 +23,6 @@ public interface IOrderService {
      */
     List<Order> getOrders(User user);
 
-
-    /**
-     * Create an order when a user decides to buy the item inside his cart.
-     *
-     * @param userId The user.
-     * @param method The method chosen by the user.
-     * @param address The address chosen by the user.
-     */
-    Order checkout(int userId, IPaymentMethod method, ShippingAddress address);
-
     /**
      * Returns all the order made since the specified date.
      *

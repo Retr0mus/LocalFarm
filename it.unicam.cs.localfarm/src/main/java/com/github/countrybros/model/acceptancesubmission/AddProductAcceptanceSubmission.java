@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 @DiscriminatorValue("addProduct")
 public class AddProductAcceptanceSubmission extends AcceptanceSubmission {
 
-
     private int itemDetailsId;
 
     public AddProductAcceptanceSubmission() {}
@@ -20,5 +19,6 @@ public class AddProductAcceptanceSubmission extends AcceptanceSubmission {
     }
 
     public void setItemDetailsId(int itemDetailsId) {
+        itemDetailsId = itemDetailsId;
     }
 }

@@ -104,6 +104,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
                 .orElseThrow(() -> new NotFoundInRepositoryException("Curator not found"));
 
         submission.setAccepted(true);
+        // TODO: Remove assignation
         submission.assignCurator(curatorId);
 
         acceptanceSubmissionRepository.save(submission);

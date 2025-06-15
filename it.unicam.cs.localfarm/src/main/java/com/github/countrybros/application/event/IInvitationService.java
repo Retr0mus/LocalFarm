@@ -53,4 +53,6 @@ public interface IInvitationService {
      * @throws ImpossibleRequestException if the invitation is expired.
      */
     public void acceptInvitation(int invitationId);
+
+    //TODO: Add refuse invitation
 }

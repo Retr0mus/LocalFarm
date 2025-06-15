@@ -25,12 +25,6 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @PostMapping("/checkout")
-    public ResponseEntity<Order> checkout(@RequestParam int userId, @RequestBody CheckoutRequest checkoutRequest) {
-        Order order = orderService.checkout(userId, checkoutRequest.paymentMethod, checkoutRequest.shippingAddress);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
-    }
-
     @PostMapping("/add")
     public ResponseEntity<String> addOrder(@RequestBody OrderRequest request) {
         orderService.addOrder(request);

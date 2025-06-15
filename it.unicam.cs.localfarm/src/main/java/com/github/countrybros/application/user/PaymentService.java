@@ -2,6 +2,7 @@ package com.github.countrybros.application.user;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.model.user.*;
+import com.github.countrybros.model.user.IPaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,23 +16,29 @@ import java.util.Date;
 public class PaymentService implements IPaymentService {
 
     @Autowired
-    private IShoppingService shoppingService;
-    @Autowired
     private IUserService userService;
     @Autowired
     private ICompanyService companyService;
     @Autowired
     private IOrderService orderService;
 
+
+    /**
+     * The payment of a user.
+     *
+     * @param userId        ID of the user.
+     * @param paymentMethod method chosen by the user.
+     * @param amount        the amount to pay.
+     */
     @Override
-    public boolean buy(int userId, IPaymentMethod paymentMethod, float paymentAmount) {
+    public boolean buy(int userId, IPaymentMethod paymentMethod, float amount) {
         User user = userService.getUser(userId);
         if (user == null) {
             throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
         }
 
         try {
-            //TODO inserire la logica di pagamento
+            paymentMethod.pay(userId, amount);
             return true;
         } catch (Exception e) {
             return false;

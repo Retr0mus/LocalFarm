@@ -1,21 +1,21 @@
 package com.github.countrybros.application.user;
 
 
+import com.github.countrybros.application.errors.NotEnoughItemsException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.product.ItemService;
 import com.github.countrybros.infrastructure.repository.ICartRepository;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.infrastructure.repository.IShoppingItemRepository;
 import com.github.countrybros.model.product.Item;
-import com.github.countrybros.model.user.Cart;
-import com.github.countrybros.model.user.Order;
-import com.github.countrybros.model.user.ShoppingItem;
-import com.github.countrybros.model.user.User;
+import com.github.countrybros.model.user.*;
+import com.github.countrybros.model.user.IPaymentMethod;
 import jakarta.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,10 +26,12 @@ public class ShoppingService implements IShoppingService {
 
     @Autowired
     private IUserService  userService;
-    @Transient
+    @Autowired
     private ItemService itemService;
     @Autowired
     private IShoppingItemRepository shoppingItemRepository;
+    @Autowired
+    private IPaymentService paymentService;
 
     private ICartRepository cartRepository;
     private IOrderRepository orderRepository;
@@ -132,6 +134,36 @@ public class ShoppingService implements IShoppingService {
 
         cart.setItems(excessItems);
         return excessCart;
+    }
+
+    /**
+     * Create an order when a user decides to buy the item inside his cart.
+     *
+     * @param userId  The user.
+     * @param method  The method chosen by the user.
+     * @param address The address chosen by the user.
+     */
+    @Override
+    public Order checkout(int userId, IPaymentMethod method, ShippingAddress address) {
+
+            Cart cart = getCart(userId);
+            Cart excessCart = getExcessItems(cart);
+
+            if (excessCart.getItems().isEmpty())
+                throw new NotEnoughItemsException("Item quantity not available", excessCart);
+
+            //TODO: User as parameter, maybe
+            paymentService.buy(userId, method, cart.getTotalAmount());
+
+            User user = userService.getUser(userId);
+            Order order = new Order();
+            order.setCart(cart);
+            order.setAddress(address);
+            order.setCustomer(user);
+            order.setOrderDate(new Date());
+            order.setOrderStatus(OrderStatus.picking);
+            orderRepository.save(order);
+            return order;
     }
 
 }

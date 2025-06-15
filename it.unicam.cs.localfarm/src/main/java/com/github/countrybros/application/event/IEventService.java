@@ -29,7 +29,7 @@ public interface IEventService {
      *
      * @throws NotFoundInRepositoryException if the event searched doesn't exist
      */
-    public void removeEvent(int eventId);
+    public void deleteEvent(int eventId);
 
     /**
      * Returns the event associated with the specified ID.
@@ -99,6 +99,7 @@ public interface IEventService {
      * @param eventId the ID of the event to publish.
      *
      * @throws RequestAlreadySatisfiedException if the event is already public.
+
      */
     public void confirmEventPublication(int eventId);
 

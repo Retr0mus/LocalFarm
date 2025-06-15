@@ -6,6 +6,7 @@ import com.github.countrybros.web.event.requests.CreateEventRequest;
 import com.github.countrybros.web.event.requests.EditEventRequest;
 import com.github.countrybros.web.event.requests.EventElement;
 import jakarta.websocket.server.PathParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,10 @@ import java.util.List;
 @RequestMapping("*")
 public class EventController {
 
-    private IEventService eventService;
+    private final IEventService eventService;
 
+    @Autowired
     public EventController(IEventService eventService) {
-
         this.eventService = eventService;
     }
 
@@ -77,19 +78,19 @@ public class EventController {
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 
-    @PutMapping("cancelParicipation")
-    public ResponseEntity<Object> cancelParticipation(@PathParam("eventId") int eventId
-                                                    ,@PathParam("userId") int userId){
+    @PutMapping("cancelUserParicipation")
+    public ResponseEntity<Object> cancelUserParticipation(@PathParam("eventId") int eventId
+                                                    , @PathParam("userId") int userId){
 
         eventService.cancelCompanyParticipation(userId, eventId);
         return new ResponseEntity<>("Participation cancelled", HttpStatus.OK);
     }
 
-    @PutMapping("confirmParticipation")
+    @PutMapping("confirmCompanyParticipation")
     public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
-                                                            ,@PathParam("userId") int userId){
+                                                            ,@PathParam("companyId") int companyId){
 
-        eventService.confirmCompanyParticipation(eventId, userId);
+        eventService.confirmCompanyParticipation(eventId, companyId);
         return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
     }
 

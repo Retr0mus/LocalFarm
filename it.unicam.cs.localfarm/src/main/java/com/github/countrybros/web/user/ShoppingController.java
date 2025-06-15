@@ -2,7 +2,9 @@ package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.user.IShoppingService;
 import com.github.countrybros.model.user.Cart;
+import com.github.countrybros.model.user.Order;
 import com.github.countrybros.web.user.request.AddItemToCartRequest;
+import com.github.countrybros.web.user.request.CheckoutRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +46,11 @@ public class ShoppingController {
     public ResponseEntity<Cart> getExcessItems(@RequestBody Cart cart) {
         Cart excessCart = shoppingService.getExcessItems(cart);
         return new ResponseEntity<>(excessCart, HttpStatus.OK);
+    }
+
+    @PostMapping("/checkout")
+    public ResponseEntity<Order> checkout(@RequestParam int userId, @RequestBody CheckoutRequest checkoutRequest) {
+        Order order = shoppingService.checkout(userId, checkoutRequest.paymentMethod, checkoutRequest.shippingAddress);
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Embeddable
 public class TimeInterval {
 
-    private LocalDateTime start;
+    private LocalDateTime startTime;
 
     /**
      * cordially,
@@ -17,8 +17,8 @@ public class TimeInterval {
 
     public TimeInterval() {}
 
-    public LocalDateTime getStart() { return start; }
-    public void setStart(LocalDateTime start) { this.start = start; }
+    public LocalDateTime getStartTime() { return startTime; }
+    public void setStartTime(LocalDateTime start) { this.startTime = start; }
 
     public LocalDateTime getEnd() { return endTime; }
     public void setEnd(LocalDateTime end) { this.endTime = end; }

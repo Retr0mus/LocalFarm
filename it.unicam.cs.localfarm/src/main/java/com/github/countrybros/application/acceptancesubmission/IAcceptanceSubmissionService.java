@@ -50,12 +50,15 @@ public interface IAcceptanceSubmissionService {
      */
      List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
 
+     //TODO: Add acceptance submission by sender.
+
     /**
      * Accepts the specified AcceptanceSubmission.
      *
      * @param submissionId the id of the AcceptanceSubmission.
      * @return if the task succeeded or not.
      */
+    // TODO: The curator Id must be taken from the submission itself, implement the relative use case.
     boolean onAcceptance(int submissionId, int curatorId);
 
     /**

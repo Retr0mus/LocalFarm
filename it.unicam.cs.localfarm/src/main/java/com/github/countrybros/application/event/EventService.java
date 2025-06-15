@@ -73,7 +73,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void removeEvent(int eventId) {
+    public void deleteEvent(int eventId) {
 
         Event event = this.eventRepository.findById(eventId).orElse(null);
 

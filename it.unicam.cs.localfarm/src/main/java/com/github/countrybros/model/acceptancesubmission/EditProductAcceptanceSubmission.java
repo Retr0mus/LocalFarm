@@ -26,8 +26,10 @@ public class EditProductAcceptanceSubmission extends AcceptanceSubmission {
     }
 
     public void setProductToEditId(int productToEditId) {
+        this.productToEditId = productToEditId;
     }
 
     public void setProductChangeId(int productChangeId) {
+        this.productChangeId = productChangeId;
     }
 }

@@ -8,9 +8,6 @@ import com.github.countrybros.model.user.ShippingAddress;
  */
 
 public class CheckoutRequest {
-
     public IPaymentMethod paymentMethod;
     public ShippingAddress shippingAddress;
-
-
 }

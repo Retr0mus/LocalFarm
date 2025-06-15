@@ -20,5 +20,6 @@ public class RemoveProductAcceptanceSubmission extends AcceptanceSubmission {
     }
 
     public void setProductId(int productId) {
+        this.productId = productId;
     }
 }

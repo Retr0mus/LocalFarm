@@ -40,9 +40,11 @@ public class Event {
 
     private EventState state;
 
-    public Event(String name, int maxSpots) {
 
-        state = EventState.planning;
+    public Event(String name, int maxSpots) {
+        this.name = name;
+        this.maxSpots = maxSpots;
+        this.state = EventState.planning;
     }
 
     public Event() {}
@@ -98,7 +100,6 @@ public class Event {
      * @param user the user to subscribe.
      */
     public void subscribe(User user){
-
         subscribers.add(user);
     }
 
@@ -108,7 +109,6 @@ public class Event {
      * @param user the user to unsubscribe.
      */
     public void unsubscribe(User user){
-
         subscribers.remove(user);
     }
 
@@ -161,15 +161,9 @@ public class Event {
      * @param guest The company.
      */
     public Invitation getGuestInvitation(Company guest){
-
         return invitations.stream()
                 .filter(obj -> obj.getReceiver() == guest)
                 .findFirst()
                 .get();
-    }
-
-    public void cancelInvitation(Company guest){
-
-        invitations.removeIf(obj -> obj.getReceiver() == guest);
     }
 }

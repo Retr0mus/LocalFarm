@@ -14,6 +14,7 @@ public interface IPaymentService {
      *
      * @param userId        ID of the user.
      * @param paymentMethod method chosen by the user.
+     * @param amount        the amount to pay.
      */
     boolean buy(int userId, IPaymentMethod paymentMethod, float amount);
 
