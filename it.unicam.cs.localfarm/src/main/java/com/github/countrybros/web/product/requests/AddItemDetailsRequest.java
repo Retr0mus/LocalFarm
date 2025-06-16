@@ -21,4 +21,9 @@ public abstract class AddItemDetailsRequest {
     public int producerId;
 
     public String type;
+
+    /**
+     * id of a company.
+     */
+    public int senderId;
 }

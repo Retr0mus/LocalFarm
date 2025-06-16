@@ -2,6 +2,7 @@ package com.github.countrybros.application.product;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 import com.github.countrybros.model.product.ItemDetails;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.product.ItemDetailsStatus;
@@ -16,13 +17,13 @@ import java.util.List;
 public interface IItemDetailsService {
 
     /**
-     * Create a new ItemDetails.
+     * Create a new ItemDetails that is not public, waiting for a curator to review
      *
      * @param request The new ItemDetails request.
      *
      * @return The item details.
      */
-    ItemDetails addItemDetails(AddItemDetailsRequest request);
+    ItemDetails requestToAddItemDetails(AddItemDetailsRequest request);
 
     /**
      * Deletes an existing ItemDetails.
@@ -33,26 +34,15 @@ public interface IItemDetailsService {
      */
     void deleteItemDetails(int itemDetailsId);
 
-    /**
-     * Sets all the base details of an ItemDetails equal to another one,
-     * the first ItemDetails should be public, the other should be under review and
-     * will be deleted.
-     *
-     * @param existingItemDetailsId The ID of the ItemDetails that will be relaced.
-     * @param changedItemDetailsId The new ItemDetails ID.
-     *
-     * @throws RequestAlreadySatisfiedException if there are no changes.
-     * @throws ImpossibleRequestException if the subtypes are incompatible.
-     */
-    void acceptChanges(int existingItemDetailsId, int changedItemDetailsId);
 
     /**
-     * Create a new ItemDetails with the changes regards a certain existing one.
-     * This will generate a request that a Curator will review.
+     * Accepts a submission, making the necessary changes.
      *
-     * @param request The edit request
+     * @param acceptanceSubmissionId The submission ID
+     *
+     * @throws ImpossibleRequestException if the type of submission is not valid.
      */
-    void editItemDetails(EditItemDetailsRequest request);
+    void acceptChanges(int acceptanceSubmissionId);
 
     /**
      * Changes the status of an ItemDetails according to the previous one.
@@ -79,4 +69,11 @@ public interface IItemDetailsService {
      * @param companyId ID of the company.
      */
     List<ItemDetails> getCompanyItemDetails(int companyId);
+
+    /**
+     * Create a new ItemDetails that contains the changes.
+     *
+     * @param request The request
+     */
+    void requestChanges(EditItemDetailsRequest request);
 }

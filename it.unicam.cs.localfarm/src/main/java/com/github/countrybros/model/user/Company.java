@@ -1,5 +1,6 @@
 package com.github.countrybros.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import com.github.countrybros.model.event.Invitation;
@@ -25,7 +26,8 @@ public class Company {
     private String description;
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private ArrayList<Invitation> invitations;
+    @JsonIgnore
+    private List<Invitation> invitations;
     //TODO add location
 
     public String getName() {
@@ -68,7 +70,7 @@ public class Company {
         return invitations;
     }
 
-    public void setInvitations(ArrayList<Invitation> invitations) {
+    public void setInvitations(List<Invitation> invitations) {
         this.invitations = invitations;
     }
 }

@@ -1,6 +1,5 @@
 package com.github.countrybros.application.user;
 
-import com.github.countrybros.application.errors.FoundInRepositoryException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.model.user.*;
@@ -54,9 +53,6 @@ public class OrderService implements IOrderService {
         order.setOrderDate(new Date());
         order.setOrderStatus(request.orderStatus != null ? request.orderStatus : OrderStatus.picking);
 
-        if (orderRepository.existsById(order.getOrderId())) {
-            throw new FoundInRepositoryException("Order already exists");
-        }
         orderRepository.save(order);
     }
 

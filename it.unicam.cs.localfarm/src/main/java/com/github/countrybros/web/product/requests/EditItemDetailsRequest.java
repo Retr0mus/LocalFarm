@@ -7,5 +7,10 @@ public class EditItemDetailsRequest {
 
     public int itemId;
 
+    /**
+     * id of a company
+     */
+    public int senderId;
+
     public AddItemDetailsRequest changesToItemDetails;
 }

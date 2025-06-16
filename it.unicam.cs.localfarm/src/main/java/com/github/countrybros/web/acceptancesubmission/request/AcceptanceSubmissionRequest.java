@@ -15,34 +15,25 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = RemoveProductAcceptanceSubmissionRequest.class, name = "removeProduct")
 })
 public abstract class AcceptanceSubmissionRequest {
-    private int id;
+
     private String type;
-    private int curatorId;
     private int senderId;
-    private boolean accepted;
     private String typeForSpringBoot;
 
-    public int getId() {
-        return id;
-    }
 
     public String getType() {
         return type;
-    }
-
-    public int getCuratorId() {
-        return curatorId;
     }
 
     public int getSenderId() {
         return senderId;
     }
 
-    public boolean isAccepted() {
-        return accepted;
+    public void setType(String type) {
+        this.type = type;
     }
 
-
-
-
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
+    }
 }

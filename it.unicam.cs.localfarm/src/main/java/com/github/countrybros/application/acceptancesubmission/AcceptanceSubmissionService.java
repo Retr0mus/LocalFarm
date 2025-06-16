@@ -1,10 +1,15 @@
 package com.github.countrybros.application.acceptancesubmission;
 
 
+import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.application.product.IItemService;
+import com.github.countrybros.application.user.IUserService;
 import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
 import com.github.countrybros.infrastructure.repository.IUserRepository;
+import com.github.countrybros.model.acceptancesubmission.AddProductAcceptanceSubmission;
+import com.github.countrybros.model.user.User;
 import com.github.countrybros.web.acceptancesubmission.request.*;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 import org.springframework.stereotype.Service;
@@ -18,19 +23,20 @@ import java.util.List;
 public class AcceptanceSubmissionService implements IAcceptanceSubmissionService {
 
     private IAcceptanceSubmissionRepository acceptanceSubmissionRepository;
-    private IUserRepository userRepository;
-    AcceptanceSubmissionFactory factory;
+    private IUserService userService;
+    private AcceptanceSubmissionFactory factory;
 
 
-    public AcceptanceSubmissionService(IAcceptanceSubmissionRepository acceptanceSubmissionRepository) {
+    public AcceptanceSubmissionService(IAcceptanceSubmissionRepository acceptanceSubmissionRepository,
+                                       IUserService userService) {
         this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
         this.factory = new AcceptanceSubmissionFactory();
+        this.userService = userService;
     }
     /**
      * Adds an AcceptanceSubmission.
      *
      * @param request the submission to add.
-     * @return if the task was successful.
      */
     @Override
     public void addAcceptanceSubmission(AcceptanceSubmissionRequest request) {
@@ -44,7 +50,6 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * Deletes an AcceptanceSubmission.
      *
      * @param acceptanceSubmissionId the submission to delete.
-     * @return if the task was successful or not.
      */
     @Override
     public void deleteAcceptanceSubmission(int acceptanceSubmissionId) {
@@ -89,40 +94,52 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * Accepts the specified AcceptanceSubmission.
      *
      * @param submissionId the id of the AcceptanceSubmission.
-     * @return if the task succeeded or not.
      */
     @Override
-    public boolean onAcceptance(int submissionId, int curatorId) {
-        AcceptanceSubmission submission = acceptanceSubmissionRepository.findById(submissionId)
-                .orElseThrow(() -> new NotFoundInRepositoryException("Submission not found with id " + submissionId));
+    public void onAcceptance(int submissionId) {
+
+        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
 
         if (submission.isAccepted()) {
             throw new RequestAlreadySatisfiedException("Submission already accepted");
         }
 
-        userRepository.findById(curatorId)
-                .orElseThrow(() -> new NotFoundInRepositoryException("Curator not found"));
+        //TODO: implement
+        //userService.getUser(submission.getCuratorId());
 
         submission.setAccepted(true);
-        // TODO: Remove assignation
-        submission.assignCurator(curatorId);
 
         acceptanceSubmissionRepository.save(submission);
-        return true;
     }
 
     /**
      * Refuse the specified AcceptanceSubmission by deleting it.
      *
      * @param submissionId the id of the AcceptanceSubmission.
-     * @return if the task succeeded or not.
      */
     @Override
-    public boolean onRefusal(int submissionId) {
-        if (acceptanceSubmissionRepository.existsById(submissionId)) {
-            acceptanceSubmissionRepository.deleteById(submissionId);
-            return true;
+    public void onRefusal(int submissionId) {
+
+        if (!acceptanceSubmissionRepository.existsById(submissionId)) {
+            throw new NotFoundInRepositoryException("Submission not found with id " + submissionId);
         }
-        return false;
+
+        acceptanceSubmissionRepository.deleteById(submissionId);
+    }
+
+    @Override
+    public void takeChargeOfSubmission(int submissionId, int userId) {
+
+        //check that user exists
+        userService.getUser(userId);
+
+        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
+
+        if (submission.isAccepted()) {
+            throw new ImpossibleRequestException("Submission is already accepted");
+        }
+
+        submission.setSenderId(userId);
+        acceptanceSubmissionRepository.save(submission);
     }
 }

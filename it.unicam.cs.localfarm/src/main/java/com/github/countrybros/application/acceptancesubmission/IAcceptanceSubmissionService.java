@@ -15,7 +15,6 @@ public interface IAcceptanceSubmissionService {
      * Adds an AcceptanceSubmission.
      *
      * @param request the submission to add.
-     * @return if the task was successful.
      */
      void addAcceptanceSubmission(AcceptanceSubmissionRequest request);
 
@@ -23,7 +22,6 @@ public interface IAcceptanceSubmissionService {
      * Deletes an AcceptanceSubmission.
      *
      * @param acceptanceSubmissionId the submission to delete.
-     * @return if the task was successful or not.
      */
      void deleteAcceptanceSubmission(int acceptanceSubmissionId);
 
@@ -56,16 +54,21 @@ public interface IAcceptanceSubmissionService {
      * Accepts the specified AcceptanceSubmission.
      *
      * @param submissionId the id of the AcceptanceSubmission.
-     * @return if the task succeeded or not.
      */
-    // TODO: The curator Id must be taken from the submission itself, implement the relative use case.
-    boolean onAcceptance(int submissionId, int curatorId);
+    void onAcceptance(int submissionId);
 
     /**
      * Accepts the specified AcceptanceSubmission.
      *
      * @param submissionId the id of the AcceptanceSubmission.
-     * @return if the task succeeded or not.
      */
-    boolean onRefusal(int submissionId);
+    void onRefusal(int submissionId);
+
+    /**
+     * Assigns the review on a curator.
+     *
+     * @param submissionId The sub to assign.
+     * @param userId the curator that takes care of the sub
+     */
+    void takeChargeOfSubmission(int submissionId, int userId);
 }

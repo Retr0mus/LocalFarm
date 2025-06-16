@@ -24,10 +24,8 @@ public class CompanyController {
 
     @GetMapping
     public ResponseEntity<Company> getCompany(@RequestParam int companyId) {
+
         Company company = companyService.getCompany(companyId);
-        if (company == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(company, HttpStatus.OK);
     }
 

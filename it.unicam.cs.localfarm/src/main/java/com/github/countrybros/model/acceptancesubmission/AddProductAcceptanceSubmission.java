@@ -19,6 +19,6 @@ public class AddProductAcceptanceSubmission extends AcceptanceSubmission {
     }
 
     public void setItemDetailsId(int itemDetailsId) {
-        itemDetailsId = itemDetailsId;
+        this.itemDetailsId = itemDetailsId;
     }
 }

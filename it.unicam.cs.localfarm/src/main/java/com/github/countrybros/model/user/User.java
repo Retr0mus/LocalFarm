@@ -1,6 +1,7 @@
 package com.github.countrybros.model.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<UserRole> roles = new ArrayList<>();
     @OneToOne
+    @JsonIgnore
     private Cart cart;
 
     public User() {

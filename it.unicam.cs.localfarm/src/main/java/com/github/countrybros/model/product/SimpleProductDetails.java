@@ -1,5 +1,6 @@
 package com.github.countrybros.model.product;
 
+import com.github.countrybros.model.user.SocialPost;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -23,5 +24,10 @@ public class SimpleProductDetails extends ItemDetails {
     public void setCertifications(ArrayList<Certification> certifications) {
 
         this.certifications = certifications;
+    }
+
+    @Override
+    public SocialPost getPost() {
+        return new SocialPost();
     }
 }

@@ -24,7 +24,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @GetMapping(value="/events")
+    @GetMapping(value="events")
     public ResponseEntity<List<EventElement>> getEvents(){
 
         return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
@@ -78,11 +78,11 @@ public class EventController {
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 
-    @PutMapping("cancelUserParicipation")
-    public ResponseEntity<Object> cancelUserParticipation(@PathParam("eventId") int eventId
-                                                    , @PathParam("userId") int userId){
+    @PutMapping("cancelCompanyParticipation")
+    public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("eventId") int eventId
+                                                    , @PathParam("userId") int companyId){
 
-        eventService.cancelCompanyParticipation(userId, eventId);
+        eventService.cancelCompanyParticipation(companyId, eventId);
         return new ResponseEntity<>("Participation cancelled", HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.github.countrybros.model.product;
 
+import com.github.countrybros.model.user.SocialPost;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -32,5 +33,10 @@ public class BundleDetails extends ItemDetails {
 
     public void setItemsQty(List<ItemDetailsQuantity> itemsQta) {
         this.itemsQty = itemsQta;
+    }
+
+    @Override
+    public SocialPost getPost() {
+        return new SocialPost();
     }
 }

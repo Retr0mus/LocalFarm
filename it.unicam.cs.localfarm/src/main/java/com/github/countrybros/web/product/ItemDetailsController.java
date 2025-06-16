@@ -27,11 +27,11 @@ public class ItemDetailsController {
         this.companyService = companyService;
     }
 
-    @PostMapping( "add")
-    public ResponseEntity<Object> addItemDetails(@RequestBody AddItemDetailsRequest request) {
+    @PostMapping( "addRequest")
+    public ResponseEntity<Object> RequestItemDetails(@RequestBody AddItemDetailsRequest request) {
 
-        itemDetailsService.addItemDetails(request);
-        return new ResponseEntity<>("ItemDetails successfully created", HttpStatus.OK);
+        itemDetailsService.requestToAddItemDetails(request);
+        return new ResponseEntity<>("ItemDetails creation request successfully created", HttpStatus.OK);
     }
 
     @DeleteMapping( "delete")
@@ -48,9 +48,8 @@ public class ItemDetailsController {
     }
 
     @PutMapping( "acceptChanges")
-    public ResponseEntity<Object> acceptChanges(@PathParam("targetId") int targetId,
-                                                  @PathParam("changesId") int changesId) {
-        itemDetailsService.acceptChanges(targetId, changesId);
+    public ResponseEntity<Object> acceptChanges(@PathParam("submissionId") int submissionId) {
+        itemDetailsService.acceptChanges(submissionId);
         return new ResponseEntity<>("Item successfully updated", HttpStatus.OK);
     }
 
@@ -58,6 +57,7 @@ public class ItemDetailsController {
     public ResponseEntity<Object> changeStatus(@PathParam("status")ItemDetailsStatus status,
                                                @PathParam("itemDetailsId") int itemDetailsId) {
         itemDetailsService.setStatus(status, itemDetailsId);
+
         return new ResponseEntity<>("Item status successfully updated", HttpStatus.OK);
     }
 }

@@ -6,8 +6,14 @@ import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
 import com.github.countrybros.infrastructure.product.IItemDetailsRepository;
+import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.AddProductAcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.EditProductAcceptanceSubmission;
+import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.ItemDetails;
 import com.github.countrybros.model.product.ItemDetailsStatus;
+import com.github.countrybros.web.acceptancesubmission.request.AddProductAcceptanceSubmissionRequest;
+import com.github.countrybros.web.acceptancesubmission.request.EditProductAcceptanceSubmissionRequest;
 import com.github.countrybros.web.product.requests.AddItemDetailsRequest;
 import com.github.countrybros.web.product.requests.EditItemDetailsRequest;
 import org.springframework.stereotype.Service;
@@ -34,15 +40,19 @@ public class ItemDetailsService implements IItemDetailsService {
     }
 
     @Override
-    public ItemDetails addItemDetails(AddItemDetailsRequest request) {
+    public ItemDetails requestToAddItemDetails(AddItemDetailsRequest request) {
 
         ItemDetailsBuilderFactory factory = new ItemDetailsBuilderFactory();
         ItemDetailsBuilderDirector director = new ItemDetailsBuilderDirector(companyService, factory, this);
 
         ItemDetails itemDetails = itemDetailsRepository.save(director.createItemDetails(request));
 
-        //TODO: when the service works with springboot
-        //acceptanceSubmissionService.addAcceptanceSubmission();
+        AddProductAcceptanceSubmissionRequest requestToAdd = new AddProductAcceptanceSubmissionRequest();
+        requestToAdd.setItemDetailsId(itemDetails.getId());
+        requestToAdd.setType("addProduct");
+        requestToAdd.setSenderId(request.senderId);
+
+        acceptanceSubmissionService.addAcceptanceSubmission(requestToAdd);
 
         return itemDetails;
     }
@@ -57,7 +67,51 @@ public class ItemDetailsService implements IItemDetailsService {
     }
 
     @Override
-    public void acceptChanges(int existingItemDetailsId, int changedItemDetailsId) {
+    public void acceptChanges(int acceptanceSubmissionId) {
+
+        AcceptanceSubmission submission = acceptanceSubmissionService.getAcceptanceSubmission(acceptanceSubmissionId);
+
+        if (submission instanceof AddProductAcceptanceSubmission sub)
+            acceptItemDetails(sub.getItemDetailsId());
+
+        else if (submission instanceof EditProductAcceptanceSubmission sub)
+            editItem(sub.getProductToEditId(), sub.getProductChangeId());
+
+        else
+            throw new ImpossibleRequestException("Unsupported submission type");
+
+        acceptanceSubmissionService.onAcceptance(acceptanceSubmissionId);
+    }
+
+    /**
+     * Accept an item that is under review.
+     *
+     * @param itemDetailsId The itemDetails ID.
+     */
+    private void acceptItemDetails(int itemDetailsId) {
+
+        ItemDetails itemDetails = getItemDetails(itemDetailsId);
+
+        //TODO: implement
+        //if (itemDetails.getStatus() != ItemDetailsStatus.underReview)
+            //throw new ImpossibleRequestException("Item details not under review");
+
+        itemDetails.setStatus(ItemDetailsStatus.available);
+        itemDetailsRepository.save(itemDetails);
+    }
+
+    /**
+     * Sets all the base details of an ItemDetails equal to another one,
+     * the first ItemDetails should be public, the other should be under review and
+     * will be deleted.
+     *
+     * @param existingItemDetailsId The ID of the ItemDetails that will be relaced.
+     * @param changedItemDetailsId The new ItemDetails ID.
+     *
+     * @throws RequestAlreadySatisfiedException if there are no changes.
+     * @throws ImpossibleRequestException if the subtypes are incompatible.
+     */
+    private void editItem(int existingItemDetailsId, int changedItemDetailsId) {
 
         ItemDetails existingItemDetails = getItemDetails(existingItemDetailsId);
         ItemDetails changedItemDetails = getItemDetails(changedItemDetailsId);
@@ -75,21 +129,27 @@ public class ItemDetailsService implements IItemDetailsService {
                 && !existingItemDetails.getStatus().equals(ItemDetailsStatus.outOfStock))
             throw new ImpossibleRequestException("The ItemDetails to update has incompatible status");
 
-        //TODO: if this causes any error in hibernate (shared references): change to deep copy
         BeanUtils.copyProperties(changedItemDetails, existingItemDetails);
         existingItemDetails.setStatus(ItemDetailsStatus.available);
         existingItemDetails.setVisibleByPublic(true);
 
-        //the order of this two lines does matter because of the light copy
+        //do not reverse this two lines
         deleteItemDetails(changedItemDetailsId);
         itemDetailsRepository.save(existingItemDetails);
     }
 
     @Override
-    public void editItemDetails(EditItemDetailsRequest request) {
+    public void requestChanges(EditItemDetailsRequest request) {
 
-        ItemDetails changes = addItemDetails(request.changesToItemDetails);
-        //TODO: complete if accSub will be created here.
+        ItemDetails changes = requestToAddItemDetails(request.changesToItemDetails);
+
+        EditProductAcceptanceSubmissionRequest requestToAdd = new EditProductAcceptanceSubmissionRequest();
+        requestToAdd.setProductToEditId(request.itemId);
+        requestToAdd.setProductChangeId(changes.getId());
+        requestToAdd.setType("editProduct");
+        requestToAdd.setSenderId(request.senderId);
+
+        acceptanceSubmissionService.addAcceptanceSubmission(requestToAdd);
     }
 
     @Override

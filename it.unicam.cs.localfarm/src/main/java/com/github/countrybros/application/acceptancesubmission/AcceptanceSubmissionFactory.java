@@ -51,12 +51,8 @@ public class AcceptanceSubmissionFactory {
             default -> throw new IllegalArgumentException("Unsupported submission type: " + request.getType());
         }
 
-        submission.setAccepted(request.isAccepted());
+        submission.setAccepted(false);
         submission.setSenderId(request.getSenderId());
-        if (request.getCuratorId() <= 0) {
-            throw new IllegalArgumentException("CuratorId must be positive");
-        }
-        submission.assignCurator(request.getCuratorId());
 
         return submission;
     }
