@@ -11,8 +11,7 @@ public class ItemDetailsQuantity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-    //TODO not OneToOne
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private ItemDetails itemDetails;
     private int qty;
 

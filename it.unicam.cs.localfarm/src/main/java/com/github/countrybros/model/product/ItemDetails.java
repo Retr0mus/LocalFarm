@@ -39,7 +39,7 @@ public abstract class ItemDetails implements Postable {
 
     private boolean visibleByPublic = false;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Company producer;
 
     public ItemDetails() {

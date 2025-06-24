@@ -28,7 +28,7 @@ public class ItemDetailsController {
     }
 
     @PostMapping( "addRequest")
-    public ResponseEntity<Object> RequestItemDetails(@RequestBody AddItemDetailsRequest request) {
+    public ResponseEntity<Object> requestItemDetails(@RequestBody AddItemDetailsRequest request) {
 
         itemDetailsService.requestToAddItemDetails(request);
         return new ResponseEntity<>("ItemDetails creation request successfully created", HttpStatus.OK);

@@ -16,7 +16,7 @@ import java.util.List;
 public class BundleDetails extends ItemDetails {
 
     /**
-     * Represents all the @ItemDetails that
+     * Represents all the @ItemDetails that the bundle contains.
      */
     @OneToMany(cascade = CascadeType.ALL)
     private List<ItemDetailsQuantity> itemsQty = new ArrayList<>();
