@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +18,7 @@ public class Cart {
     private  int id;
 
     @OneToMany
-    private Map<Integer, ShoppingItem> items = new HashMap<>();
+    private List<ShoppingItem> items = new ArrayList<>();
 
     public boolean containsItem(int itemId){
         return false;
@@ -27,12 +28,11 @@ public class Cart {
         return 0;
     }
 
-    public Map<Integer, ShoppingItem> getItems() {
+    public List<ShoppingItem> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<ShoppingItem> excessItems) {
+    public void setItems(List<ShoppingItem> items) {
+        this.items = items;
     }
-
-
 }

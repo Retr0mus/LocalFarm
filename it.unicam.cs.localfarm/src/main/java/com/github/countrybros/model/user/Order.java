@@ -20,7 +20,7 @@ public class Order {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company seller;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
     @Temporal(TemporalType.TIMESTAMP)

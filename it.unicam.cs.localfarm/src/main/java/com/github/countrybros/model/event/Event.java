@@ -35,6 +35,7 @@ public class Event implements IPostable {
     @ManyToOne
     private Company organizer;
 
+    //TODO change to ManyToMany
     @OneToMany
     private List<User> subscribers = new ArrayList<>();
 

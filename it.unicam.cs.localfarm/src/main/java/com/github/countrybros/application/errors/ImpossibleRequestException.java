@@ -9,3 +9,4 @@ public class ImpossibleRequestException extends RuntimeException {
         super(message);
     }
 }
+

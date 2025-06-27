@@ -1,8 +1,10 @@
 package com.github.countrybros.application.user;
 
 
+import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotEnoughItemsException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.errors.SevereCodingErrorException;
 import com.github.countrybros.application.product.ItemService;
 import com.github.countrybros.infrastructure.repository.ICartRepository;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
@@ -54,7 +56,7 @@ public class ShoppingService implements IShoppingService {
 
         // Verifica se item già presente, aggiorna quantità, altrimenti aggiungi nuovo
         boolean found = false;
-        for (ShoppingItem si : cart.getItems().values()) {
+        for (ShoppingItem si : cart.getItems()) {
             if (si.getItem().getId() == itemId) {
                 si.setQuantity(si.getQuantity() + qty);
                 shoppingItemRepository.save(si);
@@ -65,7 +67,7 @@ public class ShoppingService implements IShoppingService {
 
         if (!found) {
             ShoppingItem newItem = new ShoppingItem(cart, item, qty);
-            cart.getItems().put(itemId, newItem);
+            cart.getItems().add(itemId, newItem);
             shoppingItemRepository.save(newItem);
         }
 
@@ -81,6 +83,7 @@ public class ShoppingService implements IShoppingService {
         }
         shoppingItem.setQuantity(newQuantity);
         shoppingItemRepository.save(shoppingItem);
+        cartRepository.save(cart);
     }
 
     @Override
@@ -98,6 +101,7 @@ public class ShoppingService implements IShoppingService {
             cart.getItems().remove(itemId);
             shoppingItemRepository.delete(shoppingItem);
         }
+
     }
 
     @Override
@@ -120,11 +124,15 @@ public class ShoppingService implements IShoppingService {
      */
     @Override
     public Cart getExcessItems(Cart cart) {
+        if (cart == null || cart.getItems() == null) {
+            throw new ImpossibleRequestException("Cart or items list is null.");
+        }
+
 
         ArrayList<ShoppingItem> excessItems = new ArrayList<ShoppingItem>();
         Cart excessCart = new Cart();
 
-        for (ShoppingItem shoppingItem : cart.getItems().values()) {
+        for (ShoppingItem shoppingItem : cart.getItems()) {
             Item item = itemService.getItem(shoppingItem.getItem().getId());
             int diff = item.getQty() - shoppingItem.getQuantity();
             if (diff < 0)

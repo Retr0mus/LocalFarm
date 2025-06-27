@@ -48,4 +48,3 @@ public class GlobalExceptionHandler {
                 .body("Internal Server Error");
     }
 }
-

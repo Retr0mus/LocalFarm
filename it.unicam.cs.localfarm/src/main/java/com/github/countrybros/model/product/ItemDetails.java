@@ -37,7 +37,7 @@ public abstract class ItemDetails implements IPostable {
 
     private boolean visibleByPublic = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Company producer;
 
     public ItemDetails() {

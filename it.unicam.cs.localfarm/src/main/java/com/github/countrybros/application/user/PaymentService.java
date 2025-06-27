@@ -48,12 +48,11 @@ public class PaymentService implements IPaymentService {
         for (Order order : orders) {
             if (order.getOrderStatus() != OrderStatus.delivered)
                 continue;
-            for (ShoppingItem item : order.getCart().getItems().values()) {
+            for (ShoppingItem item : order.getCart().getItems()) {
                 paySeller(item.getItem().getSeller().getId(), (float) (item.getQuantity() * item.getItem().getPrice()));
             }
         }
-    };
-
+    }
 
     private void paySeller(int companyId, float paymentAmount) {
 
@@ -62,4 +61,8 @@ public class PaymentService implements IPaymentService {
         //TODO: manage method of the company
         //IPaymentMethod method = company.getPaymentMethod()
     }
-}
+
+
+
+    };
+
