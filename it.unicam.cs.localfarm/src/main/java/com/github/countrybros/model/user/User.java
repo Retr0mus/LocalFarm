@@ -4,6 +4,8 @@ package com.github.countrybros.model.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,5 +74,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
 

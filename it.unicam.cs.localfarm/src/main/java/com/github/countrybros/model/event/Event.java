@@ -1,10 +1,7 @@
 package com.github.countrybros.model.event;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.github.countrybros.model.user.Company;
-import com.github.countrybros.model.user.Postable;
-import com.github.countrybros.model.user.SocialPost;
-import com.github.countrybros.model.user.User;
+import com.github.countrybros.model.user.*;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -15,7 +12,7 @@ import java.util.List;
  * Class that represents an event.
  */
 @Entity
-public class Event implements Postable {
+public class Event implements IPostable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -173,6 +170,7 @@ public class Event implements Postable {
     //TODO
     @Override
     public SocialPost getPost() {
-        return null;
+
+        return new SocialPost();
     }
 }

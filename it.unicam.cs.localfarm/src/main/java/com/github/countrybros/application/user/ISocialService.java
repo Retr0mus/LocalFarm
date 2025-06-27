@@ -20,6 +20,4 @@ public interface ISocialService {
      * @param ItemDetailsId ID of the product
      */
     void publishItemDetails(ISocialPublisher publisher, int ItemDetailsId);
-
-
 }

@@ -1,11 +1,11 @@
 package com.github.countrybros.application.user;
 
-import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.model.user.*;
-import com.github.countrybros.model.user.IPaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,29 +26,24 @@ public class PaymentService implements IPaymentService {
     /**
      * The payment of a user.
      *
-     * @param userId        ID of the user.
-     * @param paymentMethod method chosen by the user.
-     * @param amount        the amount to pay.
+     * @param amount the amount to pay.
      */
     @Override
-    public boolean buy(int userId, IPaymentMethod paymentMethod, float amount) {
-        User user = userService.getUser(userId);
-        if (user == null) {
-            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
-        }
+    public boolean paymentToMarketplace(IPaymentMethod paymentMethod, float amount) {
 
-        try {
-            paymentMethod.pay(userId, amount);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return paymentMethod.pay(amount);
     }
 
     @Override
-    public void paySellers(Date date) {
+    public void paySellers() {
 
-        ArrayList<Order> orders = new ArrayList<>(orderService.getOrdersSince(date));
+        ArrayList<Order> orders = new ArrayList<>(orderService
+                .getOrdersSince(Date.from(
+                        LocalDateTime.now()
+                                .minusDays(28)
+                                .atZone(ZoneId.systemDefault())
+                                .toInstant()
+                )));
 
         for (Order order : orders) {
             if (order.getOrderStatus() != OrderStatus.delivered)
@@ -58,6 +53,7 @@ public class PaymentService implements IPaymentService {
             }
         }
     };
+
 
     private void paySeller(int companyId, float paymentAmount) {
 

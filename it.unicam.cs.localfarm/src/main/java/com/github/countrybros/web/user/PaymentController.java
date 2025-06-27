@@ -1,7 +1,7 @@
 package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.user.IPaymentService;
-import com.github.countrybros.model.user.IPaymentMethod;
+import com.github.countrybros.model.user.FakePayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,15 @@ public class PaymentController {
     @Autowired
     private IPaymentService paymentService;
 
+    /**
+     * Payment is fake!!!
+     * @param amount
+     * @return
+     */
     @PostMapping("/buy")
-    public ResponseEntity<String> buy(
-            @RequestParam int userId,
-            @RequestBody IPaymentMethod paymentMethod,
-            @RequestParam float amount) {
+    public ResponseEntity<String> buy(@RequestParam float amount) {
 
-        boolean success = paymentService.buy(userId, paymentMethod, amount);
+        boolean success = paymentService.paymentToMarketplace(new FakePayment(), amount);
         if (success) {
             return new ResponseEntity<>("Payment completed successfully", HttpStatus.OK);
         } else {
@@ -31,8 +33,8 @@ public class PaymentController {
     }
 
     @PostMapping("/pay_sellers")
-    public ResponseEntity<String> paySeller(@RequestParam("since") Date dateSince) {
-        paymentService.paySellers(dateSince);
+    public ResponseEntity<String> paySellers() {
+        paymentService.paySellers();
         return new ResponseEntity<>("Sellers paid successfully", HttpStatus.OK);
     }
 }

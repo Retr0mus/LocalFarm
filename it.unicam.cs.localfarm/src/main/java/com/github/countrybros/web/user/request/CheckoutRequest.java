@@ -1,6 +1,6 @@
 package com.github.countrybros.web.user.request;
 
-import com.github.countrybros.model.user.IPaymentMethod;
+import com.github.countrybros.application.user.IPaymentMethod;
 import com.github.countrybros.model.user.ShippingAddress;
 
 /**

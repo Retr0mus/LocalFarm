@@ -11,20 +11,9 @@ import com.github.countrybros.model.user.User;
 public interface IPaymentMethod {
 
     /**
-     * Retribution of a company.
-     *
-     * @param company The company.
+     * Payment
      *
      * @param price The price to receive.
      */
-    boolean pay(Company company, float price);
-
-    /**
-     * The payment of the user to the system.
-     *
-     * @param user The user.
-     *
-     * @param price The price to pay.
-     */
-    boolean buy(User user, float price);
+    boolean pay(float price);
 }

@@ -1,7 +1,6 @@
 package com.github.countrybros.application.user;
 
 import com.github.countrybros.model.user.Cart;
-import com.github.countrybros.model.user.IPaymentMethod;
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.model.user.ShippingAddress;
 

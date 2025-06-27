@@ -9,8 +9,6 @@ import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.infrastructure.repository.IShoppingItemRepository;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.user.*;
-import com.github.countrybros.model.user.IPaymentMethod;
-import jakarta.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -153,8 +151,7 @@ public class ShoppingService implements IShoppingService {
             if (excessCart.getItems().isEmpty())
                 throw new NotEnoughItemsException("Item quantity not available", excessCart);
 
-            //TODO: User as parameter, maybe
-            paymentService.buy(userId, method, cart.getTotalAmount());
+            paymentService.paymentToMarketplace(method, cart.getTotalAmount());
 
             User user = userService.getUser(userId);
             Order order = new Order();
