@@ -1,0 +1,4747 @@
+{
+	"info": {
+		"_postman_id": "f3400ccd-095b-4722-8761-e5dd611f5923",
+		"name": "OpenAPI definition",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45767553"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "add",
+					"item": [
+						{
+							"name": "add User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Excepteur do dolor\",\n  \"password\": \"cupidatat\",\n  \"email\": \"cillum ut\",\n  \"roles\": [\n    \"CURATOR\",\n    \"BUYER\"\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"add"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Excepteur do dolor\",\n  \"password\": \"cupidatat\",\n  \"email\": \"cillum ut\",\n  \"roles\": [\n    \"CURATOR\",\n    \"BUYER\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/add",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"add"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "edit",
+					"item": [
+						{
+							"name": "edit User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": 54918912,\n  \"name\": \"nulla eiusmod ut nisi\",\n  \"password\": \"ad elit\",\n  \"email\": \"deserunt laboris\",\n  \"roles\": [\n    \"MODERATOR\",\n    \"CURATOR\"\n  ],\n  \"cartId\": 50192079\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/edit",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"edit"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": 54918912,\n  \"name\": \"nulla eiusmod ut nisi\",\n  \"password\": \"ad elit\",\n  \"email\": \"deserunt laboris\",\n  \"roles\": [\n    \"MODERATOR\",\n    \"CURATOR\"\n  ],\n  \"cartId\": 50192079\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/edit",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"edit"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "addRole",
+					"item": [
+						{
+							"name": "add Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/addRole?role=BUYER&userId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"addRole"
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "BUYER",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/addRole?role=BUYER&userId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"addRole"
+											],
+											"query": [
+												{
+													"key": "role",
+													"value": "BUYER",
+													"description": "(Required) "
+												},
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "hasRole",
+					"item": [
+						{
+							"name": "user Has Role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/hasRole?userId=54391497&role=BUYER",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"hasRole"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "role",
+											"value": "BUYER",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/hasRole?userId=54391497&role=BUYER",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"hasRole"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "role",
+													"value": "BUYER",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "get",
+					"item": [
+						{
+							"name": "get User",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/get?userId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"get"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/get?userId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"get"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"userId\": 8450592,\n  \"name\": \"sunt ut\",\n  \"email\": \"ipsum eu\",\n  \"roles\": [\n    \"ANIMATOR\",\n    \"ANIMATOR\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "emailExists",
+					"item": [
+						{
+							"name": "check Email Exists",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/emailExists?email=dolore",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"emailExists"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "dolore",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/emailExists?email=dolore",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"emailExists"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "dolore",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "removeRole",
+					"item": [
+						{
+							"name": "remove User Role",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/removeRole?userId=54391497&role=BUYER",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"removeRole"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "role",
+											"value": "BUYER",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/removeRole?userId=54391497&role=BUYER",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"removeRole"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "role",
+													"value": "BUYER",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "delete",
+					"item": [
+						{
+							"name": "delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/delete?userId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/delete?userId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"delete"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "companies",
+			"item": [
+				{
+					"name": "add Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"fugiat\",\n  \"email\": \"culpa sint aliquip \",\n  \"password\": \"aliqua\",\n  \"description\": \"tempor cillum non\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/companies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"fugiat\",\n  \"email\": \"culpa sint aliquip \",\n  \"password\": \"aliqua\",\n  \"description\": \"tempor cillum non\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/companies",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "dolore"
+						}
+					]
+				},
+				{
+					"name": "get Company",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/companies?companyId=54391497",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"companies"
+							],
+							"query": [
+								{
+									"key": "companyId",
+									"value": "54391497",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/companies?companyId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies"
+									],
+									"query": [
+										{
+											"key": "companyId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": -80224813,\n  \"name\": \"magna in\",\n  \"email\": \"in sed qui elit\",\n  \"password\": \"aliquip laboris magna\",\n  \"description\": \"dolor anim\"\n}"
+						}
+					]
+				},
+				{
+					"name": "edit Company",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": -80224813,\n  \"name\": \"magna in\",\n  \"email\": \"in sed qui elit\",\n  \"password\": \"aliquip laboris magna\",\n  \"description\": \"dolor anim\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/companies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": -80224813,\n  \"name\": \"magna in\",\n  \"email\": \"in sed qui elit\",\n  \"password\": \"aliquip laboris magna\",\n  \"description\": \"dolor anim\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/companies",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "dolore"
+						}
+					]
+				},
+				{
+					"name": "delete Company",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/companies?companyId=54391497",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"companies"
+							],
+							"query": [
+								{
+									"key": "companyId",
+									"value": "54391497",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/companies?companyId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"companies"
+									],
+									"query": [
+										{
+											"key": "companyId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "dolore"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "itemDetails",
+			"item": [
+				{
+					"name": "addRequest",
+					"item": [
+						{
+							"name": "request Item Details",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@type\": \"veniam ea\",\n  \"name\": \"adipisicing ea\",\n  \"description\": \"Lorem adipisicing\",\n  \"producerId\": -62908042,\n  \"type\": \"sint ut ven\",\n  \"senderId\": 14547605,\n  \"items\": [\n    {\n      \"id\": 31344342,\n      \"qty\": 32605735\n    },\n    {\n      \"id\": 51488429,\n      \"qty\": 54356304\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/itemDetails/addRequest",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"itemDetails",
+										"addRequest"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"@type\": \"veniam ea\",\n  \"name\": \"adipisicing ea\",\n  \"description\": \"Lorem adipisicing\",\n  \"producerId\": -62908042,\n  \"type\": \"sint ut ven\",\n  \"senderId\": 14547605,\n  \"items\": [\n    {\n      \"id\": 31344342,\n      \"qty\": 32605735\n    },\n    {\n      \"id\": 51488429,\n      \"qty\": 54356304\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/itemDetails/addRequest",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"itemDetails",
+												"addRequest"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "changeStatus",
+					"item": [
+						{
+							"name": "change Status",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "underReview",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/itemDetails/changeStatus?itemDetailsId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"itemDetails",
+										"changeStatus"
+									],
+									"query": [
+										{
+											"key": "itemDetailsId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "underReview",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/itemDetails/changeStatus?itemDetailsId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"itemDetails",
+												"changeStatus"
+											],
+											"query": [
+												{
+													"key": "itemDetailsId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "acceptChanges",
+					"item": [
+						{
+							"name": "accept Changes",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/itemDetails/acceptChanges?submissionId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"itemDetails",
+										"acceptChanges"
+									],
+									"query": [
+										{
+											"key": "submissionId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/itemDetails/acceptChanges?submissionId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"itemDetails",
+												"acceptChanges"
+											],
+											"query": [
+												{
+													"key": "submissionId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "get",
+					"item": [
+						{
+							"name": "get Item Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/itemDetails/get?itemDetailsId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"itemDetails",
+										"get"
+									],
+									"query": [
+										{
+											"key": "itemDetailsId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/itemDetails/get?itemDetailsId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"itemDetails",
+												"get"
+											],
+											"query": [
+												{
+													"key": "itemDetailsId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "delete",
+					"item": [
+						{
+							"name": "delete Item Details",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/itemDetails/delete?itemDetailsId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"itemDetails",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "itemDetailsId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/itemDetails/delete?itemDetailsId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"itemDetails",
+												"delete"
+											],
+											"query": [
+												{
+													"key": "itemDetailsId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "submissions",
+			"item": [
+				{
+					"name": "add",
+					"item": [
+						{
+							"name": "add Acceptance Submission",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"typeForSpringBoot\": \"ut laborum ipsum dolore culpa\",\n  \"type\": \"est aliqua nisi\",\n  \"senderId\": 75973690,\n  \"itemDetailsId\": 92342480\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/submissions/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"add"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"typeForSpringBoot\": \"ut laborum ipsum dolore culpa\",\n  \"type\": \"est aliqua nisi\",\n  \"senderId\": 75973690,\n  \"itemDetailsId\": 92342480\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/submissions/add",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"add"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "curator",
+					"item": [
+						{
+							"name": "get By Curator",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/submissions/curator?id=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"curator"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/submissions/curator?id=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"curator"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"type\": \"incididunt exercitation\",\n    \"id\": -4899054,\n    \"senderId\": 37135066,\n    \"curatorId\": 64179247,\n    \"accepted\": false,\n    \"itemDetailsId\": -17877893\n  },\n  {\n    \"type\": \"Ut cupidatat qui\",\n    \"id\": 67987112,\n    \"senderId\": 72783611,\n    \"curatorId\": 12764263,\n    \"accepted\": false,\n    \"itemDetailsId\": -97695054\n  }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "takeCharge",
+					"item": [
+						{
+							"name": "take Charge",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/submissions/takeCharge?acceptanceSubId=54391497&userId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"takeCharge"
+									],
+									"query": [
+										{
+											"key": "acceptanceSubId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/submissions/takeCharge?acceptanceSubId=54391497&userId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"takeCharge"
+											],
+											"query": [
+												{
+													"key": "acceptanceSubId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "accept",
+					"item": [
+						{
+							"name": "on Acceptance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/submissions/accept?submissionId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"accept"
+									],
+									"query": [
+										{
+											"key": "submissionId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/submissions/accept?submissionId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"accept"
+											],
+											"query": [
+												{
+													"key": "submissionId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "available",
+					"item": [
+						{
+							"name": "get Available",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/submissions/available",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"available"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/submissions/available",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"available"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"type\": \"incididunt exercitation\",\n    \"id\": -4899054,\n    \"senderId\": 37135066,\n    \"curatorId\": 64179247,\n    \"accepted\": false,\n    \"itemDetailsId\": -17877893\n  },\n  {\n    \"type\": \"Ut cupidatat qui\",\n    \"id\": 67987112,\n    \"senderId\": 72783611,\n    \"curatorId\": 12764263,\n    \"accepted\": false,\n    \"itemDetailsId\": -97695054\n  }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "acceptancesubmission",
+					"item": [
+						{
+							"name": "get Acceptance Submission",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/submissions/acceptancesubmission?submissionId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"acceptancesubmission"
+									],
+									"query": [
+										{
+											"key": "submissionId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/submissions/acceptancesubmission?submissionId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"acceptancesubmission"
+											],
+											"query": [
+												{
+													"key": "submissionId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "refuse",
+					"item": [
+						{
+							"name": "on Refusal",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/submissions/refuse?submissionId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"refuse"
+									],
+									"query": [
+										{
+											"key": "submissionId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/submissions/refuse?submissionId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"refuse"
+											],
+											"query": [
+												{
+													"key": "submissionId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "delete",
+					"item": [
+						{
+							"name": "delete Acceptance Submission",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/submissions/delete?acceptanceSubmissionId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"submissions",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "acceptanceSubmissionId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/submissions/delete?acceptanceSubmissionId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"submissions",
+												"delete"
+											],
+											"query": [
+												{
+													"key": "acceptanceSubmissionId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "item",
+			"item": [
+				{
+					"name": "addQuantity",
+					"item": [
+						{
+							"name": "add Item Quantity",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/item/addQuantity?itemId=54391497&quantity=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"item",
+										"addQuantity"
+									],
+									"query": [
+										{
+											"key": "itemId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "quantity",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/item/addQuantity?itemId=54391497&quantity=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"item",
+												"addQuantity"
+											],
+											"query": [
+												{
+													"key": "itemId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "quantity",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "add",
+					"item": [
+						{
+							"name": "add Item",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"sellerId\": 55840976,\n  \"price\": -70102112.5087029,\n  \"itemDetailsId\": 69656967,\n  \"qty\": -42315539\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/item/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"item",
+										"add"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"sellerId\": 55840976,\n  \"price\": -70102112.5087029,\n  \"itemDetailsId\": 69656967,\n  \"qty\": -42315539\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/item/add",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"item",
+												"add"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "setPrice",
+					"item": [
+						{
+							"name": "set Item Price",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/item/setPrice?itemId=54391497&price=66587399.255122155",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"item",
+										"setPrice"
+									],
+									"query": [
+										{
+											"key": "itemId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "price",
+											"value": "66587399.255122155",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/item/setPrice?itemId=54391497&price=66587399.255122155",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"item",
+												"setPrice"
+											],
+											"query": [
+												{
+													"key": "itemId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "price",
+													"value": "66587399.255122155",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "removeQuantity",
+					"item": [
+						{
+							"name": "remove Item Quantity",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/item/removeQuantity?itemId=54391497&quantity=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"item",
+										"removeQuantity"
+									],
+									"query": [
+										{
+											"key": "itemId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "quantity",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/item/removeQuantity?itemId=54391497&quantity=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"item",
+												"removeQuantity"
+											],
+											"query": [
+												{
+													"key": "itemId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "quantity",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "getBySeller",
+					"item": [
+						{
+							"name": "get Item",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/item/getBySeller?sellerId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"item",
+										"getBySeller"
+									],
+									"query": [
+										{
+											"key": "sellerId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/item/getBySeller?sellerId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"item",
+												"getBySeller"
+											],
+											"query": [
+												{
+													"key": "sellerId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "shopping",
+			"item": [
+				{
+					"name": "cart",
+					"item": [
+						{
+							"name": "edit",
+							"item": [
+								{
+									"name": "edit Quantity Of Item In Cart",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/shopping/cart/edit?userId=54391497&itemId=54391497&qty=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"shopping",
+												"cart",
+												"edit"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "itemId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "qty",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/shopping/cart/edit?userId=54391497&itemId=54391497&qty=54391497",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"shopping",
+														"cart",
+														"edit"
+													],
+													"query": [
+														{
+															"key": "userId",
+															"value": "54391497",
+															"description": "(Required) "
+														},
+														{
+															"key": "itemId",
+															"value": "54391497",
+															"description": "(Required) "
+														},
+														{
+															"key": "qty",
+															"value": "54391497",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "dolore"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "excess",
+							"item": [
+								{
+									"name": "get Excess Items",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"items\": {\n    \"Lorem_7\": {\n      \"cart\": {\n        \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n      },\n      \"item\": {\n        \"id\": -93063769,\n        \"seller\": {\n          \"id\": 40006622,\n          \"name\": \"proident aliquip sunt veniam elit\",\n          \"email\": \"ullamco sed Ut\",\n          \"password\": \"aliqua tempor des\",\n          \"description\": \"laboris reprehenderit\"\n        },\n        \"price\": -69644078.30679971,\n        \"itemDetails\": {\n          \"type\": \"labore in\",\n          \"name\": \"veniam aliqua\",\n          \"description\": \"qu\",\n          \"status\": \"awaitingReview\",\n          \"visibleByPublic\": true,\n          \"producer\": {\n            \"id\": 37053399,\n            \"name\": \"eiusmod irure veniam fugiat\",\n            \"email\": \"est minim\",\n            \"password\": \"fugiat esse tempor ullamco\",\n            \"description\": \"voluptate dolor exercitation\"\n          },\n          \"id\": 8468144,\n          \"isVisibleByPublic\": true,\n          \"post\": {},\n          \"itemsQty\": [\n            {\n              \"itemDetails\": {\n                \"type\": \"qui commodo officia\",\n                \"name\": \"pariatur Duis deserunt cillum ea\",\n                \"description\": \"incididunt anim u\",\n                \"status\": \"awaitingReview\",\n                \"visibleByPublic\": false,\n                \"producer\": {\n                  \"id\": 52820353,\n                  \"name\": \"ut\",\n                  \"email\": \"minim labore fugiat in\",\n                  \"password\": \"ea\",\n                  \"description\": \"voluptate exercitation ea dolor est\"\n                },\n                \"id\": -44955400,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": 51386793\n            },\n            {\n              \"itemDetails\": {\n                \"type\": \"voluptate tempor dolor cupidatat\",\n                \"name\": \"ea mollit ut nostrud\",\n                \"description\": \"Lorem tempor cupidatat exercitation nulla\",\n                \"status\": \"outOfStock\",\n                \"visibleByPublic\": true,\n                \"producer\": {\n                  \"id\": -65927227,\n                  \"name\": \"labore magna\",\n                  \"email\": \"ad eiusmod\",\n                  \"password\": \"quis ea\",\n                  \"description\": \"aliquip ipsum sunt\"\n                },\n                \"id\": -18411921,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": 32827097\n            }\n          ]\n        },\n        \"qty\": 56110866\n      },\n      \"quantity\": 52736331\n    },\n    \"anim_cce\": {\n      \"cart\": {\n        \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n      },\n      \"item\": {\n        \"id\": -84098157,\n        \"seller\": {\n          \"id\": 35069040,\n          \"name\": \"amet minim\",\n          \"email\": \"adipisicing sunt esse\",\n          \"password\": \"laborum labore\",\n          \"description\": \"Lorem eiusmod anim est\"\n        },\n        \"price\": -57313426.63291366,\n        \"itemDetails\": {\n          \"type\": \"ut proident aute qui\",\n          \"name\": \"eu tempor mollit esse\",\n          \"description\": \"ipsum dolor dolore in\",\n          \"status\": \"awaitingReview\",\n          \"visibleByPublic\": false,\n          \"producer\": {\n            \"id\": -261856,\n            \"name\": \"ut irure enim\",\n            \"email\": \"Excepteur tempor\",\n            \"password\": \"officia nostrud irure\",\n            \"description\": \"elit dolor\"\n          },\n          \"id\": 34220340,\n          \"isVisibleByPublic\": false,\n          \"post\": {},\n          \"itemsQty\": [\n            {\n              \"itemDetails\": {\n                \"type\": \"proident laborum\",\n                \"name\": \"reprehenderit sint deserunt\",\n                \"description\": \"nostrud elit aliqua ut\",\n                \"status\": \"outOfStock\",\n                \"visibleByPublic\": true,\n                \"producer\": {\n                  \"id\": 31626465,\n                  \"name\": \"id laborum ut proident\",\n                  \"email\": \"dolor cillum nostrud\",\n                  \"password\": \"amet adipisicing\",\n                  \"description\": \"mollit si\"\n                },\n                \"id\": -77198912,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": -12459166\n            },\n            {\n              \"itemDetails\": {\n                \"type\": \"enim\",\n                \"name\": \"irure dolore minim in\",\n                \"description\": \"do adipisicing Ut ullamco\",\n                \"status\": \"available\",\n                \"visibleByPublic\": false,\n                \"producer\": {\n                  \"id\": -61136650,\n                  \"name\": \"dolor labore ullamco non\",\n                  \"email\": \"in eu\",\n                  \"password\": \"do proident enim\",\n                  \"description\": \"et \"\n                },\n                \"id\": -29766829,\n                \"isVisibleByPublic\": false,\n                \"post\": {}\n              },\n              \"qty\": 13900167\n            }\n          ]\n        },\n        \"qty\": -49881\n      },\n      \"quantity\": 96060736\n    }\n  },\n  \"totalAmount\": -97305907.41159251\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/shopping/cart/excess",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"shopping",
+												"cart",
+												"excess"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"items\": {\n    \"Lorem_7\": {\n      \"cart\": {\n        \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n      },\n      \"item\": {\n        \"id\": -93063769,\n        \"seller\": {\n          \"id\": 40006622,\n          \"name\": \"proident aliquip sunt veniam elit\",\n          \"email\": \"ullamco sed Ut\",\n          \"password\": \"aliqua tempor des\",\n          \"description\": \"laboris reprehenderit\"\n        },\n        \"price\": -69644078.30679971,\n        \"itemDetails\": {\n          \"type\": \"labore in\",\n          \"name\": \"veniam aliqua\",\n          \"description\": \"qu\",\n          \"status\": \"awaitingReview\",\n          \"visibleByPublic\": true,\n          \"producer\": {\n            \"id\": 37053399,\n            \"name\": \"eiusmod irure veniam fugiat\",\n            \"email\": \"est minim\",\n            \"password\": \"fugiat esse tempor ullamco\",\n            \"description\": \"voluptate dolor exercitation\"\n          },\n          \"id\": 8468144,\n          \"isVisibleByPublic\": true,\n          \"post\": {},\n          \"itemsQty\": [\n            {\n              \"itemDetails\": {\n                \"type\": \"qui commodo officia\",\n                \"name\": \"pariatur Duis deserunt cillum ea\",\n                \"description\": \"incididunt anim u\",\n                \"status\": \"awaitingReview\",\n                \"visibleByPublic\": false,\n                \"producer\": {\n                  \"id\": 52820353,\n                  \"name\": \"ut\",\n                  \"email\": \"minim labore fugiat in\",\n                  \"password\": \"ea\",\n                  \"description\": \"voluptate exercitation ea dolor est\"\n                },\n                \"id\": -44955400,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": 51386793\n            },\n            {\n              \"itemDetails\": {\n                \"type\": \"voluptate tempor dolor cupidatat\",\n                \"name\": \"ea mollit ut nostrud\",\n                \"description\": \"Lorem tempor cupidatat exercitation nulla\",\n                \"status\": \"outOfStock\",\n                \"visibleByPublic\": true,\n                \"producer\": {\n                  \"id\": -65927227,\n                  \"name\": \"labore magna\",\n                  \"email\": \"ad eiusmod\",\n                  \"password\": \"quis ea\",\n                  \"description\": \"aliquip ipsum sunt\"\n                },\n                \"id\": -18411921,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": 32827097\n            }\n          ]\n        },\n        \"qty\": 56110866\n      },\n      \"quantity\": 52736331\n    },\n    \"anim_cce\": {\n      \"cart\": {\n        \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n      },\n      \"item\": {\n        \"id\": -84098157,\n        \"seller\": {\n          \"id\": 35069040,\n          \"name\": \"amet minim\",\n          \"email\": \"adipisicing sunt esse\",\n          \"password\": \"laborum labore\",\n          \"description\": \"Lorem eiusmod anim est\"\n        },\n        \"price\": -57313426.63291366,\n        \"itemDetails\": {\n          \"type\": \"ut proident aute qui\",\n          \"name\": \"eu tempor mollit esse\",\n          \"description\": \"ipsum dolor dolore in\",\n          \"status\": \"awaitingReview\",\n          \"visibleByPublic\": false,\n          \"producer\": {\n            \"id\": -261856,\n            \"name\": \"ut irure enim\",\n            \"email\": \"Excepteur tempor\",\n            \"password\": \"officia nostrud irure\",\n            \"description\": \"elit dolor\"\n          },\n          \"id\": 34220340,\n          \"isVisibleByPublic\": false,\n          \"post\": {},\n          \"itemsQty\": [\n            {\n              \"itemDetails\": {\n                \"type\": \"proident laborum\",\n                \"name\": \"reprehenderit sint deserunt\",\n                \"description\": \"nostrud elit aliqua ut\",\n                \"status\": \"outOfStock\",\n                \"visibleByPublic\": true,\n                \"producer\": {\n                  \"id\": 31626465,\n                  \"name\": \"id laborum ut proident\",\n                  \"email\": \"dolor cillum nostrud\",\n                  \"password\": \"amet adipisicing\",\n                  \"description\": \"mollit si\"\n                },\n                \"id\": -77198912,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": -12459166\n            },\n            {\n              \"itemDetails\": {\n                \"type\": \"enim\",\n                \"name\": \"irure dolore minim in\",\n                \"description\": \"do adipisicing Ut ullamco\",\n                \"status\": \"available\",\n                \"visibleByPublic\": false,\n                \"producer\": {\n                  \"id\": -61136650,\n                  \"name\": \"dolor labore ullamco non\",\n                  \"email\": \"in eu\",\n                  \"password\": \"do proident enim\",\n                  \"description\": \"et \"\n                },\n                \"id\": -29766829,\n                \"isVisibleByPublic\": false,\n                \"post\": {}\n              },\n              \"qty\": 13900167\n            }\n          ]\n        },\n        \"qty\": -49881\n      },\n      \"quantity\": 96060736\n    }\n  },\n  \"totalAmount\": -97305907.41159251\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/shopping/cart/excess",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"shopping",
+														"cart",
+														"excess"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"items\": {\n    \"occaecat_7\": {\n      \"cart\": {\n        \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n      },\n      \"item\": {\n        \"id\": -26473867,\n        \"seller\": {\n          \"id\": 73810632,\n          \"name\": \"occaecat laborum veniam eiusmod dolor\",\n          \"email\": \"est aute\",\n          \"password\": \"non in enim mollit\",\n          \"description\": \"Excep\"\n        },\n        \"price\": 35789273.76437497,\n        \"itemDetails\": {\n          \"type\": \"dolore\",\n          \"name\": \"labore deserunt anim\",\n          \"description\": \"ut dolor\",\n          \"status\": \"underReview\",\n          \"producer\": {\n            \"id\": 78323016,\n            \"name\": \"Duis ipsum velit\",\n            \"email\": \"amet\",\n            \"password\": \"reprehenderit ex aliquip\",\n            \"description\": \"Excepteur ea aliquip in\"\n          },\n          \"id\": -63551248,\n          \"isVisibleByPublic\": false,\n          \"post\": {},\n          \"itemsQty\": [\n            {\n              \"itemDetails\": {\n                \"type\": \"ullamco mollit dolore aliquip\",\n                \"name\": \"amet in\",\n                \"description\": \"ut amet Ut consequat\",\n                \"status\": \"awaitingReview\",\n                \"producer\": {\n                  \"id\": -83682764,\n                  \"name\": \"Duis laborum irure\",\n                  \"email\": \"incididunt magna in cillum\",\n                  \"password\": \"incididunt\",\n                  \"description\": \"dolore eu adipisicing eiusmod\"\n                },\n                \"id\": -17510914,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": -28067854\n            },\n            {\n              \"itemDetails\": {\n                \"type\": \"pariatur molli\",\n                \"name\": \"aute aliquip\",\n                \"description\": \"qui consectetur\",\n                \"status\": \"outOfStock\",\n                \"producer\": {\n                  \"id\": 56480318,\n                  \"name\": \"consequat nostrud magna\",\n                  \"email\": \"dolor\",\n                  \"password\": \"officia ea dolor ut Duis\",\n                  \"description\": \"mollit ut laborum eu\"\n                },\n                \"id\": -64539803,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": -71752090\n            }\n          ]\n        },\n        \"qty\": -92145264\n      },\n      \"quantity\": -8711617\n    }\n  },\n  \"totalAmount\": -11036153.620384589\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "add",
+							"item": [
+								{
+									"name": "add Item To Cart",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": -51518729,\n  \"itemId\": -40319049,\n  \"quantity\": -47602681\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/shopping/cart/add",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"shopping",
+												"cart",
+												"add"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": -51518729,\n  \"itemId\": -40319049,\n  \"quantity\": -47602681\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/shopping/cart/add",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"shopping",
+														"cart",
+														"add"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "dolore"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "remove",
+							"item": [
+								{
+									"name": "remove Item From Cart",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/shopping/cart/remove?userId=54391497&itemId=54391497&qty=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"shopping",
+												"cart",
+												"remove"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "itemId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "qty",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/shopping/cart/remove?userId=54391497&itemId=54391497&qty=54391497",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"shopping",
+														"cart",
+														"remove"
+													],
+													"query": [
+														{
+															"key": "userId",
+															"value": "54391497",
+															"description": "(Required) "
+														},
+														{
+															"key": "itemId",
+															"value": "54391497",
+															"description": "(Required) "
+														},
+														{
+															"key": "qty",
+															"value": "54391497",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "dolore"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get Cart",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping/cart?userId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping",
+										"cart"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/shopping/cart?userId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"shopping",
+												"cart"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"items\": {\n    \"occaecat_7\": {\n      \"cart\": {\n        \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n      },\n      \"item\": {\n        \"id\": -26473867,\n        \"seller\": {\n          \"id\": 73810632,\n          \"name\": \"occaecat laborum veniam eiusmod dolor\",\n          \"email\": \"est aute\",\n          \"password\": \"non in enim mollit\",\n          \"description\": \"Excep\"\n        },\n        \"price\": 35789273.76437497,\n        \"itemDetails\": {\n          \"type\": \"dolore\",\n          \"name\": \"labore deserunt anim\",\n          \"description\": \"ut dolor\",\n          \"status\": \"underReview\",\n          \"producer\": {\n            \"id\": 78323016,\n            \"name\": \"Duis ipsum velit\",\n            \"email\": \"amet\",\n            \"password\": \"reprehenderit ex aliquip\",\n            \"description\": \"Excepteur ea aliquip in\"\n          },\n          \"id\": -63551248,\n          \"isVisibleByPublic\": false,\n          \"post\": {},\n          \"itemsQty\": [\n            {\n              \"itemDetails\": {\n                \"type\": \"ullamco mollit dolore aliquip\",\n                \"name\": \"amet in\",\n                \"description\": \"ut amet Ut consequat\",\n                \"status\": \"awaitingReview\",\n                \"producer\": {\n                  \"id\": -83682764,\n                  \"name\": \"Duis laborum irure\",\n                  \"email\": \"incididunt magna in cillum\",\n                  \"password\": \"incididunt\",\n                  \"description\": \"dolore eu adipisicing eiusmod\"\n                },\n                \"id\": -17510914,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": -28067854\n            },\n            {\n              \"itemDetails\": {\n                \"type\": \"pariatur molli\",\n                \"name\": \"aute aliquip\",\n                \"description\": \"qui consectetur\",\n                \"status\": \"outOfStock\",\n                \"producer\": {\n                  \"id\": 56480318,\n                  \"name\": \"consequat nostrud magna\",\n                  \"email\": \"dolor\",\n                  \"password\": \"officia ea dolor ut Duis\",\n                  \"description\": \"mollit ut laborum eu\"\n                },\n                \"id\": -64539803,\n                \"isVisibleByPublic\": true,\n                \"post\": {}\n              },\n              \"qty\": -71752090\n            }\n          ]\n        },\n        \"qty\": -92145264\n      },\n      \"quantity\": -8711617\n    }\n  },\n  \"totalAmount\": -11036153.620384589\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "checkout",
+					"item": [
+						{
+							"name": "checkout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"paymentMethod\": {},\n  \"shippingAddress\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping/checkout?userId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping",
+										"checkout"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"paymentMethod\": {},\n  \"shippingAddress\": {}\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/shopping/checkout?userId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"shopping",
+												"checkout"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"orderId\": 48908546,\n  \"customer\": {\n    \"userId\": -6164416,\n    \"name\": \"minim amet incididunt nisi ut\",\n    \"email\": \"sunt ut\",\n    \"roles\": [\n      \"ANIMATOR\",\n      \"CURATOR\"\n    ]\n  },\n  \"seller\": {\n    \"id\": -1904223,\n    \"name\": \"proident fugiat anim\",\n    \"email\": \"reprehenderit et labore proident ex\",\n    \"password\": \"labore in anim\",\n    \"description\": \"esse Duis tempor in\"\n  },\n  \"cart\": {\n    \"items\": {\n      \"quis_4a\": {\n        \"cart\": {\n          \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n        },\n        \"item\": {\n          \"id\": -73423374,\n          \"seller\": {\n            \"id\": 30524121,\n            \"name\": \"culpa\",\n            \"email\": \"proident consect\",\n            \"password\": \"labore commodo Duis\",\n            \"description\": \"cillum veniam ut ex\"\n          },\n          \"price\": -99776156.23593232,\n          \"itemDetails\": {\n            \"type\": \"aliqua non mollit\",\n            \"name\": \"sit\",\n            \"description\": \"aliqua ea\",\n            \"status\": \"underReview\",\n            \"producer\": {\n              \"id\": -73182177,\n              \"name\": \"occaecat\",\n              \"email\": \"ipsum occaecat Excepteur dolor\",\n              \"password\": \"pariatur ipsum occaecat minim irure\",\n              \"description\": \"est ipsum qui aliqua culpa\"\n            },\n            \"id\": -6301544,\n            \"isVisibleByPublic\": true,\n            \"post\": {},\n            \"itemsQty\": [\n              {\n                \"itemDetails\": {\n                  \"type\": \"adipisicing nisi deserunt velit\",\n                  \"name\": \"eiusmod elit\",\n                  \"description\": \"elit Duis dolor ut\",\n                  \"status\": \"available\",\n                  \"producer\": {\n                    \"id\": -39386724,\n                    \"name\": \"ipsum anim\",\n                    \"email\": \"ipsum ad sunt\",\n                    \"password\": \"commodo dolore\",\n                    \"description\": \"ut qui non\"\n                  },\n                  \"id\": 47975141,\n                  \"isVisibleByPublic\": false,\n                  \"post\": {}\n                },\n                \"qty\": -27678185\n              },\n              {\n                \"itemDetails\": {\n                  \"type\": \"reprehenderit adipisicing\",\n                  \"name\": \"mollit Excepteur aute aliqua officia\",\n                  \"description\": \"occaecat cupidatat\",\n                  \"status\": \"underReview\",\n                  \"producer\": {\n                    \"id\": 92556979,\n                    \"name\": \"est anim pariatur\",\n                    \"email\": \"proident la\",\n                    \"password\": \"ea id in non\",\n                    \"description\": \"id voluptate minim\"\n                  },\n                  \"id\": -70582604,\n                  \"isVisibleByPublic\": false,\n                  \"post\": {}\n                },\n                \"qty\": -96213222\n              }\n            ]\n          },\n          \"qty\": -34115684\n        },\n        \"quantity\": 95604181\n      },\n      \"qui_1f\": {\n        \"cart\": {\n          \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n        },\n        \"item\": {\n          \"id\": -68253223,\n          \"seller\": {\n            \"id\": -74807706,\n            \"name\": \"Duis incididun\",\n            \"email\": \"cillum officia\",\n            \"password\": \"culpa dolore tempor\",\n            \"description\": \"Lorem nulla dolore sint\"\n          },\n          \"price\": -23891125.803668663,\n          \"itemDetails\": {\n            \"type\": \"velit ullamco incididunt et nostrud\",\n            \"name\": \"cillum cupidatat sint mollit\",\n            \"description\": \"ad et\",\n            \"status\": \"awaitingReview\",\n            \"producer\": {\n              \"id\": 77670065,\n              \"name\": \"irure qu\",\n              \"email\": \"sunt nulla\",\n              \"password\": \"aliqua Ut\",\n              \"description\": \"eiusmod in adipisicing eu\"\n            },\n            \"id\": -8363875,\n            \"isVisibleByPublic\": true,\n            \"post\": {},\n            \"itemsQty\": [\n              {\n                \"itemDetails\": {\n                  \"type\": \"nulla labore id quis\",\n                  \"name\": \"incididunt officia adipisicing\",\n                  \"description\": \"ex dolor\",\n                  \"status\": \"outOfStock\",\n                  \"producer\": {\n                    \"id\": -44240392,\n                    \"name\": \"incididunt ea tempor\",\n                    \"email\": \"quis sit nulla proident\",\n                    \"password\": \"magna elit\",\n                    \"description\": \"eu aute\"\n                  },\n                  \"id\": -98969758,\n                  \"isVisibleByPublic\": false,\n                  \"post\": {}\n                },\n                \"qty\": 58794903\n              },\n              {\n                \"itemDetails\": {\n                  \"type\": \"magna\",\n                  \"name\": \"dolor nostrud elit in\",\n                  \"description\": \"dolor laboris sunt \",\n                  \"status\": \"underReview\",\n                  \"producer\": {\n                    \"id\": -16995311,\n                    \"name\": \"adipisicing dolor occaecat qui\",\n                    \"email\": \"fugiat aliqu\",\n                    \"password\": \"irure anim\",\n                    \"description\": \"voluptate i\"\n                  },\n                  \"id\": -4459458,\n                  \"isVisibleByPublic\": false,\n                  \"post\": {}\n                },\n                \"qty\": 79080079\n              }\n            ]\n          },\n          \"qty\": -99436247\n        },\n        \"quantity\": 5841141\n      }\n    },\n    \"totalAmount\": 87560359.38412929\n  },\n  \"orderDate\": \"2018-02-06T14:29:40.746Z\",\n  \"orderStatus\": \"packing\",\n  \"address\": {},\n  \"totalAmount\": 61801294.211843014\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "event",
+			"item": [
+				{
+					"name": "create",
+					"item": [
+						{
+							"name": "create Event",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"in sunt quis\",\n  \"maxSpots\": 44101742,\n  \"guestsId\": [\n    -12460464,\n    -47105419\n  ],\n  \"location\": {\n    \"latitude\": 41326158.70408198,\n    \"longitude\": -97942104.12319969,\n    \"address\": \"reprehenderit Duis\",\n    \"city\": \"proident\",\n    \"postalCode\": \"Excepteur ut\"\n  },\n  \"dates\": [\n    {\n      \"startTime\": \"1960-01-05T10:29:17.448Z\",\n      \"end\": \"2021-10-29T06:31:11.125Z\"\n    },\n    {\n      \"startTime\": \"1955-05-06T00:34:05.997Z\",\n      \"end\": \"1971-01-01T05:29:22.885Z\"\n    }\n  ],\n  \"organizerId\": -2955752\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/event/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"create"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"in sunt quis\",\n  \"maxSpots\": 44101742,\n  \"guestsId\": [\n    -12460464,\n    -47105419\n  ],\n  \"location\": {\n    \"latitude\": 41326158.70408198,\n    \"longitude\": -97942104.12319969,\n    \"address\": \"reprehenderit Duis\",\n    \"city\": \"proident\",\n    \"postalCode\": \"Excepteur ut\"\n  },\n  \"dates\": [\n    {\n      \"startTime\": \"1960-01-05T10:29:17.448Z\",\n      \"end\": \"2021-10-29T06:31:11.125Z\"\n    },\n    {\n      \"startTime\": \"1955-05-06T00:34:05.997Z\",\n      \"end\": \"1971-01-01T05:29:22.885Z\"\n    }\n  ],\n  \"organizerId\": -2955752\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/event/create",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"create"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "subscribe",
+					"item": [
+						{
+							"name": "subscribe On Event",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/subscribe?userId=54391497&eventId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"subscribe"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/subscribe?userId=54391497&eventId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"subscribe"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "unsubscribe",
+					"item": [
+						{
+							"name": "un Subscribe On Event",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/unsubscribe?userId=54391497&eventId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"unsubscribe"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/unsubscribe?userId=54391497&eventId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"unsubscribe"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "edit",
+					"item": [
+						{
+							"name": "edit Event",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"eventId\": 89378846,\n  \"name\": \"do reprehenderit elit\",\n  \"maxSpots\": -47637973,\n  \"location\": {\n    \"latitude\": -97089605.70775078,\n    \"longitude\": -42784079.01455829,\n    \"address\": \"id\",\n    \"city\": \"eu dolore culpa\",\n    \"postalCode\": \"eiusmod mollit id\"\n  },\n  \"dates\": [\n    {\n      \"startTime\": \"2005-07-08T02:48:58.421Z\",\n      \"end\": \"2008-05-17T12:02:26.263Z\"\n    },\n    {\n      \"startTime\": \"1987-07-11T22:37:20.187Z\",\n      \"end\": \"2011-03-03T06:52:25.068Z\"\n    }\n  ],\n  \"organizerId\": 22536493\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/event/edit",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"edit"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"eventId\": 89378846,\n  \"name\": \"do reprehenderit elit\",\n  \"maxSpots\": -47637973,\n  \"location\": {\n    \"latitude\": -97089605.70775078,\n    \"longitude\": -42784079.01455829,\n    \"address\": \"id\",\n    \"city\": \"eu dolore culpa\",\n    \"postalCode\": \"eiusmod mollit id\"\n  },\n  \"dates\": [\n    {\n      \"startTime\": \"2005-07-08T02:48:58.421Z\",\n      \"end\": \"2008-05-17T12:02:26.263Z\"\n    },\n    {\n      \"startTime\": \"1987-07-11T22:37:20.187Z\",\n      \"end\": \"2011-03-03T06:52:25.068Z\"\n    }\n  ],\n  \"organizerId\": 22536493\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/event/edit",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"edit"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "delete",
+					"item": [
+						{
+							"name": "cancel Event",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/delete?eventId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/delete?eventId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"delete"
+											],
+											"query": [
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "confirm",
+					"item": [
+						{
+							"name": "confirm Event Publication",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/confirm?eventId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"confirm"
+									],
+									"query": [
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/confirm?eventId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"confirm"
+											],
+											"query": [
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "confirmCompanyParticipation",
+					"item": [
+						{
+							"name": "confirm Company Participation",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/confirmCompanyParticipation?eventId=54391497&companyId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"confirmCompanyParticipation"
+									],
+									"query": [
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "companyId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/confirmCompanyParticipation?eventId=54391497&companyId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"confirmCompanyParticipation"
+											],
+											"query": [
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "companyId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "cancelCompanyParticipation",
+					"item": [
+						{
+							"name": "cancel Company Participation",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/cancelCompanyParticipation?eventId=54391497&companyId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"cancelCompanyParticipation"
+									],
+									"query": [
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "companyId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/cancelCompanyParticipation?eventId=54391497&companyId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"cancelCompanyParticipation"
+											],
+											"query": [
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "companyId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "publicEvents",
+					"item": [
+						{
+							"name": "get Public Events",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/publicEvents",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"publicEvents"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/publicEvents",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"publicEvents"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 12042208,\n    \"name\": \"qui velit magna\"\n  },\n  {\n    \"id\": -82909158,\n    \"name\": \"Lorem dolore aliqua\"\n  }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "get",
+					"item": [
+						{
+							"name": "get Event",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/get?eventId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"get"
+									],
+									"query": [
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/get?eventId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"get"
+											],
+											"query": [
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "events",
+					"item": [
+						{
+							"name": "get Events",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/event/events",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"event",
+										"events"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/event/events",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"event",
+												"events"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 12042208,\n    \"name\": \"qui velit magna\"\n  },\n  {\n    \"id\": -82909158,\n    \"name\": \"Lorem dolore aliqua\"\n  }\n]"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "invitation",
+			"item": [
+				{
+					"name": "accept",
+					"item": [
+						{
+							"name": "accept",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/invitation/accept?invitationId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"invitation",
+										"accept"
+									],
+									"query": [
+										{
+											"key": "invitationId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/invitation/accept?invitationId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"invitation",
+												"accept"
+											],
+											"query": [
+												{
+													"key": "invitationId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "get",
+					"item": [
+						{
+							"name": "get Invitation",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/invitation/get?invitationId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"invitation",
+										"get"
+									],
+									"query": [
+										{
+											"key": "invitationId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/invitation/get?invitationId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"invitation",
+												"get"
+											],
+											"query": [
+												{
+													"key": "invitationId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "getCompanyInvitations",
+					"item": [
+						{
+							"name": "get Company Invitations",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/invitation/getCompanyInvitations?companyId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"invitation",
+										"getCompanyInvitations"
+									],
+									"query": [
+										{
+											"key": "companyId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/invitation/getCompanyInvitations?companyId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"invitation",
+												"getCompanyInvitations"
+											],
+											"query": [
+												{
+													"key": "companyId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "social",
+			"item": [
+				{
+					"name": "publish-item",
+					"item": [
+						{
+							"name": "publish Item Details",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/social/publish-item?productId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"social",
+										"publish-item"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/social/publish-item?productId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"social",
+												"publish-item"
+											],
+											"query": [
+												{
+													"key": "productId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "publish-event",
+					"item": [
+						{
+							"name": "publish Event",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/social/publish-event?eventId=54391497",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"social",
+										"publish-event"
+									],
+									"query": [
+										{
+											"key": "eventId",
+											"value": "54391497",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/social/publish-event?eventId=54391497",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"social",
+												"publish-event"
+											],
+											"query": [
+												{
+													"key": "eventId",
+													"value": "54391497",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "payments",
+			"item": [
+				{
+					"name": "pay_sellers",
+					"item": [
+						{
+							"name": "pay Seller",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payments/pay_sellers?since=1949-09-30T04:16:26.007Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments",
+										"pay_sellers"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "1949-09-30T04:16:26.007Z",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/payments/pay_sellers?since=1949-09-30T04:16:26.007Z",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												"pay_sellers"
+											],
+											"query": [
+												{
+													"key": "since",
+													"value": "1949-09-30T04:16:26.007Z",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "buy",
+					"item": [
+						{
+							"name": "buy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/payments/buy?userId=54391497&amount=66587399.255122155",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments",
+										"buy"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "54391497",
+											"description": "(Required) "
+										},
+										{
+											"key": "amount",
+											"value": "66587399.255122155",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/payments/buy?userId=54391497&amount=66587399.255122155",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												"buy"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "54391497",
+													"description": "(Required) "
+												},
+												{
+													"key": "amount",
+													"value": "66587399.255122155",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "add",
+					"item": [
+						{
+							"name": "add Order",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": 2606258,\n  \"cartId\": 92003542,\n  \"sellerId\": 394219,\n  \"address\": {},\n  \"orderStatus\": \"packing\",\n  \"orderDate\": \"2002-04-16T14:41:34.910Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders",
+										"add"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": 2606258,\n  \"cartId\": 92003542,\n  \"sellerId\": 394219,\n  \"address\": {},\n  \"orderStatus\": \"packing\",\n  \"orderDate\": \"2002-04-16T14:41:34.910Z\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/add",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												"add"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "list",
+					"item": [
+						{
+							"name": "get Orders",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": -28609494,\n  \"name\": \"et incididunt sunt\",\n  \"password\": \"Duis\",\n  \"email\": \"aliqua\",\n  \"roles\": [\n    \"ADMIN\",\n    \"ADMIN\"\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders/list",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders",
+										"list"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": -28609494,\n  \"name\": \"et incididunt sunt\",\n  \"password\": \"Duis\",\n  \"email\": \"aliqua\",\n  \"roles\": [\n    \"ADMIN\",\n    \"ADMIN\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/list",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												"list"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"orderId\": 53296192,\n    \"customer\": {\n      \"userId\": 68745657,\n      \"name\": \"aliquip non dolor\",\n      \"email\": \"ipsum consequat\",\n      \"roles\": [\n        \"MODERATOR\",\n        \"CURATOR\"\n      ]\n    },\n    \"seller\": {\n      \"id\": -34082083,\n      \"name\": \"officia sunt esse Ut\",\n      \"email\": \"aliqua mollit ea\",\n      \"password\": \"minim ex laborum exercitation\",\n      \"description\": \"Lorem nulla ex ad irure\"\n    },\n    \"cart\": {\n      \"items\": {\n        \"nulla_b42\": {\n          \"cart\": {\n            \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n          },\n          \"item\": {\n            \"id\": 88478963,\n            \"seller\": {\n              \"id\": 32796155,\n              \"name\": \"laboris Duis do labore\",\n              \"email\": \"culpa officia minim enim in\",\n              \"password\": \"fugiat ex occaecat reprehenderit\",\n              \"description\": \"ut Duis tempor elit\"\n            },\n            \"price\": 72666815.68728533,\n            \"itemDetails\": {\n              \"type\": \"veniam fug\",\n              \"name\": \"tempor esse\",\n              \"description\": \"elit deserunt officia minim\",\n              \"status\": \"available\",\n              \"producer\": {\n                \"id\": 49525810,\n                \"name\": \"ullamco\",\n                \"email\": \"elit irure minim cupidatat Excepteur\",\n                \"password\": \"quis ea\",\n                \"description\": \"fugiat ea reprehenderit Excepteur\"\n              },\n              \"id\": 45762440,\n              \"isVisibleByPublic\": true,\n              \"post\": {},\n              \"itemsQty\": [\n                {\n                  \"itemDetails\": {\n                    \"type\": \"id eiusmod ea veniam\",\n                    \"name\": \"est dolore sint laboris\",\n                    \"description\": \"ut velit Duis\",\n                    \"status\": \"underReview\",\n                    \"producer\": {\n                      \"id\": 80482446,\n                      \"name\": \"aliqua labo\",\n                      \"email\": \"ullamco \",\n                      \"password\": \"in ea aliqua\",\n                      \"description\": \"irure ut\"\n                    },\n                    \"id\": 27646400,\n                    \"isVisibleByPublic\": false,\n                    \"post\": {}\n                  },\n                  \"qty\": 92873761\n                },\n                {\n                  \"itemDetails\": {\n                    \"type\": \"Lorem deserunt in enim\",\n                    \"name\": \"laborum deserunt incididunt dolore\",\n                    \"description\": \"exercitation Duis ipsum dolore\",\n                    \"status\": \"outOfStock\",\n                    \"producer\": {\n                      \"id\": -12055039,\n                      \"name\": \"ut mollit\",\n                      \"email\": \"consequat ea in sint\",\n                      \"password\": \"fugiat mollit\",\n                      \"description\": \"adipisicing\"\n                    },\n                    \"id\": -19055940,\n                    \"isVisibleByPublic\": false,\n                    \"post\": {}\n                  },\n                  \"qty\": -10965786\n                }\n              ]\n            },\n            \"qty\": 78992135\n          },\n          \"quantity\": 30271663\n        }\n      },\n      \"totalAmount\": -93442686.12781775\n    },\n    \"orderDate\": \"1974-01-08T22:04:50.292Z\",\n    \"orderStatus\": \"picking\",\n    \"address\": {},\n    \"totalAmount\": -71147820.65285246\n  },\n  {\n    \"orderId\": 48760378,\n    \"customer\": {\n      \"userId\": 3423919,\n      \"name\": \"cupidatat\",\n      \"email\": \"qui \",\n      \"roles\": [\n        \"ADMIN\",\n        \"MODERATOR\"\n      ]\n    },\n    \"seller\": {\n      \"id\": -93186886,\n      \"name\": \"ut aute\",\n      \"email\": \"ea consequat ali\",\n      \"password\": \"deserunt voluptate qui est\",\n      \"description\": \"elit est \"\n    },\n    \"cart\": {\n      \"items\": {\n        \"esse_4_e\": {\n          \"cart\": {\n            \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n          },\n          \"item\": {\n            \"id\": -20562883,\n            \"seller\": {\n              \"id\": 71323486,\n              \"name\": \"eu\",\n              \"email\": \"sunt en\",\n              \"password\": \"dolor adipisicing magna in quis\",\n              \"description\": \"in dolor Lorem\"\n            },\n            \"price\": -11676460.441900536,\n            \"itemDetails\": {\n              \"type\": \"irure consequa\",\n              \"name\": \"deserunt ut\",\n              \"description\": \"eiusmod velit qui\",\n              \"status\": \"available\",\n              \"producer\": {\n                \"id\": -43852313,\n                \"name\": \"cupidatat commodo eiusmod pariatur\",\n                \"email\": \"anim officia id in\",\n                \"password\": \"magna Excepteur ad qui\",\n                \"description\": \"ullamco nisi ipsum voluptate\"\n              },\n              \"id\": -68565301,\n              \"isVisibleByPublic\": true,\n              \"post\": {},\n              \"itemsQty\": [\n                {\n                  \"itemDetails\": {\n                    \"type\": \"dolore Ut a\",\n                    \"name\": \"dolore\",\n                    \"description\": \"ad\",\n                    \"status\": \"underReview\",\n                    \"producer\": {\n                      \"id\": -74811223,\n                      \"name\": \"in aliqua\",\n                      \"email\": \"amet qui dolore minim\",\n                      \"password\": \"sunt nisi\",\n                      \"description\": \"veniam exercitation\"\n                    },\n                    \"id\": 11946856,\n                    \"isVisibleByPublic\": false,\n                    \"post\": {}\n                  },\n                  \"qty\": 15361192\n                },\n                {\n                  \"itemDetails\": {\n                    \"type\": \"adipisicing fugiat\",\n                    \"name\": \"culpa\",\n                    \"description\": \"laboris consectetur aute reprehenderit\",\n                    \"status\": \"outOfStock\",\n                    \"producer\": {\n                      \"id\": -99744297,\n                      \"name\": \"in dolor\",\n                      \"email\": \"nulla aliqua in tempor\",\n                      \"password\": \"in nostrud\",\n                      \"description\": \"amet do\"\n                    },\n                    \"id\": -48360310,\n                    \"isVisibleByPublic\": true,\n                    \"post\": {}\n                  },\n                  \"qty\": -13082914\n                }\n              ]\n            },\n            \"qty\": -27816157\n          },\n          \"quantity\": 52188185\n        },\n        \"in_5\": {\n          \"cart\": {\n            \"value\": \"<Circular reference to #/components/schemas/Cart detected>\"\n          },\n          \"item\": {\n            \"id\": 3538828,\n            \"seller\": {\n              \"id\": -69695894,\n              \"name\": \"sed pariatur Excepteur sint\",\n              \"email\": \"mollit\",\n              \"password\": \"officia\",\n              \"description\": \"dolore magna aliqua ad\"\n            },\n            \"price\": 49204183.32027811,\n            \"itemDetails\": {\n              \"type\": \"aliquip in dolore\",\n              \"name\": \"consectetur qui Ut anim\",\n              \"description\": \"proident laborum cupidatat in\",\n              \"status\": \"awaitingReview\",\n              \"producer\": {\n                \"id\": 89513594,\n                \"name\": \"in elit cillum exercitation eiusmod\",\n                \"email\": \"irure in\",\n                \"password\": \"nisi eiusmod esse id reprehenderit\",\n                \"description\": \"et quis qui\"\n              },\n              \"id\": -84171280,\n              \"isVisibleByPublic\": true,\n              \"post\": {},\n              \"itemsQty\": [\n                {\n                  \"itemDetails\": {\n                    \"type\": \"minim dolore\",\n                    \"name\": \"nisi dolore consectetur consequat\",\n                    \"description\": \"mollit qui amet adipisicing\",\n                    \"status\": \"available\",\n                    \"producer\": {\n                      \"id\": -61070884,\n                      \"name\": \"proident ut velit\",\n                      \"email\": \"et consequat adipisicing ut\",\n                      \"password\": \"occaecat esse pariatur ut non\",\n                      \"description\": \"aliquip\"\n                    },\n                    \"id\": 73351023,\n                    \"isVisibleByPublic\": true,\n                    \"post\": {}\n                  },\n                  \"qty\": 24361508\n                },\n                {\n                  \"itemDetails\": {\n                    \"type\": \"reprehenderit cupidatat\",\n                    \"name\": \"t\",\n                    \"description\": \"tempor in proident\",\n                    \"status\": \"awaitingReview\",\n                    \"producer\": {\n                      \"id\": -90081064,\n                      \"name\": \"reprehenderit dolore eu veniam enim\",\n                      \"email\": \"do culpa amet\",\n                      \"password\": \"nostrud qu\",\n                      \"description\": \"quis fugiat\"\n                    },\n                    \"id\": -59055426,\n                    \"isVisibleByPublic\": false,\n                    \"post\": {}\n                  },\n                  \"qty\": 10792620\n                }\n              ]\n            },\n            \"qty\": 44742542\n          },\n          \"quantity\": -11760018\n        }\n      },\n      \"totalAmount\": 66092201.32039803\n    },\n    \"orderDate\": \"2000-04-28T20:50:51.048Z\",\n    \"orderStatus\": \"picking\",\n    \"address\": {},\n    \"totalAmount\": 1620722.4594555497\n  }\n]"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}
