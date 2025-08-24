@@ -1,6 +1,5 @@
 package com.github.countrybros.model.acceptancesubmission;
 
-import com.github.countrybros.model.product.ItemDetails;
 import jakarta.persistence.*;
 
 /**

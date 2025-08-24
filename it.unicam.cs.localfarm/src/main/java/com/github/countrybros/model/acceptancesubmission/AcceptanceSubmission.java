@@ -29,20 +29,20 @@ public abstract class AcceptanceSubmission {
     private int id;
     private int senderId;
     private int curatorId;
-    private boolean accepted;
+    private SubmissionStatus status;
 
     public AcceptanceSubmission() {}
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+    public void setStatus(SubmissionStatus status) {
+        this.status = status;
     }
 
     public void assignCurator(int curatorId) {
         this.curatorId = curatorId;
     }
 
-    public boolean isAccepted() {
-        return accepted;
+    public SubmissionStatus getStatus() {
+        return status;
     }
 
     public void setSenderId(int senderId) {

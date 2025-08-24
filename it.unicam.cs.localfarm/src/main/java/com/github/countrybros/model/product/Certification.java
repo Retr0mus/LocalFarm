@@ -1,16 +1,16 @@
 package com.github.countrybros.model.product;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 /**
  * Certification details.
  */
-@Embeddable
+@Entity
 public class Certification {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String name;
     private String description;
 
@@ -27,5 +27,9 @@ public class Certification {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getId() {
+        return id;
     }
 }

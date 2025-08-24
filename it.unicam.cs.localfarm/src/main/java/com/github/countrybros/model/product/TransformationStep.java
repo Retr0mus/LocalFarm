@@ -1,5 +1,6 @@
 package com.github.countrybros.model.product;
 
+import com.github.countrybros.application.Location;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,7 +16,9 @@ public class TransformationStep {
     int id;
 
     @OneToMany
-    private List<ItemDetails> ingredients;
-    //TODO add location
+    private List<SimpleProduct> ingredients;
+
+    private Location location;
+
     private String description;
 }

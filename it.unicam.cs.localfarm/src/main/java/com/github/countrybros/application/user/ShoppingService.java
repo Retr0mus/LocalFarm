@@ -4,12 +4,11 @@ package com.github.countrybros.application.user;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotEnoughItemsException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.application.errors.SevereCodingErrorException;
-import com.github.countrybros.application.product.ItemService;
+import com.github.countrybros.application.product.StockService;
 import com.github.countrybros.infrastructure.repository.ICartRepository;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.infrastructure.repository.IShoppingItemRepository;
-import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class ShoppingService implements IShoppingService {
     @Autowired
     private IUserService  userService;
     @Autowired
-    private ItemService itemService;
+    private StockService itemService;
     @Autowired
     private IShoppingItemRepository shoppingItemRepository;
     @Autowired
@@ -49,8 +48,8 @@ public class ShoppingService implements IShoppingService {
     @Override
     public void addItemToCart(int userId, int itemId, int qty) {
         Cart cart = getCart(userId);
-        Item item = itemService.getItem(itemId);
-        if (item == null) {
+        Stock stock = itemService.getItem(itemId);
+        if (stock == null) {
             throw new NotFoundInRepositoryException("Item with ID " + itemId + " not found.");
         }
 
@@ -66,7 +65,7 @@ public class ShoppingService implements IShoppingService {
         }
 
         if (!found) {
-            ShoppingItem newItem = new ShoppingItem(cart, item, qty);
+            ShoppingItem newItem = new ShoppingItem(cart, stock, qty);
             cart.getItems().add(itemId, newItem);
             shoppingItemRepository.save(newItem);
         }
@@ -133,10 +132,10 @@ public class ShoppingService implements IShoppingService {
         Cart excessCart = new Cart();
 
         for (ShoppingItem shoppingItem : cart.getItems()) {
-            Item item = itemService.getItem(shoppingItem.getItem().getId());
-            int diff = item.getQty() - shoppingItem.getQuantity();
+            Stock stock = itemService.getItem(shoppingItem.getItem().getId());
+            int diff = stock.getQty() - shoppingItem.getQuantity();
             if (diff < 0)
-                excessItems.add(new ShoppingItem(excessCart, item, diff));
+                excessItems.add(new ShoppingItem(excessCart, stock, diff));
         }
 
         cart.setItems(excessItems);

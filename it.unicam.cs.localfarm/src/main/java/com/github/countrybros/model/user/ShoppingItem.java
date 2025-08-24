@@ -1,6 +1,6 @@
 package com.github.countrybros.model.user;
 
-import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.Stock;
 import jakarta.persistence.*;
 
 /**
@@ -16,10 +16,10 @@ public class ShoppingItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
     @OneToOne(fetch = FetchType.LAZY)
-    private Item item;
+    private Stock stock;
     private int quantity;
 
-    public ShoppingItem(Cart cart, Item item, int quantity) {}
+    public ShoppingItem(Cart cart, Stock stock, int quantity) {}
 
     public ShoppingItem() {
 
@@ -29,8 +29,8 @@ public class ShoppingItem {
         return cart;
     }
 
-    public Item getItem() {
-        return item;
+    public Stock getItem() {
+        return stock;
     }
 
     public int getQuantity() {

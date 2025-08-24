@@ -1,6 +1,5 @@
 package com.github.countrybros.model.acceptancesubmission;
 
-import com.github.countrybros.model.product.ItemDetails;
 import jakarta.persistence.*;
 
 /**
@@ -21,7 +20,7 @@ public class RecogniseProductAcceptanceSubmission extends AcceptanceSubmission {
         return productId;
     }
 
-    public int getQta() {
+    public int getQty() {
         return qta;
     }
 

@@ -4,12 +4,9 @@ package com.github.countrybros.application.acceptancesubmission;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
-import com.github.countrybros.application.product.IItemService;
 import com.github.countrybros.application.user.IUserService;
 import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
-import com.github.countrybros.infrastructure.repository.IUserRepository;
-import com.github.countrybros.model.acceptancesubmission.AddProductAcceptanceSubmission;
-import com.github.countrybros.model.user.User;
+import com.github.countrybros.model.acceptancesubmission.SubmissionStatus;
 import com.github.countrybros.web.acceptancesubmission.request.*;
 import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 import org.springframework.stereotype.Service;
@@ -75,7 +72,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions() {
-        return acceptanceSubmissionRepository.getAcceptanceSubmissionByAccepted(false);
+        return acceptanceSubmissionRepository.findAllByStatus(SubmissionStatus.assigned);
     }
 
     /**
@@ -100,31 +97,32 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
 
         AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
 
-        if (submission.isAccepted()) {
-            throw new RequestAlreadySatisfiedException("Submission already accepted");
+        if (!submission.getStatus().equals(SubmissionStatus.assigned)) {
+            throw new ImpossibleRequestException("Incoherent submission status");
         }
 
-        //TODO: implement
-        //userService.getUser(submission.getCuratorId());
-
-        submission.setAccepted(true);
+        submission.setStatus(SubmissionStatus.accepted);
 
         acceptanceSubmissionRepository.save(submission);
     }
 
     /**
-     * Refuse the specified AcceptanceSubmission by deleting it.
+     * Refuse the specified AcceptanceSubmission.
      *
      * @param submissionId the id of the AcceptanceSubmission.
      */
     @Override
     public void onRefusal(int submissionId) {
 
-        if (!acceptanceSubmissionRepository.existsById(submissionId)) {
-            throw new NotFoundInRepositoryException("Submission not found with id " + submissionId);
+        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
+
+        if (!submission.getStatus().equals(SubmissionStatus.assigned)) {
+            throw new ImpossibleRequestException("Incoherent submission status");
         }
 
-        acceptanceSubmissionRepository.deleteById(submissionId);
+        submission.setStatus(SubmissionStatus.refused);
+
+        acceptanceSubmissionRepository.save(submission);
     }
 
     @Override
@@ -135,8 +133,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
 
         AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
 
-        if (submission.isAccepted()) {
-            throw new ImpossibleRequestException("Submission is already accepted");
+        if (!submission.getStatus().equals(SubmissionStatus.pending)) {
+            throw new ImpossibleRequestException("Submission already taken");
         }
 
         submission.setSenderId(userId);

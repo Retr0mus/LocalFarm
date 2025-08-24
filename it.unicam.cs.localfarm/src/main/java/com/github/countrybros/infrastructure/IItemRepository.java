@@ -1,11 +1,11 @@
 package com.github.countrybros.infrastructure;
 
-import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.Stock;
 
 /**
  * Interface for item data access and manipulation.
  */
 @Deprecated
-public interface  IItemRepository extends IRepository<Item>{
+public interface  IItemRepository extends IRepository<Stock>{
 
 }
