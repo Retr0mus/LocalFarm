@@ -1,12 +1,12 @@
 package com.github.countrybros.application.product;
 
-import com.github.countrybros.model.product.ItemDetails;
+import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.user.Company;
 
 /**
  * Generic behaviour of an ItemDetailsBuilder
  */
-public interface IItemDetailsBuilder {
+public interface IItemBuilder {
 
     /**
      * resets the building, prepare for another object to being created.
@@ -18,7 +18,7 @@ public interface IItemDetailsBuilder {
      *
      * @return the element
      */
-    ItemDetails getResult();
+    Item getResult();
 
     void setName(String productName);
 

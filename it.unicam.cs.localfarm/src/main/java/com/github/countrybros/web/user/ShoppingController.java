@@ -1,5 +1,7 @@
 package com.github.countrybros.web.user;
 
+import com.github.countrybros.application.Orchestrator;
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.user.IShoppingService;
 import com.github.countrybros.model.user.Cart;
 import com.github.countrybros.model.user.Order;
@@ -17,6 +19,8 @@ public class ShoppingController {
 
     @Autowired
     private IShoppingService shoppingService;
+    @Autowired
+    private Orchestrator orchestrator;
 
     @GetMapping("/cart")
     public ResponseEntity<Cart> getCart(@RequestParam int userId) {
@@ -24,33 +28,46 @@ public class ShoppingController {
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
-    @PostMapping("/cart/add")
-    public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
-        shoppingService.addItemToCart(request.userId, request.itemId, request.quantity);
-        return new ResponseEntity<>("Item added to cart", HttpStatus.OK);
-    }
+//    @PostMapping("/cart/add")
+//    public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
+//        shoppingService.addItemToCart(request.userId, request.itemId, request.quantity);
+//        return new ResponseEntity<>("Item added to cart", HttpStatus.OK);
+//    }
 
     @PutMapping("/cart/edit")
     public ResponseEntity<String> editQuantityOfItemInCart(@RequestParam int userId, @RequestParam int itemId, @RequestParam int qty) {
-        shoppingService.editQuantityOfItemInCart(userId, itemId, qty);
-        return new ResponseEntity<>("Item quantity updated", HttpStatus.OK);
+        try {
+            orchestrator.editQuantityOfItemInCart(userId, itemId, qty);
+            return new ResponseEntity<>("Item quantity updated", HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (NotFoundInRepositoryException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/cart/remove")
-    public ResponseEntity<String> removeItemFromCart(@RequestParam int userId, @RequestParam int itemId, @RequestParam int qty) {
-        shoppingService.removeItemFromCart(userId, itemId, qty);
-        return new ResponseEntity<>("Item removed from cart", HttpStatus.OK);
+    public ResponseEntity<String> removeItemFromCart(@RequestParam int userId, @RequestParam int itemId) {
+        try {
+            orchestrator.removeItemFromCart(userId, itemId);
+            return new ResponseEntity<>("Item removed from cart", HttpStatus.OK);
+        }catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (NotFoundInRepositoryException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
-    @PostMapping("/cart/excess")
-    public ResponseEntity<Cart> getExcessItems(@RequestBody Cart cart) {
-        Cart excessCart = shoppingService.getExcessItems(cart);
-        return new ResponseEntity<>(excessCart, HttpStatus.OK);
-    }
+//    @PostMapping("/cart/excess")
+//    public ResponseEntity<Cart> getExcessItems(@RequestBody Cart cart) {
+//        Cart excessCart = shoppingService.getExcessItems(cart);
+//        return new ResponseEntity<>(excessCart, HttpStatus.OK);
+//    }
 
-    @PostMapping("/checkout")
-    public ResponseEntity<Order> checkout(@RequestParam int userId, @RequestBody CheckoutRequest checkoutRequest) {
-        Order order = shoppingService.checkout(userId, checkoutRequest.paymentMethod, checkoutRequest.shippingAddress);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
-    }
+//    @PostMapping("/checkout")
+//    public ResponseEntity<Order> checkout(@RequestParam int userId, @RequestBody CheckoutRequest checkoutRequest) {
+//        Order order = shoppingService.checkout(userId, checkoutRequest.paymentMethod, checkoutRequest.shippingAddress);
+//        return new ResponseEntity<>(order, HttpStatus.CREATED);
+//    }
 }

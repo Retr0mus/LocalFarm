@@ -1,9 +1,7 @@
 package com.github.countrybros.model.product;
 
 import com.github.countrybros.model.user.SocialPost;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +11,9 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue("simpleProductDetails")
-public class SimpleProductDetails extends ItemDetails {
+public class SimpleProduct extends Item {
 
-    //TODO: ManyToMany
-    @ElementCollection
+    @ManyToMany
     private List<Certification> certifications = new ArrayList<>();
 
     public List<Certification> getCertifications() { return certifications; }

@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue("transformedProductDetails")
-public class TransformedProductDetails extends SimpleProductDetails {
+public class TransformedProduct extends SimpleProduct {
 
     /**
      * Steps that defines the transformation process.

@@ -1,14 +1,13 @@
 package com.github.countrybros.application.product;
 
-import com.github.countrybros.application.user.CompanyService;
-import com.github.countrybros.model.product.ItemDetailsStatus;
+import com.github.countrybros.model.product.ItemStatus;
 import com.github.countrybros.model.user.Company;
-import com.github.countrybros.model.product.ItemDetails;
+import com.github.countrybros.model.product.Item;
 
 /**
  * Creates an @ItemDetails
  */
-public abstract class ItemDetailsBuilder<T extends ItemDetails> implements IItemDetailsBuilder {
+public abstract class ItemBuilder<T extends Item> implements IItemBuilder {
 
     /**
      * The Item to build.
@@ -25,7 +24,7 @@ public abstract class ItemDetailsBuilder<T extends ItemDetails> implements IItem
     protected abstract T createInstance();
 
 
-    public ItemDetailsBuilder() {
+    public ItemBuilder() {
 
         this.reset();
     }
@@ -37,11 +36,11 @@ public abstract class ItemDetailsBuilder<T extends ItemDetails> implements IItem
     }
 
     @Override
-    public ItemDetails getResult() {
+    public Item getResult() {
 
         //TODO: impostare a awaitingReview, o cambiare gli stati
         product.setVisibleByPublic(false);
-        product.setStatus(ItemDetailsStatus.awaitingReview);
+        product.setStatus(ItemStatus.awaitingReview);
         return product;
     }
 

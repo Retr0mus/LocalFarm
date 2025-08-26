@@ -16,6 +16,10 @@ public interface IOrderRepository extends CrudRepository<Order, Integer> {
 
     List<Order> findByCustomerUserId(int userId);
 
+    List<Order> findOrderByCustomer_UserId(int customerUserId);
+
+    Order findOrderByOrderId(int orderId);
+
 
     /*
         Default function of CrudRepository

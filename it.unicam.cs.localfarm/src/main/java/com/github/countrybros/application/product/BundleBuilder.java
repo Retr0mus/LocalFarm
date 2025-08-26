@@ -1,18 +1,19 @@
 package com.github.countrybros.application.product;
 
-import com.github.countrybros.model.product.BundleDetails;
+import com.github.countrybros.model.product.Bundle;
 import com.github.countrybros.model.product.ItemDetailsQuantity;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class BundleDetailsBuilder extends ItemDetailsBuilder<BundleDetails>{
+public class BundleBuilder extends ItemBuilder<Bundle> {
 
     /**
      * @inheritDoc
      */
     @Override
-    protected BundleDetails createInstance() {
-        return new BundleDetails();
+    protected Bundle createInstance() {
+        return new Bundle();
     }
 
     /**
@@ -29,8 +30,8 @@ public class BundleDetailsBuilder extends ItemDetailsBuilder<BundleDetails>{
      *
      * @param items map of the items linked to their quantity
      */
-    public void setItemsQty(ArrayList<ItemDetailsQuantity> items) {
+    public void setItemsQty(Map<Integer, Integer> items) {
 
-        this.product.setItemsQty(items);
+        this.product.setItems(items);
     }
 }

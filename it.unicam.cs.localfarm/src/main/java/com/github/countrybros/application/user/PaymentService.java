@@ -1,6 +1,9 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.model.user.*;
+import com.github.countrybros.web.user.request.RefundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,9 @@ public class PaymentService implements IPaymentService {
     private ICompanyService companyService;
     @Autowired
     private IOrderService orderService;
+    @Autowired
+    private IOrderRepository orderRepository;
+    private IPaymentMethod paymentMethod;
 
 
     /**
@@ -34,35 +40,37 @@ public class PaymentService implements IPaymentService {
         return paymentMethod.pay(amount);
     }
 
+
+
     @Override
     public void paySellers() {
 
-        ArrayList<Order> orders = new ArrayList<>(orderService
-                .getOrdersSince(Date.from(
-                        LocalDateTime.now()
-                                .minusDays(28)
-                                .atZone(ZoneId.systemDefault())
-                                .toInstant()
-                )));
+    }
 
-        for (Order order : orders) {
-            if (order.getOrderStatus() != OrderStatus.delivered)
-                continue;
-            for (ShoppingItem item : order.getCart().getItems()) {
-                paySeller(item.getItem().getSeller().getId(), (float) (item.getQuantity() * item.getItem().getPrice()));
-            }
+    public boolean refund(RefundRequest request){
+        Order order = orderRepository.findById(request.getOrderId())
+                .orElseThrow(() -> new NotFoundInRepositoryException("Order not found with ID " + request.getOrderId()));
+
+        float amountToRefund = (float) order.getTotal();
+
+        if(request.getEmail() == null || request.getEmail().isEmpty()) {
+            System.out.println("Invalid data received");
+            orderService.blockOrder(order.getId());
+            return false;
         }
+
+        System.out.println("Attempt to refund  " + amountToRefund + " to " + request.getEmail());
+
+        boolean refundSuccess = false;
+        try {
+            refundSuccess = paymentMethod.refund(amountToRefund);
+        } catch (Exception e) {
+            System.out.println("impossible to contact payment service.");
+            orderService.blockOrder(order.getId());
+        }
+
+        order.setOrderStatus(OrderStatus.cancelled);
+        orderRepository.save(order);
+        return refundSuccess;
     }
-
-    private void paySeller(int companyId, float paymentAmount) {
-
-        Company company = companyService.getCompany(companyId);
-
-        //TODO: manage method of the company
-        //IPaymentMethod method = company.getPaymentMethod()
-    }
-
-
-
-    };
-
+};

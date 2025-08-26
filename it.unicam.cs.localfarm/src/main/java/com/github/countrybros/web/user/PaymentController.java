@@ -1,7 +1,9 @@
 package com.github.countrybros.web.user;
 
+import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.user.IPaymentService;
 import com.github.countrybros.model.user.FakePayment;
+import com.github.countrybros.web.user.request.RefundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ public class PaymentController {
 
     @Autowired
     private IPaymentService paymentService;
+    @Autowired
+    private Orchestrator orchestrator;
 
     /**
      * Payment is fake!!!
@@ -37,4 +41,7 @@ public class PaymentController {
         paymentService.paySellers();
         return new ResponseEntity<>("Sellers paid successfully", HttpStatus.OK);
     }
+
+
 }
+

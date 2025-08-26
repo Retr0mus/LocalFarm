@@ -1,6 +1,5 @@
 package com.github.countrybros.model.acceptancesubmission;
 
-import com.github.countrybros.model.product.ItemDetails;
 import jakarta.persistence.*;
 
 /**
@@ -8,13 +7,13 @@ import jakarta.persistence.*;
  */
 @Entity
 @DiscriminatorValue("recogniseProduct")
-public class RecogniseProductAcceptanceSubmission extends AcceptanceSubmission {
+public class RecogniseProductSubmission extends Submission {
 
     //TODO
     private int productId;
     private int qta;
 
-    public RecogniseProductAcceptanceSubmission() {}
+    public RecogniseProductSubmission() {}
 
 
     public int getProductId() {

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 /**
  * Represents an abstract product acceptance submission
  */
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,            // Specifies that the type information will be included as a logical name (simple string) identifying the concrete class.
         include = JsonTypeInfo.As.PROPERTY,   // Specifies that this type information will be included as a property inside the JSON object.
@@ -14,35 +15,26 @@ import jakarta.persistence.*;
 )
 @JsonSubTypes({
         // Defines the possible subtypes and associates each subtype with a specific name value in the "type" property.
-        @JsonSubTypes.Type(value = AddProductAcceptanceSubmission.class, name = "addProduct"),
-        @JsonSubTypes.Type(value = EditProductAcceptanceSubmission.class, name = "editProduct"),
-        @JsonSubTypes.Type(value = RecogniseProductAcceptanceSubmission.class, name = "recogniseProduct"),
-        @JsonSubTypes.Type(value = RemoveProductAcceptanceSubmission.class, name = "removeProduct")
+        @JsonSubTypes.Type(value = AddProductSubmission.class, name = "addProduct"),
+        @JsonSubTypes.Type(value = RecogniseProductSubmission.class, name = "recogniseProduct"),
 })
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "submission_type")
-public abstract class AcceptanceSubmission {
+public abstract class Submission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int senderId;
     private int curatorId;
-    private boolean accepted;
 
-    public AcceptanceSubmission() {}
+    private SubmissionStatus status;
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
-    }
+    public Submission() {}
 
     public void assignCurator(int curatorId) {
         this.curatorId = curatorId;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 
     public void setSenderId(int senderId) {
@@ -60,4 +52,14 @@ public abstract class AcceptanceSubmission {
     public int getId() {
         return id;
     }
+
+    public SubmissionStatus getStatus(){
+        return status;
+    }
+
+    public void setStatus(SubmissionStatus status) {
+        this.status = status;
+    }
+
+
 }

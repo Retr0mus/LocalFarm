@@ -1,6 +1,5 @@
 package com.github.countrybros.model.acceptancesubmission;
 
-import com.github.countrybros.model.product.ItemDetails;
 import jakarta.persistence.*;
 
 /**
@@ -8,11 +7,11 @@ import jakarta.persistence.*;
  */
 @Entity
 @DiscriminatorValue("addProduct")
-public class AddProductAcceptanceSubmission extends AcceptanceSubmission {
+public class AddProductSubmission extends Submission {
 
     private int itemDetailsId;
 
-    public AddProductAcceptanceSubmission() {}
+    public AddProductSubmission() {}
 
     public int getItemDetailsId() {
         return itemDetailsId;

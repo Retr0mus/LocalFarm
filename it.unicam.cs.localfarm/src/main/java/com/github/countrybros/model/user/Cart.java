@@ -1,5 +1,6 @@
 package com.github.countrybros.model.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.*;
 
@@ -17,8 +18,10 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int id;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "cart_id")
     private List<ShoppingItem> items = new ArrayList<>();
+
 
     public boolean containsItem(int itemId){
         return false;

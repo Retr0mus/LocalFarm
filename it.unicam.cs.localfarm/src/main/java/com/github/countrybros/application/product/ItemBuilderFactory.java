@@ -6,20 +6,20 @@ import com.github.countrybros.model.product.ItemType;
 /**
  * Creates all the items by their type
  */
-public class ItemDetailsBuilderFactory {
+public class ItemBuilderFactory {
 
-    public IItemDetailsBuilder getBuilder(ItemType type) {
+    public IItemBuilder getBuilder(ItemType type) {
 
         switch (type) {
 
             case simpleProduct -> {
-                return new SimpleProductDetailsBuilder();
+                return new SimpleProductBuilder();
             }
             case transformedProduct -> {
-                return new TransformedProductDetailsBuilder();
+                return new TransformedProductBuilder();
             }
             case bundle -> {
-                return new BundleDetailsBuilder();
+                return new BundleBuilder();
             }
             default -> {
                 throw new SevereCodingErrorException("Item type not managed");

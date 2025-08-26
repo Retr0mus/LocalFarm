@@ -12,23 +12,23 @@ public class ItemDetailsQuantity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     @ManyToOne(cascade = CascadeType.ALL)
-    private ItemDetails itemDetails;
+    private Item item;
     private int qty;
 
     public ItemDetailsQuantity() {}
 
-    public ItemDetailsQuantity(ItemDetails item, int qty) {
+    public ItemDetailsQuantity(Item item, int qty) {
 
-        this.itemDetails = item;
+        this.item = item;
         this.qty = qty;
     }
 
-    public ItemDetails getItemDetails() {
-        return itemDetails;
+    public Item getItemDetails() {
+        return item;
     }
 
-    public void setItemDetails(ItemDetails itemDetails) {
-        this.itemDetails = itemDetails;
+    public void setItemDetails(Item item) {
+        this.item = item;
     }
 
     public int getQty() {

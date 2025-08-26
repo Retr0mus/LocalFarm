@@ -3,7 +3,11 @@ package com.github.countrybros.model.user;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Class that represents an order.
@@ -17,23 +21,19 @@ public class Order {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User customer;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private Company seller;
-    @OneToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @Embedded
     private ShippingAddress address;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
+    private List<OrderItem> items;
 
     public Order() {
-
-        //TODO: date of today
-        setOrderDate(new Date());
+        items = new ArrayList<OrderItem>();
+        setOrderDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
         setOrderStatus(OrderStatus.picking);
     }
 
@@ -45,10 +45,6 @@ public class Order {
         return customer;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
     public Date getOrderDate() {
         return orderDate;
     }
@@ -57,20 +53,12 @@ public class Order {
         return orderStatus;
     }
 
-    public double getTotalAmount() {
-        return cart.getTotalAmount();
-    }
-
     public ShippingAddress getAddress() {
         return address;
     }
 
     public void setCustomer(User user) {
         this.customer = user;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 
     public void setOrderDate(Date orderDate) {
@@ -85,11 +73,25 @@ public class Order {
         this.address = address;
     }
 
-    public Company getSeller() {
-        return seller;
+    public List<OrderItem> getItems() {
+        return items;
     }
 
-    public void setSeller(Company seller) {
-        this.seller = seller;
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
+
+    public void addItem(OrderItem item) {
+        getItems().add(item);
+    }
+
+    public float getTotal() {
+        float total = 0;
+        for (OrderItem item : getItems()) {
+            total += item.getUnitPrice() * item.getQuantity();
+        }
+        return total;
+    }
+
+    public int getId() { return orderId; }
 }

@@ -1,6 +1,6 @@
 package com.github.countrybros.application.acceptancesubmission;
 
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.Submission;
 import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
 
 import java.util.List;
@@ -31,14 +31,14 @@ public interface IAcceptanceSubmissionService {
      * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
      * @return the said AcceptanceSubmission.
      */
-     AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
+     Submission getAcceptanceSubmission(int acceptanceSubmissionId);
 
     /**
      * Gets all the free AcceptanceSubmissions.
      *
      * @return a list with all the said AcceptanceSubmission.
      */
-     List<AcceptanceSubmission> getAvailableAcceptanceSubmissions();
+     List<Submission> getAvailableAcceptanceSubmissions();
 
     /**
      * Gets all the AcceptanceSubmissions assigned to a certain Curator.
@@ -46,7 +46,7 @@ public interface IAcceptanceSubmissionService {
      * @param curatorId the Id of the User with the Curator privileges.
      * @return a list with all the curator's AcceptanceSubmission.
      */
-     List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
+     List<Submission> getAcceptanceSubmissionsByCurator(int curatorId);
 
      //TODO: Add acceptance submission by sender.
 

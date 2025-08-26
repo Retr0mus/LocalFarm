@@ -1,20 +1,20 @@
 package com.github.countrybros.infrastructure.repository;
 
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.Submission;
+import com.github.countrybros.model.acceptancesubmission.SubmissionStatus;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface IAcceptanceSubmissionRepository extends CrudRepository<AcceptanceSubmission, Integer> {
-    List<AcceptanceSubmission> getAcceptanceSubmissionByAcceptedNot(boolean accepted);
+public interface ISubmissionRepository extends CrudRepository<Submission, Integer> {
 
-    List<AcceptanceSubmission> getAcceptanceSubmissionByAccepted(boolean accepted);
+    List<Submission> getAcceptanceSubmissionById(int id);
 
-    List<AcceptanceSubmission> getAcceptanceSubmissionById(int id);
+    List<Submission> getAcceptanceSubmissionByStatus(SubmissionStatus status);
 
-   // List<AcceptanceSubmission> getAcceptanceSubmissionByCuratorUserId(int id);
+    // List<AcceptanceSubmission> getAcceptanceSubmissionByCuratorUserId(int id);
 
       /*
         Default function of CrudRepository

@@ -1,5 +1,7 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.web.user.request.RefundRequest;
+
 /**
  * Responsibility of managing all the payment that can occur through the system.
  */
@@ -17,4 +19,15 @@ public interface IPaymentService {
      * Payment of all the orders delivered by the companies, cover 28 days
      */
     void paySellers();
+
+    /**
+     *
+     * Refund
+     *
+     * @param request
+     * @return
+     */
+    boolean refund(RefundRequest request);
+
+
 }

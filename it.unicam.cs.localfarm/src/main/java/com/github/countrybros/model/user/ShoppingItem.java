@@ -1,6 +1,7 @@
 package com.github.countrybros.model.user;
 
-import com.github.countrybros.model.product.Item;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.github.countrybros.model.product.Stock;
 import jakarta.persistence.*;
 
 /**
@@ -11,15 +12,16 @@ import jakarta.persistence.*;
 public class ShoppingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
-    @OneToOne(fetch = FetchType.LAZY)
-    private Item item;
+    @OneToOne(fetch = FetchType.EAGER)
+    private Stock stock;
+
     private int quantity;
 
-    public ShoppingItem(Cart cart, Item item, int quantity) {}
+    public ShoppingItem(Cart cart, Stock stock, int quantity) {}
 
     public ShoppingItem() {
 
@@ -29,8 +31,8 @@ public class ShoppingItem {
         return cart;
     }
 
-    public Item getItem() {
-        return item;
+    public Stock getItem() {
+        return stock;
     }
 
     public int getQuantity() {
@@ -41,6 +43,11 @@ public class ShoppingItem {
         this.quantity = quantity;
     }
 
+    public int getId() { return id;}
+
+    public int getAvailableStock() {
+        return stock != null ? stock.getQty() : 0;
+    }
 }
 
 

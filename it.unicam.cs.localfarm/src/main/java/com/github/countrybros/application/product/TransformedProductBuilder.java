@@ -1,22 +1,22 @@
 package com.github.countrybros.application.product;
 
-import com.github.countrybros.model.product.SimpleProductDetails;
+import com.github.countrybros.model.product.SimpleProduct;
 import com.github.countrybros.model.product.TransformationStep;
-import com.github.countrybros.model.product.TransformedProductDetails;
+import com.github.countrybros.model.product.TransformedProduct;
 
 import java.util.ArrayList;
 
 /**
  * Builder of @transformedProductDetails
  */
-public class TransformedProductDetailsBuilder extends SimpleProductDetailsBuilder {
+public class TransformedProductBuilder extends SimpleProductBuilder {
 
     /**
      * @inheritDoc
      */
     @Override
-    protected SimpleProductDetails createInstance() {
-        return new TransformedProductDetails();
+    protected SimpleProduct createInstance() {
+        return new TransformedProduct();
     }
 
     /**
@@ -35,6 +35,6 @@ public class TransformedProductDetailsBuilder extends SimpleProductDetailsBuilde
      */
     public void setTransformationSteps(ArrayList<TransformationStep> steps) {
 
-        ((TransformedProductDetails) product).setSteps(steps);
+        ((TransformedProduct) product).setSteps(steps);
     }
 }

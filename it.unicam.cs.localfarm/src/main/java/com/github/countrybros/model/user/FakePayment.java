@@ -8,4 +8,8 @@ public class FakePayment implements IPaymentMethod {
     public boolean pay(float price) {
         return true;
     }
+    @Override
+    public boolean refund(float price) {return true;}
+
+
 }

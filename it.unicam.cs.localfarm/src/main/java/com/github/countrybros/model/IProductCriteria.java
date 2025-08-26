@@ -1,6 +1,6 @@
 package com.github.countrybros.model;
 
-import com.github.countrybros.model.product.SimpleProductDetails;
+import com.github.countrybros.model.product.SimpleProduct;
 
 /**
  * Criteria interface for product filtering.
@@ -12,5 +12,5 @@ public interface IProductCriteria {
      * @param product The simple product details to check.
      * @return True if the product satisfies the criterion, false otherwise.
      */
-    boolean isVerified(SimpleProductDetails product);
+    boolean isVerified(SimpleProduct product);
 }

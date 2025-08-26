@@ -4,11 +4,10 @@ import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.model.user.*;
 import com.github.countrybros.web.user.request.OrderRequest;
+import com.github.countrybros.web.user.request.RefundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderService implements IOrderService {
@@ -22,9 +21,10 @@ public class OrderService implements IOrderService {
     @Autowired
     private IOrderRepository orderRepository;
 
+
     @Override
-    public List<Order> getOrders(User user) {
-        return orderRepository.findOrderByCustomer(user);
+    public List<Order> getOrders(int userId) {
+        return orderRepository.findOrderByCustomer_UserId(userId);
     }
 
     @Override
@@ -39,21 +39,36 @@ public class OrderService implements IOrderService {
      * @param request The order to save.
      */
     public void addOrder(OrderRequest request) {
-        User user = userService.getUser(request.userId);
-        Cart cart = cartService.getCartById(request.cartId);
 
-        Company seller = companyService.getCompany(request.sellerId);
-        if (seller == null) throw new NotFoundInRepositoryException("Seller not found with ID " + request.sellerId);
+    }
 
-        Order order = new Order();
-        order.setCustomer(user);
-        order.setCart(cart);
-        order.setSeller(seller);
-        order.setAddress(request.address);
-        order.setOrderDate(new Date());
-        order.setOrderStatus(request.orderStatus != null ? request.orderStatus : OrderStatus.picking);
 
+    public void cancelOrder(RefundRequest request) {
+        User user = userService.getUser(request.getUserId());
+
+        Order order = orderRepository.findById(request.getOrderId())
+                .orElseThrow(() -> new NotFoundInRepositoryException("Order not found with ID " + request.getOrderId()));
+
+        if (order.getCustomer().getUserId() != user.getUserId()) {
+            System.out.println("The order does not belong to the customer user");
+        }
+
+        if(order.getOrderStatus() == OrderStatus.shipping || order.getOrderStatus() == OrderStatus.delivered ) {
+            System.out.println("The order is shipped or delivered");
+        }
+
+        order.setOrderStatus(OrderStatus.cancelled);
         orderRepository.save(order);
+    }
+
+    public void blockOrder(int orderId) {
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Order not found with ID " + orderId));
+
+        order.setOrderStatus(OrderStatus.blocked);
+        orderRepository.save(order);
+
     }
 
 }

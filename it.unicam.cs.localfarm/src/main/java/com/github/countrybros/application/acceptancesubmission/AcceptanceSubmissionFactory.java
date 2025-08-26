@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class AcceptanceSubmissionFactory {
 
-    public AcceptanceSubmission create(AcceptanceSubmissionRequest request) {
-        AcceptanceSubmission submission;
+    public Submission create(AcceptanceSubmissionRequest request) {
+        Submission submission;
 
         //TODO recognise è la richiesta di un aumento della quantita di un item
         //Crea o aumente la quantita di un item a partire da un prodotto, company e qta
@@ -20,38 +20,22 @@ public class AcceptanceSubmissionFactory {
         switch (request.getType()) {
             case "addProduct" -> {
                 AddProductAcceptanceSubmissionRequest addReq = (AddProductAcceptanceSubmissionRequest) request;
-                AddProductAcceptanceSubmission addSubmission = new AddProductAcceptanceSubmission();
+                AddProductSubmission addSubmission = new AddProductSubmission();
                 addSubmission.setItemDetailsId(addReq.getItemDetailsId());
                 submission = addSubmission;
             }
-
-            case "editProduct" -> {
-                EditProductAcceptanceSubmissionRequest editReq = (EditProductAcceptanceSubmissionRequest) request;
-                EditProductAcceptanceSubmission editSubmission = new EditProductAcceptanceSubmission();
-                editSubmission.setProductToEditId(editReq.getProductToEditId());
-                editSubmission.setProductChangeId(editReq.getProductChangeId());
-                submission = editSubmission;
-            }
-
             case "recogniseProduct" -> {
                 RecogniseProductAcceptanceSubmissionRequest recReq = (RecogniseProductAcceptanceSubmissionRequest) request;
-                RecogniseProductAcceptanceSubmission recSubmission = new RecogniseProductAcceptanceSubmission();
+                RecogniseProductSubmission recSubmission = new RecogniseProductSubmission();
                 recSubmission.setProductId(recReq.getProductId());
                 recSubmission.setQta(recReq.getQta());
                 submission = recSubmission;
             }
 
-            case "removeProduct" -> {
-                RemoveProductAcceptanceSubmissionRequest remReq = (RemoveProductAcceptanceSubmissionRequest) request;
-                RemoveProductAcceptanceSubmission remSubmission = new RemoveProductAcceptanceSubmission();
-                remSubmission.setProductId(remReq.getProductId());
-                submission = remSubmission;
-            }
-
             default -> throw new IllegalArgumentException("Unsupported submission type: " + request.getType());
         }
 
-        submission.setAccepted(false);
+        submission.setStatus(SubmissionStatus.pending);
         submission.setSenderId(request.getSenderId());
 
         return submission;

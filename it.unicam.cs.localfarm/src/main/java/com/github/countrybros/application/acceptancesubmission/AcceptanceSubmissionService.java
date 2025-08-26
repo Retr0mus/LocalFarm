@@ -4,14 +4,15 @@ package com.github.countrybros.application.acceptancesubmission;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
-import com.github.countrybros.application.product.IItemService;
 import com.github.countrybros.application.user.IUserService;
-import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
+import com.github.countrybros.infrastructure.repository.ISubmissionRepository;
 import com.github.countrybros.infrastructure.repository.IUserRepository;
-import com.github.countrybros.model.acceptancesubmission.AddProductAcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.SubmissionStatus;
 import com.github.countrybros.model.user.User;
+import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.web.acceptancesubmission.request.*;
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.Submission;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,16 +23,20 @@ import java.util.List;
 @Service
 public class AcceptanceSubmissionService implements IAcceptanceSubmissionService {
 
-    private IAcceptanceSubmissionRepository acceptanceSubmissionRepository;
+    private ISubmissionRepository acceptanceSubmissionRepository;
     private IUserService userService;
     private AcceptanceSubmissionFactory factory;
+    private IUserRepository userRepository;
+    private UserRole roles;
 
 
-    public AcceptanceSubmissionService(IAcceptanceSubmissionRepository acceptanceSubmissionRepository,
-                                       IUserService userService) {
+    public AcceptanceSubmissionService(ISubmissionRepository acceptanceSubmissionRepository,
+                                       IUserService userService, IUserRepository userRepository) {
         this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
         this.factory = new AcceptanceSubmissionFactory();
         this.userService = userService;
+        this.userRepository = userRepository;
+
     }
     /**
      * Adds an AcceptanceSubmission.
@@ -40,7 +45,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public void addAcceptanceSubmission(AcceptanceSubmissionRequest request) {
-        AcceptanceSubmission submission = factory.create(request);
+        Submission submission = factory.create(request);
         acceptanceSubmissionRepository.save(submission);
 
     }
@@ -63,7 +68,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return the said AcceptanceSubmission.
      */
     @Override
-    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId) {
+    public Submission getAcceptanceSubmission(int acceptanceSubmissionId) {
         return acceptanceSubmissionRepository.findById(acceptanceSubmissionId)
                 .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + acceptanceSubmissionId));
     }
@@ -74,8 +79,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return a list with all the said AcceptanceSubmission.
      */
     @Override
-    public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions() {
-        return acceptanceSubmissionRepository.getAcceptanceSubmissionByAccepted(false);
+    public List<Submission> getAvailableAcceptanceSubmissions() {
+        return acceptanceSubmissionRepository.getAcceptanceSubmissionByStatus(SubmissionStatus.pending);
     }
 
     /**
@@ -85,7 +90,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return a list with all the curator's AcceptanceSubmission.
      */
     @Override
-    public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId) {
+    public List<Submission> getAcceptanceSubmissionsByCurator(int curatorId) {
 //        return acceptanceSubmissionRepository.getAcceptanceSubmissionByCuratorUserId(curatorId);
         return null;
     }
@@ -98,16 +103,16 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
     @Override
     public void onAcceptance(int submissionId) {
 
-        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
+        Submission submission = getAcceptanceSubmission(submissionId);
 
-        if (submission.isAccepted()) {
+        if (submission.getStatus() == SubmissionStatus.accepted) {
             throw new RequestAlreadySatisfiedException("Submission already accepted");
         }
 
         //TODO: implement
         //userService.getUser(submission.getCuratorId());
 
-        submission.setAccepted(true);
+        submission.setStatus(SubmissionStatus.accepted);
 
         acceptanceSubmissionRepository.save(submission);
     }
@@ -130,16 +135,21 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
     @Override
     public void takeChargeOfSubmission(int submissionId, int userId) {
 
-        //check that user exists
-        userService.getUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
-        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
+        if (!user.getRoles().contains(UserRole.CURATOR)) {
+            throw new ImpossibleRequestException("Only curators can take charge of a submission");
+        }
 
-        if (submission.isAccepted()) {
-            throw new ImpossibleRequestException("Submission is already accepted");
+        Submission submission = getAcceptanceSubmission(submissionId);
+
+        if (submission.getStatus() == SubmissionStatus.assigned) {
+            throw new ImpossibleRequestException("Submission is already assigned");
         }
 
         submission.setSenderId(userId);
+        submission.setStatus(SubmissionStatus.assigned);
         acceptanceSubmissionRepository.save(submission);
     }
 }

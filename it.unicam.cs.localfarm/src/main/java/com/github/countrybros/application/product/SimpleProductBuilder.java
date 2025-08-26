@@ -1,21 +1,21 @@
 package com.github.countrybros.application.product;
 
 import com.github.countrybros.model.product.Certification;
-import com.github.countrybros.model.product.SimpleProductDetails;
+import com.github.countrybros.model.product.SimpleProduct;
 
 import java.util.ArrayList;
 
 /**
  * Builder of @SimpleProductDetails
  */
-public class SimpleProductDetailsBuilder extends ItemDetailsBuilder<SimpleProductDetails>{
+public class SimpleProductBuilder extends ItemBuilder<SimpleProduct> {
 
     /**
      * @inheritDoc
      */
     @Override
-    protected SimpleProductDetails createInstance() {
-        return new SimpleProductDetails();
+    protected SimpleProduct createInstance() {
+        return new SimpleProduct();
     }
 
     /**
