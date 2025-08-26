@@ -29,10 +29,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<UserRole> roles = new ArrayList<>();
     @OneToOne
-    @JsonIgnore
     private Cart cart;
+    private ShippingAddress address;
 
     public User() {
+        cart = new Cart();
     }
 
     public void setCart(Cart cart) {
@@ -73,6 +74,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ShippingAddress getAddress() {
+        return address;
+    }
+
+    public void setAddress(ShippingAddress address) {
+        this.address = address;
     }
 
 }

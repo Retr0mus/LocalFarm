@@ -172,6 +172,6 @@ public class Event implements IPostable {
     @Override
     public SocialPost getPost() {
 
-        return new SocialPost();
+        return new SocialPost(name, "Evento", "link");
     }
 }

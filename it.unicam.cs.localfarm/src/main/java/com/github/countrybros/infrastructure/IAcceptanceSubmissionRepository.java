@@ -1,6 +1,8 @@
 package com.github.countrybros.infrastructure;
 
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+
+import com.github.countrybros.model.acceptancesubmission.Submission;
+
 import java.util.List;
 
 @Deprecated
@@ -9,10 +11,10 @@ public interface IAcceptanceSubmissionRepository {
     /**
      * Adds an AcceptanceSubmission.
      *
-     * @param acceptanceSubmission the submission to add.
+     * @param submission the submission to add.
      * @return if the task was successful.
      */
-    public boolean addAcceptanceSubmission(AcceptanceSubmission acceptanceSubmission);
+    public boolean addAcceptanceSubmission(Submission submission);
 
     /**
      * Gets the required AcceptanceSubmissions.
@@ -27,7 +29,7 @@ public interface IAcceptanceSubmissionRepository {
      *
      * @return a list with all the said AcceptanceSubmission.
      */
-    public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions();
+    public List<Submission> getAvailableAcceptanceSubmissions();
 
     /**
      * Gets all the AcceptanceSubmissions assigned to a certain Curator.
@@ -35,15 +37,15 @@ public interface IAcceptanceSubmissionRepository {
      * @param curatorId the Id of the User with the Curator privileges.
      * @return a list with all the curator's AcceptanceSubmission.
      */
-    public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId);
+    public List<Submission> getAcceptanceSubmissionsByCurator(int curatorId);
 
     /**
      * Gets the required AcceptanceSubmissions.
      *
-     * @param acceptanceSubmissionId the Id of the wanted AcceptanceSubmission.
+     * @param submissionId the Id of the wanted AcceptanceSubmission.
      * @return the said AcceptanceSubmission.
      */
-    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId);
+    public Submission getSubmission(int submissionId);
 
     /**
      * Gets all the AcceptanceSubmissions of seller.
@@ -51,7 +53,7 @@ public interface IAcceptanceSubmissionRepository {
      * @param senderId the Id of the User with the seller privileges.
      * @return a list with all the seller's AcceptanceSubmission.
      */
-    List<AcceptanceSubmission> getAcceptanceSubmissionsBySender(int senderId);
+    List<Submission> getAcceptanceSubmissionsBySender(int senderId);
 
     boolean onAcceptance(int submissionId);
 

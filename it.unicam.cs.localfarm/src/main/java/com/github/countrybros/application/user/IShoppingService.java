@@ -1,8 +1,8 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.user.Cart;
 import com.github.countrybros.model.user.Order;
-import com.github.countrybros.model.user.ShippingAddress;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ public interface IShoppingService {
 
      Cart getCart(int userId);
 
-     void addItemToCart(int userId, int itemId, int qty);
+    void addItemToCart(int userId, Stock stock, int qty);
 
-     void editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
+    void editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
 
      void removeItemFromCart(int userId, int itemId, int qty);
 
@@ -34,8 +34,6 @@ public interface IShoppingService {
      * Create an order when a user decides to buy the item inside his cart.
      *
      * @param userId The user.
-     * @param method The method chosen by the user.
-     * @param address The address chosen by the user.
      */
-    Order checkout(int userId, IPaymentMethod method, ShippingAddress address);
+    Order checkout(int userId);
 }
