@@ -1,14 +1,7 @@
 package com.github.countrybros.web.product;
 
-import com.github.countrybros.application.errors.ImpossibleRequestException;
-import com.github.countrybros.application.product.IItemDetailsService;
-import com.github.countrybros.application.product.IItemService;
-import com.github.countrybros.application.product.ItemService;
-import com.github.countrybros.application.user.CompanyService;
-import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.model.product.Item;
-import com.github.countrybros.model.product.ItemDetails;
-import com.github.countrybros.model.user.Company;
+import com.github.countrybros.application.Orchestrator;
+import com.github.countrybros.application.product.ItemMapper;
 import com.github.countrybros.web.product.requests.AddItemRequest;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,63 +9,56 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+/**
+ * Controller for management of ItemDetails
+ */
 @RestController
 @RequestMapping( "/item")
 public class ItemController {
 
-    private final IItemService itemService;
-    private final ICompanyService companyService;
-    private final IItemDetailsService itemDetailsService;
+    private final Orchestrator orchestrator;
 
     @Autowired
-    public ItemController(ItemService itemService, CompanyService companyService,
-                          IItemDetailsService itemDetailsService) {
-
-        this.itemService = itemService;
-        this.companyService = companyService;
-        this.itemDetailsService = itemDetailsService;
+    public ItemController(Orchestrator orchestrator) {
+        this.orchestrator = orchestrator;
     }
 
-    @PostMapping( "add")
-    public ResponseEntity<Object> addItem(@RequestBody AddItemRequest request) {
+    @PostMapping( "addRequest")
+    public ResponseEntity<Object> addItemRequest(@RequestBody AddItemRequest request) {
 
-        itemService.addItem(request);
-        return new ResponseEntity<>("Item successfully added", HttpStatus.OK);
+        orchestrator.addItemRequest(request);
+        return new ResponseEntity<>("ItemDetails creation request successfully created", HttpStatus.OK);
     }
 
-    @PutMapping( "addQuantity")
-    public ResponseEntity<Object> addItemQuantity(@PathParam("itemId") int itemId,
-                                                  @PathParam("quantity") int quantity) {
-        try {
-            itemService.addQuantityToItem(itemId, quantity);
-        }catch (ImpossibleRequestException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>("Quantity successfully added", HttpStatus.OK);
+    @GetMapping("getAvailable")
+    public ResponseEntity<Object> getAvailableItems() {
+        return new ResponseEntity<>(orchestrator.getAvailableItems().stream().map(ItemMapper::toDto), HttpStatus.OK);
     }
 
-    @PutMapping( "removeQuantity")
-    public ResponseEntity<Object> removeItemQuantity(@PathParam("itemId") int itemId,
-                                                     @PathParam("quantity") int quantity) {
-        try {
-            itemService.removeQuantityToItem(itemId, quantity);
-        }catch (ImpossibleRequestException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+//    @DeleteMapping( "delete")
+//    public ResponseEntity<Object> deleteItemDetails(@PathParam("itemDetailsId") int itemDetailsId) {
+//
+//        itemDetailsService.deleteItemDetails(itemDetailsId);
+//        return new ResponseEntity<>("ItemDetails successfully deleted", HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>("Quantity successfully removed", HttpStatus.OK);
+    @GetMapping( "get")
+    public ResponseEntity<Object> getItemDetails(@PathParam("itemId") int itemId) {
+        return new ResponseEntity<>(ItemMapper.toDto(orchestrator.getItemDetails(itemId)), HttpStatus.OK);
     }
 
-    @PutMapping( "setPrice")
-    public ResponseEntity<Object> setItemPrice(@PathParam("itemId") int itemId,
-                                               @PathParam("price") Float price) {
-        itemService.setPrice(itemId, price);
-        return new ResponseEntity<>("Price successfully set", HttpStatus.OK);
-    }
+//    @PutMapping( "acceptChanges")
+//    public ResponseEntity<Object> acceptChanges(@PathParam("submissionId") int submissionId) {
+//        itemDetailsService.acceptChanges(submissionId);
+//        return new ResponseEntity<>("Item successfully updated", HttpStatus.OK);
+//    }
 
-    @GetMapping( "getBySeller")
-    public ResponseEntity<Object> getItem(@PathParam("sellerId") int sellerId) {
-
-        return new ResponseEntity<>(itemService.getItemsBySeller(sellerId), HttpStatus.OK);
-    }
+//    @PutMapping( "changeStatus")
+//    public ResponseEntity<Object> changeStatus(@PathParam("status") ItemStatus status,
+//                                               @PathParam("itemDetailsId") int itemDetailsId) {
+//        itemDetailsService.setStatus(status, itemDetailsId);
+//
+//        return new ResponseEntity<>("Item status successfully updated", HttpStatus.OK);
+//    }
 }

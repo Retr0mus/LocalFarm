@@ -2,9 +2,7 @@ package com.github.countrybros.application.user;
 
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.model.user.User;
-import com.github.countrybros.web.user.request.OrderRequest;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +10,14 @@ import java.util.List;
  * Responsibility of managing the Orders
  */
 public interface IOrderService {
+
+    /**
+     * Returns an order
+     *
+     * @param id    the required order's id
+     * @return      the order required
+     */
+    Order getOrder(int id);
 
     /**
      * Returns all the Orders made by a user.
@@ -34,7 +40,14 @@ public interface IOrderService {
     /**
      * Saves an order in the repository.
      *
-     * @param request The order to save.
+     * @param order The order to save.
      */
-    void addOrder(OrderRequest request);
+    void addOrder(Order order);
+
+    /**
+     * Sets an order as paid.
+     *
+     * @param id    the paid order.
+     */
+    void setAsPaid(int id);
 }

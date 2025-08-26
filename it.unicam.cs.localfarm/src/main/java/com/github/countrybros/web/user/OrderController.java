@@ -25,10 +25,10 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    /*@PostMapping("/add")
     public ResponseEntity<String> addOrder(@RequestBody OrderRequest request) {
         orderService.addOrder(request);
         return new ResponseEntity<>("Order added", HttpStatus.CREATED);
-    }
+    }*/
 
 }

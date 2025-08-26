@@ -1,35 +1,38 @@
 package com.github.countrybros.web.user;
 
+import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.user.IPaymentService;
-import com.github.countrybros.model.user.FakePayment;
+import com.github.countrybros.infrastructure.shopping.MockPayment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
 
+    private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
     @Autowired
     private IPaymentService paymentService;
+    @Autowired
+    private Orchestrator orchestrator;
 
     /**
      * Payment is fake!!!
-     * @param amount
-     * @return
+     * @return if the order was paid
      */
     @PostMapping("/buy")
-    public ResponseEntity<String> buy(@RequestParam float amount) {
+    public ResponseEntity<String> buy(@RequestParam int orderId) {
 
-        boolean success = paymentService.paymentToMarketplace(new FakePayment(), amount);
-        if (success) {
+        boolean success = orchestrator.paymentToMarketplace(orderId);
+
+        if (success)
             return new ResponseEntity<>("Payment completed successfully", HttpStatus.OK);
-        } else {
+        else
             return new ResponseEntity<>("Payment failed", HttpStatus.BAD_REQUEST);
-        }
     }
 
     @PostMapping("/pay_sellers")

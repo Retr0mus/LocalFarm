@@ -12,5 +12,5 @@ public class EditItemDetailsRequest {
      */
     public int senderId;
 
-    public AddItemDetailsRequest changesToItemDetails;
+    public AddItemRequest changesToItemDetails;
 }
