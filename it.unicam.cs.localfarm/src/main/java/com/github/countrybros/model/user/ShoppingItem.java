@@ -25,7 +25,7 @@ public class ShoppingItem {
 
     }
 
-    public Stock getItem() {
+    public Stock getStock() {
         return stock;
     }
 

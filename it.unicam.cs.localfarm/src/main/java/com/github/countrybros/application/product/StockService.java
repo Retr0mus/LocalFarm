@@ -3,7 +3,9 @@ package com.github.countrybros.application.product;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.product.StockRepository;
+import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.Stock;
+import com.github.countrybros.model.user.Company;
 import com.github.countrybros.web.product.requests.AddStockRequest;
 import org.springframework.stereotype.Service;
 
@@ -57,13 +59,13 @@ public class StockService implements IStockService {
         Stock stock = getStock(stockId);
 
         if(stock == null)
-            throw new ImpossibleRequestException("stock does not exist");
+            throw new ImpossibleRequestException("Stock does not exist");
 
         if(stock.getSeller().getId() != sellerId)
-            throw new ImpossibleRequestException("the requested stock isn't owned by the seller");
+            throw new ImpossibleRequestException("The requested stock isn't owned by the seller");
 
-        if (quantity < 0)
-            throw new ImpossibleRequestException("cannot remove negative quantity");
+        if (quantity <= 0)
+            throw new ImpossibleRequestException("Cannot remove negative or null quantity");
 
         stock.setQty(max(stock.getQty() - quantity, 0));
 
@@ -113,6 +115,10 @@ public class StockService implements IStockService {
     @Override
     public List<Stock> getStocksByItem(int itemId) {
         return stockRepository.findAllByItem_Id(itemId);
+    }
+
+    public Stock getStockByItemAndSeller(Item item, Company seller) {
+        return stockRepository.findByItemAndSeller(item, seller);
     }
 
 

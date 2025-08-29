@@ -1,5 +1,6 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repository.IOrderItemRepository;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
@@ -13,8 +14,8 @@ import java.util.List;
 @Service
 public class OrderService implements IOrderService {
 
-    private IOrderRepository orderRepository;
-    private IOrderItemRepository orderItemRepository;
+    private final IOrderRepository orderRepository;
+    private final IOrderItemRepository orderItemRepository;
 
     @Autowired
     public OrderService(IOrderRepository orderRepository, IOrderItemRepository orderItemRepository) {
@@ -30,7 +31,7 @@ public class OrderService implements IOrderService {
      */
     @Override
     public Order getOrder(int id) {
-        return orderRepository.findById(id).get();
+        return orderRepository.findById(id).orElseThrow(() -> new ImpossibleRequestException("The order with ID " + id + " does not exist."));
     }
 
     @Override
@@ -61,32 +62,9 @@ public class OrderService implements IOrderService {
      */
     @Override
     public void setAsPaid(int id) {
-        Order order = orderRepository.findById(id).get();
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ImpossibleRequestException("The order with ID " + id + " does not exist."));
         order.setOrderStatus(OrderStatus.packing);
         orderRepository.save(order);
     }
-
-
-    /**
-     * Saves an order in the repository.
-     *
-     * @param order The order to save.
-    public void addOrder(Order order) {
-        User user = userService.getUser(order.userId);
-        Cart cart = cartService.getCartById(order.cartId);
-
-        Company seller = companyService.getCompany(order.sellerId);
-        if (seller == null) throw new NotFoundInRepositoryException("Seller not found with ID " + order.sellerId);
-
-        Order order = new Order();
-        order.setCustomer(user);
-        *//*order.setCart(cart);
-        order.setSeller(seller);*//* //TODO remove
-        order.setAddress(order.address);
-        order.setOrderDate(new Date());
-        order.setOrderStatus(order.orderStatus != null ? order.orderStatus : OrderStatus.picking);
-
-        orderRepository.save(order);
-    }*/
 
 }

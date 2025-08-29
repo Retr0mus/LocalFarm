@@ -2,7 +2,6 @@ package com.github.countrybros.application.acceptancesubmission;
 
 import com.github.countrybros.infrastructure.repository.ISubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.Submission;
-import com.github.countrybros.web.acceptancesubmission.request.SubmissionRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -2,7 +2,9 @@ package com.github.countrybros.application.product;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
+import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.Stock;
+import com.github.countrybros.model.user.Company;
 import com.github.countrybros.web.product.requests.AddStockRequest;
 
 import java.util.List;
@@ -74,4 +76,13 @@ public interface IStockService {
      * @return          The list of the stocks regarding that item.
      */
     List<Stock> getStocksByItem(int itemId);
+
+    /**
+     * Gets the stock relative to the given item and seller.
+     *
+     * @param item      the reference item.
+     * @param seller    the company that supposedly sells that item.
+     * @return          the associated stock.
+     */
+    Stock getStockByItemAndSeller(Item item, Company seller);
 }

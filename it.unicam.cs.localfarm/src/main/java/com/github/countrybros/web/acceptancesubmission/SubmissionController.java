@@ -28,7 +28,7 @@ public class SubmissionController {
         } catch (ImpossibleRequestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Quantity successfully added", HttpStatus.OK);
+        return new ResponseEntity<>("A submission to recognize this stock's quantity has been created successfully", HttpStatus.OK);
     }
 
     /*@GetMapping("/available")

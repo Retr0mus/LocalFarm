@@ -10,6 +10,7 @@ import com.github.countrybros.application.user.dto.IPaymentMethod;
 import com.github.countrybros.application.user.dto.PaymentMethod;
 import com.github.countrybros.infrastructure.shopping.MockPaymentFactory;
 import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.ItemStatus;
 import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.user.*;
 import com.github.countrybros.web.acceptancesubmission.request.RecogniseProductSubmissionRequest;
@@ -84,15 +85,25 @@ public class Orchestrator {
         stockService.removeQuantityToStock(stockId, quantity, sellerId);
     }
 
-    public void addQuantityToStock(RecogniseProductSubmissionRequest submission) {
+    public void addQuantityToStock(RecogniseProductSubmissionRequest request) {
 
-        if (submission.getQta() <= 0)
+        if (request.getQta() <= 0)
             throw new ImpossibleRequestException("Quantity less or equal 0");
 
-        if (itemService.getItem(submission.getProductId()) == null)
+        Item item = itemService.getItem(request.getProductId());
+
+        if (item == null)
             throw new ImpossibleRequestException("Item not found");
 
-        submissionService.addSubmission(SubmissionMapper.toDoamin(submission));
+        if(item.getStatus() != ItemStatus.available)
+            throw new ImpossibleRequestException("Item not available");
+
+        Company company = companyService.getCompany(request.getProductId());
+
+        if(company == null)
+            throw new ImpossibleRequestException("Company not found");
+
+        submissionService.addSubmission(SubmissionMapper.toDomain(request));
     }
 
     public List<Stock> getStocksByItem(int itemId) {
@@ -121,7 +132,7 @@ public class Orchestrator {
         Order order = shoppingService.checkout(userId);
 
         if (order == null)
-            throw new NotFoundInRepositoryException("Cannot proceed to checkout");
+            throw new NotFoundInRepositoryException("Cannot proceed to checkout, check the content of the cart.");
 
         order.setCustomer(userService.getUser(userId));
         order.setAddress(order.getCustomer().getAddress());
@@ -131,25 +142,34 @@ public class Orchestrator {
         return order;
     }
 
-    public boolean paymentToMarketplace(int orderId) {
+
+    public void paymentToMarketplace(int orderId) {
 
         Order order = orderService.getOrder(orderId);
 
+        if(order == null)
+            throw new NotFoundInRepositoryException("Order with ID " + orderId + " not found.");
+
         if(order.getOrderStatus() != OrderStatus.picking)
-            return false;
+            throw new ImpossibleRequestException("Invalid order status");
+
+        // Checks if it is possible to complete the payment of the order.
+        for(OrderItem item : order.getItems()) {
+            if(stockService.getStockByItemAndSeller(item.getItem(), item.getSeller()).getQty() < item.getQuantity())
+                throw new ImpossibleRequestException("Quantity of item " + item.getItem().getName() +  " exceeds the supplier's stock");
+        }
 
         PaymentMethodFactory f = new MockPaymentFactory();
         PaymentMethod paymentMethod = f.createPaymentMethod();
 
+        // Pay
         if(!paymentMethod.pay(order.getTotal()))
-            return false;
+            throw new ImpossibleRequestException("Payment failed");
 
         orderService.setAsPaid(orderId);
 
         // Removing ordered items from the relative stocks
         for (OrderItem item : order.getItems())
             stockService.removeQuantityToStock(item.getItem().getId(), item.getQuantity(), item.getSeller().getId());
-
-        return true;
     }
 }

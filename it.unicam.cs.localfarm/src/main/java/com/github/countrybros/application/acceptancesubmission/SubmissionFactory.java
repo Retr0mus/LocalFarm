@@ -5,6 +5,7 @@ import com.github.countrybros.model.acceptancesubmission.*;
 import com.github.countrybros.web.acceptancesubmission.request.*;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Component
 public class SubmissionFactory {
 

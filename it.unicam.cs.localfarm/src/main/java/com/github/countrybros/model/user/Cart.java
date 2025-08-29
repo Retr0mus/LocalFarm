@@ -26,7 +26,7 @@ public class Cart {
 
     public ShoppingItem getShoppingItem(int stockId) {
         for (ShoppingItem item : items)
-            if(item.getItem().getId() == stockId)
+            if(item.getStock().getId() == stockId)
                 return item;
 
         return null;

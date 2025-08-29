@@ -1,6 +1,7 @@
 package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.Orchestrator;
+import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.user.IPaymentService;
 import com.github.countrybros.infrastructure.shopping.MockPayment;
 import org.slf4j.Logger;
@@ -27,12 +28,13 @@ public class PaymentController {
     @PostMapping("/buy")
     public ResponseEntity<String> buy(@RequestParam int orderId) {
 
-        boolean success = orchestrator.paymentToMarketplace(orderId);
-
-        if (success)
+        try {
+            orchestrator.paymentToMarketplace(orderId);
             return new ResponseEntity<>("Payment completed successfully", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Payment failed", HttpStatus.BAD_REQUEST);
+        } catch (ImpossibleRequestException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/pay_sellers")

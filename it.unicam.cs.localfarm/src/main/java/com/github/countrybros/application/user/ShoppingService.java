@@ -113,12 +113,11 @@ public class ShoppingService implements IShoppingService {
      */
     private boolean canCheckout(int userId) {
 
-        Cart cart = cartRepository.findById(userId).get();
+        Cart cart = cartRepository.findById(userId).orElseThrow(() -> new ImpossibleRequestException("User not found"));
 
-        for(ShoppingItem shoppingItem : cart.getShoppingItems()) {
-            if(shoppingItem.getQuantity() > shoppingItem.getItem().getQty())
+        for(ShoppingItem shoppingItem : cart.getShoppingItems())
+            if(shoppingItem.getQuantity() > shoppingItem.getStock().getQty())
                 return false;
-        }
 
         return true;
     }
