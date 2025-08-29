@@ -1,9 +1,10 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.infrastructure.repository.IOrderItemRepository;
 import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.model.user.*;
-import com.github.countrybros.web.user.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,25 @@ import java.util.List;
 @Service
 public class OrderService implements IOrderService {
 
+    private final IOrderRepository orderRepository;
+    private final IOrderItemRepository orderItemRepository;
+
     @Autowired
-    private IUserService userService;
-    @Autowired
-    private ICartService cartService;
-    @Autowired
-    private ICompanyService companyService;
-    @Autowired
-    private IOrderRepository orderRepository;
+    public OrderService(IOrderRepository orderRepository, IOrderItemRepository orderItemRepository) {
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+    }
+
+    /**
+     * Returns an order
+     *
+     * @param id the required order's id
+     * @return the order required
+     */
+    @Override
+    public Order getOrder(int id) {
+        return orderRepository.findById(id).orElseThrow(() -> new ImpossibleRequestException("The order with ID " + id + " does not exist."));
+    }
 
     @Override
     public List<Order> getOrders(User user) {
@@ -29,30 +41,29 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getOrdersSince(Date date) {
-
         return orderRepository.findOrderByOrderDate(date);
     }
 
     /**
      * Saves an order in the repository.
      *
-     * @param request The order to save.
+     * @param order The order to save.
      */
-    public void addOrder(OrderRequest request) {
-        User user = userService.getUser(request.userId);
-        Cart cart = cartService.getCartById(request.cartId);
+    @Override
+    public void addOrder(Order order) {
+        orderRepository.save(order);
+        orderItemRepository.saveAll(order.getItems());
+    }
 
-        Company seller = companyService.getCompany(request.sellerId);
-        if (seller == null) throw new NotFoundInRepositoryException("Seller not found with ID " + request.sellerId);
-
-        Order order = new Order();
-        order.setCustomer(user);
-        order.setCart(cart);
-        order.setSeller(seller);
-        order.setAddress(request.address);
-        order.setOrderDate(new Date());
-        order.setOrderStatus(request.orderStatus != null ? request.orderStatus : OrderStatus.picking);
-
+    /**
+     * Sets an order as paid.
+     *
+     * @param id the paid order.
+     */
+    @Override
+    public void setAsPaid(int id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ImpossibleRequestException("The order with ID " + id + " does not exist."));
+        order.setOrderStatus(OrderStatus.packing);
         orderRepository.save(order);
     }
 

@@ -17,7 +17,7 @@ public class TransformationSteps {
     /**
      * The ingredients used.
      */
-    private ArrayList<ItemDetails> details;
+    private ArrayList<Item> details;
 
     /**
      * TODO location of the step.
@@ -31,11 +31,11 @@ public class TransformationSteps {
         this.description = description;
     }
 
-    public ArrayList<ItemDetails> getDetails() {
+    public ArrayList<Item> getDetails() {
         return details;
     }
 
-    public void setDetails(ArrayList<ItemDetails> details) {
+    public void setDetails(ArrayList<Item> details) {
         this.details = details;
     }
 

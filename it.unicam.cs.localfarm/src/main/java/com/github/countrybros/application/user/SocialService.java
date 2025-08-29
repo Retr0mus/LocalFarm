@@ -1,11 +1,9 @@
 package com.github.countrybros.application.user;
 
 import com.github.countrybros.application.event.IEventService;
-import com.github.countrybros.application.product.IItemDetailsService;
+import com.github.countrybros.application.product.IItemService;
 import com.github.countrybros.model.event.Event;
-import com.github.countrybros.model.product.ItemDetails;
-import com.github.countrybros.model.user.IPostable;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.countrybros.model.product.Item;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,9 +13,9 @@ import org.springframework.stereotype.Service;
 public class SocialService implements ISocialService{
 
     private final IEventService eventService;
-    private final IItemDetailsService itemDetailsService;
+    private final IItemService itemDetailsService;
 
-    public SocialService(IEventService eventService, IItemDetailsService itemDetailsService) {
+    public SocialService(IEventService eventService, IItemService itemDetailsService) {
 
         this.eventService = eventService;
         this.itemDetailsService = itemDetailsService;
@@ -33,8 +31,8 @@ public class SocialService implements ISocialService{
     @Override
     public void publishItemDetails(ISocialPublisher publisher, int ItemDetailsId) {
 
-        ItemDetails itemDetails = itemDetailsService.getItemDetails(ItemDetailsId);
-        publisher.publish(itemDetails.getPost());
+        Item item = itemDetailsService.getItem(ItemDetailsId);
+        publisher.publish(item.getPost());
     }
 
 }

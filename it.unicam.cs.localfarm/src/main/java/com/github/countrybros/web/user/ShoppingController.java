@@ -1,10 +1,9 @@
 package com.github.countrybros.web.user;
 
-import com.github.countrybros.application.user.IShoppingService;
-import com.github.countrybros.model.user.Cart;
+import com.github.countrybros.application.Orchestrator;
+import com.github.countrybros.application.user.ShoppingItemMapper;
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.web.user.request.AddItemToCartRequest;
-import com.github.countrybros.web.user.request.CheckoutRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +15,26 @@ import org.springframework.web.bind.annotation.*;
 public class ShoppingController {
 
     @Autowired
-    private IShoppingService shoppingService;
+    private Orchestrator orchestrator;
 
-    @GetMapping("/cart")
-    public ResponseEntity<Cart> getCart(@RequestParam int userId) {
-        Cart cart = shoppingService.getCart(userId);
-        return new ResponseEntity<>(cart, HttpStatus.OK);
+    @GetMapping("/cart/get")
+    public ResponseEntity<Object> getCart(@RequestParam int userId) {
+        return new ResponseEntity<>(orchestrator.getCart(userId).getShoppingItems().stream().map(ShoppingItemMapper::toDto), HttpStatus.OK);
     }
 
+    @PostMapping("/cart/add")
+    public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
+        orchestrator.addItemToCart(request);
+        return new ResponseEntity<>("Item added to cart", HttpStatus.OK);
+    }
+
+    @PostMapping("/checkout")
+    public ResponseEntity<Object> checkout(@RequestParam int userId) {
+        Order order = orchestrator.checkout(userId);
+        return new ResponseEntity<>("Created order " + order.getOrderId() + " with price " + order.getTotal() + ", please proceed to pay it.", HttpStatus.CREATED);
+    }
+
+   /*
     @PostMapping("/cart/add")
     public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
         shoppingService.addItemToCart(request.userId, request.itemId, request.quantity);
@@ -46,11 +57,5 @@ public class ShoppingController {
     public ResponseEntity<Cart> getExcessItems(@RequestBody Cart cart) {
         Cart excessCart = shoppingService.getExcessItems(cart);
         return new ResponseEntity<>(excessCart, HttpStatus.OK);
-    }
-
-    @PostMapping("/checkout")
-    public ResponseEntity<Order> checkout(@RequestParam int userId, @RequestBody CheckoutRequest checkoutRequest) {
-        Order order = shoppingService.checkout(userId, checkoutRequest.paymentMethod, checkoutRequest.shippingAddress);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
-    }
+    }*/
 }
