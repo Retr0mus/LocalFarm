@@ -85,24 +85,22 @@ public class Orchestrator {
     public void addOrder(OrderRequest request) {
     }
 
-    public void removeItemFromCart(int userId, int itemId) {
-        shoppingService.removeItemFromCart(userId, itemId);
+    public void removeItemFromCart(int userId, int shoppingItemId) {
+        shoppingService.removeItemFromCart(userId, shoppingItemId);
     }
 
-    public void editQuantityOfItemInCart(int userId, int itemId, int qty) {
-        shoppingService.editQuantityOfItemInCart(userId, itemId, qty);
+    public void editQuantityOfItemInCart(int userId, int shoppingItemId, int qty) {
+        shoppingService.editQuantityOfItemInCart(userId, shoppingItemId, qty);
 
     }
 
     public void cancelAndRefundOrder(RefundRequest request) {
         boolean refunded = paymentService.refund(request);
 
-        if(refunded) {
-            orderService.cancelOrder(request);
-            System.out.println("Order cancelled & refunded");
+        if (!refunded){
+            throw new IllegalStateException("Refund failed, order blocked");
         }
-        else {
-            System.out.println("Failed to refund order");
-        }
+
+        orderService.cancelOrder(request);
     }
 }

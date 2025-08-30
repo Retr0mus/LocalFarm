@@ -19,13 +19,10 @@ import java.util.Date;
 public class PaymentService implements IPaymentService {
 
     @Autowired
-    private IUserService userService;
-    @Autowired
-    private ICompanyService companyService;
-    @Autowired
     private IOrderService orderService;
     @Autowired
     private IOrderRepository orderRepository;
+    @Autowired
     private IPaymentMethod paymentMethod;
 
 
@@ -53,24 +50,24 @@ public class PaymentService implements IPaymentService {
 
         float amountToRefund = (float) order.getTotal();
 
-        if(request.getEmail() == null || request.getEmail().isEmpty()) {
-            System.out.println("Invalid data received");
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
             orderService.blockOrder(order.getId());
-            return false;
+            throw new IllegalArgumentException("Data invalid for refund");
         }
+
 
         System.out.println("Attempt to refund  " + amountToRefund + " to " + request.getEmail());
 
-        boolean refundSuccess = false;
         try {
-            refundSuccess = paymentMethod.refund(amountToRefund);
+            boolean refundSuccess = paymentMethod.refund(amountToRefund);
+            if (!refundSuccess) {
+                orderService.blockOrder(order.getId());
+                throw new IllegalStateException("Refund failed, order blocked");
+            }
+            return refundSuccess;
         } catch (Exception e) {
-            System.out.println("impossible to contact payment service.");
             orderService.blockOrder(order.getId());
+            throw new IllegalStateException("Refund service unavailable, order blocked");
         }
-
-        order.setOrderStatus(OrderStatus.cancelled);
-        orderRepository.save(order);
-        return refundSuccess;
     }
 };

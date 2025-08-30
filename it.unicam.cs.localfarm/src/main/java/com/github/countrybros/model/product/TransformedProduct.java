@@ -10,7 +10,7 @@ import java.util.List;
  * Details for a transformed product, composed of simple products.
  */
 @Entity
-@DiscriminatorValue("transformedProductDetails")
+@DiscriminatorValue("transformedProduct")
 public class TransformedProduct extends SimpleProduct {
 
     /**

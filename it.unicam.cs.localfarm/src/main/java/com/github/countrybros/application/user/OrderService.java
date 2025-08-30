@@ -15,10 +15,6 @@ public class OrderService implements IOrderService {
     @Autowired
     private IUserService userService;
     @Autowired
-    private ICartService cartService;
-    @Autowired
-    private ICompanyService companyService;
-    @Autowired
     private IOrderRepository orderRepository;
 
 
@@ -49,12 +45,17 @@ public class OrderService implements IOrderService {
         Order order = orderRepository.findById(request.getOrderId())
                 .orElseThrow(() -> new NotFoundInRepositoryException("Order not found with ID " + request.getOrderId()));
 
+        if (order.getOrderStatus() == OrderStatus.cancelled) {
+            throw new IllegalStateException("order already cancelled");
+        }
+
         if (order.getCustomer().getUserId() != user.getUserId()) {
-            System.out.println("The order does not belong to the customer user");
+
+            throw new IllegalStateException("order does not belong to the user");
         }
 
         if(order.getOrderStatus() == OrderStatus.shipping || order.getOrderStatus() == OrderStatus.delivered ) {
-            System.out.println("The order is shipped or delivered");
+            throw new IllegalStateException("shipped or delivered order");
         }
 
         order.setOrderStatus(OrderStatus.cancelled);

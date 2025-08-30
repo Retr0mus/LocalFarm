@@ -16,9 +16,9 @@ import jakarta.persistence.*;
 )
 @JsonSubTypes({
         // Defines the possible subtypes and associates each subtype with a specific name value in the "type" property.
-        @JsonSubTypes.Type(value = SimpleProduct.class, name = "simpleProductDetails"),
-        @JsonSubTypes.Type(value = TransformedProduct.class, name = "transformedProductDetails"),
-        @JsonSubTypes.Type(value = Bundle.class, name = "bundleDetails")
+        @JsonSubTypes.Type(value = SimpleProduct.class, name = "simpleProduct"),
+        @JsonSubTypes.Type(value = TransformedProduct.class, name = "transformedProduct"),
+        @JsonSubTypes.Type(value = Bundle.class, name = "bundle")
 })
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

@@ -10,10 +10,10 @@ import java.util.List;
  * Details for a simple product.
  */
 @Entity
-@DiscriminatorValue("simpleProductDetails")
+@DiscriminatorValue("simpleProduct")
 public class SimpleProduct extends Item {
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Certification> certifications = new ArrayList<>();
 
     public List<Certification> getCertifications() { return certifications; }

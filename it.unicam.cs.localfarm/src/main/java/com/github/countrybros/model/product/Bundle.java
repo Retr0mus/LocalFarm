@@ -13,7 +13,7 @@ import java.util.Map;
  * contains the @Item correlated with respective quantity.
  */
 @Entity
-@DiscriminatorValue("bundleDetails")
+@DiscriminatorValue("bundle")
 public class Bundle extends Item {
 
     /**

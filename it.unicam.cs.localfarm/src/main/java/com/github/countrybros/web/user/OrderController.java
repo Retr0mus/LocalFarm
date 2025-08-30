@@ -22,7 +22,7 @@ public class OrderController {
     @Autowired
     private Orchestrator orchestrator;
 
-    @PostMapping("/orderList")
+    @GetMapping("/orderList")
     public ResponseEntity<List<Order>> getOrders(@RequestParam int userId) {
         List<Order> orders = orchestrator.getOrders(userId);
         return new ResponseEntity<>(orders, HttpStatus.OK);
@@ -36,8 +36,16 @@ public class OrderController {
 
     @PostMapping("/cancel")
     public ResponseEntity<String> cancelOrder(@RequestBody RefundRequest request) {
-        orchestrator.cancelAndRefundOrder(request);
-        return new ResponseEntity<>("Cancel request processed", HttpStatus.OK);
+        try {
+            orchestrator.cancelAndRefundOrder(request);
+            return ResponseEntity.ok("Order cancelled & refunded");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Cannot cancel order: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to process cancel request");
+        }
     }
 
 

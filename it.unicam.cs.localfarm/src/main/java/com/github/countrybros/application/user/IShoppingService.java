@@ -15,9 +15,9 @@ public interface IShoppingService {
 
      void addItemToCart(int userId, int itemId, int qty);
 
-     void editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
+     void editQuantityOfItemInCart(int userId, int shoppingItemId, int newQuantity);
 
-     void removeItemFromCart(int userId, int itemId);
+     void removeItemFromCart(int userId, int shoppingItemId);
 
      List<Order> getOrders(int userId);
 

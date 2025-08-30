@@ -74,7 +74,7 @@ public class ShoppingService implements IShoppingService {
     }
 
     @Override
-    public void editQuantityOfItemInCart(int userId, int itemId, int newQuantity) {
+    public void editQuantityOfItemInCart(int userId, int shoppingItemId, int newQuantity) {
         Cart cart = getCart(userId);
         if (cart == null || cart.getItems().isEmpty()) {
             throw new NotFoundInRepositoryException("Cart is empty or does not exist for user " + userId);
@@ -82,7 +82,7 @@ public class ShoppingService implements IShoppingService {
 
         ShoppingItem shoppingItem = null;
         for (ShoppingItem i : cart.getItems()) {
-            if (i.getId() == itemId) {
+            if (i.getId() == shoppingItemId) {
                 shoppingItem = i;
                 break;
             }
@@ -99,7 +99,6 @@ public class ShoppingService implements IShoppingService {
         if (newQuantity == 0) {
             cart.getItems().remove(shoppingItem);
             shoppingItemRepository.delete(shoppingItem);
-            cartRepository.save(cart);
             return;
         }
 
@@ -113,7 +112,7 @@ public class ShoppingService implements IShoppingService {
     }
 
 
-    public void removeItemFromCart(int userId, int itemId) {
+    public void removeItemFromCart(int userId, int shoppingItemId) {
         Cart cart = getCart(userId);
         if (cart == null || cart.getItems().isEmpty()) {
             throw new NotFoundInRepositoryException("Cart is empty or does not exist for user " + userId);
@@ -121,7 +120,7 @@ public class ShoppingService implements IShoppingService {
 
         ShoppingItem foundItem = null;
         for (ShoppingItem item : cart.getItems()) {
-            if (item.getId() == itemId) {
+            if (item.getId() == shoppingItemId) {
                 foundItem = item;
                 break;
             }
@@ -129,12 +128,12 @@ public class ShoppingService implements IShoppingService {
 
         if (foundItem == null) {
             throw new NotFoundInRepositoryException(
-                    "Shopping item with ID " + itemId + " not found in user's cart");
+                    "Shopping item with ID " + shoppingItemId + " not found in user's cart");
         }
 
         cart.getItems().remove(foundItem);
         shoppingItemRepository.delete(foundItem);
-        System.out.println("User " + userId + " removed item " + itemId + " from cart");
+        System.out.println("User " + userId + " removed item " + shoppingItemId + " from cart");
     }
 
 

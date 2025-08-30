@@ -4,9 +4,6 @@ import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.user.IShoppingService;
 import com.github.countrybros.model.user.Cart;
-import com.github.countrybros.model.user.Order;
-import com.github.countrybros.web.user.request.AddItemToCartRequest;
-import com.github.countrybros.web.user.request.CheckoutRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +32,9 @@ public class ShoppingController {
 //    }
 
     @PutMapping("/cart/edit")
-    public ResponseEntity<String> editQuantityOfItemInCart(@RequestParam int userId, @RequestParam int itemId, @RequestParam int qty) {
+    public ResponseEntity<String> editQuantityOfItemInCart(@RequestParam int userId, @RequestParam int shoppingItemId, @RequestParam int qty) {
         try {
-            orchestrator.editQuantityOfItemInCart(userId, itemId, qty);
+            orchestrator.editQuantityOfItemInCart(userId, shoppingItemId, qty);
             return new ResponseEntity<>("Item quantity updated", HttpStatus.OK);
         } catch (IllegalArgumentException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -47,9 +44,9 @@ public class ShoppingController {
     }
 
     @DeleteMapping("/cart/remove")
-    public ResponseEntity<String> removeItemFromCart(@RequestParam int userId, @RequestParam int itemId) {
+    public ResponseEntity<String> removeItemFromCart(@RequestParam int userId, @RequestParam int shoppingItemId) {
         try {
-            orchestrator.removeItemFromCart(userId, itemId);
+            orchestrator.removeItemFromCart(userId, shoppingItemId);
             return new ResponseEntity<>("Item removed from cart", HttpStatus.OK);
         }catch (IllegalArgumentException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
