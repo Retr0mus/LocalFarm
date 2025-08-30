@@ -6,10 +6,10 @@ import com.github.countrybros.web.acceptancesubmission.request.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AcceptanceSubmissionFactory {
+public class SubmissionFactory {
 
-    public AcceptanceSubmission create(AcceptanceSubmissionRequest request) {
-        AcceptanceSubmission submission;
+    public Submission create(SubmissionRequest request) {
+        Submission submission;
 
         //TODO recognise è la richiesta di un aumento della quantita di un item
         //Crea o aumente la quantita di un item a partire da un prodotto, company e qta
@@ -19,31 +19,31 @@ public class AcceptanceSubmissionFactory {
         }
         switch (request.getType()) {
             case "addProduct" -> {
-                AddProductAcceptanceSubmissionRequest addReq = (AddProductAcceptanceSubmissionRequest) request;
-                AddProductAcceptanceSubmission addSubmission = new AddProductAcceptanceSubmission();
+                AddProductSubmissionRequest addReq = (AddProductSubmissionRequest) request;
+                AddProductSubmission addSubmission = new AddProductSubmission();
                 addSubmission.setItemDetailsId(addReq.getItemDetailsId());
                 submission = addSubmission;
             }
 
             case "editProduct" -> {
-                EditProductAcceptanceSubmissionRequest editReq = (EditProductAcceptanceSubmissionRequest) request;
-                EditProductAcceptanceSubmission editSubmission = new EditProductAcceptanceSubmission();
+                EditProductSubmissionRequest editReq = (EditProductSubmissionRequest) request;
+                EditProductSubmission editSubmission = new EditProductSubmission();
                 editSubmission.setProductToEditId(editReq.getProductToEditId());
                 editSubmission.setProductChangeId(editReq.getProductChangeId());
                 submission = editSubmission;
             }
 
             case "recogniseProduct" -> {
-                RecogniseProductAcceptanceSubmissionRequest recReq = (RecogniseProductAcceptanceSubmissionRequest) request;
-                RecogniseProductAcceptanceSubmission recSubmission = new RecogniseProductAcceptanceSubmission();
+                RecogniseProductSubmissionRequest recReq = (RecogniseProductSubmissionRequest) request;
+                RecogniseProductSubmission recSubmission = new RecogniseProductSubmission();
                 recSubmission.setProductId(recReq.getProductId());
                 recSubmission.setQta(recReq.getQta());
                 submission = recSubmission;
             }
 
             case "removeProduct" -> {
-                RemoveProductAcceptanceSubmissionRequest remReq = (RemoveProductAcceptanceSubmissionRequest) request;
-                RemoveProductAcceptanceSubmission remSubmission = new RemoveProductAcceptanceSubmission();
+                RemoveProductSubmissionRequest remReq = (RemoveProductSubmissionRequest) request;
+                RemoveProductSubmission remSubmission = new RemoveProductSubmission();
                 remSubmission.setProductId(remReq.getProductId());
                 submission = remSubmission;
             }

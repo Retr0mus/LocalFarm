@@ -1,6 +1,6 @@
 package com.github.countrybros.infrastructure.repository;
 
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.Submission;
 import com.github.countrybros.model.acceptancesubmission.SubmissionStatus;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IAcceptanceSubmissionRepository extends CrudRepository<AcceptanceSubmission, Integer> {
+public interface ISubmissionRepository extends CrudRepository<Submission, Integer> {
 
-    List<AcceptanceSubmission> getAcceptanceSubmissionById(int id);
+    List<Submission> getAcceptanceSubmissionById(int id);
 
-    List<AcceptanceSubmission> findAllByStatus(SubmissionStatus status);
+    List<Submission> findAllByStatus(SubmissionStatus status);
 
     // List<AcceptanceSubmission> getAcceptanceSubmissionByCuratorUserId(int id);
 

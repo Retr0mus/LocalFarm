@@ -3,12 +3,11 @@ package com.github.countrybros.application.acceptancesubmission;
 
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.IUserService;
-import com.github.countrybros.infrastructure.repository.IAcceptanceSubmissionRepository;
+import com.github.countrybros.infrastructure.repository.ISubmissionRepository;
 import com.github.countrybros.model.acceptancesubmission.SubmissionStatus;
 import com.github.countrybros.web.acceptancesubmission.request.*;
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
+import com.github.countrybros.model.acceptancesubmission.Submission;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +16,17 @@ import java.util.List;
  * Service that performs all the tasks related to the management of the product acceptance submissions.
  */
 @Service
-public class AcceptanceSubmissionService implements IAcceptanceSubmissionService {
+public class SubmissionService implements ISubmissionService {
 
-    private IAcceptanceSubmissionRepository acceptanceSubmissionRepository;
+    private ISubmissionRepository acceptanceSubmissionRepository;
     private IUserService userService;
-    private AcceptanceSubmissionFactory factory;
+    private SubmissionFactory factory;
 
 
-    public AcceptanceSubmissionService(IAcceptanceSubmissionRepository acceptanceSubmissionRepository,
-                                       IUserService userService) {
+    public SubmissionService(ISubmissionRepository acceptanceSubmissionRepository,
+                             IUserService userService) {
         this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
-        this.factory = new AcceptanceSubmissionFactory();
+        this.factory = new SubmissionFactory();
         this.userService = userService;
     }
     /**
@@ -36,8 +35,8 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @param request the submission to add.
      */
     @Override
-    public void addAcceptanceSubmission(AcceptanceSubmissionRequest request) {
-        AcceptanceSubmission submission = factory.create(request);
+    public void addAcceptanceSubmission(SubmissionRequest request) {
+        Submission submission = factory.create(request);
         acceptanceSubmissionRepository.save(submission);
 
     }
@@ -60,7 +59,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return the said AcceptanceSubmission.
      */
     @Override
-    public AcceptanceSubmission getAcceptanceSubmission(int acceptanceSubmissionId) {
+    public Submission getAcceptanceSubmission(int acceptanceSubmissionId) {
         return acceptanceSubmissionRepository.findById(acceptanceSubmissionId)
                 .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + acceptanceSubmissionId));
     }
@@ -71,7 +70,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return a list with all the said AcceptanceSubmission.
      */
     @Override
-    public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions() {
+    public List<Submission> getAvailableAcceptanceSubmissions() {
         return acceptanceSubmissionRepository.findAllByStatus(SubmissionStatus.pending);
     }
 
@@ -82,7 +81,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @return a list with all the curator's AcceptanceSubmission.
      */
     @Override
-    public List<AcceptanceSubmission> getAcceptanceSubmissionsByCurator(int curatorId) {
+    public List<Submission> getAcceptanceSubmissionsByCurator(int curatorId) {
 //        return acceptanceSubmissionRepository.getAcceptanceSubmissionByCuratorUserId(curatorId);
         return null;
     }
@@ -95,7 +94,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
     @Override
     public void onAcceptance(int submissionId) {
 
-        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
+        Submission submission = getAcceptanceSubmission(submissionId);
 
         if (!submission.getStatus().equals(SubmissionStatus.assigned)) {
             throw new ImpossibleRequestException("Incoherent submission status");
@@ -114,7 +113,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
     @Override
     public void onRefusal(int submissionId) {
 
-        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
+        Submission submission = getAcceptanceSubmission(submissionId);
 
         if (!submission.getStatus().equals(SubmissionStatus.assigned)) {
             throw new ImpossibleRequestException("Incoherent submission status");
@@ -131,7 +130,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
         //check that user exists
         userService.getUser(userId);
 
-        AcceptanceSubmission submission = getAcceptanceSubmission(submissionId);
+        Submission submission = getAcceptanceSubmission(submissionId);
 
         if (!submission.getStatus().equals(SubmissionStatus.pending)) {
             throw new ImpossibleRequestException("Submission already taken");

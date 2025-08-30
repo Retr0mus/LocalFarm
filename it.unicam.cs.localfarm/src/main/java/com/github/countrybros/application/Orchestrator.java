@@ -1,17 +1,14 @@
 package com.github.countrybros.application;
 
-import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
-import com.github.countrybros.application.errors.ImpossibleRequestException;
-import com.github.countrybros.application.errors.SevereCodingErrorException;
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
 import com.github.countrybros.application.product.*;
 import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
-import com.github.countrybros.model.acceptancesubmission.AddProductAcceptanceSubmission;
-import com.github.countrybros.model.acceptancesubmission.RecogniseProductAcceptanceSubmission;
-import com.github.countrybros.model.acceptancesubmission.SubmissionStatus;
+import com.github.countrybros.model.acceptancesubmission.Submission;
+import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
+import com.github.countrybros.model.acceptancesubmission.RecogniseProductSubmission;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.ItemStatus;
-import com.github.countrybros.web.acceptancesubmission.request.AddProductAcceptanceSubmissionRequest;
+import com.github.countrybros.web.acceptancesubmission.request.AddProductSubmissionRequest;
 import com.github.countrybros.web.product.requests.AddCertificationRequest;
 import com.github.countrybros.web.product.requests.AddItemRequest;
 import org.springframework.stereotype.Service;
@@ -30,12 +27,12 @@ public class Orchestrator {
     private final IItemService itemService;
     private final ICompanyService companyService;
     private final ICertificationService certificationService;
-    private final IAcceptanceSubmissionService acceptanceSubmissionService;
+    private final ISubmissionService acceptanceSubmissionService;
     private final IStockService stockService;
 
     public Orchestrator(IItemService itemService, ICompanyService companyService,
                         ICertificationService certificationService,
-                        IAcceptanceSubmissionService acceptanceSubmissionService,
+                        ISubmissionService acceptanceSubmissionService,
                         IStockService stockService) {
 
         this.itemService = itemService;
@@ -58,7 +55,7 @@ public class Orchestrator {
         Item item = director.toDomain(request);
         itemService.addItem(item);
 
-        AddProductAcceptanceSubmissionRequest requestToAdd = new AddProductAcceptanceSubmissionRequest();
+        AddProductSubmissionRequest requestToAdd = new AddProductSubmissionRequest();
         requestToAdd.setItemDetailsId(item.getId());
         requestToAdd.setType("addProduct");
         requestToAdd.setSenderId(request.senderId);
@@ -81,7 +78,7 @@ public class Orchestrator {
      *
      * @return all the available submission.
      */
-    public List<AcceptanceSubmission> getAvailableSubmissions() {
+    public List<Submission> getAvailableSubmissions() {
 
         return acceptanceSubmissionService.getAvailableAcceptanceSubmissions();
     }
@@ -94,7 +91,7 @@ public class Orchestrator {
      */
     public void acceptSubmission(int submissionId, boolean accepted) {
 
-        AcceptanceSubmission submission = acceptanceSubmissionService
+        Submission submission = acceptanceSubmissionService
                 .getAcceptanceSubmission(submissionId);
 
         if (accepted) {
@@ -112,13 +109,13 @@ public class Orchestrator {
      *
      * @param submission the submission to accept
      */
-    private void accept(AcceptanceSubmission submission) {
+    private void accept(Submission submission) {
 
-        if (submission instanceof AddProductAcceptanceSubmission sub)
+        if (submission instanceof AddProductSubmission sub)
 
             itemService.setStatus(ItemStatus.available, sub.getItemDetailsId());
 
-        else if (submission instanceof RecogniseProductAcceptanceSubmission sub) {
+        else if (submission instanceof RecogniseProductSubmission sub) {
 
             stockService.addQuantityToItem(sub.getProductId(), sub.getQty());
         }
@@ -132,9 +129,9 @@ public class Orchestrator {
      *
      * @param submission the submission selected.
      */
-    private void refuse(AcceptanceSubmission submission) {
+    private void refuse(Submission submission) {
 
-        if (submission instanceof AddProductAcceptanceSubmission sub)
+        if (submission instanceof AddProductSubmission sub)
             itemService.deleteItemDetails(sub.getItemDetailsId());
     }
 }

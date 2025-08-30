@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         property = "typeForSpringBoot"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AddProductAcceptanceSubmissionRequest.class, name = "addProduct"),
-        @JsonSubTypes.Type(value = EditProductAcceptanceSubmissionRequest.class, name = "editProduct"),
-        @JsonSubTypes.Type(value = RecogniseProductAcceptanceSubmissionRequest.class, name = "recogniseProduct"),
-        @JsonSubTypes.Type(value = RemoveProductAcceptanceSubmissionRequest.class, name = "removeProduct")
+        @JsonSubTypes.Type(value = AddProductSubmissionRequest.class, name = "addProduct"),
+        @JsonSubTypes.Type(value = EditProductSubmissionRequest.class, name = "editProduct"),
+        @JsonSubTypes.Type(value = RecogniseProductSubmissionRequest.class, name = "recogniseProduct"),
+        @JsonSubTypes.Type(value = RemoveProductSubmissionRequest.class, name = "removeProduct")
 })
-public abstract class AcceptanceSubmissionRequest {
+public abstract class SubmissionRequest {
 
     private String type;
     private int senderId;

@@ -7,12 +7,13 @@ import jakarta.persistence.*;
  */
 @Entity
 @DiscriminatorValue("removeProduct")
-public class RemoveProductAcceptanceSubmission extends AcceptanceSubmission {
+@Deprecated
+public class RemoveProductSubmission extends Submission {
 
 
     private int productId;
 
-    public RemoveProductAcceptanceSubmission() {}
+    public RemoveProductSubmission() {}
 
     public int getProductId() {
         return productId;

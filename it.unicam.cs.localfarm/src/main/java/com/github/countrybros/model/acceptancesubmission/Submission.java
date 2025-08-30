@@ -14,15 +14,15 @@ import jakarta.persistence.*;
 )
 @JsonSubTypes({
         // Defines the possible subtypes and associates each subtype with a specific name value in the "type" property.
-        @JsonSubTypes.Type(value = AddProductAcceptanceSubmission.class, name = "addProduct"),
-        @JsonSubTypes.Type(value = EditProductAcceptanceSubmission.class, name = "editProduct"),
-        @JsonSubTypes.Type(value = RecogniseProductAcceptanceSubmission.class, name = "recogniseProduct"),
-        @JsonSubTypes.Type(value = RemoveProductAcceptanceSubmission.class, name = "removeProduct")
+        @JsonSubTypes.Type(value = AddProductSubmission.class, name = "addProduct"),
+        @JsonSubTypes.Type(value = EditProductSubmission.class, name = "editProduct"),
+        @JsonSubTypes.Type(value = RecogniseProductSubmission.class, name = "recogniseProduct"),
+        @JsonSubTypes.Type(value = RemoveProductSubmission.class, name = "removeProduct")
 })
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "submission_type")
-public abstract class AcceptanceSubmission {
+public abstract class Submission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public abstract class AcceptanceSubmission {
     private int curatorId;
     private SubmissionStatus status;
 
-    public AcceptanceSubmission() {}
+    public Submission() {}
 
     public void setStatus(SubmissionStatus status) {
         this.status = status;

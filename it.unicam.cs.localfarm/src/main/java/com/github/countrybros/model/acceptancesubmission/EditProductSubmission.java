@@ -7,14 +7,15 @@ import jakarta.persistence.*;
  */
 @Entity
 @DiscriminatorValue("editProduct")
-public class EditProductAcceptanceSubmission extends AcceptanceSubmission {
+@Deprecated
+public class EditProductSubmission extends Submission {
 
 
     private int productToEditId;
 
     private int productChangeId;
 
-    public EditProductAcceptanceSubmission() {}
+    public EditProductSubmission() {}
 
     public int getProductToEditId() {
         return productToEditId;

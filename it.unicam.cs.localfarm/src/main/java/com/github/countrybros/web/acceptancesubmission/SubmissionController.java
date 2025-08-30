@@ -1,11 +1,8 @@
 package com.github.countrybros.web.acceptancesubmission;
 
 import com.github.countrybros.application.Orchestrator;
-import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
-import com.github.countrybros.application.product.IItemService;
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
-import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
-import jakarta.websocket.server.PathParam;
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
+import com.github.countrybros.model.acceptancesubmission.Submission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +12,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/submissions")
-public class AcceptanceSubmissionController {
+public class SubmissionController {
 
     private final Orchestrator orchestrator;
-    private final IAcceptanceSubmissionService acceptanceSubmissionService;
+    private final ISubmissionService acceptanceSubmissionService;
 
     @Autowired
-    public AcceptanceSubmissionController(Orchestrator orchestrator,
-                                          IAcceptanceSubmissionService acceptanceSubmissionService) {
+    public SubmissionController(Orchestrator orchestrator,
+                                ISubmissionService acceptanceSubmissionService) {
 
         this.orchestrator = orchestrator;
         this.acceptanceSubmissionService = acceptanceSubmissionService;
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<AcceptanceSubmission>> getAvailable() {
+    public ResponseEntity<List<Submission>> getAvailable() {
 
-        List<AcceptanceSubmission> submissions = orchestrator.getAvailableSubmissions();
+        List<Submission> submissions = orchestrator.getAvailableSubmissions();
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 

@@ -1,9 +1,7 @@
 package com.github.countrybros.web.acceptancesubmission.request;
 
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 
-
-public class EditProductAcceptanceSubmissionRequest extends AcceptanceSubmissionRequest {
+public class EditProductSubmissionRequest extends SubmissionRequest {
 
     private int productToEditId;
     private int productChangeId;

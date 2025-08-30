@@ -4,7 +4,7 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.user.CompanyService;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.infrastructure.product.ItemRepository;
+import com.github.countrybros.infrastructure.product.StockRepository;
 import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.user.Company;
@@ -21,14 +21,14 @@ import java.util.List;
 public class StockService implements IStockService {
   
     private final ICompanyService companyService;
-    private final ItemRepository itemRepository;
+    private final StockRepository stockRepository;
     private final IItemService itemDetailsService;
 
-    public StockService(CompanyService companyService, ItemRepository itemRepository,
+    public StockService(CompanyService companyService, StockRepository stockRepository,
                         IItemService itemDetailsService) {
 
         this.companyService = companyService;
-        this.itemRepository = itemRepository;
+        this.stockRepository = stockRepository;
         this.itemDetailsService = itemDetailsService;
     }
 
@@ -46,7 +46,7 @@ public class StockService implements IStockService {
         stock.setQty(request.qty);
         stock.setPrice(request.price);
 
-        return itemRepository.save(stock);
+        return stockRepository.save(stock);
     }
 
     /**
@@ -61,7 +61,7 @@ public class StockService implements IStockService {
 
         stock.setQty(stock.getQty() + quantity);
 
-        this.itemRepository.save(stock);
+        this.stockRepository.save(stock);
     }
 
     /**
@@ -79,7 +79,7 @@ public class StockService implements IStockService {
 
         stock.setQty(stock.getQty() - quantity);
 
-        this.itemRepository.save(stock);
+        this.stockRepository.save(stock);
     }
 
     /**
@@ -89,7 +89,7 @@ public class StockService implements IStockService {
 
         Stock stock = getItem(itemId);
         stock.setPrice(price);
-        itemRepository.save(stock);
+        stockRepository.save(stock);
     }
 
     /**
@@ -97,7 +97,7 @@ public class StockService implements IStockService {
      */
     public Stock getItem(int itemId) {
 
-        Stock stock = this.itemRepository.findById(itemId).orElse(null);
+        Stock stock = this.stockRepository.findById(itemId).orElse(null);
 
         if (stock == null)
             throw new NotFoundInRepositoryException("Item not found");

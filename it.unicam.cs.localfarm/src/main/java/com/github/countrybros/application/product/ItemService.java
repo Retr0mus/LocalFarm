@@ -1,20 +1,16 @@
 package com.github.countrybros.application.product;
 
-import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.infrastructure.product.IItemDetailsRepository;
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
-import com.github.countrybros.model.acceptancesubmission.AddProductAcceptanceSubmission;
-import com.github.countrybros.model.acceptancesubmission.EditProductAcceptanceSubmission;
+import com.github.countrybros.infrastructure.product.IItemRepository;
+import com.github.countrybros.model.acceptancesubmission.Submission;
+import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
+import com.github.countrybros.model.acceptancesubmission.EditProductSubmission;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.ItemStatus;
-import com.github.countrybros.web.acceptancesubmission.request.AddProductAcceptanceSubmissionRequest;
-import com.github.countrybros.web.acceptancesubmission.request.EditProductAcceptanceSubmissionRequest;
-import com.github.countrybros.web.product.requests.AddItemRequest;
-import com.github.countrybros.web.product.requests.EditItemDetailsRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
 
@@ -26,12 +22,12 @@ import java.util.List;
 @Service
 public class ItemService implements IItemService {
 
-    private final IItemDetailsRepository itemDetailsRepository;
+    private final IItemRepository itemDetailsRepository;
     private final ICompanyService companyService;
-    private final IAcceptanceSubmissionService acceptanceSubmissionService;
+    private final ISubmissionService acceptanceSubmissionService;
 
-    public ItemService(IItemDetailsRepository repository, ICompanyService companyService,
-                       IAcceptanceSubmissionService acceptanceSubmissionService) {
+    public ItemService(IItemRepository repository, ICompanyService companyService,
+                       ISubmissionService acceptanceSubmissionService) {
 
         this.itemDetailsRepository = repository;
         this.companyService = companyService;
@@ -57,12 +53,12 @@ public class ItemService implements IItemService {
     @Override
     public void acceptChanges(int acceptanceSubmissionId) {
 
-        AcceptanceSubmission submission = acceptanceSubmissionService.getAcceptanceSubmission(acceptanceSubmissionId);
+        Submission submission = acceptanceSubmissionService.getAcceptanceSubmission(acceptanceSubmissionId);
 
-        if (submission instanceof AddProductAcceptanceSubmission sub)
+        if (submission instanceof AddProductSubmission sub)
             acceptItemDetails(sub.getItemDetailsId());
 
-        else if (submission instanceof EditProductAcceptanceSubmission sub)
+        else if (submission instanceof EditProductSubmission sub)
             editItem(sub.getProductToEditId(), sub.getProductChangeId());
 
         else

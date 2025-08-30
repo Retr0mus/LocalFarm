@@ -1,9 +1,7 @@
 package com.github.countrybros.web.acceptancesubmission.request;
 
-import com.github.countrybros.model.acceptancesubmission.AcceptanceSubmission;
 
-
-public class RemoveProductAcceptanceSubmissionRequest extends AcceptanceSubmissionRequest {
+public class RemoveProductSubmissionRequest extends SubmissionRequest {
     private int productId;
 
     public int getProductId() {
