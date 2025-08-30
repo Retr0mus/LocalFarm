@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/submissions")
 public class SubmissionController {
 
-    private final IItemService itemDetailsService;
     private final ISubmissionService acceptanceSubmissionService;
     private final Orchestrator orchestrator;
 
@@ -24,7 +23,6 @@ public class SubmissionController {
                                 IItemService itemDetailsService, Orchestrator orchestrator) {
 
         this.acceptanceSubmissionService = acceptanceSubmissionService;
-        this.itemDetailsService = itemDetailsService;
         this.orchestrator = orchestrator;
     }
 
@@ -78,9 +76,8 @@ public class SubmissionController {
 
 
     @PutMapping("takeCharge")
-    public ResponseEntity<String> takeChargeOfSubmission(@RequestParam("subId") int submissionId,
-                                                         @RequestParam("userId") int userId) {
-        orchestrator.takeChargeOfSubmission(submissionId, userId);
+    public ResponseEntity<String> takeChargeOfSubmission(@RequestParam("userId") int userId,@RequestParam("subId") int submissionId) {
+        orchestrator.takeChargeOfSubmission(userId,submissionId);
         return new ResponseEntity<>("Acceptance submission taken", HttpStatus.OK);
     }
 }

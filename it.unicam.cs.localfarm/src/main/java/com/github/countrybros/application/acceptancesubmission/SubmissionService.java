@@ -4,15 +4,11 @@ package com.github.countrybros.application.acceptancesubmission;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
-import com.github.countrybros.application.user.IUserService;
 import com.github.countrybros.infrastructure.repository.ISubmissionRepository;
-import com.github.countrybros.infrastructure.repository.IUserRepository;
 import com.github.countrybros.model.acceptancesubmission.SubmissionStatus;
-import com.github.countrybros.model.user.User;
-import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.web.acceptancesubmission.request.*;
 import com.github.countrybros.model.acceptancesubmission.Submission;
-import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,19 +19,17 @@ import java.util.List;
 @Service
 public class SubmissionService implements ISubmissionService {
 
-    private ISubmissionRepository acceptanceSubmissionRepository;
-    private IUserService userService;
+    private ISubmissionRepository SubmissionRepository;
     private SubmissionFactory factory;
-    private IUserRepository userRepository;
-    private UserRole roles;
 
 
-    public SubmissionService(ISubmissionRepository acceptanceSubmissionRepository,
-                             IUserService userService, IUserRepository userRepository) {
-        this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
+
+
+    public SubmissionService(ISubmissionRepository SubmissionRepository) {
+        this.SubmissionRepository = SubmissionRepository;
         this.factory = new SubmissionFactory();
-        this.userService = userService;
-        this.userRepository = userRepository;
+
+
 
     }
     /**
@@ -46,7 +40,7 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public void addAcceptanceSubmission(SubmissionRequest request) {
         Submission submission = factory.create(request);
-        acceptanceSubmissionRepository.save(submission);
+        SubmissionRepository.save(submission);
 
     }
 
@@ -58,7 +52,7 @@ public class SubmissionService implements ISubmissionService {
      */
     @Override
     public void deleteAcceptanceSubmission(int acceptanceSubmissionId) {
-        acceptanceSubmissionRepository.deleteById(acceptanceSubmissionId);
+        SubmissionRepository.deleteById(acceptanceSubmissionId);
     }
 
     /**
@@ -69,7 +63,7 @@ public class SubmissionService implements ISubmissionService {
      */
     @Override
     public Submission getAcceptanceSubmission(int acceptanceSubmissionId) {
-        return acceptanceSubmissionRepository.findById(acceptanceSubmissionId)
+        return SubmissionRepository.findById(acceptanceSubmissionId)
                 .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + acceptanceSubmissionId));
     }
 
@@ -80,7 +74,7 @@ public class SubmissionService implements ISubmissionService {
      */
     @Override
     public List<Submission> getAvailableAcceptanceSubmissions() {
-        return acceptanceSubmissionRepository.getAcceptanceSubmissionByStatus(SubmissionStatus.pending);
+        return SubmissionRepository.getAcceptanceSubmissionByStatus(SubmissionStatus.pending);
     }
 
     /**
@@ -114,7 +108,7 @@ public class SubmissionService implements ISubmissionService {
 
         submission.setStatus(SubmissionStatus.accepted);
 
-        acceptanceSubmissionRepository.save(submission);
+        SubmissionRepository.save(submission);
     }
 
     /**
@@ -125,22 +119,15 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public void onRefusal(int submissionId) {
 
-        if (!acceptanceSubmissionRepository.existsById(submissionId)) {
+        if (!SubmissionRepository.existsById(submissionId)) {
             throw new NotFoundInRepositoryException("Submission not found with id " + submissionId);
         }
 
-        acceptanceSubmissionRepository.deleteById(submissionId);
+        SubmissionRepository.deleteById(submissionId);
     }
 
     @Override
     public void takeChargeOfSubmission(int submissionId, int userId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-
-        if (!user.getRoles().contains(UserRole.CURATOR)) {
-            throw new ImpossibleRequestException("Only curators can take charge of a submission");
-        }
 
         Submission submission = getAcceptanceSubmission(submissionId);
 
@@ -150,6 +137,6 @@ public class SubmissionService implements ISubmissionService {
 
         submission.setSenderId(userId);
         submission.setStatus(SubmissionStatus.assigned);
-        acceptanceSubmissionRepository.save(submission);
+        SubmissionRepository.save(submission);
     }
 }

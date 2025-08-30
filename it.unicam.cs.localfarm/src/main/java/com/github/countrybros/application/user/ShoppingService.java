@@ -1,20 +1,12 @@
 package com.github.countrybros.application.user;
 
-
-import com.github.countrybros.application.errors.ImpossibleRequestException;
-import com.github.countrybros.application.errors.NotEnoughItemsException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.application.product.StockService;
-import com.github.countrybros.infrastructure.repository.ICartRepository;
-import com.github.countrybros.infrastructure.repository.IOrderRepository;
 import com.github.countrybros.infrastructure.repository.IShoppingItemRepository;
-import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 /**
@@ -23,18 +15,11 @@ import java.util.List;
 @Service
 public class ShoppingService implements IShoppingService {
 
+
     @Autowired
-    private IUserService  userService;
-    @Autowired
-    private StockService itemService;
+    private IUserService userService;
     @Autowired
     private IShoppingItemRepository shoppingItemRepository;
-    @Autowired
-    private IPaymentService paymentService;
-    @Autowired
-    private ICartRepository cartRepository;
-    @Autowired
-    private IOrderRepository orderRepository;
 
     @Override
     public Cart getCart(int userId) {
@@ -47,30 +32,30 @@ public class ShoppingService implements IShoppingService {
 
     @Override
     public void addItemToCart(int userId, int itemId, int qty) {
-        Cart cart = getCart(userId);
-        Stock stock = itemService.getItem(itemId);
-        if (stock == null) {
-            throw new NotFoundInRepositoryException("Item with ID " + itemId + " not found.");
-        }
-
-        // Verifica se item già presente, aggiorna quantità, altrimenti aggiungi nuovo
-        boolean found = false;
-        for (ShoppingItem si : cart.getItems()) {
-            if (si.getItem().getId() == itemId) {
-                si.setQuantity(si.getQuantity() + qty);
-                shoppingItemRepository.save(si);
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            ShoppingItem newItem = new ShoppingItem(cart, stock, qty);
-            cart.getItems().add(itemId, newItem);
-            shoppingItemRepository.save(newItem);
-        }
-
-        cartRepository.save(cart);
+//        Cart cart = getCart(userId);
+//        Stock stock = itemService.getItem(itemId);
+//        if (stock == null) {
+//            throw new NotFoundInRepositoryException("Item with ID " + itemId + " not found.");
+//        }
+//
+//        // Verifica se item già presente, aggiorna quantità, altrimenti aggiungi nuovo
+//        boolean found = false;
+//        for (ShoppingItem si : cart.getItems()) {
+//            if (si.getItem().getId() == itemId) {
+//                si.setQuantity(si.getQuantity() + qty);
+//                shoppingItemRepository.save(si);
+//                found = true;
+//                break;
+//            }
+//        }
+//
+//        if (!found) {
+//            ShoppingItem newItem = new ShoppingItem(cart, stock, qty);
+//            cart.getItems().add(itemId, newItem);
+//            shoppingItemRepository.save(newItem);
+//        }
+//
+//        cartRepository.save(cart);
     }
 
     @Override
@@ -108,7 +93,6 @@ public class ShoppingService implements IShoppingService {
 
         shoppingItem.setQuantity(newQuantity);
         shoppingItemRepository.save(shoppingItem);
-        cartRepository.save(cart);
     }
 
 
@@ -139,13 +123,14 @@ public class ShoppingService implements IShoppingService {
 
     @Override
     public List<Order> getOrders(int userId) {
-        User user = userService.getUser(userId);
-        if (user == null) {
-            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
-        }
-
-        return orderRepository.findByCustomerUserId(userId);
-    }
+//        User user = userService.getUser(userId);
+//        if (user == null) {
+//            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
+//        }
+//
+//        return orderRepository.findByCustomerUserId(userId);
+        return null;
+   }
 
     /**
      * Checks all the item quantities of a cart, comparing them with the actual item in the system,
@@ -157,23 +142,24 @@ public class ShoppingService implements IShoppingService {
      */
     @Override
     public Cart getExcessItems(Cart cart) {
-        if (cart == null || cart.getItems() == null) {
-            throw new ImpossibleRequestException("Cart or items list is null.");
-        }
-
-
-        ArrayList<ShoppingItem> excessItems = new ArrayList<ShoppingItem>();
-        Cart excessCart = new Cart();
-
-        for (ShoppingItem shoppingItem : cart.getItems()) {
-            Stock stock = itemService.getItem(shoppingItem.getItem().getId());
-            int diff = stock.getQty() - shoppingItem.getQuantity();
-            if (diff < 0)
-                excessItems.add(new ShoppingItem(excessCart, stock, diff));
-        }
-
-        cart.setItems(excessItems);
-        return excessCart;
+//        if (cart == null || cart.getItems() == null) {
+//            throw new ImpossibleRequestException("Cart or items list is null.");
+//        }
+//
+//
+//        ArrayList<ShoppingItem> excessItems = new ArrayList<ShoppingItem>();
+//        Cart excessCart = new Cart();
+//
+//        for (ShoppingItem shoppingItem : cart.getItems()) {
+//            Stock stock = itemService.getItem(shoppingItem.getItem().getId());
+//            int diff = stock.getQty() - shoppingItem.getQuantity();
+//            if (diff < 0)
+//                excessItems.add(new ShoppingItem(excessCart, stock, diff));
+//        }
+//
+//        cart.setItems(excessItems);
+//        return excessCart;
+        return null;
     }
 
     /**

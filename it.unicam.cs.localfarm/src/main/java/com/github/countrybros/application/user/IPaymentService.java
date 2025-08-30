@@ -24,10 +24,11 @@ public interface IPaymentService {
      *
      * Refund
      *
-     * @param request
+     * @param email
+     * @param amount
      * @return
      */
-    boolean refund(RefundRequest request);
+    boolean refund(String email,float amount);
 
 
 }
