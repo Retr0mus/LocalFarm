@@ -1,9 +1,8 @@
 package com.github.countrybros.web.acceptancesubmission.request;
 
 
-public class RecogniseProductAcceptanceSubmissionRequest extends AcceptanceSubmissionRequest {
+public class RemoveProductSubmissionRequest extends SubmissionRequest {
     private int productId;
-    private int qta;
 
     public int getProductId() {
         return productId;
@@ -11,13 +10,5 @@ public class RecogniseProductAcceptanceSubmissionRequest extends AcceptanceSubmi
 
     public void setProductId(int productId) {
         this.productId = productId;
-    }
-
-    public int getQta() {
-        return qta;
-    }
-
-    public void setQta(int qta) {
-        this.qta = qta;
     }
 }

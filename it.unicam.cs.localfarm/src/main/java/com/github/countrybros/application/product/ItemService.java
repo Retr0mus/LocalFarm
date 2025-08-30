@@ -1,11 +1,11 @@
 package com.github.countrybros.application.product;
 
-import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.infrastructure.product.IItemDetailsRepository;
+import com.github.countrybros.infrastructure.product.IItemRepository;
 import com.github.countrybros.model.acceptancesubmission.Submission;
 import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
 import com.github.countrybros.model.product.Item;
@@ -21,12 +21,12 @@ import java.util.List;
 @Service
 public class ItemService implements IItemService {
 
-    private final IItemDetailsRepository itemDetailsRepository;
+    private final IItemRepository itemDetailsRepository;
     private final ICompanyService companyService;
-    private final IAcceptanceSubmissionService acceptanceSubmissionService;
+    private final ISubmissionService acceptanceSubmissionService;
 
-    public ItemService(IItemDetailsRepository repository, ICompanyService companyService,
-                       IAcceptanceSubmissionService acceptanceSubmissionService) {
+    public ItemService(IItemRepository repository, ICompanyService companyService,
+                       ISubmissionService acceptanceSubmissionService) {
 
         this.itemDetailsRepository = repository;
         this.companyService = companyService;

@@ -21,19 +21,19 @@ import java.util.List;
  * Service that performs all the tasks related to the management of the product acceptance submissions.
  */
 @Service
-public class AcceptanceSubmissionService implements IAcceptanceSubmissionService {
+public class SubmissionService implements ISubmissionService {
 
     private ISubmissionRepository acceptanceSubmissionRepository;
     private IUserService userService;
-    private AcceptanceSubmissionFactory factory;
+    private SubmissionFactory factory;
     private IUserRepository userRepository;
     private UserRole roles;
 
 
-    public AcceptanceSubmissionService(ISubmissionRepository acceptanceSubmissionRepository,
-                                       IUserService userService, IUserRepository userRepository) {
+    public SubmissionService(ISubmissionRepository acceptanceSubmissionRepository,
+                             IUserService userService, IUserRepository userRepository) {
         this.acceptanceSubmissionRepository = acceptanceSubmissionRepository;
-        this.factory = new AcceptanceSubmissionFactory();
+        this.factory = new SubmissionFactory();
         this.userService = userService;
         this.userRepository = userRepository;
 
@@ -44,7 +44,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      * @param request the submission to add.
      */
     @Override
-    public void addAcceptanceSubmission(AcceptanceSubmissionRequest request) {
+    public void addAcceptanceSubmission(SubmissionRequest request) {
         Submission submission = factory.create(request);
         acceptanceSubmissionRepository.save(submission);
 

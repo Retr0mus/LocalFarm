@@ -1,7 +1,7 @@
 package com.github.countrybros.web.acceptancesubmission;
 
 import com.github.countrybros.application.Orchestrator;
-import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
 import com.github.countrybros.application.product.IItemService;
 import com.github.countrybros.model.acceptancesubmission.Submission;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +13,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/submissions")
-public class AcceptanceSubmissionController {
+public class SubmissionController {
 
     private final IItemService itemDetailsService;
-    private final IAcceptanceSubmissionService acceptanceSubmissionService;
+    private final ISubmissionService acceptanceSubmissionService;
     private final Orchestrator orchestrator;
 
     @Autowired
-    public AcceptanceSubmissionController(IAcceptanceSubmissionService acceptanceSubmissionService,
-                                          IItemService itemDetailsService, Orchestrator orchestrator) {
+    public SubmissionController(ISubmissionService acceptanceSubmissionService,
+                                IItemService itemDetailsService, Orchestrator orchestrator) {
 
         this.acceptanceSubmissionService = acceptanceSubmissionService;
         this.itemDetailsService = itemDetailsService;
@@ -64,7 +64,7 @@ public class AcceptanceSubmissionController {
 //    }
 
 //    @PostMapping("/add")
-//    public ResponseEntity<String> addAcceptanceSubmission(@RequestBody AcceptanceSubmissionRequest request) {
+//    public ResponseEntity<String> addAcceptanceSubmission(@RequestBody SubmissionRequest request) {
 //
 //        acceptanceSubmissionService.addAcceptanceSubmission(request);
 //        return new ResponseEntity<>("Acceptance submission added", HttpStatus.CREATED);

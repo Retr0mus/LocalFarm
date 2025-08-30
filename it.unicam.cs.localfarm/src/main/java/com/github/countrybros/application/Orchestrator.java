@@ -1,6 +1,6 @@
 package com.github.countrybros.application;
 
-import com.github.countrybros.application.acceptancesubmission.IAcceptanceSubmissionService;
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
 import com.github.countrybros.application.product.ICertificationService;
 import com.github.countrybros.application.product.IItemService;
 import com.github.countrybros.application.product.ItemMapper;
@@ -8,7 +8,7 @@ import com.github.countrybros.application.product.ItemBuilderFactory;
 import com.github.countrybros.application.user.*;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.user.Order;
-import com.github.countrybros.web.acceptancesubmission.request.AddProductAcceptanceSubmissionRequest;
+import com.github.countrybros.web.acceptancesubmission.request.AddProductSubmissionRequest;
 import com.github.countrybros.web.product.requests.AddCertificationRequest;
 import com.github.countrybros.web.product.requests.AddItemRequest;
 import com.github.countrybros.web.user.request.OrderRequest;
@@ -29,14 +29,14 @@ public class Orchestrator {
     private final IItemService itemService;
     private final ICompanyService companyService;
     private final ICertificationService certificationService;
-    private final IAcceptanceSubmissionService acceptanceSubmissionService;
+    private final ISubmissionService acceptanceSubmissionService;
     private final IOrderService orderService;
     private final IShoppingService shoppingService;
     private final IPaymentService paymentService;
 
     public Orchestrator(IItemService itemService, ICompanyService companyService,
                         ICertificationService certificationService,
-                        IAcceptanceSubmissionService acceptanceSubmissionService, IOrderService orderService, IShoppingService shoppingService, PaymentService paymentService) {
+                        ISubmissionService acceptanceSubmissionService, IOrderService orderService, IShoppingService shoppingService, PaymentService paymentService) {
 
         this.itemService = itemService;
         this.companyService = companyService;
@@ -61,7 +61,7 @@ public class Orchestrator {
         Item item = director.toDomain(request);
         itemService.addItem(item);
 
-        AddProductAcceptanceSubmissionRequest requestToAdd = new AddProductAcceptanceSubmissionRequest();
+        AddProductSubmissionRequest requestToAdd = new AddProductSubmissionRequest();
         requestToAdd.setItemDetailsId(item.getId());
         requestToAdd.setType("addProduct");
         requestToAdd.setSenderId(request.senderId);

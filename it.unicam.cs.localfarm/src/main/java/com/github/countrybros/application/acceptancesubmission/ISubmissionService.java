@@ -1,22 +1,22 @@
 package com.github.countrybros.application.acceptancesubmission;
 
 import com.github.countrybros.model.acceptancesubmission.Submission;
-import com.github.countrybros.web.acceptancesubmission.request.AcceptanceSubmissionRequest;
+import com.github.countrybros.web.acceptancesubmission.request.SubmissionRequest;
 
 import java.util.List;
 
 
 /**
- * Interface that represents every possible implementation of AcceptanceSubmissionService
+ * Interface that represents every possible implementation of SubmissionService
  */
-public interface IAcceptanceSubmissionService {
+public interface ISubmissionService {
 
     /**
      * Adds an AcceptanceSubmission.
      *
      * @param request the submission to add.
      */
-     void addAcceptanceSubmission(AcceptanceSubmissionRequest request);
+     void addAcceptanceSubmission(SubmissionRequest request);
 
     /**
      * Deletes an AcceptanceSubmission.

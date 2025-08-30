@@ -6,9 +6,9 @@ import com.github.countrybros.web.acceptancesubmission.request.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AcceptanceSubmissionFactory {
+public class SubmissionFactory {
 
-    public Submission create(AcceptanceSubmissionRequest request) {
+    public Submission create(SubmissionRequest request) {
         Submission submission;
 
         //TODO recognise è la richiesta di un aumento della quantita di un item
@@ -19,13 +19,13 @@ public class AcceptanceSubmissionFactory {
         }
         switch (request.getType()) {
             case "addProduct" -> {
-                AddProductAcceptanceSubmissionRequest addReq = (AddProductAcceptanceSubmissionRequest) request;
+                AddProductSubmissionRequest addReq = (AddProductSubmissionRequest) request;
                 AddProductSubmission addSubmission = new AddProductSubmission();
                 addSubmission.setItemDetailsId(addReq.getItemDetailsId());
                 submission = addSubmission;
             }
             case "recogniseProduct" -> {
-                RecogniseProductAcceptanceSubmissionRequest recReq = (RecogniseProductAcceptanceSubmissionRequest) request;
+                RecogniseProductSubmissionRequest recReq = (RecogniseProductSubmissionRequest) request;
                 RecogniseProductSubmission recSubmission = new RecogniseProductSubmission();
                 recSubmission.setProductId(recReq.getProductId());
                 recSubmission.setQta(recReq.getQta());
