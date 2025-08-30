@@ -72,7 +72,7 @@ public class AcceptanceSubmissionService implements IAcceptanceSubmissionService
      */
     @Override
     public List<AcceptanceSubmission> getAvailableAcceptanceSubmissions() {
-        return acceptanceSubmissionRepository.findAllByStatus(SubmissionStatus.assigned);
+        return acceptanceSubmissionRepository.findAllByStatus(SubmissionStatus.pending);
     }
 
     /**

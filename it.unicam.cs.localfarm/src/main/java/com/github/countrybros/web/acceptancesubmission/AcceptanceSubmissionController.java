@@ -18,11 +18,14 @@ import java.util.List;
 public class AcceptanceSubmissionController {
 
     private final Orchestrator orchestrator;
+    private final IAcceptanceSubmissionService acceptanceSubmissionService;
 
     @Autowired
-    public AcceptanceSubmissionController(Orchestrator orchestrator) {
+    public AcceptanceSubmissionController(Orchestrator orchestrator,
+                                          IAcceptanceSubmissionService acceptanceSubmissionService) {
 
         this.orchestrator = orchestrator;
+        this.acceptanceSubmissionService = acceptanceSubmissionService;
     }
 
     @GetMapping("/available")
@@ -47,12 +50,12 @@ public class AcceptanceSubmissionController {
 //        return new ResponseEntity<>(submissions, HttpStatus.OK);
 //    }
 //
-//    @GetMapping("/acceptancesubmission")
-//    public ResponseEntity<?> getAcceptanceSubmission(@RequestParam int submissionId) {
-//
-//        return new ResponseEntity<>(acceptanceSubmissionService.getAcceptanceSubmission(submissionId),
-//                HttpStatus.OK);
-//    }
+    @GetMapping("/submission")
+    public ResponseEntity<?> getAcceptanceSubmission(@RequestParam int submissionId) {
+
+        return new ResponseEntity<>(acceptanceSubmissionService.getAcceptanceSubmission(submissionId),
+                HttpStatus.OK);
+    }
 //
 //    @PostMapping("/accept")
 //    public ResponseEntity<String> onAcceptance(@RequestParam int submissionId) {

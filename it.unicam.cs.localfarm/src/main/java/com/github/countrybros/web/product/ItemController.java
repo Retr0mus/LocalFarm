@@ -2,6 +2,7 @@ package com.github.countrybros.web.product;
 
 import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.web.product.requests.AddItemRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * Controller for management of ItemDetails
  */
 @RestController
-@RequestMapping( "/itemDetails")
+@RequestMapping( "/item")
 public class ItemController {
 
     private final Orchestrator orchestrator;
@@ -23,7 +24,7 @@ public class ItemController {
     }
 
     @PostMapping( "addRequest")
-    public ResponseEntity<Object> addItemRequest(@RequestBody AddItemRequest request) {
+    public ResponseEntity<Object> addItemRequest(@Valid @RequestBody AddItemRequest request) {
 
         orchestrator.addItemRequest(request);
         return new ResponseEntity<>("ItemDetails creation request successfully created", HttpStatus.OK);

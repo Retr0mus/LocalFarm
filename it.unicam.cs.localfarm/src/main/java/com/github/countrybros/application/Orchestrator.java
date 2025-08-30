@@ -53,7 +53,6 @@ public class Orchestrator {
      */
     public void addItemRequest(AddItemRequest request) {
 
-        ItemBuilderFactory factory = new ItemBuilderFactory();
         ItemMapper director = new ItemMapper(companyService, certificationService);
 
         Item item = director.toDomain(request);
