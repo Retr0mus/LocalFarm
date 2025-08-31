@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 /**
  * Represents an abstract product acceptance submission
  */
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,            // Specifies that the type information will be included as a logical name (simple string) identifying the concrete class.
         include = JsonTypeInfo.As.PROPERTY,   // Specifies that this type information will be included as a property inside the JSON object.
@@ -67,4 +68,7 @@ public abstract class Submission {
     public int getId() {
         return id;
     }
+
+
+
 }

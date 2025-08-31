@@ -12,6 +12,8 @@ import com.github.countrybros.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,16 +57,6 @@ public class ShoppingService implements IShoppingService {
 
         shoppingItemRepository.save(shoppingItem);
         cartRepository.save(cart);
-    }
-
-    @Override
-    public void editQuantityOfItemInCart(int userId, int itemId, int newQuantity) {
-
-    }
-
-    @Override
-    public void removeItemFromCart(int userId, int itemId, int qty) {
-
     }
 
     @Override
@@ -125,47 +117,81 @@ public class ShoppingService implements IShoppingService {
         return true;
     }
 
-    /*@Override
-    public void editQuantityOfItemInCart(int userId, int itemId, int newQuantity) {
+    @Override
+    public void editQuantityOfItemInCart(int userId, int shoppingItemId, int newQuantity) {
         Cart cart = getCart(userId);
-        ShoppingItem shoppingItem = cart.getShoppingItems().get(itemId);
+        if (cart == null || cart.getItems().isEmpty()) {
+            throw new NotFoundInRepositoryException("Cart is empty or does not exist for user " + userId);
+        }
+
+        ShoppingItem shoppingItem = null;
+        for (ShoppingItem i : cart.getItems()) {
+            if (i.getId() == shoppingItemId) {
+                shoppingItem = i;
+                break;
+            }
+        }
+
         if (shoppingItem == null) {
             throw new NotFoundInRepositoryException("Shopping item not found in cart");
         }
+
+        if (newQuantity < 0) {
+            throw new IllegalArgumentException("quantity must be greater than zero");
+        }
+
+        if (newQuantity == 0) {
+            cart.getItems().remove(shoppingItem);
+            shoppingItemRepository.delete(shoppingItem);
+            return;
+        }
+
+        if (newQuantity > shoppingItem.getAvailableStock()) {
+            throw new IllegalArgumentException("max quantity available " + shoppingItem.getAvailableStock());
+        }
+
         shoppingItem.setQuantity(newQuantity);
         shoppingItemRepository.save(shoppingItem);
-        cartRepository.save(cart);
     }
 
     @Override
-    public void removeItemFromCart(int userId, int itemId, int qty) {
+    public void removeItemFromCart(int userId, int shoppingItemId) {
         Cart cart = getCart(userId);
-        ShoppingItem shoppingItem = cart.getShoppingItems().get(itemId);
-        if (shoppingItem == null) {
-            throw new NotFoundInRepositoryException("Shopping item not found in cart");
-        }
-        int updatedQty = shoppingItem.getQuantity() - qty;
-        if (updatedQty > 0) {
-            shoppingItem.setQuantity(updatedQty);
-            shoppingItemRepository.save(shoppingItem);
-        } else {
-            cart.getShoppingItems().remove(itemId);
-            shoppingItemRepository.delete(shoppingItem);
+        if (cart == null || cart.getItems().isEmpty()) {
+            throw new NotFoundInRepositoryException("Cart is empty or does not exist for user " + userId);
         }
 
+        ShoppingItem foundItem = null;
+        for (ShoppingItem item : cart.getItems()) {
+            if (item.getId() == shoppingItemId) {
+                foundItem = item;
+                break;
+            }
+        }
+
+        if (foundItem == null) {
+            throw new NotFoundInRepositoryException(
+                    "Shopping item with ID " + shoppingItemId + " not found in user's cart");
+        }
+
+        cart.getItems().remove(foundItem);
+        shoppingItemRepository.delete(foundItem);
+        System.out.println("User " + userId + " removed item " + shoppingItemId + " from cart");
     }
+
 
     @Override
     public List<Order> getOrders(int userId) {
-        User user = userService.getUser(userId);
-        if (user == null) {
-            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
-        }
+//        User user = userService.getUser(userId);
+//        if (user == null) {
+//            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
+//        }
+//
+//        return orderRepository.findByCustomerUserId(userId);
+        return null;
+   }
 
-        return orderRepository.findByCustomerUserId(userId);
-    }
-
-    *//**
+    /**
      * Checks all the item quantities of a cart, comparing them with the actual item in the system,
      * returns a cart with all the Items not present in the marketplace.
      *
@@ -194,7 +220,7 @@ public class ShoppingService implements IShoppingService {
         return excessCart;
     }
 
-    *//**
+    /**
      * Create an order when a user decides to buy the item inside his cart.
      *
      * @param userId  The user.

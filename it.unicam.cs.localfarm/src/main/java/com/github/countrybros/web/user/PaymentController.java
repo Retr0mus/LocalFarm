@@ -42,4 +42,6 @@ public class PaymentController {
         paymentService.paySellers();
         return new ResponseEntity<>("Sellers paid successfully", HttpStatus.OK);
     }
+
+
 }

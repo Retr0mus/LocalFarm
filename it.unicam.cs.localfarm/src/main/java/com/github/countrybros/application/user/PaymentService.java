@@ -1,10 +1,13 @@
 package com.github.countrybros.application.user;
 
-import com.github.countrybros.application.user.dto.IPaymentMethod;
 import com.github.countrybros.model.user.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Service that performs all the tasks related to the management of the payment.
@@ -39,17 +42,19 @@ public class PaymentService implements IPaymentService {
      * The payment of a user.
      *
      * @param amount the amount to pay.
-     *//*
+     */
     @Override
     public boolean paymentToMarketplace(IPaymentMethod paymentMethod, float amount) {
 
-        return paymentMethod.pay(amount, );
+        return paymentMethod.pay(amount);
     }
 
-    @Override
+
+
+    /**  @Override
     public void paySellers() {
 
-        *//*ArrayList<Order> orders = new ArrayList<>(orderService
+        ArrayList<Order> orders = new ArrayList<>(orderService
                 .getOrdersSince(Date.from(
                         LocalDateTime.now()
                                 .minusDays(28)
@@ -63,21 +68,28 @@ public class PaymentService implements IPaymentService {
             for (ShoppingItem item : order.getCart().getShoppingItems()) {
                 paySeller(item.getItem().getSeller().getId(), (float) (item.getQuantity() * item.getItem().getPrice()));
             }
-        }*//*
-    }
+        }
+    }**/
 
     @Override
     public List<IPaymentMethod> getPaymentMethods() {
         return List.of();
     }
 
-    private void paySeller(int companyId, float paymentAmount) {
+    public boolean refund(String email, float amount) {
 
-        Company company = companyService.getCompany(companyId);
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email must be provided for refund");
+        }
 
-        //TODO: manage method of the company
-        //IPaymentMethod method = company.getPaymentMethod()
+        try {
+            boolean refundSuccess = paymentMethod.refund(amount);
+            if (!refundSuccess) {
+                throw new IllegalStateException("Refund failed, order blocked");
+            }
+            return refundSuccess;
+        } catch (Exception e) {
+            throw new IllegalStateException("Refund service unavailable, order blocked");
+        }
     }
-*/
-}
-
+};

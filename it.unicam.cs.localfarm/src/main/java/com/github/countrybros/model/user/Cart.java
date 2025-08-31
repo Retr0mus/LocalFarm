@@ -1,8 +1,12 @@
 package com.github.countrybros.model.user;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that represents a cart.
@@ -11,10 +15,11 @@ import java.util.List;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private  int id;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_id")
-    private List<ShoppingItem> items;
+    private List<ShoppingItem> items = new ArrayList<>();
 
     public float getTotalAmount() {
         return 0;

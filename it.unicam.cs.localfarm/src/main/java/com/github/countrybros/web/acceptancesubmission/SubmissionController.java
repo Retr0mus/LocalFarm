@@ -20,6 +20,7 @@ public class SubmissionController {
 
     private final Orchestrator orchestrator;
     private final ISubmissionService acceptanceSubmissionService;
+    private final Orchestrator orchestrator;
 
     @Autowired
     public SubmissionController(Orchestrator orchestrator,
@@ -27,6 +28,7 @@ public class SubmissionController {
 
         this.orchestrator = orchestrator;
         this.acceptanceSubmissionService = acceptanceSubmissionService;
+        this.orchestrator = orchestrator;
     }
 
     @PutMapping("addQuantityToStock")
@@ -52,5 +54,11 @@ public class SubmissionController {
 
         orchestrator.acceptSubmission(id, accepted);
         return new ResponseEntity<>("Submission successfully updated", HttpStatus.OK);
+    }
+
+    @PutMapping("takeCharge")
+    public ResponseEntity<String> takeChargeOfSubmission(@RequestParam("userId") int userId,@RequestParam("subId") int submissionId) {
+        orchestrator.takeChargeOfSubmission(userId,submissionId);
+        return new ResponseEntity<>("Acceptance submission taken", HttpStatus.OK);
     }
 }

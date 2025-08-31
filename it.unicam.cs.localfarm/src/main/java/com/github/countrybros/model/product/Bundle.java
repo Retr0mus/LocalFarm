@@ -26,6 +26,7 @@ public class Bundle extends Item {
     private Map<Integer, Integer> items;
 
     public Bundle() {
+
         super();
     }
 

@@ -44,7 +44,6 @@ public class SubmissionService implements ISubmissionService {
     /**
      * Gets the required Submission.
      *
-     * @param submissionId the Id of the wanted Submission.
      * @return the said AcceptanceSubmission.
      */
     @Override
@@ -72,11 +71,6 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public List<Submission> getAcceptanceSubmissionsByCurator(int curatorId) {
         return List.of();
-    }
-
-    @Override
-    public void onAcceptance(int submissionId) {
-
     }
 
     /**
@@ -124,5 +118,14 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public void takeChargeOfSubmission(int submissionId, int userId) {
 
+        Submission submission = getAcceptanceSubmission(submissionId);
+
+        if (submission.getStatus() == SubmissionStatus.assigned) {
+            throw new ImpossibleRequestException("Submission is already assigned");
+        }
+
+        submission.setSenderId(userId);
+        submission.setStatus(SubmissionStatus.assigned);
+        SubmissionRepository.save(submission);
     }
 }

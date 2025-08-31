@@ -8,5 +8,5 @@ public enum SubmissionStatus {
     pending,
     assigned,
     accepted,
-    refused
+    rejected
 }

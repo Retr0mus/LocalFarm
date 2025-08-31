@@ -3,6 +3,7 @@ package com.github.countrybros.application.user;
 import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.user.Cart;
 import com.github.countrybros.model.user.Order;
+import com.github.countrybros.model.user.ShippingAddress;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ public interface IShoppingService {
 
     void addItemToCart(int userId, Stock stock, int qty);
 
-    void editQuantityOfItemInCart(int userId, int itemId, int newQuantity);
+     void editQuantityOfItemInCart(int userId, int shoppingItemId, int newQuantity);
 
-     void removeItemFromCart(int userId, int itemId, int qty);
+     void removeItemFromCart(int userId, int shoppingItemId);
 
      List<Order> getOrders(int userId);
 

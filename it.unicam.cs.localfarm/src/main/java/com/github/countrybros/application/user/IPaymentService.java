@@ -1,9 +1,5 @@
 package com.github.countrybros.application.user;
 
-import com.github.countrybros.application.user.dto.IPaymentMethod;
-
-import java.util.List;
-
 /**
  * Responsibility of managing all the payment that can occur through the system.
  */
@@ -23,4 +19,16 @@ public interface IPaymentService {
     void paySellers();
 
     List<IPaymentMethod> getPaymentMethods();
+
+    /**
+     *
+     * Refund
+     *
+     * @param email
+     * @param amount
+     * @return
+     */
+    boolean refund(String email,float amount);
+
+
 }

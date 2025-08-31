@@ -18,7 +18,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User customer;
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,6 +45,10 @@ public class Order {
         return customer;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+
     public Date getOrderDate() {
         return orderDate;
     }
@@ -53,12 +57,20 @@ public class Order {
         return orderStatus;
     }
 
+    public double getTotalAmount() {
+        return cart.getTotalAmount();
+    }
+
     public ShippingAddress getAddress() {
         return address;
     }
 
     public void setCustomer(User user) {
         this.customer = user;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public void setOrderDate(Date orderDate) {
@@ -92,4 +104,6 @@ public class Order {
         }
         return total;
     }
+
+    public int getId() { return orderId; }
 }

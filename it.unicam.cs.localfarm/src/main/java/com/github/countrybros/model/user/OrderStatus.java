@@ -7,5 +7,7 @@ public enum OrderStatus {
     picking,
     packing,
     shipping,
-    delivered
+    delivered,
+    cancelled,
+    blocked
 }
