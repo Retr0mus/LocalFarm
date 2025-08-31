@@ -45,5 +45,4 @@ public class ShoppingItem {
         orderItem.setUnitPrice(stock.getPrice());
         return orderItem;
     }
-
-
+}

@@ -29,7 +29,7 @@ public class SubmissionController {
         this.acceptanceSubmissionService = acceptanceSubmissionService;
     }
 
-    @PutMapping( "addQuantityToStock")
+    @PutMapping("addQuantityToStock")
     public ResponseEntity<Object> addItemQuantity(@RequestBody RecogniseProductSubmissionRequest request) throws ImpossibleRequestException {
         try {
             orchestrator.addQuantityToStock(request);
@@ -54,19 +54,3 @@ public class SubmissionController {
         return new ResponseEntity<>("Submission successfully updated", HttpStatus.OK);
     }
 }
-
-
-    /*@GetMapping("/available")
-    public ResponseEntity<List<Submission>> getAvailable() {
-
-        return new ResponseEntity<>(submissions, HttpStatus.OK);
-    }
-
-
-    }
-
-    public ResponseEntity<?> getAcceptanceSubmission(@RequestParam int submissionId) {
-
-                HttpStatus.OK);
-    }
-

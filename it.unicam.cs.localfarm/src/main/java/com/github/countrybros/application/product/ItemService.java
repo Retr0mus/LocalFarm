@@ -4,17 +4,10 @@ import com.github.countrybros.application.acceptancesubmission.ISubmissionServic
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
-import com.github.countrybros.application.user.ICompanyService;
-import com.github.countrybros.infrastructure.product.IItemRepository;
-import com.github.countrybros.model.acceptancesubmission.Submission;
-import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
-import com.github.countrybros.model.acceptancesubmission.EditProductSubmission;
-import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.infrastructure.product.IItemRepository;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.ItemStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -25,13 +18,13 @@ import java.util.List;
 public class ItemService implements IItemService {
 
     private final IItemRepository itemRepository;
-    private final ISubmissionService acceptanceSubmissionService;
+    private final ISubmissionService submissionService;
 
     public ItemService(IItemRepository repository,
-                       ISubmissionService acceptanceSubmissionService) {
+                       ISubmissionService submissionService) {
 
         this.itemRepository = repository;
-        this.acceptanceSubmissionService = acceptanceSubmissionService;
+        this.submissionService = submissionService;
     }
 
 
@@ -126,34 +119,6 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public void setStatus(ItemStatus newStatus, int itemDetailsId) {
-
-        Item item = getItem(itemDetailsId);
-
-        if (newStatus.equals(ItemStatus.available)) {
-            if (item.getStatus().equals(ItemStatus.awaitingReview))
-                throw new ImpossibleRequestException("Cannot change the status of an ItemDetails that is awaiting review");
-
-            item.setVisibleByPublic(true);
-        }
-
-        // TODO: Check outOfStock status
-        //if (newStatus.equals(ItemStatus.outOfStock) &&
-        //        !item.getStatus().equals(ItemStatus.available))
-        //   throw new ImpossibleRequestException("Cannot update to out of stock if not available");
-
-        if (newStatus.equals(ItemStatus.underReview)
-                && !item.getStatus().equals(ItemStatus.awaitingReview))
-            throw new ImpossibleRequestException("Cannot update to under review if not awaiting review");
-
-        if (newStatus.equals(ItemStatus.awaitingReview))
-            throw new ImpossibleRequestException("Cannot update to awaiting review");
-
-        item.setStatus(newStatus);
-        itemRepository.save(item);
-    }
-
-    @Override
     public Item getItem(int itemId) {
 
         Item item = itemRepository.findById(itemId).orElse(null);
@@ -165,9 +130,9 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public void setStatus(ItemStatus newStatus, int itemDetailsId) {
+    public void setStatus(ItemStatus newStatus, int itemId) {
 
-        Item item = getItem(itemDetailsId);
+        Item item = getItem(itemId);
 
         if (newStatus.equals(ItemStatus.available)) {
             if (item.getStatus().equals(ItemStatus.awaitingReview))
@@ -186,18 +151,13 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public List<Item> getCompanyItemDetails(int companyId) {
-        return itemRepository.findAllByProducer_Id(companyId);
-    }
-
-    @Override
     public List<Item> getAvailableItems() {
         return itemRepository.findAllByStatus(ItemStatus.available);
     }
 
     @Override
-    public List<Item> getAvailableItems() {
-        return itemRepository.findAllByStatus(ItemStatus.available);
+    public List<Item> getItemsBySeller(int companyId) {
+        return List.of();
     }
 
     @Override

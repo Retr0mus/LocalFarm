@@ -20,6 +20,7 @@ import com.github.countrybros.web.acceptancesubmission.request.RecogniseProductS
 import com.github.countrybros.web.product.requests.AddCertificationRequest;
 import com.github.countrybros.web.product.requests.AddItemRequest;
 import com.github.countrybros.web.user.request.AddItemToCartRequest;
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -250,5 +251,8 @@ public class Orchestrator {
         for (OrderItem item : order.getItems())
             stockService.removeQuantityToStock(item.getItem().getId(), item.getQuantity(), item.getSeller().getId());
     }
-}
 
+    public List<Stock> getStocksByItem(int itemId) {
+        return stockService.getStocksByItem(itemId);
+    }
+}

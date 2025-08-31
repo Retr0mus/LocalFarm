@@ -74,6 +74,11 @@ public class SubmissionService implements ISubmissionService {
         return List.of();
     }
 
+    @Override
+    public void onAcceptance(int submissionId) {
+
+    }
+
     /**
      * Accepts the specified Submission.
      *

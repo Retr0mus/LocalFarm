@@ -3,6 +3,7 @@ package com.github.countrybros.application.product;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.ItemStatus;
 import com.github.countrybros.web.product.requests.AddItemRequest;
 
 import java.util.List;
@@ -28,23 +29,15 @@ public interface IItemService {
      */
     void deleteItemDetails(int itemDetailsId);
 
-
-    /**
-     * Accepts a submission, making the necessary changes.
-     *
-     * @param acceptanceSubmissionId The submission ID
-     * @throws ImpossibleRequestException if the type of submission is not valid.
-     */
-    void acceptChanges(int acceptanceSubmissionId);
-
     /**
      * Changes the status of an ItemDetails according to the previous one.
      *
      * @param itemStatus The new status.
-     * @param itemDetailsId     The itemDetails ID.
+     * @param itemId     The itemDetails ID.
      * @throws ImpossibleRequestException if the chosen status is not valid.
      */
-    void setStatus(ItemStatus itemStatus, int itemDetailsId);
+    void setStatus(ItemStatus itemStatus, int itemId);
+
 
     /**
      * Gets the specified ItemDetails.
@@ -53,6 +46,8 @@ public interface IItemService {
      * @throws NotFoundInRepositoryException if it's not present.
      */
     Item getItem(int itemId);
+
+    List<Item> getCompanyItemDetails(int companyId);
 
     List<Item> getAvailableItems();
 

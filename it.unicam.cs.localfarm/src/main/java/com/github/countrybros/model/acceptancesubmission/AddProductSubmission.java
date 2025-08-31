@@ -1,6 +1,5 @@
 package com.github.countrybros.model.acceptancesubmission;
 
-import com.github.countrybros.model.product.ItemDetails;
 import jakarta.persistence.*;
 
 /**
@@ -12,10 +11,9 @@ public class AddProductSubmission extends Submission {
 
     private int itemDetailsId;
 
-    public AddProductSubmission(int senderId) {
-        super(senderId);
-    }
+    public AddProductSubmission() {
 
+    }
 
     public int getItemDetailsId() {
         return itemDetailsId;

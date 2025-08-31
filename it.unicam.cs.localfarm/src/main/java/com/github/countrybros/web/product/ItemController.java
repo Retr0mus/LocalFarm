@@ -4,6 +4,7 @@ import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.product.ItemMapper;
 import com.github.countrybros.web.product.requests.AddItemRequest;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
