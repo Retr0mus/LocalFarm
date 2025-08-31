@@ -104,7 +104,7 @@ public class SubmissionService implements ISubmissionService {
             throw new ImpossibleRequestException("Incoherent submission status");
         }
 
-        submission.setStatus(SubmissionStatus.refused);
+        submission.setStatus(SubmissionStatus.rejected);
 
         submissionRepository.save(submission);
     }
@@ -126,6 +126,12 @@ public class SubmissionService implements ISubmissionService {
 
         submission.setSenderId(userId);
         submission.setStatus(SubmissionStatus.assigned);
-        SubmissionRepository.save(submission);
+        submissionRepository.save(submission);
+    }
+
+    private Submission getAcceptanceSubmission(int submissionId) {
+        return submissionRepository.findById(submissionId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + submissionId));
+
     }
 }

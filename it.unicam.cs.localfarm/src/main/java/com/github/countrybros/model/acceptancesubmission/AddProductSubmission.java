@@ -9,17 +9,22 @@ import jakarta.persistence.*;
 @DiscriminatorValue("addProduct")
 public class AddProductSubmission extends Submission {
 
-    private int itemDetailsId;
+    private int itemId;
 
     public AddProductSubmission() {
 
     }
 
-    public int getItemDetailsId() {
-        return itemDetailsId;
+    public AddProductSubmission(int senderId, int itemId) {
+        super(senderId);
+        this.itemId = itemId;
     }
 
-    public void setItemDetailsId(int itemDetailsId) {
-        this.itemDetailsId = itemDetailsId;
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 }

@@ -2,14 +2,14 @@ package com.github.countrybros.web.acceptancesubmission.request;
 
 
 public class AddProductSubmissionRequest extends SubmissionRequest {
-    private int itemDetailsId;
+    private int itemId;
 
-    public int getItemDetailsId() {
-        return itemDetailsId;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setItemDetailsId(int itemDetailsId) {
-        this.itemDetailsId = itemDetailsId;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
 

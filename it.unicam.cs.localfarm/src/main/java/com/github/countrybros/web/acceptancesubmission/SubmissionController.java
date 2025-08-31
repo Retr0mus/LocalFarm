@@ -20,13 +20,11 @@ public class SubmissionController {
 
     private final Orchestrator orchestrator;
     private final ISubmissionService acceptanceSubmissionService;
-    private final Orchestrator orchestrator;
+
 
     @Autowired
     public SubmissionController(Orchestrator orchestrator,
                                 ISubmissionService acceptanceSubmissionService) {
-
-        this.orchestrator = orchestrator;
         this.acceptanceSubmissionService = acceptanceSubmissionService;
         this.orchestrator = orchestrator;
     }

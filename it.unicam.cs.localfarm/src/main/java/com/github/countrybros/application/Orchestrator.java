@@ -4,6 +4,10 @@ import com.github.countrybros.application.acceptancesubmission.ISubmissionServic
 import com.github.countrybros.application.acceptancesubmission.SubmissionMapper;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.product.ICertificationService;
+import com.github.countrybros.application.product.IItemService;
+import com.github.countrybros.application.product.IStockService;
+import com.github.countrybros.application.product.ItemMapper;
 import com.github.countrybros.application.user.*;
 import com.github.countrybros.application.user.dto.PaymentMethod;
 import com.github.countrybros.infrastructure.shopping.MockPaymentFactory;
@@ -11,12 +15,18 @@ import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
 import com.github.countrybros.model.acceptancesubmission.RecogniseProductSubmission;
 import com.github.countrybros.model.acceptancesubmission.Submission;
 import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.ItemStatus;
+import com.github.countrybros.model.user.*;
 import com.github.countrybros.web.acceptancesubmission.request.AddProductSubmissionRequest;
 import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.web.acceptancesubmission.request.RecogniseProductSubmissionRequest;
 import com.github.countrybros.web.product.requests.AddCertificationRequest;
 import com.github.countrybros.web.product.requests.AddItemRequest;
+import com.github.countrybros.web.user.request.AddItemToCartRequest;
+import com.github.countrybros.web.user.request.RefundRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -49,8 +59,6 @@ public class Orchestrator {
         this.certificationService = certificationService;
         this.submissionService = submissionService;
         this.companyService = companyService1;
-        this.userService = userService;
-        this.shoppingService = shoppingService;
         this.orderService = orderService;
         this.shoppingService = shoppingService;
         this.paymentService = paymentService;
@@ -71,9 +79,10 @@ public class Orchestrator {
         itemService.addItem(item);
 
         AddProductSubmissionRequest requestToAdd = new AddProductSubmissionRequest();
-        requestToAdd.setItemDetailsId(item.getId());
+        requestToAdd.setItemId(item.getId());
         requestToAdd.setType("addProduct");
         requestToAdd.setSenderId(request.senderId);
+
 
 
         submissionService.addSubmission(SubmissionMapper.toDomain(requestToAdd));
@@ -126,7 +135,7 @@ public class Orchestrator {
                 .getSubmission(submissionId);
 
         if (accepted) {
-            submissionService.onAcceptance(submissionId);
+            submissionService.onAcception(submissionId);
             accept(submission);
         } else {
             submissionService.onRejection(submissionId);
@@ -160,7 +169,7 @@ public class Orchestrator {
 
         if (submission instanceof AddProductSubmission sub)
 
-            itemService.setStatus(ItemStatus.available, sub.getItemDetailsId());
+            itemService.setStatus(ItemStatus.available, sub.getItemId());
 
         else if (submission instanceof RecogniseProductSubmission sub) {
 
@@ -189,7 +198,7 @@ public class Orchestrator {
     private void refuse(Submission submission) {
 
         if (submission instanceof AddProductSubmission sub)
-            itemService.deleteItemDetails(sub.getItemDetailsId());
+            itemService.deleteItemDetails(sub.getItemId());
     }
 
     public void addQuantityToStock(RecogniseProductSubmissionRequest request) {

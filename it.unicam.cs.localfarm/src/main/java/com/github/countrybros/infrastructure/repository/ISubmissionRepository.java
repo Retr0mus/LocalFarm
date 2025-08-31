@@ -14,6 +14,8 @@ public interface ISubmissionRepository extends CrudRepository<Submission, Intege
 
     List<Submission> findAllByStatus(SubmissionStatus status);
 
+    List<Submission> getSubmissionByStatus(SubmissionStatus submissionStatus);
+
     // List<AcceptanceSubmission> getAcceptanceSubmissionByCuratorUserId(int id);
 
       /*

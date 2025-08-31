@@ -24,9 +24,8 @@ public class ItemController {
 
     @PostMapping( "addRequest")
     public ResponseEntity<Object> addItemRequest(@Valid @RequestBody AddItemRequest request) {
-
         orchestrator.addItemRequest(request);
-        return new ResponseEntity<>("ItemDetails creation request successfully created", HttpStatus.OK);
+        return new ResponseEntity<>("Item creation request successfully generated", HttpStatus.OK);
     }
 
 //    @DeleteMapping( "delete")

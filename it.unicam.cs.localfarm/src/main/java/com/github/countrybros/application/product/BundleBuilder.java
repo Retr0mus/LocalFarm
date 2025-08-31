@@ -1,9 +1,6 @@
 package com.github.countrybros.application.product;
 
 import com.github.countrybros.model.product.Bundle;
-import com.github.countrybros.model.product.ItemDetailsQuantity;
-
-import java.util.ArrayList;
 import java.util.Map;
 
 public class BundleBuilder extends ItemBuilder<Bundle> {

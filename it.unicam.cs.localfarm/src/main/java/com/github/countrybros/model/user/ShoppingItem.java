@@ -1,6 +1,6 @@
 package com.github.countrybros.model.user;
 
-import com.github.countrybros.model.product.Item;
+import com.github.countrybros.model.product.Stock;
 import jakarta.persistence.*;
 
 /**
@@ -48,6 +48,10 @@ public class ShoppingItem {
 
     public int getAvailableStock() {
         return stock != null ? stock.getQty() : 0;
+    }
+
+    public long getId() {
+        return id;
     }
 }
 

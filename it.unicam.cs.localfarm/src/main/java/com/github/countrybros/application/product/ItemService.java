@@ -72,7 +72,7 @@ public class ItemService implements IItemService {
 
         //TODO: implement
         //if (itemDetails.getStatus() != ItemStatus.underReview)
-            //throw new ImpossibleRequestException("Item details not under review");
+        //throw new ImpossibleRequestException("Item details not under review");
 
         item.setStatus(ItemStatus.available);
         itemRepository.save(item);

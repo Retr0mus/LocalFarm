@@ -3,7 +3,10 @@ package com.github.countrybros.web.user;
 import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.user.IShoppingService;
+import com.github.countrybros.application.user.ShoppingItemMapper;
 import com.github.countrybros.model.user.Cart;
+import com.github.countrybros.model.user.Order;
+import com.github.countrybros.web.user.request.AddItemToCartRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,34 +54,12 @@ public class ShoppingController {
         try {
             orchestrator.removeItemFromCart(userId, shoppingItemId);
             return new ResponseEntity<>("Item removed from cart", HttpStatus.OK);
-        }catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (NotFoundInRepositoryException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
 
-     /*
-    @PostMapping("/cart/add")
-    public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
-        shoppingService.addItemToCart(request.userId, request.itemId, request.quantity);
-        return new ResponseEntity<>("Item added to cart", HttpStatus.OK);
-    }
 
-    @PutMapping("/cart/edit")
-    public ResponseEntity<String> editQuantityOfItemInCart(@RequestParam int userId, @RequestParam int itemId, @RequestParam int qty) {
-        shoppingService.editQuantityOfItemInCart(userId, itemId, qty);
-        return new ResponseEntity<>("Item quantity updated", HttpStatus.OK);
     }
-
-    @DeleteMapping("/cart/remove")
-    public ResponseEntity<String> removeItemFromCart(@RequestParam int userId, @RequestParam int itemId, @RequestParam int qty) {
-        shoppingService.removeItemFromCart(userId, itemId, qty);
-        return new ResponseEntity<>("Item removed from cart", HttpStatus.OK);
-    }
-
-    @PostMapping("/cart/excess")
-    public ResponseEntity<Cart> getExcessItems(@RequestBody Cart cart) {
-        Cart excessCart = shoppingService.getExcessItems(cart);
-        return new ResponseEntity<>(excessCart, HttpStatus.OK);
-    }*/
 }

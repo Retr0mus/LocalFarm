@@ -45,10 +45,6 @@ public class Order {
         return customer;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
     public Date getOrderDate() {
         return orderDate;
     }
@@ -57,9 +53,6 @@ public class Order {
         return orderStatus;
     }
 
-    public double getTotalAmount() {
-        return cart.getTotalAmount();
-    }
 
     public ShippingAddress getAddress() {
         return address;
@@ -67,10 +60,6 @@ public class Order {
 
     public void setCustomer(User user) {
         this.customer = user;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 
     public void setOrderDate(Date orderDate) {

@@ -180,16 +180,7 @@ public class ShoppingService implements IShoppingService {
     }
 
 
-    @Override
-    public List<Order> getOrders(int userId) {
-//        User user = userService.getUser(userId);
-//        if (user == null) {
-//            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
-//        }
-//
-//        return orderRepository.findByCustomerUserId(userId);
-        return null;
-   }
+
 
     /**
      * Checks all the item quantities of a cart, comparing them with the actual item in the system,

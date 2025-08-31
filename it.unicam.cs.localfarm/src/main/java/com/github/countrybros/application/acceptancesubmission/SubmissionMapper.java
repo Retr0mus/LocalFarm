@@ -2,10 +2,8 @@ package com.github.countrybros.application.acceptancesubmission;
 
 import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
 import com.github.countrybros.model.acceptancesubmission.RecogniseProductSubmission;
-import com.github.countrybros.model.acceptancesubmission.Submission;
 import com.github.countrybros.web.acceptancesubmission.request.AddProductSubmissionRequest;
 import com.github.countrybros.web.acceptancesubmission.request.RecogniseProductSubmissionRequest;
-import com.github.countrybros.web.acceptancesubmission.request.SubmissionRequest;
 
 public class SubmissionMapper {
 
@@ -14,7 +12,6 @@ public class SubmissionMapper {
     }
 
     public static AddProductSubmission toDomain(AddProductSubmissionRequest submissionRequest) {
-        //TODO Implement
-        return null;
+        return new AddProductSubmission(submissionRequest.getSenderId(), submissionRequest.getItemId());
     }
 }

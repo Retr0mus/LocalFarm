@@ -29,24 +29,6 @@ public interface IItemService {
      */
     void deleteItemDetails(int itemDetailsId);
 
-
-    /**
-     * Accepts a submission, making the necessary changes.
-     *
-     * @param acceptanceSubmissionId The submission ID
-     * @throws ImpossibleRequestException if the type of submission is not valid.
-     */
-    void acceptChanges(int acceptanceSubmissionId);
-    /**
-     * Subtract the specified quantity to an @Item.
-     *
-     * @param itemId ID of the item.
-     * @param quantity Quantity.
-     *
-     * @throws ImpossibleRequestException if the subtraction is negative.
-     */
-    void removeQuantityToItem(int itemId, int quantity);
-
     /**
      * Changes the status of an ItemDetails according to the previous one.
      *
@@ -56,14 +38,6 @@ public interface IItemService {
      */
     void setStatus(ItemStatus itemStatus, int itemId);
 
-
-    /**
-     * Sets a specific price for an item.
-     *
-     * @param itemId The item ID
-     * @param price The price to put.
-     */
-    void setPrice(int itemId, double price);
 
     /**
      * Gets the specified ItemDetails.
@@ -84,3 +58,4 @@ public interface IItemService {
      */
     List<Item> getItemsBySeller(int companyId);
 }
+

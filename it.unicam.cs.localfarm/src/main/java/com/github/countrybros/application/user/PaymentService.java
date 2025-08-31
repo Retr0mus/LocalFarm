@@ -1,5 +1,6 @@
 package com.github.countrybros.application.user;
 
+import com.github.countrybros.application.user.dto.IPaymentMethod;
 import com.github.countrybros.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,23 +9,16 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the payment.
  */
 @Service
 public class PaymentService implements IPaymentService {
-    /**
-     * The payment towards the platform.
-     *
-     * @param paymentMethod method chosen by the user.
-     * @param amount        the amount to pay.
-     */
-    @Override
-    public boolean paymentToMarketplace(IPaymentMethod paymentMethod, float amount) {
-        return false;
-    }
 
+
+    IPaymentMethod paymentMethod;
     /**
      * Payment of all the orders delivered by the companies, cover 28 days
      */
@@ -70,11 +64,6 @@ public class PaymentService implements IPaymentService {
             }
         }
     }**/
-
-    @Override
-    public List<IPaymentMethod> getPaymentMethods() {
-        return List.of();
-    }
 
     public boolean refund(String email, float amount) {
 

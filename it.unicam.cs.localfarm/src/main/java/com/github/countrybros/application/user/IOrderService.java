@@ -31,6 +31,8 @@ public interface IOrderService {
      */
     List<Order> getOrders(int user);
 
+    List<Order> getOrders(User user);
+
     /**
      * Returns all the order made since the specified date.
      *
