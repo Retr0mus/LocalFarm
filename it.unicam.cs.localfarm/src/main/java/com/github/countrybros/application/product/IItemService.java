@@ -1,9 +1,9 @@
 package com.github.countrybros.application.product;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.model.product.Item;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
-import com.github.countrybros.model.product.ItemStatus;
+import com.github.countrybros.model.product.Item;
+import com.github.countrybros.web.product.requests.AddItemRequest;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,11 +40,11 @@ public interface IItemService {
     /**
      * Changes the status of an ItemDetails according to the previous one.
      *
-     * @param itemDetailsStatus The new status.
+     * @param itemStatus The new status.
      * @param itemDetailsId     The itemDetails ID.
      * @throws ImpossibleRequestException if the chosen status is not valid.
      */
-    void setStatus(ItemStatus itemDetailsStatus, int itemDetailsId);
+    void setStatus(ItemStatus itemStatus, int itemDetailsId);
 
     /**
      * Gets the specified ItemDetails.
@@ -61,7 +61,5 @@ public interface IItemService {
      *
      * @param companyId ID of the company.
      */
-    List<Item> getCompanyItemDetails(int companyId);
-
-    
+    List<Item> getItemsBySeller(int companyId);
 }

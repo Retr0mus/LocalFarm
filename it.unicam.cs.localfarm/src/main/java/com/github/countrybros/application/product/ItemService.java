@@ -1,7 +1,14 @@
 package com.github.countrybros.application.product;
 
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.application.user.ICompanyService;
+import com.github.countrybros.infrastructure.product.IItemRepository;
+import com.github.countrybros.model.acceptancesubmission.Submission;
+import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
+import com.github.countrybros.model.acceptancesubmission.EditProductSubmission;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.infrastructure.product.IItemRepository;
 import com.github.countrybros.model.product.Item;
@@ -18,10 +25,13 @@ import java.util.List;
 public class ItemService implements IItemService {
 
     private final IItemRepository itemRepository;
+    private final ISubmissionService acceptanceSubmissionService;
 
-    public ItemService(IItemRepository repository) {
+    public ItemService(IItemRepository repository,
+                       ISubmissionService acceptanceSubmissionService) {
 
         this.itemRepository = repository;
+        this.acceptanceSubmissionService = acceptanceSubmissionService;
     }
 
 
@@ -33,28 +43,16 @@ public class ItemService implements IItemService {
 
     @Override
     public void deleteItemDetails(int itemDetailsId) {
-
-        if (!itemRepository.existsById(itemDetailsId))
+    /*
+        if (!itemDetailsRepository.existsById(itemDetailsId))
             throw new NotFoundInRepositoryException("Item details not found");
 
-        itemRepository.deleteById(itemDetailsId);
+        itemDetailsRepository.deleteById(itemDetailsId);
     }
 
-    /**
-     * Accepts a submission, making the necessary changes.
-     *
-     * @param acceptanceSubmissionId The submission ID
-     * @throws ImpossibleRequestException if the type of submission is not valid.
-     */
-    @Override
-    public void acceptChanges(int acceptanceSubmissionId) {
+    //TODO Recognise la richiesta di accetazione e la modifca di essa
 
-    }
-
-    /*@Override
-    public void acceptChanges(int acceptanceSubmissionId) {
-
-        Submission submission = acceptanceSubmissionService.getSubmission(acceptanceSubmissionId);
+        Submission submission = acceptanceSubmissionService.getAcceptanceSubmission(acceptanceSubmissionId);
 
         if (submission instanceof AddProductSubmission sub)
             acceptItemDetails(sub.getItemDetailsId());
@@ -65,8 +63,10 @@ public class ItemService implements IItemService {
         else
             throw new ImpossibleRequestException("Unsupported submission type");
 
-        acceptanceSubmissionService.onAcception(acceptanceSubmissionId);
-    }*/
+        acceptanceSubmissionService.onAcceptance(acceptanceSubmissionId);
+
+     */
+    }
 
     /**
      * Accept an item that is under review.
@@ -78,7 +78,7 @@ public class ItemService implements IItemService {
         Item item = getItem(itemDetailsId);
 
         //TODO: implement
-        //if (itemDetails.getStatus() != ItemDetailsStatus.underReview)
+        //if (itemDetails.getStatus() != ItemStatus.underReview)
             //throw new ImpossibleRequestException("Item details not under review");
 
         item.setStatus(ItemStatus.available);
@@ -97,7 +97,7 @@ public class ItemService implements IItemService {
      * @throws ImpossibleRequestException if the subtypes are incompatible.
      */
     private void editItem(int existingItemDetailsId, int changedItemDetailsId) {
-
+    /*
         Item existingItem = getItem(existingItemDetailsId);
         Item changedItem = getItem(changedItemDetailsId);
 
@@ -110,12 +110,58 @@ public class ItemService implements IItemService {
         if (!changedItem.getStatus().equals(ItemStatus.underReview))
             throw new ImpossibleRequestException("Changes can't be applied if they're not under review");
 
+        if (!existingItem.getStatus().equals(ItemStatus.available)
+                && !existingItem.getStatus().equals(ItemStatus.outOfStock))
+            throw new ImpossibleRequestException("The ItemDetails to update has incompatible status");
+
         BeanUtils.copyProperties(changedItem, existingItem);
         existingItem.setStatus(ItemStatus.available);
+        existingItem.setVisibleByPublic(true);
 
         //do not reverse this two lines
         deleteItemDetails(changedItemDetailsId);
-        itemRepository.save(existingItem);
+        itemDetailsRepository.save(existingItem);
+
+     */
+    }
+
+    @Override
+    public void setStatus(ItemStatus newStatus, int itemDetailsId) {
+
+        Item item = getItem(itemDetailsId);
+
+        if (newStatus.equals(ItemStatus.available)) {
+            if (item.getStatus().equals(ItemStatus.awaitingReview))
+                throw new ImpossibleRequestException("Cannot change the status of an ItemDetails that is awaiting review");
+
+            item.setVisibleByPublic(true);
+        }
+
+        // TODO: Check outOfStock status
+        //if (newStatus.equals(ItemStatus.outOfStock) &&
+        //        !item.getStatus().equals(ItemStatus.available))
+        //   throw new ImpossibleRequestException("Cannot update to out of stock if not available");
+
+        if (newStatus.equals(ItemStatus.underReview)
+                && !item.getStatus().equals(ItemStatus.awaitingReview))
+            throw new ImpossibleRequestException("Cannot update to under review if not awaiting review");
+
+        if (newStatus.equals(ItemStatus.awaitingReview))
+            throw new ImpossibleRequestException("Cannot update to awaiting review");
+
+        item.setStatus(newStatus);
+        itemRepository.save(item);
+    }
+
+    @Override
+    public Item getItem(int itemId) {
+
+        Item item = itemRepository.findById(itemId).orElse(null);
+
+        if (item == null)
+            throw new NotFoundInRepositoryException("Item details not found");
+
+        return item;
     }
 
     @Override
@@ -140,14 +186,13 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public Item getItem(int itemId) {
+    public List<Item> getCompanyItemDetails(int companyId) {
+        return itemRepository.findAllByProducer_Id(companyId);
+    }
 
-        Item item = itemRepository.findById(itemId).orElse(null);
-
-        if (item == null)
-            throw new NotFoundInRepositoryException("Item details not found");
-
-        return item;
+    @Override
+    public List<Item> getAvailableItems() {
+        return itemRepository.findAllByStatus(ItemStatus.available);
     }
 
     @Override

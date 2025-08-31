@@ -1,7 +1,9 @@
 package com.github.countrybros.web.acceptancesubmission;
 
 import com.github.countrybros.application.Orchestrator;
+import com.github.countrybros.application.acceptancesubmission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
+import com.github.countrybros.model.acceptancesubmission.Submission;
 import com.github.countrybros.web.acceptancesubmission.request.RecogniseProductSubmissionRequest;
 import com.github.countrybros.web.acceptancesubmission.request.SubmissionRequest;
 import jakarta.websocket.server.PathParam;
@@ -10,15 +12,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/submissions")
 public class SubmissionController {
 
     private final Orchestrator orchestrator;
+    private final ISubmissionService acceptanceSubmissionService;
 
     @Autowired
-    public SubmissionController(Orchestrator orchestrator) {
+    public SubmissionController(Orchestrator orchestrator,
+                                ISubmissionService acceptanceSubmissionService) {
+
         this.orchestrator = orchestrator;
+        this.acceptanceSubmissionService = acceptanceSubmissionService;
     }
 
     @PutMapping( "addQuantityToStock")
@@ -31,52 +39,34 @@ public class SubmissionController {
         return new ResponseEntity<>("A submission to recognize this stock's quantity has been created successfully", HttpStatus.OK);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<Submission>> getAvailable() {
+
+        List<Submission> submissions = orchestrator.getAvailableSubmissions();
+        return new ResponseEntity<>(submissions, HttpStatus.OK);
+    }
+
+    @PutMapping("/accept")
+    public ResponseEntity<Object> acceptSubmission(
+            @RequestParam int id, @RequestParam boolean accepted) {
+
+        orchestrator.acceptSubmission(id, accepted);
+        return new ResponseEntity<>("Submission successfully updated", HttpStatus.OK);
+    }
+}
+
+
     /*@GetMapping("/available")
     public ResponseEntity<List<Submission>> getAvailable() {
 
-        List<Submission> submissions = acceptanceSubmissionService.getAvailableAcceptanceSubmissions();
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 
-    @GetMapping("/curator")
-    public ResponseEntity<List<Submission>> getByCurator(@RequestParam int id) {
 
-        List<Submission> submissions = acceptanceSubmissionService.getAcceptanceSubmissionsByCurator(id);
-        return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 
-    @GetMapping("/acceptancesubmission")
     public ResponseEntity<?> getAcceptanceSubmission(@RequestParam int submissionId) {
 
-        return new ResponseEntity<>(acceptanceSubmissionService.getSubmission(submissionId),
                 HttpStatus.OK);
     }
 
-    @PostMapping("/accept")
-    public ResponseEntity<String> onAcceptance(@RequestParam int submissionId) {
-
-        acceptanceSubmissionService.onAcception(submissionId);
-        return new ResponseEntity<>("Submission accepted", HttpStatus.OK);
-    }
-
-    @DeleteMapping("/refuse")
-    public ResponseEntity<String> onRefusal(@RequestParam int submissionId) {
-
-        acceptanceSubmissionService.onRejection(submissionId);
-        return new ResponseEntity<>("Submission refused", HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteAcceptanceSubmission(@RequestParam int acceptanceSubmissionId) {
-        acceptanceSubmissionService.deleteSubmission(acceptanceSubmissionId);
-        return new ResponseEntity<>("Acceptance submission deleted", HttpStatus.OK);
-    }
-
-
-    @PutMapping("takeCharge")
-    public ResponseEntity<String> takeCharge(@PathParam("subId") int acceptanceSubId,
-                                             @PathParam("userId") int userId) {
-        acceptanceSubmissionService.takeChargeOfSubmission(acceptanceSubId, userId);
-        return new ResponseEntity<>("Acceptance submission taken", HttpStatus.OK);
-    }*/
-}

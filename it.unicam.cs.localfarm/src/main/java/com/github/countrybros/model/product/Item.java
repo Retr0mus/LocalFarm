@@ -16,9 +16,9 @@ import jakarta.persistence.*;
 )
 @JsonSubTypes({
         // Defines the possible subtypes and associates each subtype with a specific name value in the "type" property.
-        @JsonSubTypes.Type(value = SimpleProduct.class, name = "simpleProduct"),
-        @JsonSubTypes.Type(value = TransformedProduct.class, name = "transformedProduct"),
-        @JsonSubTypes.Type(value = Bundle.class, name = "bundle")
+        @JsonSubTypes.Type(value = SimpleProduct.class, name = "simpleProductDetails"),
+        @JsonSubTypes.Type(value = TransformedProduct.class, name = "transformedProductDetails"),
+        @JsonSubTypes.Type(value = Bundle.class, name = "bundleDetails")
 })
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -35,11 +35,14 @@ public abstract class Item implements IPostable {
 
     private ItemStatus status;
 
+    private boolean visibleByPublic = false;
+
     @ManyToOne
     private Company producer;
 
     public Item() {
         this.status = ItemStatus.awaitingReview;
+        this.visibleByPublic = false;
     }
 
     public String getName() {
@@ -62,6 +65,15 @@ public abstract class Item implements IPostable {
     public void setStatus(ItemStatus status) {
 
         this.status = status;
+    }
+
+    public boolean getIsVisibleByPublic() {
+        return visibleByPublic;
+    }
+
+    public void setVisibleByPublic(boolean visibleByPublic) {
+
+        this.visibleByPublic = visibleByPublic;
     }
 
     public Company getProducer() {

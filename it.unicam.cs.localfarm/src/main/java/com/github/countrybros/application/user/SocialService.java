@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class SocialService implements ISocialService{
 
     private final IEventService eventService;
-    private final IItemService itemDetailsService;
+    private final IItemService itemService;
 
     public SocialService(IEventService eventService, IItemService itemDetailsService) {
 
         this.eventService = eventService;
-        this.itemDetailsService = itemDetailsService;
+        this.itemService = itemDetailsService;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SocialService implements ISocialService{
     @Override
     public void publishItemDetails(ISocialPublisher publisher, int ItemDetailsId) {
 
-        Item item = itemDetailsService.getItem(ItemDetailsId);
+        Item item = itemService.getItem(ItemDetailsId);
         publisher.publish(item.getPost());
     }
 

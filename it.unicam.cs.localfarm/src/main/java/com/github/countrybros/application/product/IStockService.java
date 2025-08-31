@@ -71,7 +71,7 @@ public interface IStockService {
 
     /**
      * Returns the list of the stocks related to a certain item.
-     * 
+     *
      * @param itemId    The item ID.
      * @return          The list of the stocks regarding that item.
      */

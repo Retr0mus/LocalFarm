@@ -2,6 +2,9 @@ package com.github.countrybros.application.user;
 
 
 import com.github.countrybros.application.errors.ImpossibleRequestException;
+import com.github.countrybros.application.errors.NotEnoughItemsException;
+import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.product.StockService;
 import com.github.countrybros.infrastructure.repository.ICartRepository;
 import com.github.countrybros.infrastructure.repository.IShoppingItemRepository;
 import com.github.countrybros.model.product.Stock;

@@ -2,7 +2,9 @@ package com.github.countrybros.web.product;
 
 import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
+import com.github.countrybros.application.product.IStockService;
 import com.github.countrybros.application.product.StockMapper;
+import com.github.countrybros.web.product.requests.AddStockRequest;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,19 @@ import org.springframework.web.bind.annotation.*;
 public class StockController {
 
     private final Orchestrator orchestrator;
+    private final IStockService stockService;
 
     @Autowired
-    public StockController(Orchestrator orchestrator) {
+    public StockController(Orchestrator orchestrator, IStockService stockService) {
         this.orchestrator = orchestrator;
+        this.stockService = stockService;
+    }
+
+    @PostMapping( "add")
+    public ResponseEntity<Object> addItem(@RequestBody AddStockRequest request) {
+
+        stockService.addItem(request);
+        return new ResponseEntity<>("Item successfully added", HttpStatus.OK);
     }
 
     @GetMapping("getByItem")
@@ -43,18 +54,12 @@ public class StockController {
         return new ResponseEntity<>("Quantity successfully removed", HttpStatus.OK);
     }
 
-    /*@PostMapping( "add")
-    public ResponseEntity<Object> addItem(@RequestBody AddStockRequest request) {
-        itemService.addItem(request);
-        return new ResponseEntity<>("Item successfully added", HttpStatus.OK);
-    }
-
+    /*
     @PutMapping( "setPrice")
     public ResponseEntity<Object> setItemPrice(@PathParam("itemId") int itemId,
                                                @PathParam("price") Float price) {
-        itemService.setPrice(itemId, price);
+        stockService.setPrice(itemId, price);
         return new ResponseEntity<>("Price successfully set", HttpStatus.OK);
-    }
+    }*/
 
-    */
 }

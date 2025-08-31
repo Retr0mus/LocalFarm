@@ -52,7 +52,7 @@ public class SubmissionFactory {
             default -> throw new IllegalArgumentException("Unsupported submission type: " + request.getType());
         }
 
-        submission.setAccepted(false);
+        submission.setStatus(SubmissionStatus.pending);
         submission.setSenderId(request.getSenderId());
 
         return submission;

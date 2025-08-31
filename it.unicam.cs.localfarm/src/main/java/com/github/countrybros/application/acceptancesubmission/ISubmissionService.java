@@ -54,7 +54,7 @@ public interface ISubmissionService {
      *
      * @param submissionId the id of the Submission.
      */
-    void onAcception(int submissionId);
+    void onAcceptance(int submissionId);
 
     /**
      * Accepts the specified Submission.

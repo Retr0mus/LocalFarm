@@ -6,17 +6,21 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.product.*;
 import com.github.countrybros.application.user.*;
-import com.github.countrybros.application.user.dto.IPaymentMethod;
 import com.github.countrybros.application.user.dto.PaymentMethod;
 import com.github.countrybros.infrastructure.shopping.MockPaymentFactory;
+import com.github.countrybros.model.acceptancesubmission.AddProductSubmission;
+import com.github.countrybros.model.acceptancesubmission.RecogniseProductSubmission;
+import com.github.countrybros.model.acceptancesubmission.Submission;
 import com.github.countrybros.model.product.Item;
 import com.github.countrybros.model.product.ItemStatus;
-import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.user.*;
+import com.github.countrybros.web.acceptancesubmission.request.AddProductSubmissionRequest;
+import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.web.acceptancesubmission.request.RecogniseProductSubmissionRequest;
 import com.github.countrybros.web.product.requests.AddCertificationRequest;
 import com.github.countrybros.web.product.requests.AddItemRequest;
 import com.github.countrybros.web.user.request.AddItemToCartRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +44,7 @@ public class Orchestrator {
     private final OrderService orderService;
     private final PaymentService paymentService;
 
+    @Autowired
     public Orchestrator(IItemService itemService, IStockService stockService, ICompanyService companyService,
                         ICertificationService certificationService,
                         ISubmissionService submissionService, ICompanyService companyService1, IUserService userService, IShoppingService shoppingService, OrderService orderService, PaymentService paymentService) {
@@ -63,8 +68,25 @@ public class Orchestrator {
      */
     public void addItemRequest(AddItemRequest request) {
 
+        ItemMapper director = new ItemMapper(companyService, certificationService);
+
+        Item item = director.toDomain(request);
+        itemService.addItem(item);
+
+        AddProductSubmissionRequest requestToAdd = new AddProductSubmissionRequest();
+        requestToAdd.setItemDetailsId(item.getId());
+        requestToAdd.setType("addProduct");
+        requestToAdd.setSenderId(request.senderId);
+
+
+        submissionService.addSubmission(SubmissionMapper.toDomain(requestToAdd));
     }
 
+    /**
+     * Adds a new certification.
+     *
+     * @param request the request.
+     */
     public void addCertification(AddCertificationRequest request) {
         certificationService.addCertification(request);
     }
@@ -83,6 +105,70 @@ public class Orchestrator {
 
     public void removeQuantityToStock(int stockId, int quantity, int sellerId) {
         stockService.removeQuantityToStock(stockId, quantity, sellerId);
+    }
+
+    /**
+     * Retrives all the Submission that haven't been accepted.
+     *
+     * @return all the available submission.
+     */
+    public List<Submission> getAvailableSubmissions() {
+        return submissionService.getAvailableAcceptanceSubmissions();
+    }
+
+    /**
+     * Manage the aftermaths of accepting/rejecting a @Submission.
+     *
+     * @param submissionId the id of the submission.
+     * @param accepted     states if the submission have to be accepted or refused.
+     */
+    public void acceptSubmission(int submissionId, boolean accepted) {
+
+        Submission submission = submissionService
+                .getSubmission(submissionId);
+
+        if (accepted) {
+            submissionService.onAcceptance(submissionId);
+            accept(submission);
+        } else {
+            submissionService.onRejection(submissionId);
+            refuse(submission);
+        }
+    }
+
+    public Cart getCart(int userId) {
+        return shoppingService.getCart(userId);
+    }
+
+    /**
+     * Logic behind the acceptance of a submission.
+     *
+     * @param submission the submission to accept
+     */
+    private void accept(Submission submission) {
+
+        if (submission instanceof AddProductSubmission sub)
+
+            itemService.setStatus(ItemStatus.available, sub.getItemDetailsId());
+
+        else if (submission instanceof RecogniseProductSubmission sub) {
+
+            stockService.addQuantityToStock(sub.getItemId(), sub.getQta(), sub.getSenderId());
+        }
+
+    }
+
+    /**
+     * Logic behind the rejection of a submission.
+     * <p>
+     * Only the request to add a new Item will make some changes.
+     *
+     * @param submission the submission selected.
+     */
+    private void refuse(Submission submission) {
+
+        if (submission instanceof AddProductSubmission sub)
+            itemService.deleteItemDetails(sub.getItemDetailsId());
     }
 
     public void addQuantityToStock(RecogniseProductSubmissionRequest request) {
@@ -104,14 +190,6 @@ public class Orchestrator {
             throw new ImpossibleRequestException("Company not found");
 
         submissionService.addSubmission(SubmissionMapper.toDomain(request));
-    }
-
-    public List<Stock> getStocksByItem(int itemId) {
-        return stockService.getStocksByItem(itemId);
-    }
-
-    public Cart getCart(int userId) {
-        return shoppingService.getCart(userId);
     }
 
     public void addItemToCart(AddItemToCartRequest request) {
@@ -173,3 +251,4 @@ public class Orchestrator {
             stockService.removeQuantityToStock(item.getItem().getId(), item.getQuantity(), item.getSeller().getId());
     }
 }
+

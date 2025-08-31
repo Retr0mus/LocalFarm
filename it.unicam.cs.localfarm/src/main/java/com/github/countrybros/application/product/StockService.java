@@ -32,6 +32,18 @@ public class StockService implements IStockService {
      */
     @Override
     public Stock addItem(AddStockRequest request) {
+        /*
+        Company seller = companyService.getCompany(request.sellerId);
+        Item item = itemDetailsService.getItemDetails(request.itemDetailsId);
+
+        Stock stock = new Stock();
+        //item.setSeller(seller);
+        stock.setItemDetails(item);
+        stock.setQty(request.qty);
+        stock.setPrice(request.price);
+
+        return stockRepository.save(stock);
+        */
         return null;
     }
 
@@ -127,7 +139,6 @@ public class StockService implements IStockService {
 
 
         Company seller = companyService.getCompany(request.sellerId);
-        Item item = itemDetailsService.getItem(request.itemDetailsId);
 
         Stock stock = new Stock();
         //item.setSeller(seller);
@@ -138,12 +149,10 @@ public class StockService implements IStockService {
         return stockRepository.save(stock);
     }
 
-    *//**
      * Adds the specified quantity to an @Item.
      *
      * @param itemId ID of the item.
      * @param quantity Quantity.
-     *//*
     public void addQuantityToItem(int itemId, int quantity) {
 
         Stock stock = getItem(itemId);
@@ -153,12 +162,10 @@ public class StockService implements IStockService {
         this.stockRepository.save(stock);
     }
 
-    *//**
      * Subtract the specified quantity to an @Item.
      *
      * @param itemId ID of the item.
      * @param quantity Quantity.
-     *//*
     public void removeQuantityToItem(int itemId, int quantity) {
 
         Stock stock = getItem(itemId);
@@ -171,9 +178,7 @@ public class StockService implements IStockService {
         this.stockRepository.save(stock);
     }
 
-    *//**
      * @inheritDoc
-     *//*
     public void setPrice(int itemId, double price) {
 
         Stock stock = getItem(itemId);
@@ -181,9 +186,7 @@ public class StockService implements IStockService {
         stockRepository.save(stock);
     }
 
-    *//**
      * @inheritDoc
-     *//*
     public Stock getItem(int itemId) {
 
         Stock stock = this.stockRepository.findById(itemId).orElse(null);
@@ -194,14 +197,11 @@ public class StockService implements IStockService {
         return stock;
     }
 
-    *//**
      * @inheritDoc
-     *//*
     public List<Stock> getItemsBySeller(int companyId) {
 
         Company company = companyService.getCompany(companyId);
 
         //TODO: continue when Company is not transient
         return new ArrayList<>();
-    }*/
 }
