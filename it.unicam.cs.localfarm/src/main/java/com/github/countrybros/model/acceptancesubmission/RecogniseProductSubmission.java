@@ -12,6 +12,10 @@ public class RecogniseProductSubmission extends Submission {
     private int itemId;
     private int qta;
 
+    public RecogniseProductSubmission() {
+        super();
+    }
+
     public RecogniseProductSubmission(int sellerId, int itemId, int qta) {
         super(sellerId);
         this.itemId = itemId;

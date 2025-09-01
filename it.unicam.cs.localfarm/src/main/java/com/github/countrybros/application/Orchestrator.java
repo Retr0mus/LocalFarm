@@ -73,7 +73,7 @@ public class Orchestrator {
      */
     public void addItemRequest (AddItemRequest request) {
 
-        ItemMapper director = new ItemMapper(companyService, certificationService);
+        ItemMapper director = new ItemMapper(companyService, certificationService, itemService);
 
         Item item = director.toDomain(request);
         itemService.addItem(item);
@@ -81,7 +81,7 @@ public class Orchestrator {
         AddProductSubmissionRequest requestToAdd = new AddProductSubmissionRequest();
         requestToAdd.setItemId(item.getId());
         requestToAdd.setType("addProduct");
-        requestToAdd.setSenderId(request.senderId);
+        requestToAdd.setSenderId(request.producerId);
 
 
 

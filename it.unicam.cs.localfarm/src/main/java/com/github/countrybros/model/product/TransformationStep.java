@@ -21,4 +21,32 @@ public class TransformationStep {
     private Location location;
 
     private String description;
+
+    int getId() {
+        return id;
+    }
+
+    List<SimpleProduct> getIngredients() {
+        return ingredients;
+    }
+
+    Location getLocation() {
+        return location;
+    }
+
+    String getDescription() {
+        return description;
+    }
+
+    public void setIngredients(List<SimpleProduct> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

@@ -31,6 +31,8 @@ public class ItemService implements IItemService {
     @Override
     public void addItem(Item item) {
 
+        if (itemRepository.existsByName(item.getName()))
+            throw new IllegalArgumentException("An item with that name already exists");
         itemRepository.save(item);
     }
 
@@ -138,10 +140,6 @@ public class ItemService implements IItemService {
             if (item.getStatus().equals(ItemStatus.awaitingReview))
                 throw new ImpossibleRequestException("Cannot change the status of an ItemDetails that is awaiting review");
         }
-
-        if (newStatus.equals(ItemStatus.underReview)
-                && !item.getStatus().equals(ItemStatus.awaitingReview))
-            throw new ImpossibleRequestException("Cannot update to under review if not awaiting review");
 
         if (newStatus.equals(ItemStatus.awaitingReview))
             throw new ImpossibleRequestException("Cannot update to awaiting review");

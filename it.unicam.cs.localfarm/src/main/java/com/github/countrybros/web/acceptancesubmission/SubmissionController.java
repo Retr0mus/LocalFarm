@@ -29,6 +29,19 @@ public class SubmissionController {
         this.orchestrator = orchestrator;
     }
 
+    @GetMapping("submission")
+    public ResponseEntity<Object> getSubmission(@PathParam("submissionId") int submissionId) {
+
+        return new ResponseEntity<>(acceptanceSubmissionService.getSubmission(submissionId), HttpStatus.OK);
+    }
+
+    @GetMapping("getAccepted")
+    public ResponseEntity<Object> getAcceptedSubmission(@PathParam("curatorId") int curatorId) {
+
+        return new ResponseEntity<>(acceptanceSubmissionService
+                .getSubmissionToReview(curatorId), HttpStatus.OK);
+    }
+
     @PutMapping("addQuantityToStock")
     public ResponseEntity<Object> addItemQuantity(@RequestBody RecogniseProductSubmissionRequest request) throws ImpossibleRequestException {
         try {

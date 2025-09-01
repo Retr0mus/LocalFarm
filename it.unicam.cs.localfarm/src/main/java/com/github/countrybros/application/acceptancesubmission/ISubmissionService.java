@@ -70,4 +70,11 @@ public interface ISubmissionService {
      * @param userId the curator that takes care of the sub.
      */
     void takeChargeOfSubmission(int submissionId, int userId);
+
+    /**
+     * Returns all the submission of a curator that he took charge of and not already accepted/rejected.
+     *
+     * @param curatorId id of the curator
+     */
+    List<Submission> getSubmissionToReview(int curatorId);
 }

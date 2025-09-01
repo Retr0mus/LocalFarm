@@ -83,7 +83,7 @@ public class SubmissionService implements ISubmissionService {
         Submission submission = getSubmission(submissionId);
 
         if (!submission.getStatus().equals(SubmissionStatus.assigned)) {
-            throw new ImpossibleRequestException("Incoherent submission status");
+            throw new ImpossibleRequestException("The submission should be assigned");
         }
 
         submission.setStatus(SubmissionStatus.accepted);
@@ -101,7 +101,7 @@ public class SubmissionService implements ISubmissionService {
         Submission submission = getSubmission(submissionId);
 
         if (!submission.getStatus().equals(SubmissionStatus.assigned)) {
-            throw new ImpossibleRequestException("Incoherent submission status");
+            throw new ImpossibleRequestException("The submission should be assigned");
         }
 
         submission.setStatus(SubmissionStatus.rejected);
@@ -129,9 +129,16 @@ public class SubmissionService implements ISubmissionService {
         submissionRepository.save(submission);
     }
 
+    @Override
+    public List<Submission> getSubmissionToReview(int curatorId) {
+
+        return submissionRepository.findAllByCuratorIdAndStatus(curatorId, SubmissionStatus.assigned);
+    }
+
     private Submission getAcceptanceSubmission(int submissionId) {
         return submissionRepository.findById(submissionId)
                 .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + submissionId));
 
     }
+
 }

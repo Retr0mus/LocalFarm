@@ -2,6 +2,7 @@ package com.github.countrybros.application.user;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repository.IUserRepository;
+import com.github.countrybros.model.user.Cart;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.web.user.request.AddUserRequest;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class UserService implements IUserService {
     @Autowired
     private IUserRepository userRepository;
+    @Autowired
+    private ICartService cartService;
 
     @Override
     public User getUser(int userId) {
@@ -28,17 +31,17 @@ public class UserService implements IUserService {
 
     @Override
     public void addUser(AddUserRequest request) {
-//        User user = new User();
-//        user.setName(request.name);
-//        user.setEmail(request.email);
-//        user.setPassword(request.password);
-//
-//        Cart cart = new Cart();
-//        user.setCart(cart);
-//        cartService.save(cart);
-//        user.setRoles(request.roles);
-//
-//        userRepository.save(user);
+        User user = new User();
+        user.setName(request.name);
+        user.setEmail(request.email);
+        user.setPassword(request.password);
+
+        Cart cart = new Cart();
+        user.setCart(cart);
+        cartService.save(cart);
+        user.setRoles(request.roles);
+
+        userRepository.save(user);
 
     }
 

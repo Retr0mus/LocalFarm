@@ -10,6 +10,9 @@ import com.github.countrybros.model.user.Company;
 import com.github.countrybros.web.product.requests.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Director class to manage the building of different types of ItemDetails
@@ -18,11 +21,14 @@ public class ItemMapper {
 
     private final ICompanyService companyService;
     private final ICertificationService certificationService;
+    private final IItemService itemService;
 
     public ItemMapper(ICompanyService companyService,
-                      ICertificationService certificationService) {
+                      ICertificationService certificationService,
+                      IItemService itemService) {
         this.companyService = companyService;
         this.certificationService = certificationService;
+        this.itemService = itemService;
     }
 
     /**
@@ -118,6 +124,8 @@ public class ItemMapper {
 
         Company producer = companyService.getCompany(request.producerId);
 
+
+
         item.setName(request.name);
         item.setDescription(request.description);
         item.setProducer(producer);
@@ -127,7 +135,8 @@ public class ItemMapper {
 
         buildBaseItemDetails(request, bundle);
 
-
+        for (int i : request.items.values())
+            itemService.getItem(i);
 
         bundle.setItems(request.items);
     }
@@ -147,8 +156,25 @@ public class ItemMapper {
 
         buildSimpleProductDetails(request, product);
 
-        product.setSteps(request.steps);
+        List<SimpleProduct> items = new ArrayList<>();
+        List<TransformationStep> steps = new ArrayList<>();
+
+        for (TransformationStepDTO s : request.steps) {
+            TransformationStep step = new TransformationStep();
+            step.setDescription(s.description);
+            step.setLocation(s.location);
+
+            for (int i : s.ingredientsIds) {
+                Item item = itemService.getItem(i);
+                if (!(item instanceof SimpleProduct))
+                    throw new IllegalArgumentException("Unsupported item type");
+                items.add((SimpleProduct) item);
+            }
+            step.setIngredients(items);
+
+            steps.add(step);
+        }
+
+        product.setSteps(steps);
     }
-
-
 }

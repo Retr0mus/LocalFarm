@@ -13,4 +13,6 @@ public interface IItemRepository extends CrudRepository<Item, Integer> {
     List<Item> findAllByProducer_Id(int producerId);
 
     List<Item> findAllByStatus(ItemStatus status);
+
+    boolean existsByName(String name);
 }

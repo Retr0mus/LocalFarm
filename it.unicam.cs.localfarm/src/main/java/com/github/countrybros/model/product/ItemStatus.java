@@ -6,6 +6,5 @@ package com.github.countrybros.model.product;
  */
 public enum ItemStatus {
     awaitingReview,
-    underReview,
-    available,
+    available
 }

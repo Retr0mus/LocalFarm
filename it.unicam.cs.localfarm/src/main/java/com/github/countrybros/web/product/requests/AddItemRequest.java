@@ -29,10 +29,4 @@ public abstract class AddItemRequest {
 
     @NotNull
     public String type;
-
-    /**
-     * id of a company.
-     */
-    @Positive
-    public int senderId;
 }
