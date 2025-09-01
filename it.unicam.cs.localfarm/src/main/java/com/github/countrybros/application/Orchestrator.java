@@ -150,10 +150,11 @@ public class Orchestrator {
         if (!userService.userHasRole(userId, UserRole.CURATOR)) {
             throw new ImpossibleRequestException("Only curators can take charge of a submission");
         }
-        submissionService.takeChargeOfSubmission(submissionId, userId);
+        submissionService.takeChargeOfSubmission(submissionId,userId);
     }
 
     public List<Order> getOrders(int userId) {
+        userService.getUser(userId);
         return orderService.getOrders(userId);
     }
 
@@ -179,10 +180,12 @@ public class Orchestrator {
     }
 
     public void removeItemFromCart(int userId, int shoppingItemId) {
+        userService.getUser(userId);
         shoppingService.removeItemFromCart(userId, shoppingItemId);
     }
 
     public void editQuantityOfItemInCart(int userId, int shoppingItemId, int qty) {
+        userService.getUser(userId);
         shoppingService.editQuantityOfItemInCart(userId, shoppingItemId, qty);
 
     }

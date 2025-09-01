@@ -3,6 +3,8 @@ package com.github.countrybros.web.user;
 import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.user.IOrderService;
 import com.github.countrybros.application.user.OrderService;
+import com.github.countrybros.application.user.dto.OrderDto;
+import com.github.countrybros.application.user.dto.OrderMapper;
 import com.github.countrybros.model.user.Order;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.web.user.request.CheckoutRequest;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/orders")
@@ -23,9 +26,12 @@ public class OrderController {
     private Orchestrator orchestrator;
 
     @GetMapping("/orderList")
-    public ResponseEntity<List<Order>> getOrders(@RequestParam int userId) {
+    public ResponseEntity<List<OrderDto>> getOrders(@RequestParam int userId) {
         List<Order> orders = orchestrator.getOrders(userId);
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        List<OrderDto> orderDtos = orders.stream()
+                .map(OrderMapper::toDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 
     /*@PostMapping("/add")
