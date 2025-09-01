@@ -122,13 +122,7 @@ public class ItemService implements IItemService {
 
     @Override
     public Item getItem(int itemId) {
-
-        Item item = itemRepository.findById(itemId).orElse(null);
-
-        if (item == null)
-            throw new NotFoundInRepositoryException("Item details not found");
-
-        return item;
+        return itemRepository.findById(itemId).orElseThrow(() -> new NotFoundInRepositoryException("Item not found"));
     }
 
     @Override

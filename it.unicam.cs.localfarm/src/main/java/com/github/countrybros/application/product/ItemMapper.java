@@ -154,7 +154,8 @@ public class ItemMapper {
 
     private void buildTransformedProductDetails (AddTransformedProductRequest request, TransformedProduct product) {
 
-        buildSimpleProductDetails(request, product);
+        // TODO: Uncomment when the DTO will be added
+        /*buildSimpleProductDetails(request, product);
 
         List<SimpleProduct> items = new ArrayList<>();
         List<TransformationStep> steps = new ArrayList<>();
@@ -175,6 +176,6 @@ public class ItemMapper {
             steps.add(step);
         }
 
-        product.setSteps(steps);
+        product.setSteps(steps);*/
     }
 }

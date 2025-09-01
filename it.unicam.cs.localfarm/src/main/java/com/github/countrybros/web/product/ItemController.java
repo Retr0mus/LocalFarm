@@ -28,34 +28,14 @@ public class ItemController {
         return new ResponseEntity<>("Item creation request successfully generated", HttpStatus.OK);
     }
 
-//    @DeleteMapping( "delete")
-//    public ResponseEntity<Object> deleteItemDetails(@PathParam("itemDetailsId") int itemDetailsId) {
-//
-//        itemDetailsService.deleteItemDetails(itemDetailsId);
-//        return new ResponseEntity<>("ItemDetails successfully deleted", HttpStatus.OK);
-//    }
-
     @GetMapping( "get")
     public ResponseEntity<Object> getItemDetails(@PathParam("itemId") int itemId) {
         return new ResponseEntity<>(ItemMapper.toDto(orchestrator.getItemDetails(itemId)), HttpStatus.OK);
     }
-//    @GetMapping( "get")
-//    public ResponseEntity<Object> getItemDetails(@PathParam("itemDetailsId") int itemDetailsId) {
-//
-//        return new ResponseEntity<>(itemDetailsService.getItemDetails(itemDetailsId), HttpStatus.OK);
-//    }
 
-//    @PutMapping( "acceptChanges")
-//    public ResponseEntity<Object> acceptChanges(@PathParam("submissionId") int submissionId) {
-//        itemDetailsService.acceptChanges(submissionId);
-//        return new ResponseEntity<>("Item successfully updated", HttpStatus.OK);
-//    }
+    @GetMapping("getAvailable")
+    public ResponseEntity<Object> getAvailableItems() {
+        return new ResponseEntity<>(orchestrator.getAvailableItems().stream().map(ItemMapper::toDto), HttpStatus.OK);
+    }
 
-//    @PutMapping( "changeStatus")
-//    public ResponseEntity<Object> changeStatus(@PathParam("status") ItemStatus status,
-//                                               @PathParam("itemDetailsId") int itemDetailsId) {
-//        itemDetailsService.setStatus(status, itemDetailsId);
-//
-//        return new ResponseEntity<>("Item status successfully updated", HttpStatus.OK);
-//    }
 }

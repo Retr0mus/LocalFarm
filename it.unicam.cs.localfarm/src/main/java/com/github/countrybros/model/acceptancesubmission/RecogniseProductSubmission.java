@@ -9,22 +9,20 @@ import jakarta.persistence.*;
 @DiscriminatorValue("recogniseProduct")
 public class RecogniseProductSubmission extends Submission {
 
-    private int itemId;
+    private int stockId;
     private int qta;
 
-    public RecogniseProductSubmission() {
-        super();
-    }
-
-    public RecogniseProductSubmission(int sellerId, int itemId, int qta) {
+    public RecogniseProductSubmission(int sellerId, int stockId, int qta) {
         super(sellerId);
-        this.itemId = itemId;
+        this.stockId = stockId;
         this.qta = qta;
     }
 
+    public RecogniseProductSubmission() {}
 
-    public int getItemId() {
-        return itemId;
+
+    public int getStockId() {
+        return stockId;
     }
 
     public int getQta() {
@@ -35,7 +33,7 @@ public class RecogniseProductSubmission extends Submission {
         this.qta = qta;
     }
 
-    public void setItemId(int productId) {
-        this.itemId = productId;
+    public void setStockId(int productId) {
+        this.stockId = productId;
     }
 }

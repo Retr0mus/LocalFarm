@@ -13,7 +13,7 @@ public class TransformationStep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    private int id;
 
     @OneToMany
     private List<SimpleProduct> ingredients;

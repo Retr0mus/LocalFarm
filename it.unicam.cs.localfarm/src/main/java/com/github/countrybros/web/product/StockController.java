@@ -4,6 +4,8 @@ import com.github.countrybros.application.Orchestrator;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.product.IStockService;
 import com.github.countrybros.application.product.StockMapper;
+import com.github.countrybros.application.user.CompanyService;
+import com.github.countrybros.model.user.Company;
 import com.github.countrybros.web.product.requests.AddStockRequest;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,13 @@ public class StockController {
 
     private final Orchestrator orchestrator;
     private final IStockService stockService;
+    private final CompanyService companyService;
 
     @Autowired
-    public StockController(Orchestrator orchestrator, IStockService stockService) {
+    public StockController(Orchestrator orchestrator, IStockService stockService, CompanyService companyService) {
         this.orchestrator = orchestrator;
         this.stockService = stockService;
+        this.companyService = companyService;
     }
 
     @PostMapping( "add")

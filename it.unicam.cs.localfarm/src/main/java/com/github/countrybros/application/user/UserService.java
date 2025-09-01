@@ -35,14 +35,10 @@ public class UserService implements IUserService {
         user.setName(request.name);
         user.setEmail(request.email);
         user.setPassword(request.password);
-
-        Cart cart = new Cart();
-        user.setCart(cart);
-        cartService.save(cart);
         user.setRoles(request.roles);
 
+        cartService.save(user.getCart());
         userRepository.save(user);
-
     }
 
     @Override
@@ -51,7 +47,6 @@ public class UserService implements IUserService {
             throw new NotFoundInRepositoryException("Cannot delete: User with ID " + userId + " not found.");
         }
         userRepository.deleteById(userId);
-
     }
 
     @Override

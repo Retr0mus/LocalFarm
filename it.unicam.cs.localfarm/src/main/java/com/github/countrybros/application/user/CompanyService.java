@@ -28,7 +28,6 @@ public class CompanyService implements ICompanyService {
         //TODO: location
 
         companyRepository.save(company);
-
     }
 
     @Override

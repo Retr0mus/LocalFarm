@@ -107,6 +107,8 @@ public class Orchestrator {
     }
 
     public List<Stock> getStocksBySeller(int sellerId) {
+        // This istruction is used to throw an eventual loading exception
+        Company company = companyService.getCompany(sellerId);
         return stockService.getStocksBySeller(sellerId);
     }
 
@@ -148,7 +150,7 @@ public class Orchestrator {
         if (!userService.userHasRole(userId, UserRole.CURATOR)) {
             throw new ImpossibleRequestException("Only curators can take charge of a submission");
         }
-        submissionService.takeChargeOfSubmission(userId, submissionId);
+        submissionService.takeChargeOfSubmission(submissionId, userId);
     }
 
     public List<Order> getOrders(int userId) {
@@ -168,12 +170,10 @@ public class Orchestrator {
     private void accept(Submission submission) {
 
         if (submission instanceof AddProductSubmission sub)
-
             itemService.setStatus(ItemStatus.available, sub.getItemId());
 
         else if (submission instanceof RecogniseProductSubmission sub) {
-
-            stockService.addQuantityToStock(sub.getItemId(), sub.getQta(), sub.getSenderId());
+            stockService.addQuantityToStock(sub.getStockId(), sub.getQta(), sub.getSenderId());
         }
 
     }
@@ -201,23 +201,16 @@ public class Orchestrator {
             itemService.deleteItemDetails(sub.getItemId());
     }
 
-    public void addQuantityToStock(RecogniseProductSubmissionRequest request) {
+    public void addSubmissionQuantityToStock(RecogniseProductSubmissionRequest request) {
 
         if (request.getQta() <= 0)
             throw new ImpossibleRequestException("Quantity less or equal 0");
 
         Item item = itemService.getItem(request.getProductId());
-
-        if (item == null)
-            throw new ImpossibleRequestException("Item not found");
-
         if(item.getStatus() != ItemStatus.available)
             throw new ImpossibleRequestException("Item not available");
 
-        Company company = companyService.getCompany(request.getProductId());
-
-        if(company == null)
-            throw new ImpossibleRequestException("Company not found");
+        Company company = companyService.getCompany(request.getSenderId());
 
         submissionService.addSubmission(SubmissionMapper.toDomain(request));
     }
@@ -304,6 +297,11 @@ public class Orchestrator {
     }
 
     public List<Stock> getStocksByItem(int itemId) {
+        Item item = itemService.getItem(itemId);
+
+        if(item == null)
+            throw new NotFoundInRepositoryException("Item not found");
+
         return stockService.getStocksByItem(itemId);
     }
 }

@@ -124,7 +124,7 @@ public class SubmissionService implements ISubmissionService {
             throw new ImpossibleRequestException("Submission is already assigned");
         }
 
-        submission.setSenderId(userId);
+        submission.assignCurator(userId);
         submission.setStatus(SubmissionStatus.assigned);
         submissionRepository.save(submission);
     }

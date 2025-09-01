@@ -8,6 +8,7 @@ import com.github.countrybros.model.product.ItemStatus;
 import com.github.countrybros.model.product.Stock;
 import com.github.countrybros.model.user.Company;
 import com.github.countrybros.web.product.requests.AddStockRequest;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,13 +52,16 @@ public class StockService implements IStockService {
     /**
      * Adds the specified quantity to an @Item.
      *
-     * @param itemId   ID of the item.
+     * @param stockId   ID of the stock.
      * @param quantity Quantity.
      * @param sellerId ID of the selling company.
      * @throws NotFoundInRepositoryException if the item doesn't exist
      */
-    public void addQuantityToStock(int itemId, int quantity, int sellerId) {
+    public void addQuantityToStock(int stockId, int quantity, int sellerId) {
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new NotFoundInRepositoryException("Stock not found"));
 
+        stock.setQty(stock.getQty() + quantity);
+        stockRepository.save(stock);
     }
 
     /**

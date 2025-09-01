@@ -33,12 +33,12 @@ public class ShoppingService implements IShoppingService {
 
     @Override
     public Cart getCart(int userId) {
-        return cartRepository.findById(userId).get();
+        return cartRepository.findById(userId).orElseThrow(() -> new NotFoundInRepositoryException("Cart not found, non existent user"));
     }
 
     @Override
     public void addItemToCart(int userId, Stock stock, int qty) {
-        Cart cart = cartRepository.findById(userId).get();
+        Cart cart = this.getCart(userId);
 
         if(qty <= 0)
             throw new ImpossibleRequestException("Quantity must be greater than zero");
