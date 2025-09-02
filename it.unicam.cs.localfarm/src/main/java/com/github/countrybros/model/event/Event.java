@@ -1,10 +1,12 @@
 package com.github.countrybros.model.event;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.social.IPostable;
+import com.github.countrybros.model.social.SocialPost;
 import com.github.countrybros.model.user.*;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,6 +174,6 @@ public class Event implements IPostable {
     @Override
     public SocialPost getPost() {
 
-        return new SocialPost();
+        return new SocialPost(name, "Evento", "link");
     }
 }
