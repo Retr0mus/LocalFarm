@@ -1,9 +1,16 @@
 package com.github.countrybros.application.services.payment;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
+import com.github.countrybros.application.errors.ExternalError;
+import com.github.countrybros.infrastructure.services.shopping.MockPayment;
+import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.order.Order;
+import com.github.countrybros.model.order.OrderItem;
+import com.github.countrybros.model.order.OrderStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service that performs all the tasks related to the management of the payment.
@@ -13,11 +20,17 @@ public class PaymentService implements IPaymentService {
 
 
     IPaymentMethod paymentMethod;
+
     /**
-     * Payment of all the orders delivered by the companies, cover 28 days
+     * Payment of debts about some companies
      */
     @Override
-    public void paySellers() {
+    public void paySellers(Map<Company, Double> mappedDebts) {
+
+        MockPayment mockPayment = new MockPayment();
+        for (Company company : mappedDebts.keySet())
+            if (! mockPayment.pay(mappedDebts.get(company).floatValue(), company.getEmail()))
+                throw new ExternalError("Payment failed for " + company.getEmail());
 
     }
 
@@ -34,30 +47,8 @@ public class PaymentService implements IPaymentService {
     @Override
     public boolean paymentToMarketplace(IPaymentMethod paymentMethod, float amount) {
 
-        return paymentMethod.pay(amount);
+        return paymentMethod.pay(amount, "this.is@emailofSystem");
     }
-
-
-
-    /**  @Override
-    public void paySellers() {
-
-        ArrayList<Order> orders = new ArrayList<>(orderService
-                .getOrdersSince(Date.from(
-                        LocalDateTime.now()
-                                .minusDays(28)
-                                .atZone(ZoneId.systemDefault())
-                                .toInstant()
-                )));
-
-        for (Order order : orders) {
-            if (order.getOrderStatus() != OrderStatus.delivered)
-                continue;
-            for (ShoppingItem item : order.getCart().getShoppingItems()) {
-                paySeller(item.getItem().getSeller().getId(), (float) (item.getQuantity() * item.getItem().getPrice()));
-            }
-        }
-    }**/
 
     public boolean refund(String email, float amount) {
 

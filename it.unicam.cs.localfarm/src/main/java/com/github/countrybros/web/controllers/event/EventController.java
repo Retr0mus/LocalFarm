@@ -78,22 +78,6 @@ public class EventController {
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 
-    @PutMapping("cancelCompanyParticipation")
-    public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("eventId") int eventId
-                                                    , @PathParam("userId") int companyId){
-
-        eventService.cancelCompanyParticipation(companyId, eventId);
-        return new ResponseEntity<>("Participation cancelled", HttpStatus.OK);
-    }
-
-    @PutMapping("confirmCompanyParticipation")
-    public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
-                                                            ,@PathParam("companyId") int companyId){
-
-        eventService.confirmCompanyParticipation(eventId, companyId);
-        return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
-    }
-
     @GetMapping("get")
     public ResponseEntity<Object> getEvent(@PathParam("eventId") int eventId){
 

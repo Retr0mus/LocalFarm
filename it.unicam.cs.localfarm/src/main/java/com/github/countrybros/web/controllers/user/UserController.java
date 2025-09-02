@@ -5,6 +5,7 @@ import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addUser(@RequestBody AddUserRequest request) {
+    public ResponseEntity<String> addUser(@Valid @RequestBody AddUserRequest request) {
         userService.addUser(request);
         return new ResponseEntity<>("User added", HttpStatus.OK);
     }

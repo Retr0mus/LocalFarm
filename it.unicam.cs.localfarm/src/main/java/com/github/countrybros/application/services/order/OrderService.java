@@ -11,7 +11,9 @@ import com.github.countrybros.application.models.requests.order.RefundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -48,9 +50,10 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getOrdersSince(Date date) {
+    public List<Order> getOrdersSince(LocalDate date) {
 
-        return orderRepository.findOrderByOrderDate(date);
+        return orderRepository.findOrderByOrderDate(
+                Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
 
     /**

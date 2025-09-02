@@ -1,6 +1,7 @@
 package com.github.countrybros.application.services.user;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.mappers.UserMapper;
 import com.github.countrybros.infrastructure.repositories.user.IUserRepository;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
@@ -18,6 +19,7 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
     @Autowired
     private ICartService cartService;
+    private UserMapper userMapper = new UserMapper();
 
     @Override
     public User getUser(int userId) {
@@ -30,11 +32,11 @@ public class UserService implements IUserService {
 
     @Override
     public void addUser(AddUserRequest request) {
-        User user = new User();
-        user.setName(request.name);
-        user.setEmail(request.email);
-        user.setPassword(request.password);
-        user.setRoles(request.roles);
+
+        if (checkEmailExists(request.email))
+            throw new IllegalArgumentException("Email " + request.email + " already exists.");
+
+        User user = userMapper.toDomain(request);
 
         cartService.save(user.getCart());
         userRepository.save(user);

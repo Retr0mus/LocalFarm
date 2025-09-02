@@ -190,25 +190,25 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void cancelCompanyParticipation(int companyId, int eventId) {
+    public void cancelCompanyParticipation(Company company, Event event) {
 
-        Event event = getEvent(eventId);
-        Company company = this.companyService.getCompany(companyId);
+        if (event.getState().equals(EventState.completed) || event.getState().equals(EventState.canceled))
+            throw new ImpossibleRequestException("Incoherent event status");
 
-        Invitation invitation = event.getGuestInvitation(company);
+        if (! event.getGuests().contains(company))
+            throw new RequestAlreadySatisfiedException("Company is not participating");
 
-        invitationService.deleteInvitation(invitation.getId());
+        event.getGuests().remove(company);
+        IEventRepository.save(event);
     }
 
     @Override
-    public void confirmCompanyParticipation(int eventId, int companyId) {
-
-        Event event = getEvent(eventId);
-        Company company = this.companyService.getCompany(companyId);
+    public void confirmCompanyParticipation(Event event, Company company) {
 
         if (event.getGuests().contains(company))
             throw new RequestAlreadySatisfiedException("Company already included in event guest list");
 
-        invitationService.acceptInvitation(event.getGuestInvitation(company).getId());
+        event.getGuests().add(company);
+        IEventRepository.save(event);
     }
 }

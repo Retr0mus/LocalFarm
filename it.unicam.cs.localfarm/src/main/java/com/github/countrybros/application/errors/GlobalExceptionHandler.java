@@ -44,6 +44,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> handleCustomException(ExternalError ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_GATEWAY);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
         // Log dell'errore

@@ -3,7 +3,11 @@ package com.github.countrybros.application.facades;
 import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.factories.PaymentMethodFactory;
 import com.github.countrybros.application.services.company.ICompanyService;
+import com.github.countrybros.application.services.event.IEventService;
+import com.github.countrybros.application.services.event.IInvitationService;
+import com.github.countrybros.application.services.order.IOrderService;
 import com.github.countrybros.application.services.order.OrderService;
+import com.github.countrybros.application.services.payment.IPaymentService;
 import com.github.countrybros.application.services.payment.PaymentService;
 import com.github.countrybros.application.services.submission.ISubmissionService;
 import com.github.countrybros.application.mappers.SubmissionMapper;
@@ -16,6 +20,8 @@ import com.github.countrybros.application.mappers.ItemMapper;
 import com.github.countrybros.application.services.user.*;
 import com.github.countrybros.infrastructure.services.shopping.MockPaymentFactory;
 import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.event.Event;
+import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
@@ -36,7 +42,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Facade that represents alla the use cases of the system.
@@ -54,23 +63,29 @@ public class Orchestrator {
     private final ISubmissionService submissionService;
     private final IUserService userService;
     private final IShoppingService shoppingService;
-    private final OrderService orderService;
-    private final PaymentService paymentService;
+    private final IOrderService orderService;
+    private final IPaymentService paymentService;
+    private final IInvitationService invitationService;
+    private final IEventService eventService;
 
     @Autowired
     public Orchestrator(IItemService itemService, IStockService stockService, ICompanyService companyService,
                         ICertificationService certificationService,
-                        ISubmissionService submissionService, ICompanyService companyService1, IUserService userService, IShoppingService shoppingService, OrderService orderService, PaymentService paymentService) {
+                        ISubmissionService submissionService, IUserService userService,
+                        IShoppingService shoppingService, OrderService orderService, PaymentService paymentService,
+                        IInvitationService invitationService, IEventService eventService) {
 
         this.itemService = itemService;
         this.stockService = stockService;
         this.certificationService = certificationService;
         this.submissionService = submissionService;
-        this.companyService = companyService1;
+        this.companyService = companyService;
         this.orderService = orderService;
         this.shoppingService = shoppingService;
         this.paymentService = paymentService;
         this.userService = userService;
+        this.invitationService = invitationService;
+        this.eventService = eventService;
     }
 
 
@@ -297,7 +312,7 @@ public class Orchestrator {
         IPaymentMethod paymentMethod = f.createPaymentMethod();
 
         // Pay
-        if(!paymentMethod.pay(order.getTotal()))
+        if(!paymentMethod.pay(order.getTotal(), "this.is@email.ofSystem"))
             throw new ImpossibleRequestException("Payment failed");
 
         orderService.setAsPaid(orderId);
@@ -314,5 +329,57 @@ public class Orchestrator {
             throw new NotFoundInRepositoryException("Item not found");
 
         return stockService.getStocksByItem(itemId);
+    }
+
+    /**
+     * Pay all the orders of the last 30 days to the companies.
+     */
+    public void payMonthlyOrders() {
+
+        List<Order> orders = orderService.getOrdersSince(LocalDate.now().minusDays(30));
+
+        Map<Company, Double> payments = new HashMap<Company, Double>();
+
+        for (Order order : orders) {
+            if (order.getOrderStatus().equals(OrderStatus.delivered))
+                for (OrderItem item : order.getItems()) {
+                    Company company = companyService.getCompany(item.getSeller().getId());
+                    payments.merge(company, item.getUnitPrice() * item.getQuantity(), Double::sum);
+                }
+        }
+
+        paymentService.paySellers(payments);
+    }
+
+    /**
+     * Acceptance/rejection an invitation of a company on an @Event.
+     *
+     * @param invitationId invitation ID
+     * @param accepted if the invitation is accepted or not
+     */
+    public void acceptInvitation(int invitationId, boolean accepted) {
+
+        Invitation invitation = invitationService.getInvitation(invitationId);
+        Event event = eventService.getEvent(invitation.getEvent().getId());
+        Company company = companyService.getCompany(invitation.getReceiver().getId());
+
+        if (accepted)
+            eventService.confirmCompanyParticipation(event, company);
+
+        invitationService.deleteInvitation(invitationId);
+    }
+
+    /**
+     * Cancel the participation of a company to a specified event, if it is already participating of course
+     *
+     * @param companyId company ID
+     * @param eventId EventId
+     */
+    public void cancelCompanyParticipation(int companyId, int eventId) {
+
+        Company company = companyService.getCompany(companyId);
+        Event event = eventService.getEvent(eventId);
+
+        eventService.cancelCompanyParticipation(company, event);
     }
 }

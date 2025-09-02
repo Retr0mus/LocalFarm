@@ -1,8 +1,11 @@
 package com.github.countrybros.application.services.payment;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
+import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.order.Order;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Responsibility of managing all the payment that can occur through the system.
@@ -18,9 +21,9 @@ public interface IPaymentService {
     boolean paymentToMarketplace(IPaymentMethod paymentMethod, float amount);
 
     /**
-     * Payment of all the orders delivered by the companies, cover 28 days
+     * Payment of debts about some companies
      */
-    void paySellers();
+    void paySellers(Map<Company, Double> mappedDebts);
 
     List<IPaymentMethod> getPaymentMethods();
 

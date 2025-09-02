@@ -38,7 +38,7 @@ public class PaymentController {
 
     @PostMapping("/pay_sellers")
     public ResponseEntity<String> paySellers() {
-        paymentService.paySellers();
+        orchestrator.payMonthlyOrders();
         return new ResponseEntity<>("Sellers paid successfully", HttpStatus.OK);
     }
 

@@ -4,6 +4,7 @@ import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface IOrderService {
      *
      * @return the list of the order.
      */
-    List<Order> getOrdersSince(Date date);
+    List<Order> getOrdersSince(LocalDate date);
 
     /**
      * Saves an order in the repository.

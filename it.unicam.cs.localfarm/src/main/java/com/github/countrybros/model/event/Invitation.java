@@ -23,8 +23,6 @@ public class Invitation {
 
     private LocalDate expiration;
 
-    private boolean accepted;
-
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company receiver;
@@ -72,11 +70,4 @@ public class Invitation {
         return expiration.isBefore(LocalDate.now());
     }
 
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
-    }
 }

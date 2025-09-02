@@ -99,7 +99,6 @@ public class InvitationService implements IInvitationService {
             throw new ImpossibleRequestException("The invitation is expired");
         }
 
-        invitation.setAccepted(true);
         IInvitationRepository.save(invitation);
     }
 }

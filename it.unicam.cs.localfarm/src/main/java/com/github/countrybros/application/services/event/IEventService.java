@@ -1,6 +1,7 @@
 package com.github.countrybros.application.services.event;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
@@ -105,20 +106,20 @@ public interface IEventService {
 
     /**
      * The invitation of a company on an event will be refused/deleted;
+     * If it's not participating, or the event is canceled or has ended, throws errors.
      *
-     * @param companyId the company ID that signs out.
-     * @param eventId the event.
+     * @param company the company that signs out.
+     * @param event the event.
      */
-    public void cancelCompanyParticipation(int companyId, int eventId);
+    public void cancelCompanyParticipation(Company company, Event event);
 
     /**
      * Confirms the participation of a certain company to an event.
      *
-     * @param eventId the event to participate to.
-     * @param companyId the company who decided to participate
+     * @param event the event to participate to.
+     * @param company the company who decided to participate
      *
      * @throws RuntimeException if the company was already included among the event's guests
      */
-    public void confirmCompanyParticipation(int eventId, int companyId);
-
+    public void confirmCompanyParticipation(Event event, Company company);
 }

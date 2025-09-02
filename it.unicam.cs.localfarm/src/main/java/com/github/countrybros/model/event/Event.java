@@ -24,6 +24,8 @@ public class Event implements IPostable {
 
     private int maxSpots;
 
+    private String description;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Invitation> invitations = new ArrayList<>();
@@ -119,9 +121,9 @@ public class Event implements IPostable {
 
         List<Company> guests = new ArrayList<>();
 
-        for (Invitation invitation : invitations)
-            if (invitation.isAccepted())
-                guests.add(invitation.getReceiver());
+//        for (Invitation invitation : invitations)
+//            if (invitation.isAccepted())
+//                guests.add(invitation.getReceiver());
 
         return guests;
     }
@@ -175,5 +177,13 @@ public class Event implements IPostable {
     public SocialPost getPost() {
 
         return new SocialPost(name, "Evento", "link");
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
