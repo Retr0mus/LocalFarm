@@ -84,5 +84,8 @@ public class User {
         this.address = address;
     }
 
+    public int getId() {
+        return userId;
+    }
 }
 

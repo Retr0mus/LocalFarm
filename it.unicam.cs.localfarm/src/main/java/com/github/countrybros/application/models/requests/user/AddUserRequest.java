@@ -1,0 +1,16 @@
+package com.github.countrybros.application.models.requests.user;
+
+
+
+import com.github.countrybros.model.user.UserRole;
+
+import java.util.List;
+
+public class AddUserRequest {
+
+    public String name;
+    public String password;
+    public String email;
+    public List<UserRole> roles;
+
+}
