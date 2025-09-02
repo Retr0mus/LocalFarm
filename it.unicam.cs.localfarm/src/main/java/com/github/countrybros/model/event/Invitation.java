@@ -1,7 +1,7 @@
 package com.github.countrybros.model.event;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.github.countrybros.model.user.Company;
+import com.github.countrybros.model.company.Company;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

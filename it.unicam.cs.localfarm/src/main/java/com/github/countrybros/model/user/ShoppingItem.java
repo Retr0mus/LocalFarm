@@ -1,37 +1,32 @@
 package com.github.countrybros.model.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.github.countrybros.model.product.Stock;
+import com.github.countrybros.model.order.OrderItem;
+import com.github.countrybros.model.stock.Stock;
 import jakarta.persistence.*;
 
 /**
- * Represents an item in the shopping cart.
+ * Represents an item in the user cart.
  */
 
 @Entity
 public class ShoppingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
-    @OneToOne(fetch = FetchType.EAGER)
+    private long id;
+    @ManyToOne(fetch = FetchType.EAGER)
     private Stock stock;
-
     private int quantity;
 
-    public ShoppingItem(Cart cart, Stock stock, int quantity) {}
+    public ShoppingItem(Stock stock, int quantity) {
+        this.stock = stock;
+        this.quantity = quantity;
+    }
 
     public ShoppingItem() {
 
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public Stock getItem() {
+    public Stock getStock() {
         return stock;
     }
 
@@ -43,10 +38,21 @@ public class ShoppingItem {
         this.quantity = quantity;
     }
 
-    public int getId() { return id;}
+    public OrderItem toOrderItem() {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItem(stock.getItem());
+        orderItem.setSeller(stock.getSeller());
+        orderItem.setQuantity(quantity);
+        orderItem.setUnitPrice(stock.getPrice());
+        return orderItem;
+    }
 
     public int getAvailableStock() {
         return stock != null ? stock.getQty() : 0;
+    }
+
+    public long getId() {
+        return id;
     }
 }
 
