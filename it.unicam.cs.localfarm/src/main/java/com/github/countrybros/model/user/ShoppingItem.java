@@ -1,10 +1,11 @@
 package com.github.countrybros.model.user;
 
-import com.github.countrybros.model.product.Stock;
+import com.github.countrybros.model.order.OrderItem;
+import com.github.countrybros.model.stock.Stock;
 import jakarta.persistence.*;
 
 /**
- * Represents an item in the shopping cart.
+ * Represents an item in the user cart.
  */
 
 @Entity
