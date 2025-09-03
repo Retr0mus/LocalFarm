@@ -17,4 +17,5 @@ public class MockPayment implements IPaymentMethod {
     public boolean refund(float amount) {
         return true;
     }
+
 }

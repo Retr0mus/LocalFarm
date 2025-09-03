@@ -24,30 +24,44 @@ public class Event implements IPostable {
 
     private int maxSpots;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Invitation> invitations = new ArrayList<>();
 
     @Embedded
     private Location location;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "event_dates", joinColumns = @JoinColumn(name = "event_id"))
     private List<TimeInterval> dates;
 
     @ManyToOne
     private Company organizer;
 
     //TODO change to ManyToMany
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<User> subscribers = new ArrayList<>();
 
     private EventState state;
 
+    private String description;
 
     public Event(String name, int maxSpots) {
         this.name = name;
         this.maxSpots = maxSpots;
         this.state = EventState.planning;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Event() {}
@@ -94,7 +108,7 @@ public class Event implements IPostable {
      * @return the boolean variable representing this condition.
      */
     public boolean isFull(){
-        return maxSpots >= subscribers.size();
+        return subscribers.size() >= maxSpots;
     }
 
     /**

@@ -250,7 +250,6 @@ $RECYCLE.BIN/
 ### Visual Paradigm ###
 *.vpp.*
 
-### POJP ###
-it.unicam.cs.localfarm
+
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,linux,windows,macos,intellij

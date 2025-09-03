@@ -1,9 +1,18 @@
 package com.github.countrybros.application.facades;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
+import com.github.countrybros.application.errors.EventsNotFoundException;
+import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.factories.PaymentMethodFactory;
+import com.github.countrybros.application.models.requests.event.CreateEventRequest;
+import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
 import com.github.countrybros.application.services.company.ICompanyService;
+import com.github.countrybros.application.services.event.EventService;
+import com.github.countrybros.application.services.event.IEventService;
+import com.github.countrybros.application.services.event.IInvitationService;
+import com.github.countrybros.application.services.order.IOrderService;
 import com.github.countrybros.application.services.order.OrderService;
+import com.github.countrybros.application.services.payment.IPaymentService;
 import com.github.countrybros.application.services.payment.PaymentService;
 import com.github.countrybros.application.services.submission.ISubmissionService;
 import com.github.countrybros.application.mappers.SubmissionMapper;
@@ -16,6 +25,7 @@ import com.github.countrybros.application.mappers.ItemMapper;
 import com.github.countrybros.application.services.user.*;
 import com.github.countrybros.infrastructure.services.shopping.MockPaymentFactory;
 import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
@@ -37,6 +47,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Facade that represents alla the use cases of the system.
@@ -54,13 +65,15 @@ public class Orchestrator {
     private final ISubmissionService submissionService;
     private final IUserService userService;
     private final IShoppingService shoppingService;
-    private final OrderService orderService;
-    private final PaymentService paymentService;
+    private final IOrderService orderService;
+    private final IPaymentService paymentService;
+    private final IEventService eventService;
+    private final IInvitationService invitationService;
 
     @Autowired
     public Orchestrator(IItemService itemService, IStockService stockService, ICompanyService companyService,
                         ICertificationService certificationService,
-                        ISubmissionService submissionService, ICompanyService companyService1, IUserService userService, IShoppingService shoppingService, OrderService orderService, PaymentService paymentService) {
+                        ISubmissionService submissionService, ICompanyService companyService1, IUserService userService, IShoppingService shoppingService, OrderService orderService, PaymentService paymentService, EventService eventService, IInvitationService invitationService) {
 
         this.itemService = itemService;
         this.stockService = stockService;
@@ -71,6 +84,8 @@ public class Orchestrator {
         this.shoppingService = shoppingService;
         this.paymentService = paymentService;
         this.userService = userService;
+        this.eventService = eventService;
+        this.invitationService = invitationService;
     }
 
 
@@ -314,5 +329,91 @@ public class Orchestrator {
             throw new NotFoundInRepositoryException("Item not found");
 
         return stockService.getStocksByItem(itemId);
+    }
+
+    public void createEvent(CreateEventRequest request) {
+
+        validateEventRequest(request);
+        Company companyForEvent = companyService.getCompany(request.organizerId);
+        eventService.createEvent(request,companyForEvent);
+        Event event = eventService.getLastCreatedEvent();
+
+        for (Integer companyId : request.guestsId) {
+            CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
+            invitationRequest.event = event;
+            invitationRequest.expiration = java.time.LocalDate.now().plusDays(7);
+            Company companyForInvitation = companyService.getCompany(companyId);
+
+            invitationService.addInvitation(invitationRequest, companyForInvitation);
+        }
+
+    }
+
+    private void validateEventRequest(CreateEventRequest request) {
+
+
+        if (eventService.existsByName(request.name)) {
+            throw new ImpossibleRequestException("An event with the same name already exists");
+        }
+
+        if (request.dates == null || request.dates.isEmpty()) {
+            throw new ImpossibleRequestException("At least one date interval must be provided");
+        }
+
+        for (var interval : request.dates) {
+            if (interval.getStartTime() == null || interval.getEnd() == null) {
+                throw new ImpossibleRequestException("Start and end time must be provided for each interval");
+            }
+            if (!interval.getStartTime().isBefore(interval.getEnd())) {
+                throw new ImpossibleRequestException("Start time must be before end time");
+            }
+        }
+
+        if (request.location == null) {
+            throw new ImpossibleRequestException("Location must be provided");
+        }
+
+        // Check if the organizer exits
+        companyService.getCompany(request.organizerId);
+    }
+
+    public void subscribeToEvent(int userId, int eventId) {
+        Event event = eventService.getEvent(eventId);
+        User user = userService.getUser(userId);
+
+        if (event.getSubscribers().contains(user)) {
+            throw new RequestAlreadySatisfiedException("User is already subscribed to this event");
+        }
+
+        eventService.subscribeToEvent(user,eventId);
+    }
+
+    public void unSubscribeToEvent(int userId, int eventId) {
+        Event event = eventService.getEvent(eventId);
+        User user = userService.getUser(userId);
+        System.out.println("Subscribers IDs: " +
+                event.getSubscribers().stream().map(User::getId).toList());
+        System.out.println("User to unsubscribe ID: " + user.getId());
+
+        if (!event.getSubscribers().contains(user)) {
+            throw new RequestAlreadySatisfiedException("No subscription for the user");
+        }
+
+        eventService.unSubscribeFromEvent(user, eventId);
+
+    }
+
+    public List<Event> getEventsByOrganizer(int organizerId) {
+        Company company = companyService.getCompany(organizerId);
+
+        List<Event> events = eventService.getEventsByOrganizer(company);
+
+        if (events == null || events.isEmpty()) {
+            throw new EventsNotFoundException(
+                    "No events found for organizer with id: " + organizerId
+            );
+        }
+
+        return events;
     }
 }

@@ -87,5 +87,20 @@ public class User {
     public int getId() {
         return userId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return userId == user.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(userId);
+    }
+
+
 }
 

@@ -13,5 +13,4 @@ public class CreateInvitationRequest {
 
     public LocalDate expiration;
 
-    public int receiverId;
 }

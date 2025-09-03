@@ -2,22 +2,19 @@ package com.github.countrybros.application.services.event;
 
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.application.mappers.EventMapper;
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.application.services.user.UserService;
 import com.github.countrybros.infrastructure.repositories.event.IEventRepository;
-import com.github.countrybros.model.event.Invitation;
+import com.github.countrybros.model.event.*;
 import com.github.countrybros.model.company.Company;
-import com.github.countrybros.model.event.Event;
-import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
-import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
 import com.github.countrybros.application.models.requests.event.EditEventRequest;
 import com.github.countrybros.application.models.requests.event.EventElement;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,15 +26,15 @@ import java.util.stream.StreamSupport;
 @Service
 public class EventService implements IEventService {
 
-    private final IEventRepository IEventRepository;
+    private final IEventRepository eventRepository;
     private final ICompanyService companyService;
     private final UserService userService;
     private final IInvitationService invitationService;
 
-    public EventService(IEventRepository IEventRepository, ICompanyService companyService,
+    public EventService(IEventRepository eventRepository, ICompanyService companyService,
                         UserService userService, IInvitationService invitationService) {
 
-        this.IEventRepository = IEventRepository;
+        this.eventRepository = eventRepository;
         this.companyService = companyService;
         this.userService = userService;
         this.invitationService = invitationService;
@@ -46,7 +43,7 @@ public class EventService implements IEventService {
     @Override
     public List<EventElement> getAllEvents() {
 
-        return StreamSupport.stream(IEventRepository.findAll().spliterator(), false)
+        return StreamSupport.stream(eventRepository.findAll().spliterator(), false)
                 .map(event -> {
                     EventElement dto = new EventElement();
                     dto.id = event.getId();
@@ -54,6 +51,12 @@ public class EventService implements IEventService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+
+
+    public Event getLastCreatedEvent(){
+        return eventRepository.findTopByOrderByIdDesc();
     }
 
     @Override
@@ -68,58 +71,58 @@ public class EventService implements IEventService {
         event.setMaxSpots(request.maxSpots);
         event.setOrganizer(company);
 
-        this.IEventRepository.save(event);
+        this.eventRepository.save(event);
     }
 
     @Override
-    public void deleteEvent(int eventId) {
+    public void createEvent(CreateEventRequest request, Company organizer) {
 
-        Event event = this.IEventRepository.findById(eventId).orElse(null);
+        Location location = request.location;
+        List<TimeInterval> dates = request.dates;
 
-        if (event == null)
-            throw new NotFoundInRepositoryException("Event not found");
+        Event event = new Event(request.name, request.maxSpots);
+        event.setLocation(location);
+        event.setDates(dates);
+        event.setOrganizer(organizer);
+        event.setState(EventState.planning);
 
-        IEventRepository.delete(event);
+        eventRepository.save(event);
     }
 
     @Override
-    public void subscribeOnEvent(int userId, int eventId) {
+    public void deleteEvent(int eventId, int organizerId) {
 
         Event event = getEvent(eventId);
-        User user = userService.getUser(userId);
 
-        if (event.getSubscribers().contains(user))
-            throw new RequestAlreadySatisfiedException("User already subscribed");
+        if (event.getOrganizer().getId() != organizerId) {
+            throw new ImpossibleRequestException("User is not the organizer of this event");
+        }
+
+        eventRepository.delete(event);
+    }
+
+    @Override
+    public void subscribeToEvent(User user, int eventId) {
+
+        Event event = getEvent(eventId);
+        if (event.isFull()) {
+            throw new ImpossibleRequestException("No more spots available for this event");
+        }
 
         event.subscribe(user);
-        IEventRepository.save(event);
+        eventRepository.save(event);
     }
 
     @Override
-    public void unsubscribeOnEvent(int userId, int eventId) {
-
+    public void unSubscribeFromEvent(User user, int eventId) {
         Event event = getEvent(eventId);
-        User user = userService.getUser(userId);
-
-        if (!event.getSubscribers().contains(user))
-            throw new RequestAlreadySatisfiedException("User was unsubscribed");
-
         event.unsubscribe(user);
-        IEventRepository.save(event);
+        eventRepository.save(event);
     }
 
     @Override
-    public List<EventElement> getPublicEvents() {
-
-        return IEventRepository.getAllByState(EventState.currentlyPublic)
-                        .stream()
-                .map(event -> {
-                    EventElement dto = new EventElement();
-                    dto.id = event.getId();
-                    dto.name = event.getName();
-                    return dto;
-                })
-                .collect(Collectors.toList());
+    public List<Event> getPublicEvents() {
+        return eventRepository.findAllByState(EventState.currentlyPublic);
     }
 
     @Override
@@ -134,31 +137,10 @@ public class EventService implements IEventService {
             throw new ImpossibleRequestException("Event already completed");
 
         event.setState(EventState.canceled);
-        this.IEventRepository.save(event);
+        this.eventRepository.save(event);
     }
 
-    @Override
-    public void createEvent(CreateEventRequest request) {
 
-        Company organizer = companyService.getCompany(request.organizerId);
-
-        Event event = new Event(request.name, request.maxSpots);
-        event.setDates(request.dates);
-        event.setLocation(request.location);
-        event.setOrganizer(organizer);
-
-        IEventRepository.save(event);
-
-        //create and retrieve invitations
-        for (Integer companyId : request.guestsId) {
-
-            CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
-            invitationRequest.event = event;
-            invitationRequest.expiration = LocalDate.now().plusDays(7);
-            invitationRequest.receiverId = companyId;
-            invitationService.addInvitation(invitationRequest);
-        }
-    }
 
     @Override
     public void confirmEventPublication(int eventId) {
@@ -175,18 +157,13 @@ public class EventService implements IEventService {
             throw new RequestAlreadySatisfiedException("Event is canceled");
 
         event.setState(EventState.currentlyPublic);
-        IEventRepository.save(event);
+        eventRepository.save(event);
     }
 
     @Override
     public Event getEvent(int eventId) {
-
-        Event event = this.IEventRepository.findById(eventId).orElse(null);
-
-        if (event == null)
-            throw new NotFoundInRepositoryException("Event not found");
-
-        return event;
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Event not found"));
     }
 
     @Override
@@ -211,4 +188,19 @@ public class EventService implements IEventService {
 
         invitationService.acceptInvitation(event.getGuestInvitation(company).getId());
     }
+
+    public boolean existsByName(String name) {
+        return eventRepository.existsByName(name);
+    }
+
+    @Override
+    public List<Event> getEventsSubscribedByUser(int userId) {
+        return eventRepository.findAllBySubscribers_Id(userId);
+    }
+
+    @Override
+    public List<Event> getEventsByOrganizer(Company organizer) {
+        return eventRepository.findAllByOrganizer(organizer);
+    }
+
 }

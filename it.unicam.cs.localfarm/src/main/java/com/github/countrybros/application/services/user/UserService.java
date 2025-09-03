@@ -1,6 +1,8 @@
 package com.github.countrybros.application.services.user;
 
+import com.github.countrybros.application.errors.InvalidRoleException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.errors.RoleAlreadyAssignedException;
 import com.github.countrybros.infrastructure.repositories.user.IUserRepository;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
@@ -8,6 +10,8 @@ import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 /**
  * Service that performs all the tasks related to the management of the user
@@ -71,10 +75,16 @@ public class UserService implements IUserService {
             throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
         }
 
-        if (!user.getRoles().contains(role)) {
-            user.getRoles().add(role);
-            userRepository.save(user);
+        if (role == null || !Arrays.asList(UserRole.values()).contains(role)) {
+            throw new InvalidRoleException("The role " + role + " does not exist.");
         }
+
+        if (user.getRoles().contains(role)) {
+            throw new RoleAlreadyAssignedException("The role " + role + " is already assigned to the user.");
+        }
+
+        user.getRoles().add(role);
+        userRepository.save(user);
     }
 
     @Override
