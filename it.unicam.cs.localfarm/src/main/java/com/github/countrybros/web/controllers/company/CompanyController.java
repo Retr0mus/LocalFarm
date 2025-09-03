@@ -1,13 +1,19 @@
 package com.github.countrybros.web.controllers.company;
 
+import com.github.countrybros.application.facades.Orchestrator;
+import com.github.countrybros.application.mappers.CompanyMapper;
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.model.company.Company;
-import com.github.countrybros.application.models.requests.company.AddComapanyRequest;
+import com.github.countrybros.application.models.requests.company.AddCompanyRequest;
 import com.github.countrybros.application.models.requests.company.EditCompanyRequest;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/companies")
@@ -15,31 +21,35 @@ public class CompanyController {
 
     @Autowired
     private ICompanyService companyService;
+    @Autowired
+    private Orchestrator orchestrator;
 
-    @PostMapping
-    public ResponseEntity<String> addCompany(@RequestBody AddComapanyRequest request) {
+    @PostMapping("/add")
+    public ResponseEntity<String> addCompany(@RequestBody AddCompanyRequest request) {
         companyService.addCompany(request);
         return new ResponseEntity<>("Company added", HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<Company> getCompany(@RequestParam int companyId) {
-
-        Company company = companyService.getCompany(companyId);
-        return new ResponseEntity<>(company, HttpStatus.OK);
+    @GetMapping("/get")
+    public ResponseEntity<Object> getCompany(@PathParam("companyId") int companyId) {
+        return new ResponseEntity<>(CompanyMapper.toDto(companyService.getCompany(companyId)), HttpStatus.OK);
     }
 
-    @PutMapping
+    @GetMapping("/getAll")
+    public ResponseEntity<Object> getAllCompanies() {
+        return new ResponseEntity<>(companyService.getAllCompanies().stream().map(CompanyMapper::toDto), HttpStatus.OK);
+    }
+
+    @PutMapping("/edit")
     public ResponseEntity<String> editCompany(@RequestBody EditCompanyRequest request) {
         companyService.editCompany(request);
         return new ResponseEntity<>("Company updated", HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deleteCompany(@RequestParam int companyId) {
-        companyService.deleteCompany(companyId);
+    @DeleteMapping("/disable")
+    public ResponseEntity<String> cancelCompany(@PathParam("companyId") int companyId,
+                                                @PathParam("adminId") int adminId) {
+        orchestrator.cancelCompany(companyId, adminId);
         return new ResponseEntity<>("Company deleted", HttpStatus.OK);
     }
-
-
 }

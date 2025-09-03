@@ -14,7 +14,7 @@ public interface IUserService {
 
      void addUser(AddUserRequest request);
 
-     void deleteUser(int userId);
+     void deleteUser(int userId, int adminId);
 
      void editUser(EditUserRequest request);
 

@@ -153,7 +153,7 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public List<Item> getCompanyItemDetails(int companyId) {
+    public List<Item> getCompanyItem(int companyId) {
         return itemRepository.findAllByProducer_Id(companyId);
     }
 }

@@ -40,12 +40,12 @@ public interface IItemService {
     /**
      * Gets the specified ItemDetails.
      *
-     * @param itemId The ItemDetails ID.
+     * @param itemId The Item ID.
      * @throws NotFoundInRepositoryException if it's not present.
      */
     Item getItem(int itemId);
 
-    List<Item> getCompanyItemDetails(int companyId);
+    List<Item> getCompanyItem(int companyId);
 
     List<Item> getAvailableItems();
 

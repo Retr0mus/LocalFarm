@@ -5,6 +5,7 @@ import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,9 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteUser(@RequestParam int userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<String> disableUser(@PathParam("userId") int userId,
+                                              @PathParam("adminId") int adminId) {
+        userService.deleteUser(userId, adminId);
         return new ResponseEntity<>("User deleted", HttpStatus.OK);
     }
 

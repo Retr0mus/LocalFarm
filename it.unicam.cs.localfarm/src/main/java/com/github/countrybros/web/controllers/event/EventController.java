@@ -53,7 +53,6 @@ public class EventController {
 
     @GetMapping("publicEvents")
     public ResponseEntity<List<EventElement>> getPublicEvents(){
-
         return new ResponseEntity<>(eventService.getPublicEvents(), HttpStatus.OK);
     }
 
@@ -72,9 +71,9 @@ public class EventController {
     }
 
     @PutMapping("confirm")
-    public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId){
-
-        eventService.confirmEventPublication(eventId);
+    public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId,
+                                                          @PathParam("userId") int userId){
+        eventService.confirmEventPublication(eventId, userId);
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 

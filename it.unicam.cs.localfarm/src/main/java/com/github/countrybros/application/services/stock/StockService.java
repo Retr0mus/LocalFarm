@@ -6,9 +6,9 @@ import com.github.countrybros.infrastructure.repositories.product.IStockReposito
 import com.github.countrybros.model.item.Item;
 import com.github.countrybros.model.stock.Stock;
 import com.github.countrybros.model.company.Company;
-import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static java.lang.Math.max;
@@ -19,32 +19,24 @@ import static java.lang.Math.max;
 @Service
 public class StockService implements IStockService {
 
-    private final IStockRepository IStockRepository;
+    private final IStockRepository stockRepository;
 
-    public StockService(IStockRepository IStockRepository) {
-        this.IStockRepository = IStockRepository;
+    public StockService(IStockRepository stockRepository) {
+        this.stockRepository = stockRepository;
     }
 
     /**
-     * Inserts an Item in the repo.
+     * Creates a stock.
      *
-     * @param request The addItem request.
+     * @param stock The addItem request.
      */
     @Override
-    public Stock addItem(AddStockRequest request) {
-        /*
-        Company seller = companyService.getCompany(request.sellerId);
-        Item item = itemDetailsService.getItemDetails(request.itemDetailsId);
-
-        Stock stock = new Stock();
-        //item.setSeller(seller);
-        stock.setItemDetails(item);
-        stock.setQty(request.qty);
-        stock.setPrice(request.price);
+    public Stock add(Stock stock) {
+        if(stockRepository.findByItemAndSeller(stock.getItem(), stock.getSeller()) != null) {
+            throw new ImpossibleRequestException("Stock already exists");
+        };
 
         return stockRepository.save(stock);
-        */
-        return null;
     }
 
     /**
@@ -56,10 +48,10 @@ public class StockService implements IStockService {
      * @throws NotFoundInRepositoryException if the item doesn't exist
      */
     public void addQuantityToStock(int stockId, int quantity, int sellerId) {
-        Stock stock = IStockRepository.findById(stockId).orElseThrow(() -> new NotFoundInRepositoryException("Stock not found"));
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new NotFoundInRepositoryException("Stock not found"));
 
         stock.setQty(stock.getQty() + quantity);
-        IStockRepository.save(stock);
+        stockRepository.save(stock);
     }
 
     /**
@@ -84,18 +76,28 @@ public class StockService implements IStockService {
 
         stock.setQty(max(stock.getQty() - quantity, 0));
 
-        this.IStockRepository.save(stock);
+        this.stockRepository.save(stock);
     }
 
     /**
      * Sets a specific price for an item.
      *
-     * @param itemId The item ID
-     * @param price  The price to put.
+     * @param stockId   The item ID.
+     * @param sellerId  The seller ID.
+     * @param newPrice     The price to put.
      */
     @Override
-    public void setPrice(int itemId, double price) {
+    public void setPrice(int stockId, int sellerId, double newPrice) {
+        Stock stock = getStock(stockId);
 
+        if(stock.getSeller().getId() != sellerId)
+            throw new ImpossibleRequestException("The requested stock isn't owned by the seller");
+
+        if(new BigDecimal(newPrice).compareTo(BigDecimal.ZERO) <= 0)
+            throw new ImpossibleRequestException("The new price cannot be negative or null");
+
+        stock.setPrice(newPrice);
+        stockRepository.save(stock);
     }
 
     /**
@@ -107,7 +109,7 @@ public class StockService implements IStockService {
      */
     @Override
     public Stock getStock(int stockId) {
-        return IStockRepository.findById(stockId).orElse(null);
+        return stockRepository.findById(stockId).orElseThrow(() -> new NotFoundInRepositoryException("Stock not found"));
     }
 
     /**
@@ -118,7 +120,7 @@ public class StockService implements IStockService {
      */
     @Override
     public List<Stock> getStocksBySeller(int companyId) {
-        return IStockRepository.findAllBySeller_Id(companyId);
+        return stockRepository.findAllBySeller_Id(companyId);
     }
 
     /**
@@ -129,10 +131,24 @@ public class StockService implements IStockService {
      */
     @Override
     public List<Stock> getStocksByItem(int itemId) {
-        return IStockRepository.findAllByItem_Id(itemId);
+        return stockRepository.findAllByItem_Id(itemId);
     }
 
     public Stock getStockByItemAndSeller(Item item, Company seller) {
-        return IStockRepository.findByItemAndSeller(item, seller);
+        return stockRepository.findByItemAndSeller(item, seller);
+    }
+
+    /**
+     * Deletes all stocks of a company.
+     *
+     * @param companyId The give company's id.
+     */
+    @Override
+    public void deleteAllCompanyStocks(int companyId) {
+        List<Stock> stocks = stockRepository.findAllBySeller_Id(companyId);
+
+        for (Stock stock : stocks) {
+            stockRepository.delete(stock);
+        }
     }
 }

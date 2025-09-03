@@ -32,6 +32,16 @@ public class User {
     private Cart cart;
     private ShippingAddress address;
 
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    private UserStatus status;
+
     public User() {
         cart = new Cart();
     }
