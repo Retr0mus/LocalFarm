@@ -44,6 +44,7 @@ public class User {
 
     public User() {
         cart = new Cart();
+        status = UserStatus.active;
     }
 
     public void setCart(Cart cart) {

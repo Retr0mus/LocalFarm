@@ -1,6 +1,6 @@
 package com.github.countrybros.application.models.requests.submission;
 
-
+@Deprecated
 public class RemoveProductSubmissionRequest extends SubmissionRequest {
     private int productId;
 

@@ -1,5 +1,6 @@
 package com.github.countrybros.web.controllers.user;
 
+import com.github.countrybros.application.mappers.UserMapper;
 import com.github.countrybros.application.services.user.IUserService;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
@@ -32,9 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<User> getUser(@RequestParam int userId) {
-        User user = userService.getUser(userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<Object> getUser(@RequestParam int userId) {
+        return new ResponseEntity<>(UserMapper.toDto(userService.getUser(userId)), HttpStatus.OK);
     }
 
     @PutMapping("/edit")
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping("/removeRole")
-    public ResponseEntity<String> removeUserRole(@RequestParam int userId, @RequestParam UserRole role) {
+    public ResponseEntity<String> removeUserRole(@RequestParam int userId, @PathParam("role") String role) {
         userService.removeUserRole(userId, role);
         return new ResponseEntity<>("Role removed from user", HttpStatus.OK);
     }

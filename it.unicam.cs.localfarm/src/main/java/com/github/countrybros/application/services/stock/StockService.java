@@ -146,9 +146,6 @@ public class StockService implements IStockService {
     @Override
     public void deleteAllCompanyStocks(int companyId) {
         List<Stock> stocks = stockRepository.findAllBySeller_Id(companyId);
-
-        for (Stock stock : stocks) {
-            stockRepository.delete(stock);
-        }
+        stockRepository.deleteAll(stocks);
     }
 }

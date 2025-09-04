@@ -81,14 +81,24 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void removeUserRole(int userId, UserRole role) {
+    public void removeUserRole(int userId, String role) {
+
+        UserRole userRole;
+
+        try {
+            userRole = UserRole.valueOf(role.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ImpossibleRequestException("Role " + role + " not found");
+        }
 
         User user = getUser(userId);
 
-        if (user.getRoles().contains(role)) {
-            user.getRoles().remove(role);
+        if (user.getRoles().contains(userRole)) {
+            user.getRoles().remove(userRole);
             userRepository.save(user);
         }
+        else
+            throw new ImpossibleRequestException("User with ID " + user.getUserId() + " has not the role: " + role);
 
     }
 

@@ -6,6 +6,7 @@ import com.github.countrybros.application.services.stock.IStockService;
 import com.github.countrybros.application.mappers.StockMapper;
 import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.model.stock.Stock;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,12 +27,12 @@ public class StockController {
     }
 
     @GetMapping("get")
-    public ResponseEntity<Stock> getStock(@PathParam( "id" ) Integer id) {
-        return new ResponseEntity<>(stockService.getStock(id), HttpStatus.OK);
+    public ResponseEntity<Object> getStock(@PathParam( "id" ) Integer id) {
+        return new ResponseEntity<>(StockMapper.toDto(stockService.getStock(id)), HttpStatus.OK);
     }
 
     @PostMapping( "add")
-    public ResponseEntity<Object> add(@RequestBody AddStockRequest request) {
+    public ResponseEntity<Object> add(@Valid @RequestBody AddStockRequest request) {
         orchestrator.createStock(request);
         return new ResponseEntity<>("Stock successfully created", HttpStatus.OK);
     }

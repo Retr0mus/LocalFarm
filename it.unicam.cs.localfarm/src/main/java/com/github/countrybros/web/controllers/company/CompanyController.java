@@ -3,7 +3,6 @@ package com.github.countrybros.web.controllers.company;
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.mappers.CompanyMapper;
 import com.github.countrybros.application.services.company.ICompanyService;
-import com.github.countrybros.model.company.Company;
 import com.github.countrybros.application.models.requests.company.AddCompanyRequest;
 import com.github.countrybros.application.models.requests.company.EditCompanyRequest;
 import jakarta.websocket.server.PathParam;
@@ -11,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/companies")
@@ -47,9 +43,9 @@ public class CompanyController {
     }
 
     @DeleteMapping("/disable")
-    public ResponseEntity<String> cancelCompany(@PathParam("companyId") int companyId,
-                                                @PathParam("adminId") int adminId) {
-        orchestrator.cancelCompany(companyId, adminId);
+    public ResponseEntity<String> disableCompany(@PathParam("companyId") int companyId,
+                                                 @PathParam("adminId") int adminId) {
+        orchestrator.disableCompany(companyId, adminId);
         return new ResponseEntity<>("Company deleted", HttpStatus.OK);
     }
 }

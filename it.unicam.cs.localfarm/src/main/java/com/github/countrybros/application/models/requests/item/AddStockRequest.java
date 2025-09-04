@@ -1,10 +1,14 @@
 package com.github.countrybros.application.models.requests.item;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+
 /**
  * Represents a request for creating a new Item.
  */
 public class AddStockRequest {
     private int sellerId;
+    @Positive(message = "The price must be positive.")
     private double price;
     private int itemId;
 

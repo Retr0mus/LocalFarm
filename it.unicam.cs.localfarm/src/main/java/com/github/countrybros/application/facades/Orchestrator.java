@@ -17,6 +17,7 @@ import com.github.countrybros.application.mappers.ItemMapper;
 import com.github.countrybros.application.services.user.*;
 import com.github.countrybros.infrastructure.services.shopping.MockPaymentFactory;
 import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.company.CompanyStatus;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
@@ -324,6 +325,9 @@ public class Orchestrator {
         if(item.getStatus() != ItemStatus.available)
             throw new ImpossibleRequestException("Item not available");
 
+        if(seller.getStatus() == CompanyStatus.inactive)
+            throw new ImpossibleRequestException("Seller's status is inactive");
+
         Stock stock = new Stock();
         stock.setSeller(seller);
         stock.setItemDetails(item);
@@ -332,8 +336,7 @@ public class Orchestrator {
         stockService.add(stock);
     }
 
-    public void cancelCompany(int companyId, int adminId) {
-
+    public void disableCompany(int companyId, int adminId) {
         if(!userService.getUser(adminId).getRoles().contains(UserRole.ADMIN))
             throw new ImpossibleRequestException("You are not allowed to cancel this company");
 

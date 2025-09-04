@@ -20,7 +20,7 @@ public interface IUserService {
 
      void addUserRole(int userId, UserRole userRole);
 
-     void removeUserRole(int userId, UserRole role);
+     void removeUserRole(int userId, String role);
 
      boolean checkEmailExists(String email);
 
