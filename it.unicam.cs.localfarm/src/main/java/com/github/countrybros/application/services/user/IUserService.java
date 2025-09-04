@@ -14,13 +14,13 @@ public interface IUserService {
 
      void addUser(AddUserRequest request);
 
-     void deleteUser(int userId);
+     void deleteUser(int userId, int adminId);
 
      void editUser(EditUserRequest request);
 
      void addUserRole(int userId, UserRole userRole);
 
-     void removeUserRole(int userId, UserRole role);
+     void removeUserRole(int userId, String role);
 
      boolean checkEmailExists(String email);
 

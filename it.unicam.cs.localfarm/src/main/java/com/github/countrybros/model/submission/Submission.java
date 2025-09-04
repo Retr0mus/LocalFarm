@@ -28,8 +28,8 @@ public abstract class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int senderId;
-    private int curatorId;
+    private int senderId;       // TODO: Change to Domain class
+    private int curatorId;      // TODO: Change to Domain class
     private SubmissionStatus status;
 
     public Submission(int senderId) {

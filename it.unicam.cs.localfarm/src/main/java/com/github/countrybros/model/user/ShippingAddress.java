@@ -11,4 +11,14 @@ public class ShippingAddress {
     private String province;
     private String street;
     private int streetNumber;
+
+    @Override
+    public String toString() {
+        return "ShippingAddress{" +
+                "state='" + state + '\'' +
+                ", province='" + province + '\'' +
+                ", street='" + street + '\'' +
+                ", streetNumber=" + streetNumber +
+                '}';
+    }
 }

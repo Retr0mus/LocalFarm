@@ -2,6 +2,7 @@ package com.github.countrybros.application.facades;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.factories.PaymentMethodFactory;
+import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.application.services.order.OrderService;
 import com.github.countrybros.application.services.payment.PaymentService;
@@ -16,6 +17,7 @@ import com.github.countrybros.application.mappers.ItemMapper;
 import com.github.countrybros.application.services.user.*;
 import com.github.countrybros.infrastructure.services.shopping.MockPaymentFactory;
 import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.company.CompanyStatus;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
@@ -314,5 +316,31 @@ public class Orchestrator {
             throw new NotFoundInRepositoryException("Item not found");
 
         return stockService.getStocksByItem(itemId);
+    }
+
+    public void createStock(AddStockRequest request) {
+        Company seller = companyService.getCompany(request.getSellerId());
+        Item item = itemService.getItem(request.getItemId());
+
+        if(item.getStatus() != ItemStatus.available)
+            throw new ImpossibleRequestException("Item not available");
+
+        if(seller.getStatus() == CompanyStatus.inactive)
+            throw new ImpossibleRequestException("Seller's status is inactive");
+
+        Stock stock = new Stock();
+        stock.setSeller(seller);
+        stock.setItemDetails(item);
+        stock.setPrice(request.getPrice());
+
+        stockService.add(stock);
+    }
+
+    public void disableCompany(int companyId, int adminId) {
+        if(!userService.getUser(adminId).getRoles().contains(UserRole.ADMIN))
+            throw new ImpossibleRequestException("You are not allowed to cancel this company");
+
+        companyService.disableCompany(companyId);
+        stockService.deleteAllCompanyStocks(companyId);
     }
 }

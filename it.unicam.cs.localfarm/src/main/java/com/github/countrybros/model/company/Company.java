@@ -28,6 +28,7 @@ public class Company {
     @JsonIgnore
     private List<Invitation> invitations;
     //TODO add location
+    private CompanyStatus status;
 
     public String getName() {
         return name;
@@ -47,6 +48,14 @@ public class Company {
 
     public int getId() {
         return id;
+    }
+
+    public CompanyStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CompanyStatus status) {
+        this.status = status;
     }
 
     public void setName(String name) {

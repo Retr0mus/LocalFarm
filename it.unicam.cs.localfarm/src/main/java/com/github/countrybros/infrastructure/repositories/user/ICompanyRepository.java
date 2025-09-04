@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICompanyRepository extends CrudRepository<Company, Integer> {
     Company getCompaniesById(int id);
+
+    boolean existsByEmailEqualsIgnoreCase(String email);
     /*
         Default function of CrudRepository
         save(…) – save an Iterable of entities. Here, we can pass multiple objects to save them in a batch

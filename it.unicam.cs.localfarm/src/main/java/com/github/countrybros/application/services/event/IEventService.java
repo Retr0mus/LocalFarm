@@ -97,11 +97,10 @@ public interface IEventService {
      * Confirms the publication of an event by changing its status to PUBLIC.
      *
      * @param eventId the ID of the event to publish.
-     *
+     * @param userId
      * @throws RequestAlreadySatisfiedException if the event is already public.
-
      */
-    public void confirmEventPublication(int eventId);
+    public void confirmEventPublication(int eventId, int userId);
 
     /**
      * The invitation of a company on an event will be refused/deleted;
