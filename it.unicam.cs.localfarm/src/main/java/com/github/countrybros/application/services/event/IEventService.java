@@ -9,6 +9,7 @@ import com.github.countrybros.application.models.requests.event.EditEventRequest
 import com.github.countrybros.application.models.requests.event.EventElement;
 import com.github.countrybros.model.user.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public interface IEventService {
      *
      * @param request the request of the event to create.
      */
-    void createEvent(CreateEventRequest request, Company organizer);
+    void createEvent(CreateEventRequest request, User organizer);
 
     /**
      * Removes an event from the repository.
@@ -43,14 +44,6 @@ public interface IEventService {
      */
     Event getEvent(int eventId);
 
-    /**
-     * Modifies the event specified, if present.
-     *
-     * @param request The request to modify an event.
-     *
-     * @throws NotFoundInRepositoryException if the event was not in the repo.
-     */
-    void editEvent(EditEventRequest request);
 
     /**
      * Returns a list of all public events.
@@ -85,15 +78,6 @@ public interface IEventService {
      * @throws RequestAlreadySatisfiedException if not subscribed
      */
     void unSubscribeFromEvent(User user, int eventId);
-
-    /**
-     * Cancels an event by setting its status as CANCELED.
-     *
-     * @param eventId the ID of the event to cancel.
-     *
-     * @throws RequestAlreadySatisfiedException if the event is already canceled
-     */
-    void setAsCanceled(int eventId);
 
     /**
      * Confirms the publication of an event by changing its status to PUBLIC.
@@ -136,4 +120,6 @@ public interface IEventService {
     List<Event> getEventsSubscribedByUser(int userId);
 
     List<Event> getEventsByOrganizer(Company organizer);
+
+    List<Event> getEventsByDate(LocalDate localDate);
 }

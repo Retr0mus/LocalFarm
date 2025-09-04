@@ -26,6 +26,8 @@ import com.github.countrybros.application.services.user.*;
 import com.github.countrybros.infrastructure.services.shopping.MockPaymentFactory;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Event;
+import com.github.countrybros.model.event.EventState;
+import com.github.countrybros.model.event.TimeInterval;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
@@ -334,8 +336,8 @@ public class Orchestrator {
     public void createEvent(CreateEventRequest request) {
 
         validateEventRequest(request);
-        Company companyForEvent = companyService.getCompany(request.organizerId);
-        eventService.createEvent(request,companyForEvent);
+        User Organizer = userService.getUser(request.organizerId);
+        eventService.createEvent(request,Organizer);
         Event event = eventService.getLastCreatedEvent();
 
         for (Integer companyId : request.guestsId) {
@@ -373,6 +375,40 @@ public class Orchestrator {
             throw new ImpossibleRequestException("Location must be provided");
         }
 
+        for (int i = 0; i < request.dates.size(); i++) {
+            var first = request.dates.get(i);
+            for (int j = i + 1; j < request.dates.size(); j++) {
+                var second = request.dates.get(j);
+
+                if (first.getStartTime().toLocalDate().equals(second.getStartTime().toLocalDate())) {
+                    boolean overlap = !first.getEnd().isBefore(second.getStartTime()) &&
+                            !second.getEnd().isBefore(first.getStartTime());
+
+                    if (overlap) {
+                        throw new ImpossibleRequestException(
+                                "Overlapping time intervals are not allowed on the same day"
+                        );
+                    }
+                }
+            }
+        }
+
+        for (var interval : request.dates) {
+            List<Event> existingEvents = eventService.getEventsByDate(interval.getStartTime().toLocalDate());
+
+            for (Event existingEvent : existingEvents) {
+                for (TimeInterval existingInterval : existingEvent.getDates()) {
+                    boolean overlap = !interval.getEnd().isBefore(existingInterval.getStartTime()) &&
+                            !existingInterval.getEnd().isBefore(interval.getStartTime());
+                    if (overlap) {
+                        throw new ImpossibleRequestException(
+                                "New event interval overlaps with an existing event on the same day: " + existingEvent.getName()
+                        );
+                    }
+                }
+            }
+        }
+
         // Check if the organizer exits
         companyService.getCompany(request.organizerId);
     }
@@ -383,6 +419,11 @@ public class Orchestrator {
 
         if (event.getSubscribers().contains(user)) {
             throw new RequestAlreadySatisfiedException("User is already subscribed to this event");
+        }
+
+        if(event.getState() != EventState.currentlyPublic)
+        {
+            throw new ImpossibleRequestException("The event is not public or is ended");
         }
 
         eventService.subscribeToEvent(user,eventId);
@@ -396,7 +437,12 @@ public class Orchestrator {
         System.out.println("User to unsubscribe ID: " + user.getId());
 
         if (!event.getSubscribers().contains(user)) {
-            throw new RequestAlreadySatisfiedException("No subscription for the user");
+            throw new RequestAlreadySatisfiedException("The user "+user.getId()+" is not subscribed to this event "+event.getId());
+        }
+
+        if(event.getState() == EventState.completed)
+        {
+            throw new ImpossibleRequestException("You cannot cancel your registration because the event has ended.");
         }
 
         eventService.unSubscribeFromEvent(user, eventId);
@@ -415,5 +461,12 @@ public class Orchestrator {
         }
 
         return events;
+    }
+
+    public List<Event> getEventsSubscribedByUser(int userId) {
+       // checks the existence of a user
+        User user = userService.getUser(userId);
+
+        return eventService.getEventsSubscribedByUser(userId);
     }
 }

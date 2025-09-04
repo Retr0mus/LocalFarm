@@ -6,6 +6,5 @@ package com.github.countrybros.model.event;
 public enum EventState {
     planning,
     currentlyPublic,
-    canceled,
     completed
 }

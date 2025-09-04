@@ -15,6 +15,7 @@ import com.github.countrybros.application.models.requests.event.EditEventRequest
 import com.github.countrybros.application.models.requests.event.EventElement;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -28,15 +29,15 @@ public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
     private final ICompanyService companyService;
-    private final UserService userService;
+
     private final IInvitationService invitationService;
 
     public EventService(IEventRepository eventRepository, ICompanyService companyService,
-                        UserService userService, IInvitationService invitationService) {
+                         IInvitationService invitationService) {
 
         this.eventRepository = eventRepository;
         this.companyService = companyService;
-        this.userService = userService;
+
         this.invitationService = invitationService;
     }
 
@@ -60,22 +61,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void editEvent(EditEventRequest request) {
-
-        Event event = getEvent(request.eventId);
-        Company company = companyService.getCompany(request.organizerId);
-
-        event.setLocation(request.location);
-        event.setName(request.name);
-        event.setDates(request.dates);
-        event.setMaxSpots(request.maxSpots);
-        event.setOrganizer(company);
-
-        this.eventRepository.save(event);
-    }
-
-    @Override
-    public void createEvent(CreateEventRequest request, Company organizer) {
+    public void createEvent(CreateEventRequest request, User organizer) {
 
         Location location = request.location;
         List<TimeInterval> dates = request.dates;
@@ -125,39 +111,24 @@ public class EventService implements IEventService {
         return eventRepository.findAllByState(EventState.currentlyPublic);
     }
 
-    @Override
-    public void setAsCanceled(int eventId) {
-
-        Event event = getEvent(eventId);
-
-        if (event.getState() == EventState.canceled)
-            throw new RequestAlreadySatisfiedException("Event already canceled");
-
-        if (event.getState().equals(EventState.completed))
-            throw new ImpossibleRequestException("Event already completed");
-
-        event.setState(EventState.canceled);
-        this.eventRepository.save(event);
-    }
-
 
 
     @Override
     public void confirmEventPublication(int eventId) {
 
-        Event event = getEvent(eventId);
-
-        if (event.getState().equals(EventState.currentlyPublic))
-            throw new RequestAlreadySatisfiedException("Event is already public");
-
-        if (event.getState().equals(EventState.completed))
-            throw new ImpossibleRequestException("Event is completed");
-
-        if (event.getState().equals(EventState.canceled))
-            throw new RequestAlreadySatisfiedException("Event is canceled");
-
-        event.setState(EventState.currentlyPublic);
-        eventRepository.save(event);
+//        Event event = getEvent(eventId);
+//
+//        if (event.getState().equals(EventState.currentlyPublic))
+//            throw new RequestAlreadySatisfiedException("Event is already public");
+//
+//        if (event.getState().equals(EventState.completed))
+//            throw new ImpossibleRequestException("Event is completed");
+//
+//        if (event.getState().equals(EventState.canceled))
+//            throw new RequestAlreadySatisfiedException("Event is canceled");
+//
+//        event.setState(EventState.currentlyPublic);
+//        eventRepository.save(event);
     }
 
     @Override
@@ -180,13 +151,13 @@ public class EventService implements IEventService {
     @Override
     public void confirmCompanyParticipation(int eventId, int companyId) {
 
-        Event event = getEvent(eventId);
-        Company company = this.companyService.getCompany(companyId);
-
-        if (event.getGuests().contains(company))
-            throw new RequestAlreadySatisfiedException("Company already included in event guest list");
-
-        invitationService.acceptInvitation(event.getGuestInvitation(company).getId());
+//        Event event = getEvent(eventId);
+//        Company company = this.companyService.getCompany(companyId);
+//
+//        if (event.getGuests().contains(company))
+//            throw new RequestAlreadySatisfiedException("Company already included in event guest list");
+//
+//        invitationService.acceptInvitation(event.getGuestInvitation(company).getId());
     }
 
     public boolean existsByName(String name) {
@@ -201,6 +172,17 @@ public class EventService implements IEventService {
     @Override
     public List<Event> getEventsByOrganizer(Company organizer) {
         return eventRepository.findAllByOrganizer(organizer);
+    }
+
+    @Override
+    public List<Event> getEventsByDate(LocalDate localDate) {
+        List<Event> allEvents = StreamSupport.stream(eventRepository.findAll().spliterator(), false)
+                .toList();
+
+        return allEvents.stream()
+                .filter(event -> event.getDates().stream()
+                        .anyMatch(interval -> interval.getStartTime().toLocalDate().equals(localDate)))
+                .collect(Collectors.toList());
     }
 
 }

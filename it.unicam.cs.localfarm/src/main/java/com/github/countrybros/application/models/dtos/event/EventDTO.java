@@ -15,22 +15,19 @@ public class EventDTO {
 
     private Location location;
     private List<TimeInterval> dates;
-
-    private CompanyDTO organizer;
+    private User organizer;
     private List<User> subscribers;
     private List<Company> guests;
     private String description;
 
     private String state;
 
-    public EventDTO() {}
-
     public EventDTO(int id,
                     String name,
                     int maxSpots,
                     Location location,
                     List<TimeInterval> dates,
-                    CompanyDTO organizer,
+                    User organizer,
                     List<User> subscribers,
                     List<Company> guests,
                     String state,String description) {
@@ -86,11 +83,11 @@ public class EventDTO {
         this.dates = dates;
     }
 
-    public CompanyDTO getOrganizer() {
+    public User getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(CompanyDTO organizer) {
+    public void setOrganizer(User organizer) {
         this.organizer = organizer;
     }
 

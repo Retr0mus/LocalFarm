@@ -11,7 +11,9 @@ import com.github.countrybros.application.models.requests.user.EditUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Service that performs all the tasks related to the management of the user
@@ -114,6 +116,13 @@ public class UserService implements IUserService {
             throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
         }
         return user.getRoles().contains(role);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        userRepository.findAll().forEach(users::add);
+        return users;
     }
 
 

@@ -36,7 +36,7 @@ public class Event implements IPostable {
     private List<TimeInterval> dates;
 
     @ManyToOne
-    private Company organizer;
+    private User organizer;
 
     //TODO change to ManyToMany
     @OneToMany(fetch = FetchType.EAGER)
@@ -45,6 +45,14 @@ public class Event implements IPostable {
     private EventState state;
 
     private String description;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private List<Company> participants = new ArrayList<>();
 
     public Event(String name, int maxSpots) {
         this.name = name;
@@ -78,7 +86,7 @@ public class Event implements IPostable {
         return dates;
     }
 
-    public Company getOrganizer() {
+    public User getOrganizer() {
         return organizer;
     }
 
@@ -129,16 +137,6 @@ public class Event implements IPostable {
         subscribers.remove(user);
     }
 
-    public List<Company> getGuests() {
-
-        List<Company> guests = new ArrayList<>();
-
-        for (Invitation invitation : invitations)
-            if (invitation.isAccepted())
-                guests.add(invitation.getReceiver());
-
-        return guests;
-    }
 
     public void setState(EventState eventState) {
         state = eventState;
@@ -148,7 +146,7 @@ public class Event implements IPostable {
         this.dates = dates;
     }
 
-    public void setOrganizer(Company organizer) {
+    public void setOrganizer(User organizer) {
         this.organizer = organizer;
     }
 
@@ -189,5 +187,9 @@ public class Event implements IPostable {
     public SocialPost getPost() {
 
         return new SocialPost(name, "Evento", "link");
+    }
+
+    public List<Company> getParticipants() {
+        return participants;
     }
 }

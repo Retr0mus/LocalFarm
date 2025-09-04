@@ -37,13 +37,6 @@ public class EventController {
         return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
     }
 
-    @PutMapping("/edit")
-    public ResponseEntity<Object> editEvent(@RequestBody EditEventRequest request) {
-
-        eventService.editEvent(request);
-        return new ResponseEntity<>("Event modified.", HttpStatus.OK);
-    }
-
     @PutMapping("/subscribe")
     public ResponseEntity<Object> subscribeToEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId) {
         orchestrator.subscribeToEvent(userId, eventId);
@@ -111,7 +104,7 @@ public class EventController {
 
     @GetMapping("/subscribed")
     public ResponseEntity<List<EventDTO>> getSubscribedEvents(@PathParam("userId") int userId) {
-        List<Event> events = eventService.getEventsSubscribedByUser(userId);
+        List<Event> events = orchestrator.getEventsSubscribedByUser(userId);
 
         List<EventDTO> eventDTOs = events.stream()
                 .map(EventMapper::toDTO)

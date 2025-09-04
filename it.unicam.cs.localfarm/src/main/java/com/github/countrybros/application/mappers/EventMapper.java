@@ -13,9 +13,9 @@ public class EventMapper {
                 event.getMaxSpots(),
                 event.getLocation(),
                 event.getDates(),
-                CompanyMapper.toDTO(event.getOrganizer()),
+                event.getOrganizer(),
                 event.getSubscribers(),
-                event.getGuests(),
+                event.getParticipants(),
                 event.getState().name(),
                 event.getDescription()
         );

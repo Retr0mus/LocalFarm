@@ -1,11 +1,14 @@
 package com.github.countrybros.application.errors;
 
+import com.github.countrybros.model.user.UserRole;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.Arrays;
 import java.util.List;
 
 @ControllerAdvice
@@ -76,5 +79,17 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> handleCustomExtception(MethodArgumentTypeMismatchException ex) {
+        if (ex.getRequiredType() == UserRole.class) {
+            return ResponseEntity.badRequest().body(
+                    "Invalid value '" + ex.getValue() + "' for '" + ex.getName() + "'. Valid roles: " + Arrays.toString(UserRole.values())
+            );
+        }
+        return ResponseEntity.badRequest().body(
+                "Invalid value '" + ex.getValue() + "' for '" + ex.getName() + "'."
+        );
     }
 }
