@@ -192,4 +192,8 @@ public class Event implements IPostable {
     public List<Company> getParticipants() {
         return participants;
     }
+
+    public void setParticipants(List<Company> participants) {
+        this.participants = participants;
+    }
 }

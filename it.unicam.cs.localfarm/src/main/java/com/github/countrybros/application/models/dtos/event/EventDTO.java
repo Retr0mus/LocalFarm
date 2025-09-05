@@ -1,6 +1,5 @@
 package com.github.countrybros.application.models.dtos.event;
 
-import com.github.countrybros.application.models.dtos.company.CompanyDTO;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Location;
 import com.github.countrybros.model.event.TimeInterval;
@@ -9,18 +8,17 @@ import com.github.countrybros.model.user.User;
 import java.util.List;
 
 public class EventDTO {
-    private int id;
-    private String name;
-    private int maxSpots;
+    public int id;
+    public String name;
+    public int maxSpots;
 
-    private Location location;
-    private List<TimeInterval> dates;
-    private User organizer;
-    private List<User> subscribers;
-    private List<Company> guests;
-    private String description;
-
-    private String state;
+    public Location location;
+    public List<TimeInterval> dates;
+    public User organizer;
+    public List<User> subscribers;
+    public List<Company> partecipants;
+    public String description;
+    public String state;
 
     public EventDTO(int id,
                     String name,
@@ -38,7 +36,7 @@ public class EventDTO {
         this.dates = dates;
         this.organizer = organizer;
         this.subscribers = subscribers;
-        this.guests = guests;
+        this.partecipants = guests;
         this.state = state;
         this.description = description;
     }
@@ -99,12 +97,12 @@ public class EventDTO {
         this.subscribers = subscribers;
     }
 
-    public List<Company> getGuests() {
-        return guests;
+    public List<Company> getPartecipants() {
+        return partecipants;
     }
 
-    public void setGuests(List<Company> guests) {
-        this.guests = guests;
+    public void setPartecipants(List<Company> partecipants) {
+        this.partecipants = partecipants;
     }
 
     public String getDescription() {
@@ -121,5 +119,9 @@ public class EventDTO {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public List<Company> getParticipants() {
+        return partecipants;
     }
 }

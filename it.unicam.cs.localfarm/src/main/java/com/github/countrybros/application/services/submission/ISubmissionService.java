@@ -37,7 +37,7 @@ public interface ISubmissionService {
      *
      * @return a list with all the said AcceptanceSubmission.
      */
-     List<Submission> getAvailableAcceptanceSubmissions();
+     List<Submission> getAvailableSubmissions();
 
     /**
      * Gets all the Submission assigned to a certain Curator.

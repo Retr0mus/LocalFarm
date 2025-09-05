@@ -58,7 +58,7 @@ public class SubmissionService implements ISubmissionService {
      * @return a list with all the said AcceptanceSubmission.
      */
     @Override
-    public List<Submission> getAvailableAcceptanceSubmissions() {
+    public List<Submission> getAvailableSubmissions() {
         return submissionRepository.findAllByStatus(SubmissionStatus.pending);
     }
 
@@ -118,7 +118,7 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public void takeChargeOfSubmission(int submissionId, int userId) {
 
-        Submission submission = getAcceptanceSubmission(submissionId);
+        Submission submission = getSubmission(submissionId);
 
         if (submission.getStatus() == SubmissionStatus.assigned) {
             throw new ImpossibleRequestException("Submission is already assigned");
@@ -135,10 +135,5 @@ public class SubmissionService implements ISubmissionService {
         return submissionRepository.findAllByCuratorIdAndStatus(curatorId, SubmissionStatus.assigned);
     }
 
-    private Submission getAcceptanceSubmission(int submissionId) {
-        return submissionRepository.findById(submissionId)
-                .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + submissionId));
-
-    }
 
 }

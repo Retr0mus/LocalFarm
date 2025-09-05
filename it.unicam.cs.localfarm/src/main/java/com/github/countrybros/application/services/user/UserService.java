@@ -27,7 +27,7 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(int userId) {
-        User user = userRepository.getUsersByUserId(userId);
+        User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
         }

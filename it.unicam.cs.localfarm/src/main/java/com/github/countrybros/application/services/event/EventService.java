@@ -84,6 +84,10 @@ public class EventService implements IEventService {
             throw new ImpossibleRequestException("User is not the organizer of this event");
         }
 
+        if(event.getState() == EventState.completed) {
+            throw new ImpossibleRequestException("The event with id: "+ event.getId() +" is over, so it cannot be canceled.");
+        }
+
         eventRepository.delete(event);
     }
 
@@ -170,7 +174,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public List<Event> getEventsByOrganizer(Company organizer) {
+    public List<Event> getEventsByOrganizer(User organizer) {
         return eventRepository.findAllByOrganizer(organizer);
     }
 

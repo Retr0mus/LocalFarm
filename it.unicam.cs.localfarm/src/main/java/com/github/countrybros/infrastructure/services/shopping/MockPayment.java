@@ -13,9 +13,4 @@ public class MockPayment implements IPaymentMethod {
         return true;
     }
 
-    @Override
-    public boolean refund(float amount) {
-        return true;
-    }
-
 }

@@ -18,26 +18,26 @@ import java.util.List;
 public class SubmissionController {
 
     private final Orchestrator orchestrator;
-    private final ISubmissionService acceptanceSubmissionService;
-
+    private final ISubmissionService submissionService;
 
     @Autowired
     public SubmissionController(Orchestrator orchestrator,
-                                ISubmissionService acceptanceSubmissionService) {
-        this.acceptanceSubmissionService = acceptanceSubmissionService;
+                                ISubmissionService submissionService) {
+        this.submissionService = submissionService;
         this.orchestrator = orchestrator;
+
     }
 
     @GetMapping("submission")
     public ResponseEntity<Object> getSubmission(@PathParam("submissionId") int submissionId) {
 
-        return new ResponseEntity<>(acceptanceSubmissionService.getSubmission(submissionId), HttpStatus.OK);
+        return new ResponseEntity<>(submissionService.getSubmission(submissionId), HttpStatus.OK);
     }
 
     @GetMapping("getAccepted")
     public ResponseEntity<Object> getAcceptedSubmission(@PathParam("curatorId") int curatorId) {
 
-        return new ResponseEntity<>(acceptanceSubmissionService
+        return new ResponseEntity<>(submissionService
                 .getSubmissionToReview(curatorId), HttpStatus.OK);
     }
 
@@ -54,7 +54,7 @@ public class SubmissionController {
     @GetMapping("/available")
     public ResponseEntity<List<Submission>> getAvailable() {
 
-        List<Submission> submissions = orchestrator.getAvailableSubmissions();
+        List<Submission> submissions = submissionService.getAvailableSubmissions();
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 

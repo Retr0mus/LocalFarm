@@ -141,14 +141,7 @@ public class Orchestrator {
         stockService.removeQuantityToStock(stockId, quantity, sellerId);
     }
 
-    /**
-     * Retrives all the Submission that haven't been accepted.
-     *
-     * @return all the available submission.
-     */
-    public List<Submission> getAvailableSubmissions() {
-        return submissionService.getAvailableAcceptanceSubmissions();
-    }
+
 
     /**
      * Manage the aftermaths of accepting/rejecting a @Submission.
@@ -178,16 +171,6 @@ public class Orchestrator {
         submissionService.takeChargeOfSubmission(submissionId,userId);
     }
 
-    public List<Order> getOrders(int userId) {
-        userService.getUser(userId);
-        return orderService.getOrders(userId);
-    }
-
-
-    public Cart getCart(int userId) {
-        return shoppingService.getCart(userId);
-    }
-
     /**
      * Logic behind the acceptance of a submission.
      *
@@ -205,6 +188,7 @@ public class Orchestrator {
     }
 
     public void removeItemFromCart(int userId, int shoppingItemId) {
+        //check existences of user
         userService.getUser(userId);
         shoppingService.removeItemFromCart(userId, shoppingItemId);
     }
@@ -252,13 +236,14 @@ public class Orchestrator {
                 .orElseThrow(() -> new NotFoundInRepositoryException(
                         "Order not found with ID " + request.getOrderId()));
 
-        if (order.getCustomer().getUserId() == user.getUserId()) {
+        if (order.getCustomer().getUserId() != user.getUserId()) {
             throw new IllegalStateException("Order does not belong to the user");
         }
 
         boolean refunded = paymentService.refund(request.getEmail(),order.getTotal());
 
         if (!refunded){
+            orderService.blockOrder(order.getOrderId());
             throw new IllegalStateException("Refund failed, order blocked");
         }
 
@@ -336,17 +321,17 @@ public class Orchestrator {
     public void createEvent(CreateEventRequest request) {
 
         validateEventRequest(request);
-        User Organizer = userService.getUser(request.organizerId);
-        eventService.createEvent(request,Organizer);
+        User organizer = userService.getUser(request.organizerId);
+        eventService.createEvent(request,organizer);
         Event event = eventService.getLastCreatedEvent();
 
         for (Integer companyId : request.guestsId) {
             CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
             invitationRequest.event = event;
             invitationRequest.expiration = java.time.LocalDate.now().plusDays(7);
-            Company companyForInvitation = companyService.getCompany(companyId);
+            Company company = companyService.getCompany(companyId);
 
-            invitationService.addInvitation(invitationRequest, companyForInvitation);
+            invitationService.addInvitation(invitationRequest, company);
         }
 
     }
@@ -432,9 +417,6 @@ public class Orchestrator {
     public void unSubscribeToEvent(int userId, int eventId) {
         Event event = eventService.getEvent(eventId);
         User user = userService.getUser(userId);
-        System.out.println("Subscribers IDs: " +
-                event.getSubscribers().stream().map(User::getId).toList());
-        System.out.println("User to unsubscribe ID: " + user.getId());
 
         if (!event.getSubscribers().contains(user)) {
             throw new RequestAlreadySatisfiedException("The user "+user.getId()+" is not subscribed to this event "+event.getId());
@@ -450,9 +432,9 @@ public class Orchestrator {
     }
 
     public List<Event> getEventsByOrganizer(int organizerId) {
-        Company company = companyService.getCompany(organizerId);
+        User organizer = userService.getUser(organizerId);
 
-        List<Event> events = eventService.getEventsByOrganizer(company);
+        List<Event> events = eventService.getEventsByOrganizer(organizer);
 
         if (events == null || events.isEmpty()) {
             throw new EventsNotFoundException(

@@ -119,7 +119,7 @@ public interface IEventService {
 
     List<Event> getEventsSubscribedByUser(int userId);
 
-    List<Event> getEventsByOrganizer(Company organizer);
+    List<Event> getEventsByOrganizer(User organizer);
 
     List<Event> getEventsByDate(LocalDate localDate);
 }

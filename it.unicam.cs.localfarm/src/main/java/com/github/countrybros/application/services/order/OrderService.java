@@ -78,8 +78,7 @@ public class OrderService implements IOrderService {
 
     public void cancelOrder(RefundRequest request) {
 
-        Order order = orderRepository.findById(request.getOrderId())
-                .orElseThrow(() -> new NotFoundInRepositoryException("Order not found with ID " + request.getOrderId()));
+        Order order = getOrder(request.getOrderId());
 
         if (order.getOrderStatus() == OrderStatus.cancelled) {
             throw new IllegalStateException("order already cancelled");

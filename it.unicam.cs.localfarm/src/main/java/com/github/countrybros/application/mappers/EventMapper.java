@@ -2,6 +2,7 @@ package com.github.countrybros.application.mappers;
 
 import com.github.countrybros.application.models.dtos.event.EventDTO;
 import com.github.countrybros.model.event.Event;
+import com.github.countrybros.model.event.EventState;
 
 
 public class EventMapper {
