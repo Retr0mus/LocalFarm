@@ -1,8 +1,10 @@
 package com.github.countrybros.application.mappers;
 
-import com.github.countrybros.application.models.dtos.event.EventDto;
+import com.github.countrybros.application.models.dtos.event.EventDTO;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.model.event.Event;
+import com.github.countrybros.model.event.EventState;
+
 
 public class EventMapper {
 
@@ -14,12 +16,19 @@ public class EventMapper {
         return event;
     }
 
-    public static EventDto toDto(Event event) {
-        EventDto eventDto = new EventDto();
-
-        // TODO: Complete
-
-        return eventDto;
+    public static EventDTO toDTO(Event event) {
+        return new EventDTO(
+                event.getId(),
+                event.getName(),
+                event.getMaxSpots(),
+                event.getLocation(),
+                event.getDates(),
+                event.getOrganizer(),
+                event.getSubscribers(),
+                event.getParticipants(),
+                event.getState().name(),
+                event.getDescription()
+        );
     }
 
 

@@ -14,13 +14,6 @@ public interface IPaymentMethod {
      */
     boolean pay(float price);
 
-    /**
-     *
-     * Refund
-     *
-     * @param amount
-     * @return
-     */
-    boolean refund(float amount);
+
 
 }

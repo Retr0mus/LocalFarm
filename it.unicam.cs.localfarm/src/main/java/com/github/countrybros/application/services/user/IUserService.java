@@ -4,6 +4,10 @@ import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
+import com.github.countrybros.application.models.requests.user.AddUserRequest;
+import com.github.countrybros.application.models.requests.user.EditUserRequest;
+
+import java.util.List;
 
 /**
  * Permits to manage the users.
@@ -25,5 +29,7 @@ public interface IUserService {
      boolean checkEmailExists(String email);
 
      boolean userHasRole(int userId, UserRole role);
+
+     List<User> getAllUsers();
 
 }

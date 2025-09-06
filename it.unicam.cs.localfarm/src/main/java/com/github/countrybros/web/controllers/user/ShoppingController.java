@@ -3,6 +3,7 @@ package com.github.countrybros.web.controllers.user;
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.mappers.ShoppingItemMapper;
+import com.github.countrybros.application.services.user.IShoppingService;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.application.models.requests.user.AddItemToCartRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,19 @@ public class ShoppingController {
 
     @Autowired
     private Orchestrator orchestrator;
+    @Autowired
+    private IShoppingService shoppingService;
 
     @GetMapping("/cart/get")
     public ResponseEntity<Object> getCart(@RequestParam int userId) {
-        return new ResponseEntity<>(orchestrator.getCart(userId).getShoppingItems().stream().map(ShoppingItemMapper::toDto), HttpStatus.OK);
+        return new ResponseEntity<>(shoppingService.getCart(userId).getShoppingItems().stream().map(ShoppingItemMapper::toDto), HttpStatus.OK);
     }
 
+    @GetMapping("/cart")
+    public ResponseEntity<Cart> getCart(@RequestParam int userId) {
+        Cart cart = shoppingService.getCart(userId);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
+    }
     @PostMapping("/cart/add")
     public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
         orchestrator.addItemToCart(request);

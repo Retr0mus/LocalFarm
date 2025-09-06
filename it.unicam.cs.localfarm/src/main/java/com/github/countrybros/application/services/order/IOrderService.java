@@ -43,7 +43,7 @@ public interface IOrderService {
     /**
      * Saves an order in the repository.
      *
-     * @param request The order to save.
+     * @param order The order to save.
      */
     void addOrder(Order order);
 

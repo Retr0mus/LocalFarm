@@ -32,19 +32,8 @@ public class User {
     private Cart cart;
     private ShippingAddress address;
 
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(UserStatus status) {
-        this.status = status;
-    }
-
-    private UserStatus status;
-
     public User() {
         cart = new Cart();
-        status = UserStatus.active;
     }
 
     public void setCart(Cart cart) {
@@ -98,5 +87,20 @@ public class User {
     public int getId() {
         return userId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return userId == user.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(userId);
+    }
+
+
 }
 

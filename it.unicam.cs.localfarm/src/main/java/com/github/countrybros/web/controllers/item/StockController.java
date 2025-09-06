@@ -4,6 +4,7 @@ import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.services.stock.IStockService;
 import com.github.countrybros.application.mappers.StockMapper;
+import com.github.countrybros.application.services.company.CompanyService;
 import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.model.stock.Stock;
 import jakarta.validation.Valid;
