@@ -23,7 +23,7 @@ public interface IEventService {
      *
      * @param request the request of the event to create.
      */
-    void createEvent(CreateEventRequest request);
+    void createEvent(CreateEventRequest request, User organizer);
 
     /**
      * Removes an event from the repository.
@@ -45,15 +45,6 @@ public interface IEventService {
     Event getEvent(int eventId);
 
     /**
-     * Modifies the event specified, if present.
-     *
-     * @param request The request to modify an event.
-     *
-     * @throws NotFoundInRepositoryException if the event was not in the repo.
-     */
-    public void editEvent(EditEventRequest request);
-
-    /**
      * Returns a list of all public events.
      *
      * @return list of events with status PUBLIC.
@@ -65,7 +56,7 @@ public interface IEventService {
      *
      * @return a list with all the events.
      */
-    List<EventElement> getAllEvents();
+    List<Event> getAllEvents();
 
     /**
      * Subscribes a user on an event.

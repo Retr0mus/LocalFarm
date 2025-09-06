@@ -1,6 +1,7 @@
 package com.github.countrybros.application.models.dtos.event;
 
 import com.github.countrybros.application.models.dtos.company.CompanyDTO;
+import com.github.countrybros.application.models.dtos.user.UserDto;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Location;
 import com.github.countrybros.model.event.TimeInterval;
@@ -16,7 +17,7 @@ public class EventDTO {
     private Location location;
     private List<TimeInterval> dates;
 
-    private CompanyDTO organizer;
+    private UserDto organizer;
     private List<User> subscribers;
     private List<Company> guests;
     private String description;
@@ -30,7 +31,7 @@ public class EventDTO {
                     int maxSpots,
                     Location location,
                     List<TimeInterval> dates,
-                    CompanyDTO organizer,
+                    UserDto organizer,
                     List<User> subscribers,
                     List<Company> guests,
                     String state,String description) {
@@ -86,11 +87,11 @@ public class EventDTO {
         this.dates = dates;
     }
 
-    public CompanyDTO getOrganizer() {
+    public UserDto getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(CompanyDTO organizer) {
+    public void setOrganizer(UserDto organizer) {
         this.organizer = organizer;
     }
 

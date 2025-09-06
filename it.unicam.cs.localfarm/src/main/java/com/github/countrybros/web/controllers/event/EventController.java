@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,22 +102,18 @@ public class EventController {
     }
 
     @GetMapping("/subscribed")
-    public ResponseEntity<List<EventDto>> getSubscribedEvents(@PathParam("userId") int userId) {
+    public ResponseEntity<List<EventDTO>> getSubscribedEvents(@PathParam("userId") int userId) {
         List<Event> events = orchestrator.getEventsSubscribedByUser(userId);
 
-        List<EventDto> eventDtos = events.stream()
-                .map(EventMapper::toDTO)
-                .collect(Collectors.toList());
+        List<Event> eventDtos = new ArrayList<>(events);
 
-        return ResponseEntity.ok(eventDtos);
+        return ResponseEntity.ok(eventMapper.toDTO(eventDtos));
     }
 
     @GetMapping("/organizerEvents")
-    public ResponseEntity<List<EventDto>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
+    public ResponseEntity<List<EventDTO>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
         List<Event> events = orchestrator.getEventsByOrganizer(organizerId);
-        List<EventDto> eventDtos = events.stream()
-                .map(EventMapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(eventDtos);
+        List<Event> eventDtos = new ArrayList<>(events);
+        return ResponseEntity.ok(eventMapper.toDTO(eventDtos));
     }
 }

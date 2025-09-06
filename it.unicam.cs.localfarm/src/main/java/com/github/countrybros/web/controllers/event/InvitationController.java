@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class InvitationController {
 
     private final IInvitationService invitationService;
-    private final InvitationMapper invitationMapper  = new InvitationMapper();
     private final Orchestrator orchestrator;
 
     @Autowired
@@ -26,14 +25,14 @@ public class InvitationController {
     @GetMapping("get")
     public ResponseEntity<Object> getInvitation(@PathParam("invitationId") int invitationId) {
 
-        return new ResponseEntity<>(invitationMapper
+        return new ResponseEntity<>(InvitationMapper
                 .toDTO(invitationService.getInvitation(invitationId)), HttpStatus.OK);
     }
 
     @GetMapping("getCompanyInvitations")
     public ResponseEntity<Object> getCompanyInvitations(@PathParam("companyId") int companyId) {
 
-        return new ResponseEntity<>(invitationMapper.toDTO(invitationService
+        return new ResponseEntity<>(InvitationMapper.toDTO(invitationService
                 .getInvitationsByCompany(companyId)), HttpStatus.OK);
     }
 

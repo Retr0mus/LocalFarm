@@ -1,5 +1,6 @@
 package com.github.countrybros.application.models.dtos.event;
 
+import com.github.countrybros.application.models.dtos.company.CompanyDTO;
 import com.github.countrybros.application.models.dtos.user.UserDto;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Location;
@@ -8,20 +9,24 @@ import com.github.countrybros.model.user.User;
 
 import java.util.List;
 
-public class EventDto {
-    public int id;
-    public String name;
-    public int maxSpots;
+public class EventDTO {
+    private int id;
+    private String name;
+    private int maxSpots;
 
-    public Location location;
-    public List<TimeInterval> dates;
-    public UserDto organizer;
-    public List<User> subscribers;
-    public List<Company> partecipants;
-    public String description;
-    public String state;
+    private Location location;
+    private List<TimeInterval> dates;
 
-    public EventDto(int id,
+    private UserDto organizer;
+    private List<User> subscribers;
+    private List<Company> guests;
+    private String description;
+
+    private String state;
+
+    public EventDTO() {}
+
+    public EventDTO(int id,
                     String name,
                     int maxSpots,
                     Location location,
@@ -29,7 +34,7 @@ public class EventDto {
                     UserDto organizer,
                     List<User> subscribers,
                     List<Company> guests,
-                    String state, String description) {
+                    String state,String description) {
         this.id = id;
         this.name = name;
         this.maxSpots = maxSpots;
@@ -37,7 +42,7 @@ public class EventDto {
         this.dates = dates;
         this.organizer = organizer;
         this.subscribers = subscribers;
-        this.partecipants = guests;
+        this.guests = guests;
         this.state = state;
         this.description = description;
     }
@@ -98,12 +103,12 @@ public class EventDto {
         this.subscribers = subscribers;
     }
 
-    public List<Company> getPartecipants() {
-        return partecipants;
+    public List<Company> getGuests() {
+        return guests;
     }
 
-    public void setPartecipants(List<Company> partecipants) {
-        this.partecipants = partecipants;
+    public void setGuests(List<Company> guests) {
+        this.guests = guests;
     }
 
     public String getDescription() {
@@ -121,8 +126,5 @@ public class EventDto {
     public void setState(String state) {
         this.state = state;
     }
-
-    public List<Company> getParticipants() {
-        return partecipants;
-    }
 }
+

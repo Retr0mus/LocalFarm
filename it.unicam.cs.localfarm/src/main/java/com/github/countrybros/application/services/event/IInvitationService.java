@@ -15,9 +15,9 @@ public interface IInvitationService {
     /**
      * Adds an invitation to the repository
      *
-     * @param request The request to add invitation.
+     * @param invitation The invitation to add.
      */
-    void addInvitation(CreateInvitationRequest request);
+    void addInvitation(Invitation invitation);
 
     /**
      * Refuses/cancels an invitation.

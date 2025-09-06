@@ -64,4 +64,5 @@ public interface IOrderService {
 
     void cancelOrder(RefundRequest request);
 
+    void blockOrder(int orderId);
 }

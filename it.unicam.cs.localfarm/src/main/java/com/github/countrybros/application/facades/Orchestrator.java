@@ -4,6 +4,7 @@ import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.errors.EventsNotFoundException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.factories.PaymentMethodFactory;
+import com.github.countrybros.application.mappers.InvitationMapper;
 import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
@@ -406,11 +407,13 @@ public class Orchestrator {
 
         for (Integer companyId : request.guestsId) {
             CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
-            invitationRequest.event = event;
+            invitationRequest.eventId = event.getId();
             invitationRequest.expiration = java.time.LocalDate.now().plusDays(7);
             Company company = companyService.getCompany(companyId);
 
-            invitationService.addInvitation(invitationRequest, company);
+            InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
+
+            invitationService.addInvitation(invitationMapper.toEntity(invitationRequest));
         }
 
     }

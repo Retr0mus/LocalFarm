@@ -1,6 +1,6 @@
 package com.github.countrybros.application.mappers;
 
-import com.github.countrybros.application.models.dtos.company.CompanyDto;
+import com.github.countrybros.application.models.dtos.company.CompanyDTO;
 import com.github.countrybros.application.models.requests.company.AddCompanyRequest;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.company.CompanyStatus;
@@ -18,13 +18,13 @@ public class CompanyMapper {
         return company;
     }
 
-    public static CompanyDto toDto(Company company) {
-        CompanyDto companyDto = new CompanyDto();
+    public static CompanyDTO toDto(Company company) {
+        CompanyDTO companyDto = new CompanyDTO();
 
-        companyDto.setId(company.getId());
-        companyDto.setCompanyName(company.getName());
-        companyDto.setEmail(company.getEmail());
-        companyDto.setDescription(company.getDescription());
+        companyDto.id = company.getId();
+        companyDto.companyName = company.getName();
+        companyDto.email = company.getEmail();
+        companyDto.description = company.getDescription();
         // TODO: location
 
         return companyDto;

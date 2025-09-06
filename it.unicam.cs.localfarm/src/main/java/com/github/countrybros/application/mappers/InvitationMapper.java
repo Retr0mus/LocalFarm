@@ -2,6 +2,9 @@ package com.github.countrybros.application.mappers;
 
 import com.github.countrybros.application.models.dtos.event.InvitationDTO;
 import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
+import com.github.countrybros.application.services.company.ICompanyService;
+import com.github.countrybros.application.services.event.IEventService;
+import com.github.countrybros.application.services.event.InvitationService;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Invitation;
 
@@ -13,7 +16,16 @@ import java.util.List;
  */
 public class InvitationMapper {
 
-    public List<InvitationDTO> toDTO(List<Invitation> invitations) {
+    ICompanyService companyService;
+    IEventService eventService;
+
+    public InvitationMapper(ICompanyService companyService, IEventService eventService) {
+
+        this.companyService = companyService;
+        this.eventService = eventService;
+    }
+
+    public static List<InvitationDTO> toDTO(List<Invitation> invitations) {
 
         List<InvitationDTO> invitationDTOs = new ArrayList<>();
 
@@ -25,7 +37,7 @@ public class InvitationMapper {
         return invitationDTOs;
     }
 
-    public InvitationDTO toDTO(Invitation invitation) {
+    public static InvitationDTO toDTO(Invitation invitation) {
 
         InvitationDTO invitationDTO = new InvitationDTO();
         invitationDTO.id = invitation.getId();
@@ -39,12 +51,11 @@ public class InvitationMapper {
         return invitationDTO;
     }
 
-    public static Invitation toEntity(CreateInvitationRequest request, Company company) {
+    public Invitation toEntity(CreateInvitationRequest request) {
         Invitation invitation = new Invitation();
-        invitation.setEvent(request.event);
-        invitation.setReceiver(company);
+        invitation.setEvent(eventService.getEvent(request.eventId));
+        invitation.setReceiver(companyService.getCompany(request.receiverId));
         invitation.setExpiration(request.expiration);
-        invitation.setAccepted(false);
         return invitation;
     }
 }

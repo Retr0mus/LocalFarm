@@ -3,16 +3,12 @@ package com.github.countrybros.application.services.event;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.mappers.EventMapper;
-import com.github.countrybros.application.services.company.ICompanyService;
-import com.github.countrybros.application.services.user.UserService;
 import com.github.countrybros.infrastructure.repositories.event.IEventRepository;
 import com.github.countrybros.model.event.*;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
-import com.github.countrybros.application.models.requests.event.EditEventRequest;
-import com.github.countrybros.application.models.requests.event.EventElement;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,15 +25,13 @@ import java.util.stream.StreamSupport;
 public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
-    private final ICompanyService companyService;
 
     private final IInvitationService invitationService;
 
-    public EventService(IEventRepository eventRepository, ICompanyService companyService,
+    public EventService(IEventRepository eventRepository,
                          IInvitationService invitationService) {
 
         this.eventRepository = eventRepository;
-        this.companyService = companyService;
 
         this.invitationService = invitationService;
     }
@@ -45,7 +39,7 @@ public class EventService implements IEventService {
     @Override
     public List<Event> getAllEvents() {
 
-        return StreamSupport.stream(IEventRepository.findAll().spliterator(), false)
+        return StreamSupport.stream(eventRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
@@ -103,44 +97,6 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void setAsCanceled(int eventId) {
-
-        Event event = getEvent(eventId);
-
-        if (event.getState() == EventState.canceled)
-            throw new RequestAlreadySatisfiedException("Event already canceled");
-
-        if (event.getState().equals(EventState.completed))
-            throw new ImpossibleRequestException("Event already completed");
-
-        event.setState(EventState.canceled);
-        this.eventRepository.save(event);
-    }
-
-    @Override
-    public void createEvent(CreateEventRequest request) {
-
-        Company organizer = companyService.getCompany(request.organizerId);
-
-        Event event = new Event(request.name, request.maxSpots);
-        event.setDates(request.dates);
-        event.setLocation(request.location);
-        event.setOrganizer(organizer);
-
-        eventRepository.save(event);
-
-        //create and retrieve invitations
-        for (Integer companyId : request.guestsId) {
-
-            CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
-            invitationRequest.event = event;
-            invitationRequest.expiration = LocalDate.now().plusDays(7);
-            invitationRequest.receiverId = companyId;
-            invitationService.addInvitation(invitationRequest);
-        }
-    }
-
-    @Override
     public void confirmEventPublication(int eventId, int userId) {
 
         Event event = getEvent(eventId);
@@ -164,7 +120,7 @@ public class EventService implements IEventService {
     @Override
     public void cancelCompanyParticipation(Company company, Event event) {
 
-        if (event.getState().equals(EventState.completed) || event.getState().equals(EventState.canceled))
+        if (event.getState().equals(EventState.completed))
             throw new ImpossibleRequestException("Incoherent event status");
 
         if (! event.getGuests().contains(company))

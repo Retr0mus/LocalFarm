@@ -2,6 +2,7 @@ package com.github.countrybros.application.services.event;
 
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.mappers.InvitationMapper;
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.infrastructure.repositories.event.IInvitationRepository;
 import com.github.countrybros.model.event.Invitation;
@@ -26,10 +27,9 @@ public class InvitationService implements IInvitationService {
     }
 
     @Override
-    public Invitation addInvitation(CreateInvitationRequest request,Company company) {
+    public void addInvitation(Invitation invitation) {
 
-        Invitation invitation = InvitationMapper.toEntity(request, company);
-        return invitationRepository.save(invitation);
+        invitationRepository.save(invitation);
     }
 
     /**
@@ -60,7 +60,7 @@ public class InvitationService implements IInvitationService {
         if (!invitationRepository.existsById(invitationId))
             throw new NotFoundInRepositoryException("Invitation not found");
 
-        return invitationRepository.getInvitationById(invitationId);
+        return invitationRepository.findById(invitationId).orElse(null);
     }
 
     /**
@@ -91,7 +91,6 @@ public class InvitationService implements IInvitationService {
             throw new ImpossibleRequestException("The invitation is expired");
         }
 
-        invitation.setAccepted(true);
         invitationRepository.save(invitation);
     }
 }

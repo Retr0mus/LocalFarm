@@ -1,5 +1,6 @@
 package com.github.countrybros.application.mappers;
 
+import com.github.countrybros.application.models.dtos.user.UserDto;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;

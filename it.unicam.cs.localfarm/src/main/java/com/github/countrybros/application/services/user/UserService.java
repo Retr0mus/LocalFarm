@@ -36,6 +36,7 @@ public class UserService implements IUserService {
         if (checkEmailExists(request.email))
             throw new ImpossibleRequestException("Email " + request.email + " already exists.");
 
+        UserMapper userMapper = new UserMapper();
         User user = userMapper.toDomain(request);
 
         cartService.save(user.getCart());

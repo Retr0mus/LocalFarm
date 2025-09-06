@@ -1,12 +1,8 @@
 package com.github.countrybros.application.mappers;
 
 import com.github.countrybros.application.models.dtos.event.EventDTO;
-import com.github.countrybros.application.models.dtos.event.EventDto;
-import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.model.event.Event;
-import com.github.countrybros.model.event.EventState;
-import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.model.user.User;
 
@@ -33,7 +29,7 @@ public class EventMapper {
                 event.getMaxSpots(),
                 event.getLocation(),
                 event.getDates(),
-                CompanyMapper.toDTO(event.getOrganizer()),
+                UserMapper.toDto(event.getOrganizer()),
                 event.getSubscribers(),
                 event.getGuests(),
                 event.getState().name(),

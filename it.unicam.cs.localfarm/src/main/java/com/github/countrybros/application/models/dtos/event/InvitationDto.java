@@ -9,8 +9,10 @@ import java.util.List;
 /**
  * Represents alla the information that the client needs to display it at users.
  */
-public class InvitationDto {
+public class InvitationDTO {
 
+    public int id;
+    public String senderName;
     public LocalDate expiration;
     public String eventName;
     public String eventDescription;

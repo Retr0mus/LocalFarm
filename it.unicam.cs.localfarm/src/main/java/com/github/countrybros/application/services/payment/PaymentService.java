@@ -70,7 +70,7 @@ public class PaymentService implements IPaymentService {
         }
 
         try {
-            boolean refundSuccess = paymentMethod.pay(amount);
+            boolean refundSuccess = paymentMethod.pay(amount, email);
             if (!refundSuccess) {
                 throw new IllegalStateException("Refund failed, order blocked");
             }
