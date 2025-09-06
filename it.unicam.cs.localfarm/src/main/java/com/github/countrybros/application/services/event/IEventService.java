@@ -23,7 +23,7 @@ public interface IEventService {
      *
      * @param request the request of the event to create.
      */
-    void createEvent(CreateEventRequest request, User organizer);
+    void createEvent(CreateEventRequest request);
 
     /**
      * Removes an event from the repository.
@@ -44,6 +44,14 @@ public interface IEventService {
      */
     Event getEvent(int eventId);
 
+    /**
+     * Modifies the event specified, if present.
+     *
+     * @param request The request to modify an event.
+     *
+     * @throws NotFoundInRepositoryException if the event was not in the repo.
+     */
+    public void editEvent(EditEventRequest request);
 
     /**
      * Returns a list of all public events.
@@ -91,21 +99,31 @@ public interface IEventService {
 
     /**
      * The invitation of a company on an event will be refused/deleted;
+     * If it's not participating, or the event is canceled or has ended, throws errors.
      *
-     * @param companyId the company ID that signs out.
-     * @param eventId the event.
+     * @param company the company that signs out.
+     * @param event the event.
      */
-    void cancelCompanyParticipation(int companyId, int eventId);
+    void cancelCompanyParticipation(Company company, Event event);
 
     /**
      * Confirms the participation of a certain company to an event.
      *
-     * @param eventId the event to participate to.
-     * @param companyId the company who decided to participate
+     * @param event the event to participate to.
+     * @param company the company who decided to participate
      *
      * @throws RuntimeException if the company was already included among the event's guests
      */
-    void confirmCompanyParticipation(int eventId, int companyId);
+    void confirmCompanyParticipation(Event event, Company company);
+
+    /**
+     * Returns all the participation of a company in a planning or public event.
+     *
+     * @param company id of the company.
+     *
+     * @return a list of all events in witch is participating.
+     */
+    List<Event> getParticipations(Company company);
 
     /**
      *

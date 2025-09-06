@@ -1,6 +1,8 @@
 package com.github.countrybros.web.controllers.submission;
 
 import com.github.countrybros.application.facades.Orchestrator;
+import com.github.countrybros.application.mappers.SubmissionMapper;
+import com.github.countrybros.application.models.dtos.submission.SubmissionDTO;
 import com.github.countrybros.application.services.submission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.submission.Submission;
@@ -37,8 +39,8 @@ public class SubmissionController {
     @GetMapping("getAccepted")
     public ResponseEntity<Object> getAcceptedSubmission(@PathParam("curatorId") int curatorId) {
 
-        return new ResponseEntity<>(submissionService
-                .getSubmissionToReview(curatorId), HttpStatus.OK);
+        return new ResponseEntity<>(SubmissionMapper.toDTO(submissionService
+                .getSubmissionToReview(curatorId)), HttpStatus.OK);
     }
 
     @PutMapping("addQuantityToStock")
@@ -52,9 +54,9 @@ public class SubmissionController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Submission>> getAvailable() {
+    public ResponseEntity<List<SubmissionDTO>> getAvailable() {
 
-        List<Submission> submissions = submissionService.getAvailableSubmissions();
+        List<SubmissionDTO> submissions = SubmissionMapper.toDTO(submissionService.getAvailableSubmissions());
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 

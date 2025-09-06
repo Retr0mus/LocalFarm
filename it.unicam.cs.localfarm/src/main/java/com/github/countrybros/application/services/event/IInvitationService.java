@@ -1,10 +1,10 @@
 package com.github.countrybros.application.services.event;
 
-import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
+
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ public interface IInvitationService {
      *
      * @param request The request to add invitation.
      */
-    Invitation addInvitation(CreateInvitationRequest request, Company company);
+    void addInvitation(CreateInvitationRequest request);
 
     /**
      * Refuses/cancels an invitation.
@@ -43,16 +43,4 @@ public interface IInvitationService {
      */
     List<Invitation> getInvitationsByCompany(int companyId);
 
-    /**
-     * Accepts an invitation, subscribing the said receiver into the Event's guests.
-     *
-     * @param invitationId the invitation to accept.
-     *
-     * @throws RequestAlreadySatisfiedException if the invited company is already in
-     * event's guest list.
-     * @throws ImpossibleRequestException if the invitation is expired.
-     */
-    void acceptInvitation(int invitationId);
-
-    //TODO: Add refuse invitation
 }

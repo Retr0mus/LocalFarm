@@ -4,7 +4,6 @@ import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.services.stock.IStockService;
 import com.github.countrybros.application.mappers.StockMapper;
-import com.github.countrybros.application.services.company.CompanyService;
 import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.model.stock.Stock;
 import jakarta.validation.Valid;
@@ -23,6 +22,7 @@ public class StockController {
 
     @Autowired
     public StockController(Orchestrator orchestrator, IStockService stockService) {
+
         this.orchestrator = orchestrator;
         this.stockService = stockService;
     }
@@ -37,7 +37,6 @@ public class StockController {
         orchestrator.createStock(request);
         return new ResponseEntity<>("Stock successfully created", HttpStatus.OK);
     }
-
     @PutMapping("modifyPrice")
     public ResponseEntity<Object> modifyPrice(@PathParam("stockId") int stockId, @PathParam("sellerId") int sellerId, @PathParam("newPrice") float newPrice ) {
         stockService.setPrice(stockId, sellerId, newPrice);
@@ -45,12 +44,12 @@ public class StockController {
     }
 
     @GetMapping("getByItem")
-    public ResponseEntity<Object> getByItem(@PathParam("itemId") int itemId) {
+    public ResponseEntity<Object> getStocksByItem(@PathParam("itemId") int itemId) {
         return new ResponseEntity<>(orchestrator.getStocksByItem(itemId).stream().map(StockMapper::toDto), HttpStatus.OK);
     }
 
     @GetMapping( "getBySeller")
-    public ResponseEntity<Object> getItem(@PathParam("sellerId") int sellerId) {
+    public ResponseEntity<Object> getStocksBySeller(@PathParam("sellerId") int sellerId) {
         return new ResponseEntity<>(orchestrator.getStocksBySeller(sellerId).stream().map(StockMapper::toDto), HttpStatus.OK);
     }
 

@@ -2,7 +2,7 @@ package com.github.countrybros.application.services.event;
 
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.application.mappers.InvitationMapper;
+import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.infrastructure.repositories.event.IInvitationRepository;
 import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.model.company.Company;

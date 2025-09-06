@@ -23,6 +23,8 @@ public class Event implements IPostable {
 
     private String name;
 
+    private String description;
+
     private int maxSpots;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
@@ -44,8 +46,6 @@ public class Event implements IPostable {
     private List<User> subscribers = new ArrayList<>();
 
     private EventState state;
-
-    private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -138,6 +138,10 @@ public class Event implements IPostable {
         subscribers.remove(user);
     }
 
+    public List<Company> getGuests() {
+
+        return participants;
+    }
 
     public void setState(EventState eventState) {
         state = eventState;
@@ -197,4 +201,5 @@ public class Event implements IPostable {
     public void setParticipants(List<Company> participants) {
         this.participants = participants;
     }
+
 }

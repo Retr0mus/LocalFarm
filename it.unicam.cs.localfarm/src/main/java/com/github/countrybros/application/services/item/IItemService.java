@@ -20,14 +20,6 @@ public interface IItemService {
     void addItem(Item item);
 
     /**
-     * Deletes an existing ItemDetails.
-     *
-     * @param itemDetailsId The ItemDetails ID.
-     * @throws NotFoundInRepositoryException if there is no ItemDetails with that id.
-     */
-    void deleteItemDetails(int itemDetailsId);
-
-    /**
      * Changes the status of an ItemDetails according to the previous one.
      *
      * @param itemStatus The new status.
@@ -49,11 +41,6 @@ public interface IItemService {
 
     List<Item> getAvailableItems();
 
-    /**
-     * Returns all the ItemDetails of a specified Company.
-     *
-     * @param companyId ID of the company.
-     */
-    List<Item> getItemsBySeller(int companyId);
+    void deleteItem(int itemId);
 }
 

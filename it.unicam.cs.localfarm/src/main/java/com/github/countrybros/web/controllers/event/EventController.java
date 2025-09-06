@@ -2,10 +2,11 @@ package com.github.countrybros.web.controllers.event;
 
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.mappers.EventMapper;
-import com.github.countrybros.application.models.dtos.event.EventDto;
+import com.github.countrybros.application.models.dtos.event.EventDTO;
 import com.github.countrybros.application.services.event.IEventService;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
+import com.github.countrybros.application.models.requests.event.EditEventRequest;
 import com.github.countrybros.application.models.requests.event.EventElement;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
@@ -23,6 +24,7 @@ public class EventController {
 
     private final IEventService eventService;
     private final Orchestrator orchestrator;
+    private final EventMapper eventMapper = new EventMapper();
 
     @Autowired
     public EventController(IEventService eventService, Orchestrator orchestrator) {
@@ -30,10 +32,10 @@ public class EventController {
         this.orchestrator = orchestrator;
     }
 
-    @GetMapping(value = "/events")
-    public ResponseEntity<List<EventElement>> getEvents() {
+    @GetMapping(value="events")
+    public ResponseEntity<List<EventDTO>> getEvents(){
 
-        return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
+        return new ResponseEntity<>(eventMapper.toDTO(eventService.getAllEvents()), HttpStatus.OK);
     }
 
     @PutMapping("/subscribe")
@@ -49,13 +51,10 @@ public class EventController {
         return new ResponseEntity<>("Unsubscription successful", HttpStatus.OK);
     }
 
-    @GetMapping("/publicEvents")
-    public ResponseEntity<List<EventDto>> getPublicEvents() {
-        List<Event> events = eventService.getPublicEvents();
-        List<EventDto> eventDtos = events.stream()
-                .map(EventMapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(eventDtos);
+    @GetMapping("publicEvents")
+    public ResponseEntity<Object> getPublicEvents(){
+
+        return new ResponseEntity<>(eventMapper.toDTO(eventService.getPublicEvents()), HttpStatus.OK);
     }
 
     @PutMapping("/delete")
@@ -79,26 +78,26 @@ public class EventController {
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 
-    @PutMapping("/cancelCompanyParticipation")
-    public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("eventId") int eventId
-            , @PathParam("userId") int companyId) {
+    @GetMapping("get")
+    public ResponseEntity<Object> getEvent(@PathParam("eventId") int eventId){
 
-        eventService.cancelCompanyParticipation(companyId, eventId);
-        return new ResponseEntity<>("Participation cancelled", HttpStatus.OK);
+        return new ResponseEntity<>(eventMapper.toDTO(eventService.getEvent(eventId)), HttpStatus.OK);
     }
 
-    @PutMapping("/confirmCompanyParticipation")
-    public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
-            , @PathParam("companyId") int companyId) {
+    @GetMapping("getParticipations")
+    public ResponseEntity<Object> getParticipations(@PathParam("companyId") int companyId){
 
-        eventService.confirmCompanyParticipation(eventId, companyId);
-        return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
+        List<EventDTO> participations = eventMapper.toDTO(
+                orchestrator.getParticipations(companyId));
+        return new ResponseEntity<>(participations, HttpStatus.OK);
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<EventDto> getEvent(@PathParam("eventId") int eventId) {
-        Event event = eventService.getEvent(eventId);
-        return ResponseEntity.ok(EventMapper.toDTO(event));
+    @PostMapping("cancelCompanyParticipation")
+    public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("companyId") int companyId,
+                                                             @PathParam("eventId") int eventId){
+
+        orchestrator.cancelCompanyParticipation(eventId, companyId);
+        return new ResponseEntity<>("Event cancelled", HttpStatus.OK);
     }
 
     @GetMapping("/subscribed")
@@ -120,5 +119,4 @@ public class EventController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(eventDtos);
     }
-
 }

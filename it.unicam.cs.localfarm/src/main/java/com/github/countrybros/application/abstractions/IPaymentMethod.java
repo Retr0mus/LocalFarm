@@ -12,7 +12,7 @@ public interface IPaymentMethod {
      *
      * @param price The price to receive.
      */
-    boolean pay(float price);
+    boolean pay(float price, String receiver);
 
 
 
