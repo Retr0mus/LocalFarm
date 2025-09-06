@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public interface IPaymentService {
 
+    void paySellers(List<Order> orders);
+
     /**
      * The payment towards the platform.
      *
@@ -19,13 +21,6 @@ public interface IPaymentService {
      * @param amount        the amount to pay.
      */
     boolean paymentToMarketplace(IPaymentMethod paymentMethod, float amount);
-
-    /**
-     * Payment of debts about some companies
-     */
-    void paySellers(Map<Company, Double> mappedDebts);
-
-    List<IPaymentMethod> getPaymentMethods();
 
     /**
      *
@@ -36,6 +31,5 @@ public interface IPaymentService {
      * @return
      */
     boolean refund(String email,float amount);
-
 
 }

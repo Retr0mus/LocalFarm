@@ -45,6 +45,14 @@ public class Event implements IPostable {
 
     private EventState state;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private final List<Company> participants = new ArrayList<>();
+
 
     public Event(String name, int maxSpots) {
         this.name = name;
@@ -119,13 +127,7 @@ public class Event implements IPostable {
 
     public List<Company> getGuests() {
 
-        List<Company> guests = new ArrayList<>();
-
-//        for (Invitation invitation : invitations)
-//            if (invitation.isAccepted())
-//                guests.add(invitation.getReceiver());
-
-        return guests;
+        return participants;
     }
 
     public void setState(EventState eventState) {

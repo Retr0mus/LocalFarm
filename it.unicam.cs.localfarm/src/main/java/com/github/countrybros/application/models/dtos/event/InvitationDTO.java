@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class InvitationDTO {
 
+    public int id;
+    public String senderName;
     public LocalDate expiration;
     public String eventName;
     public String eventDescription;

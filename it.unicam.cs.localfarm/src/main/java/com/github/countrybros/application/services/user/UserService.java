@@ -1,5 +1,6 @@
 package com.github.countrybros.application.services.user;
 
+import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.mappers.UserMapper;
 import com.github.countrybros.infrastructure.repositories.user.IUserRepository;
@@ -19,7 +20,7 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
     @Autowired
     private ICartService cartService;
-    private UserMapper userMapper = new UserMapper();
+    private final UserMapper userMapper = new UserMapper();
 
     @Override
     public User getUser(int userId) {
@@ -34,7 +35,7 @@ public class UserService implements IUserService {
     public void addUser(AddUserRequest request) {
 
         if (checkEmailExists(request.email))
-            throw new IllegalArgumentException("Email " + request.email + " already exists.");
+            throw new ImpossibleRequestException("Email " + request.email + " already exists.");
 
         User user = userMapper.toDomain(request);
 

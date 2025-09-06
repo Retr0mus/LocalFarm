@@ -18,6 +18,7 @@ import com.github.countrybros.application.models.requests.event.EventElement;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -44,15 +45,9 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public List<EventElement> getAllEvents() {
+    public List<Event> getAllEvents() {
 
         return StreamSupport.stream(IEventRepository.findAll().spliterator(), false)
-                .map(event -> {
-                    EventElement dto = new EventElement();
-                    dto.id = event.getId();
-                    dto.name = event.getName();
-                    return dto;
-                })
                 .collect(Collectors.toList());
     }
 
@@ -69,17 +64,6 @@ public class EventService implements IEventService {
         event.setOrganizer(company);
 
         this.IEventRepository.save(event);
-    }
-
-    @Override
-    public void deleteEvent(int eventId) {
-
-        Event event = this.IEventRepository.findById(eventId).orElse(null);
-
-        if (event == null)
-            throw new NotFoundInRepositoryException("Event not found");
-
-        IEventRepository.delete(event);
     }
 
     @Override
@@ -109,17 +93,9 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public List<EventElement> getPublicEvents() {
+    public List<Event> getPublicEvents() {
 
-        return IEventRepository.getAllByState(EventState.currentlyPublic)
-                        .stream()
-                .map(event -> {
-                    EventElement dto = new EventElement();
-                    dto.id = event.getId();
-                    dto.name = event.getName();
-                    return dto;
-                })
-                .collect(Collectors.toList());
+        return IEventRepository.getAllByState(EventState.currentlyPublic);
     }
 
     @Override
@@ -211,4 +187,13 @@ public class EventService implements IEventService {
         event.getGuests().add(company);
         IEventRepository.save(event);
     }
+
+    @Override
+    public List<Event> getParticipations(Company company) {
+
+        List<Company> companies = new ArrayList<>();
+        companies.add(company);
+        return IEventRepository.getAllByParticipantsIsContaining(companies);
+    }
+
 }

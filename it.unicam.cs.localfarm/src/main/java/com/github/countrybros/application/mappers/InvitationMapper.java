@@ -26,6 +26,8 @@ public class InvitationMapper {
     public InvitationDTO toDTO(Invitation invitation) {
 
         InvitationDTO invitationDTO = new InvitationDTO();
+        invitationDTO.id = invitation.getId();
+        invitationDTO.senderName = invitation.getEvent().getOrganizer().getName();
         invitationDTO.eventDescription = invitation.getEvent().getDescription();
         invitationDTO.eventName = invitation.getEvent().getName();
         invitationDTO.expiration = invitation.getExpiration();

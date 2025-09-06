@@ -1,5 +1,6 @@
 package com.github.countrybros.application.services.order;
 
+import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
@@ -7,6 +8,7 @@ import com.github.countrybros.application.models.requests.order.RefundRequest;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Responsibility of managing the Orders
@@ -30,8 +32,6 @@ public interface IOrderService {
      */
     List<Order> getOrders(int user);
 
-    List<Order> getOrders(User user);
-
     /**
      * Returns all the order made since the specified date.
      *
@@ -44,7 +44,7 @@ public interface IOrderService {
     /**
      * Saves an order in the repository.
      *
-     * @param request The order to save.
+     * @param order The order to save.
      */
     void addOrder(Order order);
 
@@ -64,11 +64,4 @@ public interface IOrderService {
 
     void cancelOrder(RefundRequest request);
 
-    /**
-     *
-     * Block order when the payment doesn't go the right way
-     *
-     * @param orderId
-     */
-    void blockOrder(int orderId);
 }

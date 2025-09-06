@@ -107,7 +107,12 @@ public class StockService implements IStockService {
      */
     @Override
     public Stock getStock(int stockId) {
-        return IStockRepository.findById(stockId).orElse(null);
+        Stock stock = IStockRepository.findById(stockId).orElse(null);
+
+        if (stock == null)
+            throw new NotFoundInRepositoryException("Stock with Id " + stockId + " not found");
+
+        return stock;
     }
 
     /**

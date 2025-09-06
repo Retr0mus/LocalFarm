@@ -18,13 +18,10 @@ import java.util.List;
 public class ItemService implements IItemService {
 
     private final IItemRepository itemRepository;
-    private final ISubmissionService submissionService;
 
-    public ItemService(IItemRepository repository,
-                       ISubmissionService submissionService) {
+    public ItemService(IItemRepository repository) {
 
         this.itemRepository = repository;
-        this.submissionService = submissionService;
     }
 
 
@@ -32,93 +29,10 @@ public class ItemService implements IItemService {
     public void addItem(Item item) {
 
         if (itemRepository.existsByName(item.getName()))
-            throw new IllegalArgumentException("An item with that name already exists");
+            throw new ImpossibleRequestException("An item with that name already exists");
         itemRepository.save(item);
     }
 
-    @Override
-    public void deleteItemDetails(int itemDetailsId) {
-    /*
-        if (!itemDetailsRepository.existsById(itemDetailsId))
-            throw new NotFoundInRepositoryException("Item details not found");
-
-        itemDetailsRepository.deleteById(itemDetailsId);
-    }
-
-    //TODO Recognise la richiesta di accetazione e la modifca di essa
-
-        Submission submission = acceptanceSubmissionService.getAcceptanceSubmission(acceptanceSubmissionId);
-
-        if (submission instanceof AddProductSubmission sub)
-            acceptItemDetails(sub.getItemDetailsId());
-
-        else if (submission instanceof EditProductSubmission sub)
-            editItem(sub.getProductToEditId(), sub.getProductChangeId());
-
-        else
-            throw new ImpossibleRequestException("Unsupported submission type");
-
-        acceptanceSubmissionService.onAcceptance(acceptanceSubmissionId);
-
-     */
-    }
-
-    /**
-     * Accept an item that is under review.
-     *
-     * @param itemDetailsId The itemDetails ID.
-     */
-    private void acceptItemDetails(int itemDetailsId) {
-
-        Item item = getItem(itemDetailsId);
-
-        //TODO: implement
-        //if (itemDetails.getStatus() != ItemStatus.underReview)
-        //throw new ImpossibleRequestException("Item details not under review");
-
-        item.setStatus(ItemStatus.available);
-        itemRepository.save(item);
-    }
-
-    /**
-     * Sets all the base details of an ItemDetails equal to another one,
-     * the first ItemDetails should be public, the other should be under review and
-     * will be deleted.
-     *
-     * @param existingItemDetailsId The ID of the ItemDetails that will be relaced.
-     * @param changedItemDetailsId The new ItemDetails ID.
-     *
-     * @throws RequestAlreadySatisfiedException if there are no changes.
-     * @throws ImpossibleRequestException if the subtypes are incompatible.
-     */
-    private void editItem(int existingItemDetailsId, int changedItemDetailsId) {
-    /*
-        Item existingItem = getItem(existingItemDetailsId);
-        Item changedItem = getItem(changedItemDetailsId);
-
-        if (!existingItem.getClass().equals(changedItem.getClass()))
-            throw new ImpossibleRequestException("ItemDetails type not compatible");
-
-        if (existingItem.equals(changedItem))
-            throw new RequestAlreadySatisfiedException("Invalid ItemDetails edit request: changes already applied");
-
-        if (!changedItem.getStatus().equals(ItemStatus.underReview))
-            throw new ImpossibleRequestException("Changes can't be applied if they're not under review");
-
-        if (!existingItem.getStatus().equals(ItemStatus.available)
-                && !existingItem.getStatus().equals(ItemStatus.outOfStock))
-            throw new ImpossibleRequestException("The ItemDetails to update has incompatible status");
-
-        BeanUtils.copyProperties(changedItem, existingItem);
-        existingItem.setStatus(ItemStatus.available);
-        existingItem.setVisibleByPublic(true);
-
-        //do not reverse this two lines
-        deleteItemDetails(changedItemDetailsId);
-        itemDetailsRepository.save(existingItem);
-
-     */
-    }
 
     @Override
     public Item getItem(int itemId) {
@@ -148,12 +62,8 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public List<Item> getItemsBySeller(int companyId) {
-        return List.of();
-    }
+    public void deleteItem(int itemId) {
 
-    @Override
-    public List<Item> getCompanyItemDetails(int companyId) {
-        return itemRepository.findAllByProducer_Id(companyId);
+        itemRepository.deleteById(itemId);
     }
 }

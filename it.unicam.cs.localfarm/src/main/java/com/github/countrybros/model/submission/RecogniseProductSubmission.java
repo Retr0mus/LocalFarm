@@ -1,5 +1,7 @@
 package com.github.countrybros.model.submission;
 
+import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.stock.Stock;
 import jakarta.persistence.*;
 
 /**
@@ -9,21 +11,19 @@ import jakarta.persistence.*;
 @DiscriminatorValue("recogniseProduct")
 public class RecogniseProductSubmission extends Submission {
 
-    private int stockId;
+    @ManyToOne
+    private Stock stock;
     private int qta;
 
-    public RecogniseProductSubmission(int sellerId, int stockId, int qta) {
-        super(sellerId);
-        this.stockId = stockId;
+    public RecogniseProductSubmission(Company sender, Stock stock, int qta) {
+        super(sender);
+        this.stock = stock;
         this.qta = qta;
     }
 
     public RecogniseProductSubmission() {}
 
 
-    public int getStockId() {
-        return stockId;
-    }
 
     public int getQta() {
         return qta;
@@ -33,7 +33,11 @@ public class RecogniseProductSubmission extends Submission {
         this.qta = qta;
     }
 
-    public void setStockId(int productId) {
-        this.stockId = productId;
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 }

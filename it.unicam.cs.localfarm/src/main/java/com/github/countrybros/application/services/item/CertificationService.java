@@ -1,7 +1,7 @@
 package com.github.countrybros.application.services.item;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
-import com.github.countrybros.infrastructure.repositories.user.ICertificationRepository;
+import com.github.countrybros.infrastructure.repositories.product.ICertificationRepository;
 import com.github.countrybros.model.item.Certification;
 import com.github.countrybros.application.models.requests.item.AddCertificationRequest;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class CertificationService implements ICertificationService {
     }
 
     @Override
-    public Certification getCertificationById(int id) {
+    public Certification getCertification(int id) {
 
         Certification certification = repository.findById(id).orElse(null);
 

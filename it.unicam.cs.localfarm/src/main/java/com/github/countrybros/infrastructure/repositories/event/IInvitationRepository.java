@@ -12,7 +12,5 @@ import java.util.List;
 @Repository
 public interface IInvitationRepository extends CrudRepository<Invitation, Integer> {
 
-    Invitation getInvitationById(int id);
-
     List<Invitation> findAllByReceiver_Id(int receiverId);
 }

@@ -2,13 +2,14 @@ package com.github.countrybros.application.services.payment;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.errors.ExternalError;
-import com.github.countrybros.infrastructure.services.shopping.MockPayment;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,18 +26,30 @@ public class PaymentService implements IPaymentService {
      * Payment of debts about some companies
      */
     @Override
-    public void paySellers(Map<Company, Double> mappedDebts) {
+    public void paySellers(List<Order> orders) {
 
-        MockPayment mockPayment = new MockPayment();
-        for (Company company : mappedDebts.keySet())
-            if (! mockPayment.pay(mappedDebts.get(company).floatValue(), company.getEmail()))
+        Map<Company, List<OrderItem>> itemsToPay = new HashMap<>();
+
+        for (Order order : orders) {
+            if (order.getOrderStatus().equals(OrderStatus.delivered))
+                for (OrderItem item : order.getItems()) {
+                    if (item.isPaid())
+                        continue;
+                    Company company = item.getSeller();
+                    itemsToPay.computeIfAbsent(company, c -> new ArrayList<>()).add(item);
+                }
+        }
+
+        for (Company company : itemsToPay.keySet()) {
+            double total = 0.0;
+            List<OrderItem> items = itemsToPay.get(company);
+            for (OrderItem item : items)
+                total += item.getQuantity() * item.getUnitPrice();
+            if (! paymentMethod.pay(Double.valueOf(total).floatValue(), company.getEmail()))
                 throw new ExternalError("Payment failed for " + company.getEmail());
-
-    }
-
-    @Override
-    public List<IPaymentMethod> getPaymentMethods() {
-        return List.of();
+            for (OrderItem item : items)
+                item.setPaid(true);
+        }
     }
 
     /**

@@ -26,7 +26,8 @@ public class InvitationController {
     @GetMapping("get")
     public ResponseEntity<Object> getInvitation(@PathParam("invitationId") int invitationId) {
 
-        return new ResponseEntity<>(invitationService.getInvitation(invitationId), HttpStatus.OK);
+        return new ResponseEntity<>(invitationMapper
+                .toDTO(invitationService.getInvitation(invitationId)), HttpStatus.OK);
     }
 
     @GetMapping("getCompanyInvitations")
@@ -37,18 +38,11 @@ public class InvitationController {
     }
 
     @PutMapping("accept")
-    public ResponseEntity<Object> accept(@PathParam("invitationId") int invitationId,
-                                         @PathParam("accepted") boolean accepted) {
+    public ResponseEntity<Object> acceptInvitation(@PathParam("invitationId") int invitationId,
+                                                   @PathParam("accepted") boolean accepted) {
 
         orchestrator.acceptInvitation(invitationId, accepted);
-        return new ResponseEntity<>("Invitation accepted", HttpStatus.OK);
-    }
-
-    @PutMapping("cancel_participation")
-    public ResponseEntity<Object> cancel(@PathParam("companyId") int companyId,
-                                         @PathParam("eventId") int eventId) {
-
-        orchestrator.cancelCompanyParticipation(companyId, eventId);
-        return new ResponseEntity<>("Invitation cancelled", HttpStatus.OK);
+        return new ResponseEntity<>(
+                accepted ? "invitation accepted" : "invitation rejected", HttpStatus.OK);
     }
 }

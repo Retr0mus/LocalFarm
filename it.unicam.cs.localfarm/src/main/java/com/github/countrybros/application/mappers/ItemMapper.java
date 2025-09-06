@@ -17,7 +17,7 @@ import com.github.countrybros.model.company.Company;
 import java.util.ArrayList;
 
 /**
- * Director class to manage the building of different types of ItemDetails
+ * Director class to manage the building of different types of ItemDetails and their DTOs
  */
 public class ItemMapper {
 
@@ -126,8 +126,6 @@ public class ItemMapper {
 
         Company producer = companyService.getCompany(request.producerId);
 
-
-
         item.setName(request.name);
         item.setDescription(request.description);
         item.setProducer(producer);
@@ -137,7 +135,7 @@ public class ItemMapper {
 
         buildBaseItemDetails(request, bundle);
 
-        for (int i : request.items.values())
+        for (int i : request.items.keySet())
             itemService.getItem(i);
 
         bundle.setItems(request.items);
@@ -149,7 +147,7 @@ public class ItemMapper {
 
         ArrayList<Certification> certifications = new ArrayList<>();
         for (int id: request.certificationIds)
-            certifications.add(certificationService.getCertificationById(id));
+            certifications.add(certificationService.getCertification(id));
 
         product.setCertifications(certifications);
     }

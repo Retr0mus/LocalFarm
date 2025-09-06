@@ -4,7 +4,9 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repositories.user.IOrderItemRepository;
 import com.github.countrybros.infrastructure.repositories.user.IOrderRepository;
+import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
+import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
 import com.github.countrybros.model.user.*;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
@@ -14,7 +16,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService implements IOrderService {
@@ -45,14 +49,9 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getOrders(User user) {
-        return orderRepository.findOrderByCustomer(user);
-    }
-
-    @Override
     public List<Order> getOrdersSince(LocalDate date) {
 
-        return orderRepository.findOrderByOrderDate(
+        return orderRepository.findOrdersByOrderDateAfter(
                 Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
 

@@ -35,14 +35,11 @@ public abstract class Item implements IPostable {
 
     private ItemStatus status;
 
-    private boolean visibleByPublic = false;
-
     @ManyToOne
     private Company producer;
 
     public Item() {
         this.status = ItemStatus.awaitingReview;
-        this.visibleByPublic = false;
     }
 
     public String getName() {
@@ -65,15 +62,6 @@ public abstract class Item implements IPostable {
     public void setStatus(ItemStatus status) {
 
         this.status = status;
-    }
-
-    public boolean getIsVisibleByPublic() {
-        return visibleByPublic;
-    }
-
-    public void setVisibleByPublic(boolean visibleByPublic) {
-
-        this.visibleByPublic = visibleByPublic;
     }
 
     public Company getProducer() {

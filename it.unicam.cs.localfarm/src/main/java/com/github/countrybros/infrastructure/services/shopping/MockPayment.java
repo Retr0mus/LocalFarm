@@ -10,7 +10,7 @@ public class MockPayment implements IPaymentMethod {
      */
     @Override
     public boolean pay(float price, String receiverEmail) {
-        return true;
+        return false;
     }
 
     @Override

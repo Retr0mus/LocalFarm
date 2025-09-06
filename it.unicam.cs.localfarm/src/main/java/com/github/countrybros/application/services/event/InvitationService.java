@@ -28,7 +28,7 @@ public class InvitationService implements IInvitationService {
     }
 
     @Override
-    public Invitation addInvitation(CreateInvitationRequest request) {
+    public void addInvitation(CreateInvitationRequest request) {
 
         Company company = companyService.getCompany(request.receiverId);
 
@@ -37,7 +37,7 @@ public class InvitationService implements IInvitationService {
         invitation.setReceiver(company);
         invitation.setExpiration(request.expiration);
 
-        return IInvitationRepository.save(invitation);
+        IInvitationRepository.save(invitation);
     }
 
     /**
@@ -68,7 +68,7 @@ public class InvitationService implements IInvitationService {
         if (!IInvitationRepository.existsById(invitationId))
             throw new NotFoundInRepositoryException("Invitation not found");
 
-        return IInvitationRepository.getInvitationById(invitationId);
+        return IInvitationRepository.findById(invitationId).get();
     }
 
     /**
@@ -80,25 +80,5 @@ public class InvitationService implements IInvitationService {
     public List<Invitation> getInvitationsByCompany(int companyId) {
 
         return IInvitationRepository.findAllByReceiver_Id(companyId);
-    }
-
-    /**
-     * Accepts an invitation, subscribing the said receiver into the Event's guests.
-     *
-     * @param invitationId the invitation to accept.
-     *
-     *
-     */
-    public void acceptInvitation(int invitationId) {
-
-        Invitation invitation = getInvitation(invitationId);
-
-        if (invitation.isExpired()) {
-
-            IInvitationRepository.deleteById(invitationId);
-            throw new ImpossibleRequestException("The invitation is expired");
-        }
-
-        IInvitationRepository.save(invitation);
     }
 }

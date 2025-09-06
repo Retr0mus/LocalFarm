@@ -34,7 +34,6 @@ import com.github.countrybros.model.user.*;
 import com.github.countrybros.application.models.requests.submission.AddProductSubmissionRequest;
 import com.github.countrybros.model.stock.Stock;
 import com.github.countrybros.application.models.requests.submission.RecogniseProductSubmissionRequest;
-import com.github.countrybros.application.models.requests.item.AddCertificationRequest;
 import com.github.countrybros.application.models.requests.item.AddItemRequest;
 import com.github.countrybros.application.models.requests.user.AddItemToCartRequest;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
@@ -43,9 +42,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Facade that represents alla the use cases of the system.
@@ -97,6 +94,7 @@ public class Orchestrator {
     public void addItemRequest (AddItemRequest request) {
 
         ItemMapper director = new ItemMapper(companyService, certificationService, itemService);
+        SubmissionMapper subMapper = new SubmissionMapper(companyService, itemService, stockService);
 
         Item item = director.toDomain(request);
         itemService.addItem(item);
@@ -106,27 +104,7 @@ public class Orchestrator {
         requestToAdd.setType("addProduct");
         requestToAdd.setSenderId(request.producerId);
 
-
-
-        submissionService.addSubmission(SubmissionMapper.toDomain(requestToAdd));
-    }
-
-    /**
-     * Adds a new certification.
-     *
-     * @param request the request.
-     */
-    public void addCertification(AddCertificationRequest request) {
-
-        certificationService.addCertification(request);
-    }
-
-    public List<Item> getAvailableItems() {
-        return itemService.getAvailableItems();
-    }
-
-    public Item getItemDetails(int itemId) {
-        return itemService.getItem(itemId);
+        submissionService.addSubmission(subMapper.toDomain(requestToAdd));
     }
 
     public List<Stock> getStocksBySeller(int sellerId) {
@@ -137,15 +115,6 @@ public class Orchestrator {
 
     public void removeQuantityToStock(int stockId, int quantity, int sellerId) {
         stockService.removeQuantityToStock(stockId, quantity, sellerId);
-    }
-
-    /**
-     * Retrives all the Submission that haven't been accepted.
-     *
-     * @return all the available submission.
-     */
-    public List<Submission> getAvailableSubmissions() {
-        return submissionService.getAvailableAcceptanceSubmissions();
     }
 
     /**
@@ -160,7 +129,7 @@ public class Orchestrator {
                 .getSubmission(submissionId);
 
         if (accepted) {
-            submissionService.onAcception(submissionId);
+            submissionService.onAcceptance(submissionId);
             accept(submission);
         } else {
             submissionService.onRejection(submissionId);
@@ -173,7 +142,9 @@ public class Orchestrator {
         if (!userService.userHasRole(userId, UserRole.CURATOR)) {
             throw new ImpossibleRequestException("Only curators can take charge of a submission");
         }
-        submissionService.takeChargeOfSubmission(submissionId,userId);
+
+        User user = userService.getUser(userId);
+        submissionService.takeChargeOfSubmission(submissionId,user);
     }
 
     public List<Order> getOrders(int userId) {
@@ -194,10 +165,10 @@ public class Orchestrator {
     private void accept(Submission submission) {
 
         if (submission instanceof AddProductSubmission sub)
-            itemService.setStatus(ItemStatus.available, sub.getItemId());
+            itemService.setStatus(ItemStatus.available, sub.getItem().getId());
 
         else if (submission instanceof RecogniseProductSubmission sub) {
-            stockService.addQuantityToStock(sub.getStockId(), sub.getQta(), sub.getSenderId());
+            stockService.addQuantityToStock(sub.getStock().getId(), sub.getQta(), sub.getSender().getId());
         }
 
     }
@@ -224,21 +195,23 @@ public class Orchestrator {
     private void refuse(Submission submission) {
 
         if (submission instanceof AddProductSubmission sub)
-            itemService.deleteItemDetails(sub.getItemId());
+            itemService.deleteItem(sub.getItem().getId());
     }
 
     public void addSubmissionQuantityToStock(RecogniseProductSubmissionRequest request) {
 
-        if (request.getQta() <= 0)
-            throw new ImpossibleRequestException("Quantity less or equal 0");
 
-        Item item = itemService.getItem(request.getProductId());
-        if(item.getStatus() != ItemStatus.available)
+        Stock stock = stockService.getStock(request.getStockId());
+        if(stock.getItem().getStatus() != ItemStatus.available)
             throw new ImpossibleRequestException("Item not available");
+        if(stock.getSeller().getId() != request.getSenderId())
+            throw new ImpossibleRequestException("Seller does not own the stock");
 
-        Company company = companyService.getCompany(request.getSenderId());
+        companyService.getCompany(request.getSenderId());
 
-        submissionService.addSubmission(SubmissionMapper.toDomain(request));
+        SubmissionMapper subMapper = new SubmissionMapper(companyService, itemService, stockService);
+
+        submissionService.addSubmission(subMapper.toDomain(request));
     }
 
     public void cancelAndRefundOrder(RefundRequest request) {
@@ -338,17 +311,7 @@ public class Orchestrator {
 
         List<Order> orders = orderService.getOrdersSince(LocalDate.now().minusDays(30));
 
-        Map<Company, Double> payments = new HashMap<Company, Double>();
-
-        for (Order order : orders) {
-            if (order.getOrderStatus().equals(OrderStatus.delivered))
-                for (OrderItem item : order.getItems()) {
-                    Company company = companyService.getCompany(item.getSeller().getId());
-                    payments.merge(company, item.getUnitPrice() * item.getQuantity(), Double::sum);
-                }
-        }
-
-        paymentService.paySellers(payments);
+        paymentService.paySellers(orders);
     }
 
     /**
@@ -381,5 +344,10 @@ public class Orchestrator {
         Event event = eventService.getEvent(eventId);
 
         eventService.cancelCompanyParticipation(company, event);
+    }
+
+    public List<Event> getParticipations(int companyId) {
+
+        return eventService.getParticipations(companyService.getCompany(companyId));
     }
 }
