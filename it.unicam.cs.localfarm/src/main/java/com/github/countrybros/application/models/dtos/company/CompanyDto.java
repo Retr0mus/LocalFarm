@@ -1,11 +1,11 @@
 package com.github.countrybros.application.models.dtos.company;
 
 public class CompanyDto {
-    private int id;
-    private String name;
-    private String email;
-    private String description;
-    //TODO: Add Location
+
+    public int id;
+    public String companyName;
+    public String description;
+    public String email;
 
     public int getId() {
         return id;
@@ -15,20 +15,12 @@ public class CompanyDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getDescription() {
@@ -37,5 +29,13 @@ public class CompanyDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

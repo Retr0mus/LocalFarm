@@ -62,16 +62,7 @@ public class EventService implements IEventService {
 
     @Override
     public void createEvent(CreateEventRequest request, User organizer) {
-
-        Location location = request.location;
-        List<TimeInterval> dates = request.dates;
-
-        Event event = new Event(request.name, request.maxSpots);
-        event.setLocation(location);
-        event.setDates(dates);
-        event.setOrganizer(organizer);
-        event.setState(EventState.planning);
-
+        Event event = EventMapper.toDomain(request, organizer);
         eventRepository.save(event);
     }
 
@@ -118,21 +109,18 @@ public class EventService implements IEventService {
 
 
     @Override
-    public void confirmEventPublication(int eventId) {
+    public void confirmEventPublication(int eventId, int userId) {
 
-//        Event event = getEvent(eventId);
-//
-//        if (event.getState().equals(EventState.currentlyPublic))
-//            throw new RequestAlreadySatisfiedException("Event is already public");
-//
-//        if (event.getState().equals(EventState.completed))
-//            throw new ImpossibleRequestException("Event is completed");
-//
-//        if (event.getState().equals(EventState.canceled))
-//            throw new RequestAlreadySatisfiedException("Event is canceled");
-//
-//        event.setState(EventState.currentlyPublic);
-//        eventRepository.save(event);
+        Event event = getEvent(eventId);
+
+        if(event.getState() != EventState.planning)
+            throw new ImpossibleRequestException("Invalid event state, only event in the planning state can be published");
+
+        if(event.getOrganizer().getId() != userId)
+            throw new ImpossibleRequestException("Invalid event organizer");
+
+        event.setState(EventState.currentlyPublic);
+        eventRepository.save(event);
     }
 
     @Override

@@ -26,11 +26,7 @@ public class ShoppingController {
         return new ResponseEntity<>(shoppingService.getCart(userId).getShoppingItems().stream().map(ShoppingItemMapper::toDto), HttpStatus.OK);
     }
 
-    @GetMapping("/cart")
-    public ResponseEntity<Cart> getCart(@RequestParam int userId) {
-        Cart cart = shoppingService.getCart(userId);
-        return new ResponseEntity<>(cart, HttpStatus.OK);
-    }
+
     @PostMapping("/cart/add")
     public ResponseEntity<String> addItemToCart(@RequestBody AddItemToCartRequest request) {
         orchestrator.addItemToCart(request);

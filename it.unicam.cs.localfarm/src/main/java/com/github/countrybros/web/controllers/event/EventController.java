@@ -2,11 +2,10 @@ package com.github.countrybros.web.controllers.event;
 
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.mappers.EventMapper;
-import com.github.countrybros.application.models.dtos.event.EventDTO;
+import com.github.countrybros.application.models.dtos.event.EventDto;
 import com.github.countrybros.application.services.event.IEventService;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
-import com.github.countrybros.application.models.requests.event.EditEventRequest;
 import com.github.countrybros.application.models.requests.event.EventElement;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
@@ -51,12 +50,12 @@ public class EventController {
     }
 
     @GetMapping("/publicEvents")
-    public ResponseEntity<List<EventDTO>> getPublicEvents() {
+    public ResponseEntity<List<EventDto>> getPublicEvents() {
         List<Event> events = eventService.getPublicEvents();
-        List<EventDTO> eventDTOs = events.stream()
+        List<EventDto> eventDtos = events.stream()
                 .map(EventMapper::toDTO)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(eventDTOs);
+        return ResponseEntity.ok(eventDtos);
     }
 
     @PutMapping("/delete")
@@ -73,10 +72,10 @@ public class EventController {
         return new ResponseEntity<>("Event created successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/confirm")
-    public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId) {
-
-        eventService.confirmEventPublication(eventId);
+    @PutMapping("confirm")
+    public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId,
+                                                          @PathParam("userId") int userId){
+        eventService.confirmEventPublication(eventId, userId);
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
     }
 
@@ -97,29 +96,29 @@ public class EventController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<EventDTO> getEvent(@PathParam("eventId") int eventId) {
+    public ResponseEntity<EventDto> getEvent(@PathParam("eventId") int eventId) {
         Event event = eventService.getEvent(eventId);
         return ResponseEntity.ok(EventMapper.toDTO(event));
     }
 
     @GetMapping("/subscribed")
-    public ResponseEntity<List<EventDTO>> getSubscribedEvents(@PathParam("userId") int userId) {
+    public ResponseEntity<List<EventDto>> getSubscribedEvents(@PathParam("userId") int userId) {
         List<Event> events = orchestrator.getEventsSubscribedByUser(userId);
 
-        List<EventDTO> eventDTOs = events.stream()
+        List<EventDto> eventDtos = events.stream()
                 .map(EventMapper::toDTO)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(eventDTOs);
+        return ResponseEntity.ok(eventDtos);
     }
 
     @GetMapping("/organizerEvents")
-    public ResponseEntity<List<EventDTO>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
+    public ResponseEntity<List<EventDto>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
         List<Event> events = orchestrator.getEventsByOrganizer(organizerId);
-        List<EventDTO> eventDTOs = events.stream()
+        List<EventDto> eventDtos = events.stream()
                 .map(EventMapper::toDTO)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(eventDTOs);
+        return ResponseEntity.ok(eventDtos);
     }
 
 }

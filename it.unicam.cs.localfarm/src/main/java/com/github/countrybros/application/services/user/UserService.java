@@ -12,6 +12,8 @@ import com.github.countrybros.model.utils.PasswordSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Service that performs all the tasks related to the management of the user
  */
@@ -72,22 +74,13 @@ public class UserService implements IUserService {
 
     @Override
     public void addUserRole(int userId, UserRole role) {
-        User user = userRepository.getUsersByUserId(userId);
-        if (user == null) {
-            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
-        }
+        User user = getUser(userId);
 
-        if (role == null || !Arrays.asList(UserRole.values()).contains(role)) {
-            throw new InvalidRoleException("The role " + role + " does not exist.");
-        }
-
-        if (user.getRoles().contains(role)) {
-            throw new RoleAlreadyAssignedException("The role " + role + " is already assigned to the user.");
-        }
-
+        if (!user.getRoles().contains(role)) {
             user.getRoles().add(role);
             userRepository.save(user);
         }
+    }
 
     @Override
     public void removeUserRole(int userId, String role) {
@@ -118,18 +111,13 @@ public class UserService implements IUserService {
 
     @Override
     public boolean userHasRole(int userId, UserRole role) {
-        User user = userRepository.getUsersByUserId(userId);
-        if (user == null) {
-            throw new NotFoundInRepositoryException("User with ID " + userId + " not found.");
-        }
+        User user = getUser(userId);
         return user.getRoles().contains(role);
     }
 
     @Override
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
+        return List.of();
     }
 
 

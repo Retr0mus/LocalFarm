@@ -1,11 +1,14 @@
 package com.github.countrybros.web.controllers.event;
 
+import com.github.countrybros.application.mappers.InvitationMapper;
 import com.github.countrybros.application.services.event.IInvitationService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/invitation")
@@ -21,13 +24,16 @@ public class InvitationController {
     @GetMapping("get")
     public ResponseEntity<Object> getInvitation(@PathParam("invitationId") int invitationId) {
 
-        return new ResponseEntity<>(invitationService.getInvitation(invitationId), HttpStatus.OK);
+        return new ResponseEntity<>(InvitationMapper.toDTO(invitationService.getInvitation(invitationId)), HttpStatus.OK);
     }
 
     @GetMapping("getCompanyInvitations")
     public ResponseEntity<Object> getCompanyInvitations(@PathParam("companyId") int companyId) {
 
-        return new ResponseEntity<>(invitationService.getInvitationsByCompany(companyId), HttpStatus.OK);
+        return new ResponseEntity<>(invitationService.getInvitationsByCompany(companyId)
+                .stream()
+                .map(InvitationMapper::toDTO)
+                .toList(), HttpStatus.OK);
     }
 
     @PutMapping("accept")

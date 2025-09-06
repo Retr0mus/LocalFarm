@@ -22,7 +22,7 @@ public class CompanyMapper {
         CompanyDto companyDto = new CompanyDto();
 
         companyDto.setId(company.getId());
-        companyDto.setName(company.getName());
+        companyDto.setCompanyName(company.getName());
         companyDto.setEmail(company.getEmail());
         companyDto.setDescription(company.getDescription());
         // TODO: location
