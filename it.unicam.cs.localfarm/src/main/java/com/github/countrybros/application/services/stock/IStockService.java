@@ -5,6 +5,7 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.item.Item;
 import com.github.countrybros.model.stock.Stock;
 import com.github.countrybros.model.company.Company;
+import com.github.countrybros.application.models.requests.item.AddStockRequest;
 
 import java.util.List;
 

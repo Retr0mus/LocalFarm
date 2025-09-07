@@ -25,11 +25,11 @@ public interface ICertificationService {
     List<Certification> getAllCertifications();
 
     /**
-     * Returns a specific Certification, if exists
+     * Returns a specific Certification, if exists.
      *
-     * @param id the specified certification ID
+     * @param certificationId the specified certification ID.
      *
-     * @return the certification searched
+     * @return the certification searched.
      */
-    Certification getCertificationById(int id);
+    Certification getCertification(int certificationId);
 }

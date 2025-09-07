@@ -9,9 +9,10 @@ import java.time.LocalDate;
  */
 public class CreateInvitationRequest {
 
-    public Event event;
+    public int eventId;
 
     public LocalDate expiration;
 
     public int receiverId;
+
 }

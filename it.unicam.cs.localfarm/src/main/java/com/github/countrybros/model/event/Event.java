@@ -7,6 +7,7 @@ import com.github.countrybros.model.social.SocialPost;
 import com.github.countrybros.model.user.*;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,35 +21,56 @@ public class Event implements IPostable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     private String name;
+
+    private String description;
 
     private int maxSpots;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Invitation> invitations = new ArrayList<>();
 
     @Embedded
     private Location location;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "event_dates", joinColumns = @JoinColumn(name = "event_id"))
     private List<TimeInterval> dates;
 
     @ManyToOne
-    private Company organizer;
+    private User organizer;
 
     //TODO change to ManyToMany
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<User> subscribers = new ArrayList<>();
 
     private EventState state;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private List<Company> participants = new ArrayList<>();
 
     public Event(String name, int maxSpots) {
         this.name = name;
         this.maxSpots = maxSpots;
         this.state = EventState.planning;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Event() {}
@@ -65,7 +87,7 @@ public class Event implements IPostable {
         return dates;
     }
 
-    public Company getOrganizer() {
+    public User getOrganizer() {
         return organizer;
     }
 
@@ -95,7 +117,7 @@ public class Event implements IPostable {
      * @return the boolean variable representing this condition.
      */
     public boolean isFull(){
-        return maxSpots >= subscribers.size();
+        return subscribers.size() >= maxSpots;
     }
 
     /**
@@ -118,13 +140,7 @@ public class Event implements IPostable {
 
     public List<Company> getGuests() {
 
-        List<Company> guests = new ArrayList<>();
-
-        for (Invitation invitation : invitations)
-            if (invitation.isAccepted())
-                guests.add(invitation.getReceiver());
-
-        return guests;
+        return participants;
     }
 
     public void setState(EventState eventState) {
@@ -135,7 +151,7 @@ public class Event implements IPostable {
         this.dates = dates;
     }
 
-    public void setOrganizer(Company organizer) {
+    public void setOrganizer(User organizer) {
         this.organizer = organizer;
     }
 
@@ -177,4 +193,13 @@ public class Event implements IPostable {
 
         return new SocialPost(name, "Evento", "link");
     }
+
+    public List<Company> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Company> participants) {
+        this.participants = participants;
+    }
+
 }

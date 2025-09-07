@@ -1,6 +1,8 @@
 package com.github.countrybros.web.controllers.submission;
 
 import com.github.countrybros.application.facades.Orchestrator;
+import com.github.countrybros.application.mappers.SubmissionMapper;
+import com.github.countrybros.application.models.dtos.submission.SubmissionDTO;
 import com.github.countrybros.application.services.submission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.submission.Submission;
@@ -18,27 +20,27 @@ import java.util.List;
 public class SubmissionController {
 
     private final Orchestrator orchestrator;
-    private final ISubmissionService acceptanceSubmissionService;
-
+    private final ISubmissionService submissionService;
 
     @Autowired
     public SubmissionController(Orchestrator orchestrator,
-                                ISubmissionService acceptanceSubmissionService) {
-        this.acceptanceSubmissionService = acceptanceSubmissionService;
+                                ISubmissionService submissionService) {
+        this.submissionService = submissionService;
         this.orchestrator = orchestrator;
+
     }
 
     @GetMapping("submission")
     public ResponseEntity<Object> getSubmission(@PathParam("submissionId") int submissionId) {
 
-        return new ResponseEntity<>(acceptanceSubmissionService.getSubmission(submissionId), HttpStatus.OK);
+        return new ResponseEntity<>(submissionService.getSubmission(submissionId), HttpStatus.OK);
     }
 
     @GetMapping("getAccepted")
     public ResponseEntity<Object> getAcceptedSubmission(@PathParam("curatorId") int curatorId) {
 
-        return new ResponseEntity<>(acceptanceSubmissionService
-                .getSubmissionToReview(curatorId), HttpStatus.OK);
+        return new ResponseEntity<>(SubmissionMapper.toDTO(submissionService
+                .getSubmissionToReview(curatorId)), HttpStatus.OK);
     }
 
     @PutMapping("addQuantityToStock")
@@ -52,9 +54,9 @@ public class SubmissionController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Submission>> getAvailable() {
+    public ResponseEntity<List<SubmissionDTO>> getAvailable() {
 
-        List<Submission> submissions = orchestrator.getAvailableSubmissions();
+        List<SubmissionDTO> submissions = SubmissionMapper.toDTO(submissionService.getAvailableSubmissions());
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 

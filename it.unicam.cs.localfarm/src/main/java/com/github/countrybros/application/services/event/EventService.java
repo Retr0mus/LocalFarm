@@ -2,15 +2,17 @@ package com.github.countrybros.application.services.event;
 
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
+import com.github.countrybros.application.mappers.EventMapper;
 import com.github.countrybros.infrastructure.repositories.event.IEventRepository;
-import com.github.countrybros.model.event.Event;
-import com.github.countrybros.model.event.EventState;
+import com.github.countrybros.model.event.*;
+import com.github.countrybros.model.company.Company;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
-import com.github.countrybros.application.models.requests.event.EditEventRequest;
-import com.github.countrybros.application.models.requests.event.EventElement;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -24,150 +26,79 @@ public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
 
+    private final IInvitationService invitationService;
 
-    public EventService(IEventRepository eventRepository) {
+    public EventService(IEventRepository eventRepository,
+                         IInvitationService invitationService) {
 
         this.eventRepository = eventRepository;
+
+        this.invitationService = invitationService;
     }
 
     @Override
-    public List<EventElement> getAllEvents() {
+    public List<Event> getAllEvents() {
 
         return StreamSupport.stream(eventRepository.findAll().spliterator(), false)
-                .map(event -> {
-                    EventElement dto = new EventElement();
-                    dto.id = event.getId();
-                    dto.name = event.getName();
-                    return dto;
-                })
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void editEvent(EditEventRequest request) {
 
-        /*Event event = getEvent(request.eventId);
-        Company company = companyService.getCompany(request.organizerId);
 
-        event.setLocation(request.location);
-        event.setName(request.name);
-        event.setDates(request.dates);
-        event.setMaxSpots(request.maxSpots);
-        event.setOrganizer(company);
-
-        this.IEventRepository.save(event);*/
+    public Event getLastCreatedEvent(){
+        return eventRepository.findTopByOrderByIdDesc();
     }
 
     @Override
-    public void deleteEvent(int eventId) {
+    public void createEvent(CreateEventRequest request, User organizer) {
+        Event event = EventMapper.toDomain(request, organizer);
+        eventRepository.save(event);
+    }
 
-        Event event = this.eventRepository.findById(eventId).orElse(null);
+    @Override
+    public void deleteEvent(int eventId, int organizerId) {
 
-        if (event == null)
-            throw new NotFoundInRepositoryException("Event not found");
+        Event event = getEvent(eventId);
+
+        if (event.getOrganizer().getId() != organizerId) {
+            throw new ImpossibleRequestException("User is not the organizer of this event");
+        }
+
+        if(event.getState() == EventState.completed) {
+            throw new ImpossibleRequestException("The event with id: "+ event.getId() +" is over, so it cannot be canceled.");
+        }
 
         eventRepository.delete(event);
     }
 
     @Override
-    public void subscribeOnEvent(int userId, int eventId) {
-
-        /*Event event = getEvent(eventId);
-        User user = userService.getUser(userId);
-
-        if (event.getSubscribers().contains(user))
-            throw new RequestAlreadySatisfiedException("User already subscribed");
-
-        event.subscribe(user);
-        IEventRepository.save(event);*/
-    }
-
-    @Override
-    public void unsubscribeOnEvent(int userId, int eventId) {
-
-        /*Event event = getEvent(eventId);
-        User user = userService.getUser(userId);
-
-        if (!event.getSubscribers().contains(user))
-            throw new RequestAlreadySatisfiedException("User was unsubscribed");
-
-        event.unsubscribe(user);
-        IEventRepository.save(event);*/
-    }
-
-    @Override
-    public List<EventElement> getPublicEvents() {
-
-        return eventRepository.getAllByState(EventState.currentlyPublic)
-                        .stream()
-                .map(event -> {
-                    EventElement dto = new EventElement();
-                    dto.id = event.getId();
-                    dto.name = event.getName();
-                    return dto;
-                })
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Returns a list of the organizer's unconfirmed events
-     *
-     * @param userId the organizer's ID.
-     * @return A list of the events.
-     */
-    @Override
-    public List<EventElement> getPendingEvents(int userId) {
-        return eventRepository.getAllByState(EventState.planning)
-                .stream().map(
-                        event -> {
-                            EventElement dto = new EventElement();
-                            dto.id = event.getId();
-                            dto.name = event.getName();
-                            return dto;
-                        }
-                ).collect(Collectors.toList());
-    }
-
-    @Override
-    public void setAsCanceled(int eventId) {
+    public void subscribeToEvent(User user, int eventId) {
 
         Event event = getEvent(eventId);
+        if (event.isFull()) {
+            throw new ImpossibleRequestException("No more spots available for this event");
+        }
 
-        if (event.getState() == EventState.canceled)
-            throw new RequestAlreadySatisfiedException("Event already canceled");
-
-        if (event.getState().equals(EventState.completed))
-            throw new ImpossibleRequestException("Event already completed");
-
-        event.setState(EventState.canceled);
-        this.eventRepository.save(event);
+        event.subscribe(user);
+        eventRepository.save(event);
     }
 
     @Override
-    public void createEvent(CreateEventRequest request) {
+    public void unSubscribeFromEvent(User user, int eventId) {
+        Event event = getEvent(eventId);
+        event.unsubscribe(user);
+        eventRepository.save(event);
+    }
 
-        /*Company organizer = companyService.getCompany(request.organizerId);
+    @Override
+    public List<Event> getPublicEvents() {
 
-        Event event = new Event(request.name, request.maxSpots);
-        event.setDates(request.dates);
-        event.setLocation(request.location);
-        event.setOrganizer(organizer);
-
-        IEventRepository.save(event);
-
-        //create and retrieve invitations
-        for (Integer companyId : request.guestsId) {
-
-            CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
-            invitationRequest.event = event;
-            invitationRequest.expiration = LocalDate.now().plusDays(7);
-            invitationRequest.receiverId = companyId;
-            invitationService.addInvitation(invitationRequest);
-        }*/
+        return eventRepository.getAllByState(EventState.currentlyPublic);
     }
 
     @Override
     public void confirmEventPublication(int eventId, int userId) {
+
         Event event = getEvent(eventId);
 
         if(event.getState() != EventState.planning)
@@ -182,29 +113,74 @@ public class EventService implements IEventService {
 
     @Override
     public Event getEvent(int eventId) {
-        return this.eventRepository.findById(eventId).orElseThrow(() -> new NotFoundInRepositoryException("Event not found"));
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundInRepositoryException("Event not found"));
     }
 
     @Override
-    public void cancelCompanyParticipation(int companyId, int eventId) {
-/*
-        Event event = getEvent(eventId);
-        Company company = this.companyService.getCompany(companyId);
+    public void cancelCompanyParticipation(Company company, Event event) {
 
-        Invitation invitation = event.getGuestInvitation(company);
+        if (event.getState().equals(EventState.completed))
+            throw new ImpossibleRequestException("Incoherent event status");
 
-        invitationService.deleteInvitation(invitation.getId());*/
+        if (! event.getGuests().contains(company))
+            throw new RequestAlreadySatisfiedException("Company is not participating");
+
+        event.getGuests().remove(company);
+        eventRepository.save(event);
     }
 
     @Override
-    public void confirmCompanyParticipation(int eventId, int companyId) {
-/*
-        Event event = getEvent(eventId);
-        Company company = this.companyService.getCompany(companyId);
+    public void confirmCompanyParticipation(Event event, Company company) {
 
         if (event.getGuests().contains(company))
             throw new RequestAlreadySatisfiedException("Company already included in event guest list");
 
-        invitationService.acceptInvitation(event.getGuestInvitation(company).getId());*/
+        event.getGuests().add(company);
+        eventRepository.save(event);
+    }
+
+    @Override
+    public List<Event> getParticipations(Company company) {
+
+        List<Company> companies = new ArrayList<>();
+        companies.add(company);
+        return eventRepository.getAllByParticipantsIsContaining(companies);
+    }
+
+    public boolean existsByName(String name) {
+        return eventRepository.existsByName(name);
+    }
+
+    @Override
+    public List<Event> getEventsSubscribedByUser(int userId) {
+        return eventRepository.findAllBySubscribers_Id(userId);
+    }
+
+    @Override
+    public List<Event> getEventsByOrganizer(User organizer) {
+        return eventRepository.findAllByOrganizer(organizer);
+    }
+
+    @Override
+    public List<Event> getEventsByDate(LocalDate localDate) {
+        List<Event> allEvents = StreamSupport.stream(eventRepository.findAll().spliterator(), false)
+                .toList();
+
+        return allEvents.stream()
+                .filter(event -> event.getDates().stream()
+                        .anyMatch(interval -> interval.getStartTime().toLocalDate().equals(localDate)))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of the organizer's unconfirmed events
+     *
+     * @param userId the organizer's ID.
+     * @return A list of the events.
+     */
+    @Override
+    public List<Event> getPendingEvents(int userId) {
+        return eventRepository.getAllByState(EventState.planning);
     }
 }

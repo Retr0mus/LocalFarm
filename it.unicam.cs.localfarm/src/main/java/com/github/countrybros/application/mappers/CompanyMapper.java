@@ -21,10 +21,10 @@ public class CompanyMapper {
     public static CompanyDto toDto(Company company) {
         CompanyDto companyDto = new CompanyDto();
 
-        companyDto.setId(company.getId());
-        companyDto.setName(company.getName());
-        companyDto.setEmail(company.getEmail());
-        companyDto.setDescription(company.getDescription());
+        companyDto.id = company.getId();
+        companyDto.companyName = company.getName();
+        companyDto.email = company.getEmail();
+        companyDto.description = company.getDescription();
         // TODO: location
 
         return companyDto;

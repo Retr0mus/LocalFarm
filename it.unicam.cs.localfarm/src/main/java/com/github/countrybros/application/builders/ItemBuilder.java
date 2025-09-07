@@ -38,8 +38,6 @@ public abstract class ItemBuilder<T extends Item> implements IItemBuilder {
     @Override
     public Item getResult() {
 
-        //TODO: impostare a awaitingReview, o cambiare gli stati
-        product.setVisibleByPublic(false);
         product.setStatus(ItemStatus.awaitingReview);
         return product;
     }

@@ -2,6 +2,8 @@ package com.github.countrybros.model.submission;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.user.User;
 import jakarta.persistence.*;
 
 /**
@@ -28,41 +30,28 @@ public abstract class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int senderId;       // TODO: Change to Domain class
-    private int curatorId;      // TODO: Change to Domain class
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Company sender;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User curator;
+    @Enumerated(EnumType.STRING)
     private SubmissionStatus status;
 
-    public Submission(int senderId) {
-        this.senderId = senderId;
+    public Submission(Company sender) {
+        this.sender = sender;
         this.status = SubmissionStatus.pending;
     }
 
     public Submission() {
-
+        this.status = SubmissionStatus.pending;
     }
 
     public void setStatus(SubmissionStatus status) {
         this.status = status;
     }
 
-    public void assignCurator(int curatorId) {
-        this.curatorId = curatorId;
-    }
-
     public SubmissionStatus getStatus() {
         return status;
-    }
-
-    public void setSenderId(int senderId) {
-        this.senderId = senderId;
-    }
-
-    public int getSenderId() {
-        return senderId;
-    }
-
-    public int getCuratorId() {
-        return curatorId;
     }
 
     public int getId() {
@@ -70,5 +59,19 @@ public abstract class Submission {
     }
 
 
+    public Company getSender() {
+        return sender;
+    }
 
+    public void setSender(Company sender) {
+        this.sender = sender;
+    }
+
+    public User getCurator() {
+        return curator;
+    }
+
+    public void setCurator(User curator) {
+        this.curator = curator;
+    }
 }

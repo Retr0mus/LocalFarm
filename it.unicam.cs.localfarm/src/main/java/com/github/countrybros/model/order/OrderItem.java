@@ -16,6 +16,7 @@ public class OrderItem {
     private Company seller;
     private int quantity;
     private double unitPrice;
+    private boolean paid;
 
     public Item getItem() {
         return item;
@@ -47,5 +48,13 @@ public class OrderItem {
 
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 }

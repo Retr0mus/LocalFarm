@@ -13,6 +13,7 @@ import com.github.countrybros.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.module.ResolutionException;
 import java.util.List;
 
 /**
@@ -133,15 +134,15 @@ public class ShoppingService implements IShoppingService {
             throw new NotFoundInRepositoryException("Cart is empty or does not exist for user " + userId);
         }
 
-        ShoppingItem shoppingItem = null;
+        ShoppingItem foundItem = null;
         for (ShoppingItem i : cart.getItems()) {
             if (i.getId() == shoppingItemId) {
-                shoppingItem = i;
+                foundItem = i;
                 break;
             }
         }
 
-        if (shoppingItem == null) {
+        if (foundItem == null) {
             throw new NotFoundInRepositoryException("Shopping item not found in cart");
         }
 
@@ -150,17 +151,17 @@ public class ShoppingService implements IShoppingService {
         }
 
         if (newQuantity == 0) {
-            cart.getItems().remove(shoppingItem);
-            shoppingItemRepository.delete(shoppingItem);
+            removeItemFromCart(userId, shoppingItemId);
             return;
         }
 
-        if (newQuantity > shoppingItem.getAvailableStock()) {
-            throw new IllegalArgumentException("max quantity available " + shoppingItem.getAvailableStock());
+        if (newQuantity > foundItem.getAvailableStock()) {
+            throw new IllegalArgumentException("max quantity available " + foundItem.getAvailableStock());
+
         }
 
-        shoppingItem.setQuantity(newQuantity);
-        shoppingItemRepository.save(shoppingItem);
+        foundItem.setQuantity(newQuantity);
+        shoppingItemRepository.save(foundItem);
     }
 
     @Override
@@ -185,68 +186,6 @@ public class ShoppingService implements IShoppingService {
 
         cart.getItems().remove(foundItem);
         shoppingItemRepository.delete(foundItem);
-        System.out.println("User " + userId + " removed item " + shoppingItemId + " from cart");
     }
-
-
-
-
-    /**
-     * Checks all the item quantities of a cart, comparing them with the actual item in the system,
-     * returns a cart with all the Items not present in the marketplace.
-     *
-     * @param cart The cart to check.
-     *
-     * @return the cart with excess items.
-     *//*
-    @Override
-    public Cart getExcessItems(Cart cart) {
-        if (cart == null || cart.getShoppingItems() == null) {
-            throw new ImpossibleRequestException("Cart or items list is null.");
-        }
-
-
-        ArrayList<ShoppingItem> excessItems = new ArrayList<ShoppingItem>();
-        Cart excessCart = new Cart();
-
-        for (ShoppingItem shoppingItem : cart.getShoppingItems()) {
-            Stock stock = itemService.getStock(shoppingItem.getItem().getId());
-            int diff = stock.getQty() - shoppingItem.getQuantity();
-            if (diff < 0)
-                excessItems.add(new ShoppingItem(excessCart, stock, diff));
-        }
-
-        cart.setItems(excessItems);
-        return excessCart;
-    }
-
-    /**
-     * Create an order when a user decides to buy the item inside his cart.
-     *
-     * @param userId  The user.
-     * @param method  The method chosen by the user.
-     * @param address The address chosen by the user.
-     *//*
-    @Override
-    public Order checkout(int userId, IPaymentMethod method, ShippingAddress address) {
-
-            Cart cart = getCart(userId);
-            Cart excessCart = getExcessItems(cart);
-
-            if (excessCart.getShoppingItems().isEmpty())
-                throw new NotEnoughItemsException("Item quantity not available", excessCart);
-
-            paymentService.paymentToMarketplace(method, cart.getTotalAmount());
-
-            User user = userService.getUser(userId);
-            Order order = new Order();
-            order.setCart(cart);
-            order.setAddress(address);
-            order.setCustomer(user);
-            order.setOrderDate(new Date());
-            order.setOrderStatus(OrderStatus.picking);
-            orderRepository.save(order);
-            return order;
-    }*/
 
 }

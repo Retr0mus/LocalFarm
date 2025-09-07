@@ -4,15 +4,21 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repositories.user.IOrderItemRepository;
 import com.github.countrybros.infrastructure.repositories.user.IOrderRepository;
+import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
+import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
 import com.github.countrybros.model.user.*;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService implements IOrderService {
@@ -43,14 +49,10 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getOrders(User user) {
-        return orderRepository.findOrderByCustomer(user);
-    }
+    public List<Order> getOrdersSince(LocalDate date) {
 
-    @Override
-    public List<Order> getOrdersSince(Date date) {
-
-        return orderRepository.findOrderByOrderDate(date);
+        return orderRepository.findOrdersByOrderDateAfter(
+                Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
 
     /**
@@ -78,8 +80,7 @@ public class OrderService implements IOrderService {
 
     public void cancelOrder(RefundRequest request) {
 
-        Order order = orderRepository.findById(request.getOrderId())
-                .orElseThrow(() -> new NotFoundInRepositoryException("Order not found with ID " + request.getOrderId()));
+        Order order = getOrder(request.getOrderId());
 
         if (order.getOrderStatus() == OrderStatus.cancelled) {
             throw new IllegalStateException("order already cancelled");

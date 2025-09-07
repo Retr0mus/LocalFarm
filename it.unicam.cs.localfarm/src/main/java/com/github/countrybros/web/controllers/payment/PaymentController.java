@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
 
     private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
+    private final IPaymentService paymentService;
+    private final Orchestrator orchestrator;
+
     @Autowired
-    private IPaymentService paymentService;
-    @Autowired
-    private Orchestrator orchestrator;
+    public PaymentController(IPaymentService paymentService, Orchestrator orchestrator) {
+
+        this.paymentService = paymentService;
+        this.orchestrator = orchestrator;
+    }
 
     /**
      * Payment is fake!!!
@@ -38,9 +43,7 @@ public class PaymentController {
 
     @PostMapping("/pay_sellers")
     public ResponseEntity<String> paySellers() {
-        paymentService.paySellers();
+        orchestrator.payMonthlyOrders();
         return new ResponseEntity<>("Sellers paid successfully", HttpStatus.OK);
     }
-
-
 }

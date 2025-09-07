@@ -2,14 +2,18 @@ package com.github.countrybros.web.controllers.user;
 
 import com.github.countrybros.application.mappers.UserMapper;
 import com.github.countrybros.application.services.user.IUserService;
+import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -19,7 +23,7 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addUser(@RequestBody AddUserRequest request) {
+    public ResponseEntity<String> addUser(@Valid @RequestBody AddUserRequest request) {
         userService.addUser(request);
         return new ResponseEntity<>("User added", HttpStatus.OK);
     }
@@ -70,5 +74,4 @@ public class UserController {
         boolean hasRole = userService.userHasRole(userId, role);
         return new ResponseEntity<>(hasRole, HttpStatus.OK);
     }
-
 }
