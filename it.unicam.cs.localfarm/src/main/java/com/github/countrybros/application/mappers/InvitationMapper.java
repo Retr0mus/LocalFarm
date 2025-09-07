@@ -1,8 +1,9 @@
 package com.github.countrybros.application.mappers;
 
-import com.github.countrybros.application.models.dtos.event.InvitationDTO;
+import com.github.countrybros.application.models.dtos.event.InvitationDto;
 import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
-import com.github.countrybros.model.company.Company;
+import com.github.countrybros.application.services.company.ICompanyService;
+import com.github.countrybros.application.services.event.IEventService;
 import com.github.countrybros.model.event.Invitation;
 
 import java.util.ArrayList;
@@ -13,21 +14,32 @@ import java.util.List;
  */
 public class InvitationMapper {
 
-    public List<InvitationDTO> toDTO(List<Invitation> invitations) {
+    ICompanyService companyService;
+    IEventService eventService;
 
-        List<InvitationDTO> invitationDTOs = new ArrayList<>();
+    public InvitationMapper(ICompanyService companyService, IEventService eventService) {
+
+        this.companyService = companyService;
+        this.eventService = eventService;
+    }
+
+    public static List<InvitationDto> toDTO(List<Invitation> invitations) {
+
+        List<InvitationDto> invitationDtos = new ArrayList<>();
 
         for (Invitation invitation : invitations) {
 
-            invitationDTOs.add(toDTO(invitation));
+            invitationDtos.add(toDTO(invitation));
         }
 
-        return invitationDTOs;
+        return invitationDtos;
     }
 
-    public InvitationDTO toDTO(Invitation invitation) {
+    public static InvitationDto toDTO(Invitation invitation) {
 
-        InvitationDTO invitationDTO = new InvitationDTO();
+        InvitationDto invitationDTO = new InvitationDto();
+        invitationDTO.id = invitation.getId();
+        invitationDTO.senderName = invitation.getEvent().getOrganizer().getName();
         invitationDTO.eventDescription = invitation.getEvent().getDescription();
         invitationDTO.eventName = invitation.getEvent().getName();
         invitationDTO.expiration = invitation.getExpiration();
@@ -37,12 +49,11 @@ public class InvitationMapper {
         return invitationDTO;
     }
 
-    public static Invitation toEntity(CreateInvitationRequest request, Company company) {
+    public Invitation toEntity(CreateInvitationRequest request) {
         Invitation invitation = new Invitation();
-        invitation.setEvent(request.event);
-        invitation.setReceiver(company);
+        invitation.setEvent(eventService.getEvent(request.eventId));
+        invitation.setReceiver(companyService.getCompany(request.receiverId));
         invitation.setExpiration(request.expiration);
-        invitation.setAccepted(false);
         return invitation;
     }
 }

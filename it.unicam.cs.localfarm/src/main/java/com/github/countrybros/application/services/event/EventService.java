@@ -3,19 +3,16 @@ package com.github.countrybros.application.services.event;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.mappers.EventMapper;
-import com.github.countrybros.application.services.company.ICompanyService;
-import com.github.countrybros.application.services.user.UserService;
 import com.github.countrybros.infrastructure.repositories.event.IEventRepository;
 import com.github.countrybros.model.event.*;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
-import com.github.countrybros.application.models.requests.event.EditEventRequest;
-import com.github.countrybros.application.models.requests.event.EventElement;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -28,29 +25,21 @@ import java.util.stream.StreamSupport;
 public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
-    private final ICompanyService companyService;
 
     private final IInvitationService invitationService;
 
-    public EventService(IEventRepository eventRepository, ICompanyService companyService,
+    public EventService(IEventRepository eventRepository,
                          IInvitationService invitationService) {
 
         this.eventRepository = eventRepository;
-        this.companyService = companyService;
 
         this.invitationService = invitationService;
     }
 
     @Override
-    public List<EventElement> getAllEvents() {
+    public List<Event> getAllEvents() {
 
         return StreamSupport.stream(eventRepository.findAll().spliterator(), false)
-                .map(event -> {
-                    EventElement dto = new EventElement();
-                    dto.id = event.getId();
-                    dto.name = event.getName();
-                    return dto;
-                })
                 .collect(Collectors.toList());
     }
 
@@ -62,16 +51,7 @@ public class EventService implements IEventService {
 
     @Override
     public void createEvent(CreateEventRequest request, User organizer) {
-
-        Location location = request.location;
-        List<TimeInterval> dates = request.dates;
-
-        Event event = new Event(request.name, request.maxSpots);
-        event.setLocation(location);
-        event.setDates(dates);
-        event.setOrganizer(organizer);
-        event.setState(EventState.planning);
-
+        Event event = EventMapper.toDomain(request, organizer);
         eventRepository.save(event);
     }
 
@@ -112,27 +92,23 @@ public class EventService implements IEventService {
 
     @Override
     public List<Event> getPublicEvents() {
-        return eventRepository.findAllByState(EventState.currentlyPublic);
+
+        return eventRepository.getAllByState(EventState.currentlyPublic);
     }
 
-
-
     @Override
-    public void confirmEventPublication(int eventId) {
+    public void confirmEventPublication(int eventId, int userId) {
 
-//        Event event = getEvent(eventId);
-//
-//        if (event.getState().equals(EventState.currentlyPublic))
-//            throw new RequestAlreadySatisfiedException("Event is already public");
-//
-//        if (event.getState().equals(EventState.completed))
-//            throw new ImpossibleRequestException("Event is completed");
-//
-//        if (event.getState().equals(EventState.canceled))
-//            throw new RequestAlreadySatisfiedException("Event is canceled");
-//
-//        event.setState(EventState.currentlyPublic);
-//        eventRepository.save(event);
+        Event event = getEvent(eventId);
+
+        if(event.getState() != EventState.planning)
+            throw new ImpossibleRequestException("Invalid event state, only event in the planning state can be published");
+
+        if(event.getOrganizer().getId() != userId)
+            throw new ImpossibleRequestException("Invalid event organizer");
+
+        event.setState(EventState.currentlyPublic);
+        eventRepository.save(event);
     }
 
     @Override
@@ -142,26 +118,34 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void cancelCompanyParticipation(int companyId, int eventId) {
+    public void cancelCompanyParticipation(Company company, Event event) {
 
-        Event event = getEvent(eventId);
-        Company company = this.companyService.getCompany(companyId);
+        if (event.getState().equals(EventState.completed))
+            throw new ImpossibleRequestException("Incoherent event status");
 
-        Invitation invitation = event.getGuestInvitation(company);
+        if (! event.getGuests().contains(company))
+            throw new RequestAlreadySatisfiedException("Company is not participating");
 
-        invitationService.deleteInvitation(invitation.getId());
+        event.getGuests().remove(company);
+        eventRepository.save(event);
     }
 
     @Override
-    public void confirmCompanyParticipation(int eventId, int companyId) {
+    public void confirmCompanyParticipation(Event event, Company company) {
 
-//        Event event = getEvent(eventId);
-//        Company company = this.companyService.getCompany(companyId);
-//
-//        if (event.getGuests().contains(company))
-//            throw new RequestAlreadySatisfiedException("Company already included in event guest list");
-//
-//        invitationService.acceptInvitation(event.getGuestInvitation(company).getId());
+        if (event.getGuests().contains(company))
+            throw new RequestAlreadySatisfiedException("Company already included in event guest list");
+
+        event.getGuests().add(company);
+        eventRepository.save(event);
+    }
+
+    @Override
+    public List<Event> getParticipations(Company company) {
+
+        List<Company> companies = new ArrayList<>();
+        companies.add(company);
+        return eventRepository.getAllByParticipantsIsContaining(companies);
     }
 
     public boolean existsByName(String name) {
@@ -189,4 +173,14 @@ public class EventService implements IEventService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns a list of the organizer's unconfirmed events
+     *
+     * @param userId the organizer's ID.
+     * @return A list of the events.
+     */
+    @Override
+    public List<Event> getPendingEvents(int userId) {
+        return eventRepository.getAllByState(EventState.planning);
+    }
 }

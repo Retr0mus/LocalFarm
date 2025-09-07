@@ -1,17 +1,16 @@
 package com.github.countrybros.application.models.requests.submission;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class RecogniseProductSubmissionRequest extends SubmissionRequest {
-    private int productId;
+
+    @NotNull
+    private int stockId;
+
+    @Positive
     private int qta;
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
 
     public int getQta() {
         return qta;
@@ -19,5 +18,13 @@ public class RecogniseProductSubmissionRequest extends SubmissionRequest {
 
     public void setQta(int qta) {
         this.qta = qta;
+    }
+
+    public int getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
     }
 }

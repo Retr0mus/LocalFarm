@@ -9,8 +9,8 @@ public class MockPayment implements IPaymentMethod {
      * @param price    The price to receive.
      */
     @Override
-    public boolean pay(float price) {
-        return true;
+    public boolean pay(float price, String receiverEmail) {
+        return false;
     }
 
 }

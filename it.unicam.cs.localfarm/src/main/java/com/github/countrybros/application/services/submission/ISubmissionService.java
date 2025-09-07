@@ -1,6 +1,7 @@
 package com.github.countrybros.application.services.submission;
 
 import com.github.countrybros.model.submission.Submission;
+import com.github.countrybros.model.user.User;
 
 import java.util.List;
 
@@ -16,13 +17,6 @@ public interface ISubmissionService {
      * @param submission the submission to add.
      */
      void addSubmission(Submission submission);
-
-    /**
-     * Deletes an Submission.
-     *
-     * @param acceptanceSubmissionId the submission to delete.
-     */
-     void deleteSubmission(int acceptanceSubmissionId);
 
     /**
      * Gets the required Submission.
@@ -45,7 +39,7 @@ public interface ISubmissionService {
      * @param curatorId the Id of the User with the Curator privileges.
      * @return a list with all the curator's AcceptanceSubmission.
      */
-     List<Submission> getAcceptanceSubmissionsByCurator(int curatorId);
+     List<Submission> getSubmissionsByCurator(int curatorId);
 
      //TODO: Add acceptance submission by sender.
 
@@ -54,7 +48,7 @@ public interface ISubmissionService {
      *
      * @param submissionId the id of the Submission.
      */
-    void onAcception(int submissionId);
+    void onAcceptance(int submissionId);
 
     /**
      * Accepts the specified Submission.
@@ -67,9 +61,9 @@ public interface ISubmissionService {
      * Assigns the review on a curator.
      *
      * @param submissionId The sub to assign.
-     * @param userId the curator that takes care of the sub.
+     * @param user the curator that takes care of the sub.
      */
-    void takeChargeOfSubmission(int submissionId, int userId);
+    void takeChargeOfSubmission(int submissionId, User user);
 
     /**
      * Returns all the submission of a curator that he took charge of and not already accepted/rejected.

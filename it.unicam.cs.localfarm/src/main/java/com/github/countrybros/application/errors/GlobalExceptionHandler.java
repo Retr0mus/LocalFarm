@@ -11,6 +11,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.Arrays;
 import java.util.List;
 
+import java.util.List;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -53,6 +55,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCustomException(RoleAlreadyAssignedException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
 
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleCustomException(ExternalError ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_GATEWAY);
     }
 
     @ExceptionHandler(Exception.class)

@@ -91,7 +91,7 @@ public class Order {
     public float getTotal() {
         float total = 0;
         for (OrderItem item : getItems()) {
-            total += item.getUnitPrice() * item.getQuantity();
+            total += (float) (item.getUnitPrice() * item.getQuantity());
         }
         return total;
     }

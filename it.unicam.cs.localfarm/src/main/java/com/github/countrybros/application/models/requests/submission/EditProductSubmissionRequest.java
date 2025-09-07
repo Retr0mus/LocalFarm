@@ -1,6 +1,6 @@
 package com.github.countrybros.application.models.requests.submission;
 
-
+@Deprecated
 public class EditProductSubmissionRequest extends SubmissionRequest {
 
     private int productToEditId;

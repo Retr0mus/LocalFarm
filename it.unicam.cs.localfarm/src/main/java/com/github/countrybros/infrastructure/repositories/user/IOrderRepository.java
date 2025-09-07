@@ -10,15 +10,10 @@ import java.util.List;
 
 @Repository
 public interface IOrderRepository extends CrudRepository<Order, Integer> {
-    List<Order> findOrderByCustomer(User customer);
-
-    List<Order> findOrderByOrderDate(Date orderDate);
-
-    List<Order> findByCustomerUserId(int userId);
 
     List<Order> findOrderByCustomer_UserId(int customerUserId);
 
-    Order findOrderByOrderId(int orderId);
+    List<Order> findOrdersByOrderDateAfter(Date orderDateAfter);
 
 
     /*

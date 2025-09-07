@@ -1,4 +1,4 @@
-package com.github.countrybros.web.controllers.order;
+package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.models.dtos.order.OrderDto;

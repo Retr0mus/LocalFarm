@@ -4,13 +4,15 @@ import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.errors.EventsNotFoundException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.factories.PaymentMethodFactory;
+import com.github.countrybros.application.mappers.InvitationMapper;
+import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
 import com.github.countrybros.application.services.company.ICompanyService;
-import com.github.countrybros.application.services.event.EventService;
 import com.github.countrybros.application.services.event.IEventService;
 import com.github.countrybros.application.services.event.IInvitationService;
 import com.github.countrybros.application.services.order.IOrderService;
+import com.github.countrybros.application.services.event.EventService;
 import com.github.countrybros.application.services.order.OrderService;
 import com.github.countrybros.application.services.payment.IPaymentService;
 import com.github.countrybros.application.services.payment.PaymentService;
@@ -26,6 +28,8 @@ import com.github.countrybros.application.services.user.*;
 import com.github.countrybros.infrastructure.services.shopping.MockPaymentFactory;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Event;
+import com.github.countrybros.model.event.Invitation;
+import com.github.countrybros.model.company.CompanyStatus;
 import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.model.event.TimeInterval;
 import com.github.countrybros.model.order.Order;
@@ -40,7 +44,6 @@ import com.github.countrybros.model.user.*;
 import com.github.countrybros.application.models.requests.submission.AddProductSubmissionRequest;
 import com.github.countrybros.model.stock.Stock;
 import com.github.countrybros.application.models.requests.submission.RecogniseProductSubmissionRequest;
-import com.github.countrybros.application.models.requests.item.AddCertificationRequest;
 import com.github.countrybros.application.models.requests.item.AddItemRequest;
 import com.github.countrybros.application.models.requests.user.AddItemToCartRequest;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
@@ -48,8 +51,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Facade that represents alla the use cases of the system.
@@ -81,7 +84,7 @@ public class Orchestrator {
         this.stockService = stockService;
         this.certificationService = certificationService;
         this.submissionService = submissionService;
-        this.companyService = companyService1;
+        this.companyService = companyService;
         this.orderService = orderService;
         this.shoppingService = shoppingService;
         this.paymentService = paymentService;
@@ -99,6 +102,7 @@ public class Orchestrator {
     public void addItemRequest (AddItemRequest request) {
 
         ItemMapper director = new ItemMapper(companyService, certificationService, itemService);
+        SubmissionMapper subMapper = new SubmissionMapper(companyService, itemService, stockService);
 
         Item item = director.toDomain(request);
         itemService.addItem(item);
@@ -108,27 +112,7 @@ public class Orchestrator {
         requestToAdd.setType("addProduct");
         requestToAdd.setSenderId(request.producerId);
 
-
-
-        submissionService.addSubmission(SubmissionMapper.toDomain(requestToAdd));
-    }
-
-    /**
-     * Adds a new certification.
-     *
-     * @param request the request.
-     */
-    public void addCertification(AddCertificationRequest request) {
-
-        certificationService.addCertification(request);
-    }
-
-    public List<Item> getAvailableItems() {
-        return itemService.getAvailableItems();
-    }
-
-    public Item getItemDetails(int itemId) {
-        return itemService.getItem(itemId);
+        submissionService.addSubmission(subMapper.toDomain(requestToAdd));
     }
 
     public List<Stock> getStocksBySeller(int sellerId) {
@@ -140,6 +124,7 @@ public class Orchestrator {
     public void removeQuantityToStock(int stockId, int quantity, int sellerId) {
         stockService.removeQuantityToStock(stockId, quantity, sellerId);
     }
+
 
 
 
@@ -155,7 +140,7 @@ public class Orchestrator {
                 .getSubmission(submissionId);
 
         if (accepted) {
-            submissionService.onAcception(submissionId);
+            submissionService.onAcceptance(submissionId);
             accept(submission);
         } else {
             submissionService.onRejection(submissionId);
@@ -168,7 +153,19 @@ public class Orchestrator {
         if (!userService.userHasRole(userId, UserRole.CURATOR)) {
             throw new ImpossibleRequestException("Only curators can take charge of a submission");
         }
-        submissionService.takeChargeOfSubmission(submissionId,userId);
+
+        User user = userService.getUser(userId);
+        submissionService.takeChargeOfSubmission(submissionId,user);
+    }
+
+    public List<Order> getOrders(int userId) {
+        userService.getUser(userId);
+        return orderService.getOrders(userId);
+    }
+
+
+    public Cart getCart(int userId) {
+        return shoppingService.getCart(userId);
     }
 
     /**
@@ -179,16 +176,16 @@ public class Orchestrator {
     private void accept(Submission submission) {
 
         if (submission instanceof AddProductSubmission sub)
-            itemService.setStatus(ItemStatus.available, sub.getItemId());
+            itemService.setStatus(ItemStatus.available, sub.getItem().getId());
 
         else if (submission instanceof RecogniseProductSubmission sub) {
-            stockService.addQuantityToStock(sub.getStockId(), sub.getQta(), sub.getSenderId());
+            stockService.addQuantityToStock(sub.getStock().getId(), sub.getQta(), sub.getSender().getId());
         }
 
     }
 
     public void removeItemFromCart(int userId, int shoppingItemId) {
-        //check existences of user
+        // Check user's existence
         userService.getUser(userId);
         shoppingService.removeItemFromCart(userId, shoppingItemId);
     }
@@ -210,21 +207,23 @@ public class Orchestrator {
     private void refuse(Submission submission) {
 
         if (submission instanceof AddProductSubmission sub)
-            itemService.deleteItemDetails(sub.getItemId());
+            itemService.deleteItem(sub.getItem().getId());
     }
 
     public void addSubmissionQuantityToStock(RecogniseProductSubmissionRequest request) {
 
-        if (request.getQta() <= 0)
-            throw new ImpossibleRequestException("Quantity less or equal 0");
 
-        Item item = itemService.getItem(request.getProductId());
-        if(item.getStatus() != ItemStatus.available)
+        Stock stock = stockService.getStock(request.getStockId());
+        if(stock.getItem().getStatus() != ItemStatus.available)
             throw new ImpossibleRequestException("Item not available");
+        if(stock.getSeller().getId() != request.getSenderId())
+            throw new ImpossibleRequestException("Seller does not own the stock");
 
-        Company company = companyService.getCompany(request.getSenderId());
+        companyService.getCompany(request.getSenderId());
 
-        submissionService.addSubmission(SubmissionMapper.toDomain(request));
+        SubmissionMapper subMapper = new SubmissionMapper(companyService, itemService, stockService);
+
+        submissionService.addSubmission(subMapper.toDomain(request));
     }
 
     public void cancelAndRefundOrder(RefundRequest request) {
@@ -299,7 +298,7 @@ public class Orchestrator {
         IPaymentMethod paymentMethod = f.createPaymentMethod();
 
         // Pay
-        if(!paymentMethod.pay(order.getTotal()))
+        if(!paymentMethod.pay(order.getTotal(), "this.is@email.ofSystem"))
             throw new ImpossibleRequestException("Payment failed");
 
         orderService.setAsPaid(orderId);
@@ -318,6 +317,79 @@ public class Orchestrator {
         return stockService.getStocksByItem(itemId);
     }
 
+    /**
+     * Pay all the orders of the last 30 days to the companies.
+     */
+    public void payMonthlyOrders() {
+
+        List<Order> orders = orderService.getOrdersSince(LocalDate.now().minusDays(30));
+
+        paymentService.paySellers(orders);
+    }
+
+    /**
+     * Acceptance/rejection an invitation of a company on an @Event.
+     *
+     * @param invitationId invitation ID
+     * @param accepted if the invitation is accepted or not
+     */
+    public void acceptInvitation(int invitationId, boolean accepted) {
+
+        Invitation invitation = invitationService.getInvitation(invitationId);
+        Event event = eventService.getEvent(invitation.getEvent().getId());
+        Company company = companyService.getCompany(invitation.getReceiver().getId());
+
+        if (accepted)
+            eventService.confirmCompanyParticipation(event, company);
+
+        invitationService.deleteInvitation(invitationId);
+    }
+
+    /**
+     * Cancel the participation of a company to a specified event, if it is already participating of course
+     *
+     * @param companyId company ID
+     * @param eventId EventId
+     */
+    public void cancelCompanyParticipation(int companyId, int eventId) {
+
+        Company company = companyService.getCompany(companyId);
+        Event event = eventService.getEvent(eventId);
+
+        eventService.cancelCompanyParticipation(company, event);
+    }
+
+    public List<Event> getParticipations(int companyId) {
+
+        return eventService.getParticipations(companyService.getCompany(companyId));
+    }
+
+    public void createStock(AddStockRequest request) {
+        Company seller = companyService.getCompany(request.getSellerId());
+        Item item = itemService.getItem(request.getItemId());
+
+        if(item.getStatus() != ItemStatus.available)
+            throw new ImpossibleRequestException("Item not available");
+
+        if(seller.getStatus() == CompanyStatus.inactive)
+            throw new ImpossibleRequestException("Seller's status is inactive");
+
+        Stock stock = new Stock();
+        stock.setSeller(seller);
+        stock.setItemDetails(item);
+        stock.setPrice(request.getPrice());
+
+        stockService.add(stock);
+    }
+
+    public void disableCompany(int companyId, int adminId) {
+        if(!userService.getUser(adminId).getRoles().contains(UserRole.ADMIN))
+            throw new ImpossibleRequestException("You are not allowed to cancel this company");
+
+        companyService.disableCompany(companyId);
+        stockService.deleteAllCompanyStocks(companyId);
+    }
+
     public void createEvent(CreateEventRequest request) {
 
         validateEventRequest(request);
@@ -327,11 +399,13 @@ public class Orchestrator {
 
         for (Integer companyId : request.guestsId) {
             CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
-            invitationRequest.event = event;
+            invitationRequest.eventId = event.getId();
             invitationRequest.expiration = java.time.LocalDate.now().plusDays(7);
             Company company = companyService.getCompany(companyId);
 
-            invitationService.addInvitation(invitationRequest, company);
+            InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
+
+            invitationService.addInvitation(invitationMapper.toEntity(invitationRequest));
         }
 
     }
@@ -446,7 +520,7 @@ public class Orchestrator {
     }
 
     public List<Event> getEventsSubscribedByUser(int userId) {
-       // checks the existence of a user
+        // checks the existence of a user
         User user = userService.getUser(userId);
 
         return eventService.getEventsSubscribedByUser(userId);

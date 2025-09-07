@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface IEventRepository extends CrudRepository<Event, Integer> {
 
-    Event getEventById(int id);
-
     List<Event> getAllByState(EventState state);
 
     Event findTopByOrderByIdDesc();
@@ -25,5 +23,7 @@ public interface IEventRepository extends CrudRepository<Event, Integer> {
     List<Event> findAllBySubscribers_Id(int userId);
 
     List<Event> findAllByOrganizer(User organizer);
+
+    List<Event> getAllByParticipantsIsContaining(List<Company> participants);
 }
 

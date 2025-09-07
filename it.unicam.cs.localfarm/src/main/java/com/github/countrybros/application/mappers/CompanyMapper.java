@@ -1,36 +1,32 @@
 package com.github.countrybros.application.mappers;
 
-import com.github.countrybros.application.models.dtos.company.CompanyDTO;
+import com.github.countrybros.application.models.dtos.company.CompanyDto;
+import com.github.countrybros.application.models.requests.company.AddCompanyRequest;
 import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.company.CompanyStatus;
 
 public class CompanyMapper {
+    public static Company toDomain(AddCompanyRequest request) {
+        Company company = new Company();
 
-    /**
-     * Converte un'entità Company in un DTO.
-     * Qui vengono mappati solo i campi essenziali per evitare lazy fetch di relazioni.
-     */
-    public static CompanyDTO toDTO(Company company) {
-        if (company == null) return null;
+        company.setName(request.name);
+        company.setEmail(request.email);
+        company.setDescription(request.description);
+        company.setStatus(CompanyStatus.active);
+        // TODO: location
 
-        CompanyDTO dto = new CompanyDTO();
-        dto.id = company.getId();
-        dto.companyName = company.getName();
-        dto.description = company.getDescription();
-        dto.email = company.getEmail();
-        return dto;
+        return company;
     }
 
-    /**
-     * Converte un DTO in entità Company.
-     * Utile se vuoi ricreare o aggiornare un'entità a partire da un DTO.
-     */
-    public static Company toEntity(CompanyDTO dto) {
-        if (dto == null) return null;
+    public static CompanyDto toDto(Company company) {
+        CompanyDto companyDto = new CompanyDto();
 
-        Company company = new Company();
-        company.setName(dto.companyName);
-        company.setDescription(dto.description);
-        company.setEmail(dto.email);
-        return company;
+        companyDto.id = company.getId();
+        companyDto.companyName = company.getName();
+        companyDto.email = company.getEmail();
+        companyDto.description = company.getDescription();
+        // TODO: location
+
+        return companyDto;
     }
 }
