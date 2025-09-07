@@ -55,7 +55,7 @@ public class EventController {
         return new ResponseEntity<>(eventMapper.toDTO(eventService.getPublicEvents()), HttpStatus.OK);
     }
 
-    @GetMapping("pendingEvents")
+    @GetMapping("personalPendingEvents")
     public ResponseEntity<Object> getPendingEvents(@PathParam("userId") int userId){
         return new ResponseEntity<>(eventService.getPendingEvents(userId).stream().map(EventMapper::toDTO), HttpStatus.OK);
     }

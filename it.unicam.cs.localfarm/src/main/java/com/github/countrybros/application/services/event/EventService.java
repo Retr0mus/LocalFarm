@@ -181,6 +181,13 @@ public class EventService implements IEventService {
      */
     @Override
     public List<Event> getPendingEvents(int userId) {
-        return eventRepository.getAllByState(EventState.planning);
+
+        List<Event> organizerPendingEvents = new ArrayList<>();
+
+        for(Event event : eventRepository.getAllByState(EventState.planning))
+            if(event.getOrganizer().getId() == userId)
+                organizerPendingEvents.add(event);
+
+        return organizerPendingEvents;
     }
 }

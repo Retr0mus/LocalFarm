@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<String> disableUser(@PathParam("userId") int userId,
                                               @PathParam("adminId") int adminId) {
         userService.disableUser(userId, adminId);
-        return new ResponseEntity<>("User deleted", HttpStatus.OK);
+        return new ResponseEntity<>("User disabled", HttpStatus.OK);
     }
 
     @GetMapping("/get")
