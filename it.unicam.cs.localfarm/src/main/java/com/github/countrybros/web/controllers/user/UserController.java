@@ -2,7 +2,6 @@ package com.github.countrybros.web.controllers.user;
 
 import com.github.countrybros.application.mappers.UserMapper;
 import com.github.countrybros.application.services.user.IUserService;
-import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
@@ -28,13 +27,18 @@ public class UserController {
     @DeleteMapping("/delete")
     public ResponseEntity<String> disableUser(@PathParam("userId") int userId,
                                               @PathParam("adminId") int adminId) {
-        userService.deleteUser(userId, adminId);
+        userService.disableUser(userId, adminId);
         return new ResponseEntity<>("User deleted", HttpStatus.OK);
     }
 
     @GetMapping("/get")
     public ResponseEntity<Object> getUser(@RequestParam int userId) {
         return new ResponseEntity<>(UserMapper.toDto(userService.getUser(userId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<Object> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers().stream().map(UserMapper::toDto), HttpStatus.OK);
     }
 
     @PutMapping("/edit")

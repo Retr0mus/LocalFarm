@@ -5,6 +5,8 @@ import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
 
+import java.util.List;
+
 /**
  * Permits to manage the users.
  */
@@ -12,9 +14,11 @@ public interface IUserService {
 
      User getUser(int userId);
 
+     List<User> getAllUsers();
+
      void addUser(AddUserRequest request);
 
-     void deleteUser(int userId, int adminId);
+     void disableUser(int userId, int adminId);
 
      void editUser(EditUserRequest request);
 

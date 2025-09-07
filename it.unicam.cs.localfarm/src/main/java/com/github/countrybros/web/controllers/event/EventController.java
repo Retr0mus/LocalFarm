@@ -26,7 +26,6 @@ public class EventController {
 
     @GetMapping(value="events")
     public ResponseEntity<List<EventElement>> getEvents(){
-
         return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
     }
 
@@ -54,6 +53,11 @@ public class EventController {
     @GetMapping("publicEvents")
     public ResponseEntity<List<EventElement>> getPublicEvents(){
         return new ResponseEntity<>(eventService.getPublicEvents(), HttpStatus.OK);
+    }
+
+    @GetMapping("pendingEvents")
+    public ResponseEntity<Object> getPendingEvents(@PathParam("userId") int userId){
+        return new ResponseEntity<>(eventService.getPendingEvents(userId), HttpStatus.OK);
     }
 
     @PutMapping("delete")

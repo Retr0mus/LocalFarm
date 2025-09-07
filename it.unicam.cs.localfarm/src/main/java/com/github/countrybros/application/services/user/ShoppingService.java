@@ -1,6 +1,7 @@
 package com.github.countrybros.application.services.user;
 
 
+import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repositories.user.ICartRepository;
@@ -96,6 +97,16 @@ public class ShoppingService implements IShoppingService {
         cartRepository.save(cart);
 
         return order;
+    }
+
+    /**
+     * Get the available payment methods.
+     *
+     * @return A list of payment methods.
+     */
+    @Override
+    public List<IPaymentMethod> getPaymentMethods() {
+        return List.of();
     }
 
     /**

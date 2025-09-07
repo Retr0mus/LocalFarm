@@ -43,13 +43,7 @@ public class CompanyService implements ICompanyService {
 
         companyRepository.save(company);
 
-        Email email = new Email();
-        email.setSender("noreply@localfarm.it");
-        email.setRecipient(company.getEmail());
-        email.setSubject("Company Registration");
-        email.setBody("Your company has been registered, login with this email and password: " + password);
-
-        emailService.sendEmail(email);
+        emailService.sendEmail(generateCreationEmail(company.getEmail(), password));
     }
 
     @Override
@@ -90,12 +84,26 @@ public class CompanyService implements ICompanyService {
         company.setStatus(CompanyStatus.inactive);
         companyRepository.save(company);
 
+        emailService.sendEmail(generateCancellationEmail(company.getEmail()));
+    }
+
+    private Email generateCreationEmail(String recipient, String password) {
         Email email = new Email();
         email.setSender("noreply@localfarm.it");
-        email.setRecipient(company.getEmail());
+        email.setRecipient(recipient);
+        email.setSubject("Company Registration");
+        email.setBody("Your company has been registered, login with this email and password: " + password);
+
+        return email;
+    }
+
+    private Email generateCancellationEmail(String recipient) {
+        Email email = new Email();
+        email.setSender("noreply@localfarm.it");
+        email.setRecipient(recipient);
         email.setSubject("Company disabled from LocalFarm");
         email.setBody("Your company has been disabled.");
 
-        emailService.sendEmail(email);
+        return email;
     }
 }

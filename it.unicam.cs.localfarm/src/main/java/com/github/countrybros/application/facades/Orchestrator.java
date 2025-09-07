@@ -104,26 +104,13 @@ public class Orchestrator {
      * @param request the request.
      */
     public void addCertification(AddCertificationRequest request) {
-
         certificationService.addCertification(request);
-    }
-
-    public List<Item> getAvailableItems() {
-        return itemService.getAvailableItems();
-    }
-
-    public Item getItemDetails(int itemId) {
-        return itemService.getItem(itemId);
     }
 
     public List<Stock> getStocksBySeller(int sellerId) {
         // This istruction is used to throw an eventual loading exception
         Company company = companyService.getCompany(sellerId);
         return stockService.getStocksBySeller(sellerId);
-    }
-
-    public void removeQuantityToStock(int stockId, int quantity, int sellerId) {
-        stockService.removeQuantityToStock(stockId, quantity, sellerId);
     }
 
     /**

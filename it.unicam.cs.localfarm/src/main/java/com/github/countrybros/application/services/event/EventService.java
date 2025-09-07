@@ -109,6 +109,25 @@ public class EventService implements IEventService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns a list of the organizer's unconfirmed events
+     *
+     * @param userId the organizer's ID.
+     * @return A list of the events.
+     */
+    @Override
+    public List<EventElement> getPendingEvents(int userId) {
+        return eventRepository.getAllByState(EventState.planning)
+                .stream().map(
+                        event -> {
+                            EventElement dto = new EventElement();
+                            dto.id = event.getId();
+                            dto.name = event.getName();
+                            return dto;
+                        }
+                ).collect(Collectors.toList());
+    }
+
     @Override
     public void setAsCanceled(int eventId) {
 

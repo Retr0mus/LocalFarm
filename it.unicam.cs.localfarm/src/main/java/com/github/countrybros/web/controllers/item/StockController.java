@@ -5,7 +5,6 @@ import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.services.stock.IStockService;
 import com.github.countrybros.application.mappers.StockMapper;
 import com.github.countrybros.application.models.requests.item.AddStockRequest;
-import com.github.countrybros.model.stock.Stock;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class StockController {
     }
 
     @GetMapping( "getBySeller")
-    public ResponseEntity<Object> getItem(@PathParam("sellerId") int sellerId) {
+    public ResponseEntity<Object> getBySeller(@PathParam("sellerId") int sellerId) {
         return new ResponseEntity<>(orchestrator.getStocksBySeller(sellerId).stream().map(StockMapper::toDto), HttpStatus.OK);
     }
 
@@ -57,8 +56,9 @@ public class StockController {
     public ResponseEntity<Object> removeItemQuantity(@PathParam("stockId") int stockId,
                                                      @PathParam("quantity") int quantity,
                                                      @PathParam("sellerId") int sellerId) {
+        // TODO: Understand if this is necessary
         try {
-            orchestrator.removeQuantityToStock(stockId, quantity, sellerId);
+            stockService.removeQuantityToStock(stockId, quantity, sellerId);
         }catch (ImpossibleRequestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

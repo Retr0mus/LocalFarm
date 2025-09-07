@@ -12,6 +12,8 @@ import com.github.countrybros.model.utils.PasswordSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Service that performs all the tasks related to the management of the user
  */
@@ -24,8 +26,14 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(int userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new NotFoundInRepositoryException("User with id " + userId + "not found"));
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundInRepositoryException("User with id " + userId + " not found"));
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return (List<User>) userRepository.findAll();
+    }
+
 
     @Override
     public void addUser(AddUserRequest request) {
@@ -44,7 +52,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void deleteUser(int userId, int adminId) {
+    public void disableUser(int userId, int adminId) {
         if(!getUser(adminId).getRoles().contains(UserRole.ADMIN)) {
             throw new NotFoundInRepositoryException("User with ID " + userId + " is not admin.");
         }
