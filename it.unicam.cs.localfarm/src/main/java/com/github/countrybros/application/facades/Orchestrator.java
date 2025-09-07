@@ -13,9 +13,6 @@ import com.github.countrybros.application.services.event.IEventService;
 import com.github.countrybros.application.services.event.IInvitationService;
 import com.github.countrybros.application.services.order.IOrderService;
 import com.github.countrybros.application.services.event.EventService;
-import com.github.countrybros.application.services.event.IEventService;
-import com.github.countrybros.application.services.event.IInvitationService;
-import com.github.countrybros.application.services.order.IOrderService;
 import com.github.countrybros.application.services.order.OrderService;
 import com.github.countrybros.application.services.payment.IPaymentService;
 import com.github.countrybros.application.services.payment.PaymentService;
@@ -33,10 +30,6 @@ import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.Invitation;
 import com.github.countrybros.model.company.CompanyStatus;
-import com.github.countrybros.model.event.Event;
-import com.github.countrybros.model.event.EventState;
-import com.github.countrybros.model.event.TimeInterval;
-import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.model.event.TimeInterval;
 import com.github.countrybros.model.order.Order;
@@ -60,7 +53,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Facade that represents alla the use cases of the system.
@@ -193,7 +185,7 @@ public class Orchestrator {
     }
 
     public void removeItemFromCart(int userId, int shoppingItemId) {
-        //check existences of user
+        // Check user's existence
         userService.getUser(userId);
         shoppingService.removeItemFromCart(userId, shoppingItemId);
     }

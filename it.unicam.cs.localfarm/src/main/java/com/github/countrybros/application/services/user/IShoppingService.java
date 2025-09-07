@@ -1,5 +1,6 @@
 package com.github.countrybros.application.services.user;
 
+import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.model.stock.Stock;
 import com.github.countrybros.model.user.Cart;
 import com.github.countrybros.model.order.Order;
@@ -36,4 +37,11 @@ public interface IShoppingService {
      * @param userId The user.
      */
     Order checkout(int userId);
+
+    /**
+     * Get the available payment methods.
+     *
+     * @return  A list of payment methods.
+     */
+    List<IPaymentMethod> getPaymentMethods();
 }

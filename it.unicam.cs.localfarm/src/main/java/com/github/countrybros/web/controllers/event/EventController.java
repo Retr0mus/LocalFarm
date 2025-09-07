@@ -58,14 +58,19 @@ public class EventController {
         return new ResponseEntity<>(eventMapper.toDTO(eventService.getPublicEvents()), HttpStatus.OK);
     }
 
-    @PutMapping("/delete")
+    @GetMapping("pendingEvents")
+    public ResponseEntity<Object> getPendingEvents(@PathParam("userId") int userId){
+        return new ResponseEntity<>(eventService.getPendingEvents(userId), HttpStatus.OK);
+    }
+
+    @PutMapping("delete")
     public ResponseEntity<Object> deleteEvent(@PathParam("eventId") int eventId, @PathParam("organizerId") int organizerId) {
 
         eventService.deleteEvent(eventId,organizerId);
         return new ResponseEntity<>("Event cancelled.", HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("create")
     public ResponseEntity<Object> createEvent(@Valid @RequestBody CreateEventRequest request) {
 
         orchestrator.createEvent(request);

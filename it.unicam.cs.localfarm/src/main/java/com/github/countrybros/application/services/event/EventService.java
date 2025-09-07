@@ -3,6 +3,7 @@ package com.github.countrybros.application.services.event;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.mappers.EventMapper;
+import com.github.countrybros.application.models.dtos.event.EventDTO;
 import com.github.countrybros.infrastructure.repositories.event.IEventRepository;
 import com.github.countrybros.model.event.*;
 import com.github.countrybros.model.company.Company;
@@ -170,6 +171,19 @@ public class EventService implements IEventService {
         return allEvents.stream()
                 .filter(event -> event.getDates().stream()
                         .anyMatch(interval -> interval.getStartTime().toLocalDate().equals(localDate)))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of the organizer's unconfirmed events
+     *
+     * @param userId the organizer's ID.
+     * @return A list of the events.
+     */
+    @Override
+    public List<EventDTO> getPendingEvents(int userId) {
+        return eventRepository.getAllByState(EventState.planning)
+                .stream().map(EventMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

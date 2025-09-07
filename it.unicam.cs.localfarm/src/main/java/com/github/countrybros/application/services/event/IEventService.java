@@ -52,6 +52,14 @@ public interface IEventService {
     List<Event> getPublicEvents();
 
     /**
+     * Returns a list of the organizer's unconfirmed events
+     *
+     * @param userId    the organizer's ID.
+     * @return          A list of the events.
+     */
+    public List<EventElement> getPendingEvents(int userId);
+
+    /**
      * Returns all the events in the website.
      *
      * @return a list with all the events.

@@ -20,7 +20,6 @@ public class ItemController {
 
     @Autowired
     public ItemController(Orchestrator orchestrator, IItemService itemService) {
-
         this.orchestrator = orchestrator;
         this.itemService = itemService;
     }

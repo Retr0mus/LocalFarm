@@ -27,8 +27,14 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(int userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new NotFoundInRepositoryException("User with id " + userId + "not found"));
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundInRepositoryException("User with id " + userId + " not found"));
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return (List<User>) userRepository.findAll();
+    }
+
 
     @Override
     public void addUser(AddUserRequest request) {
@@ -44,7 +50,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void deleteUser(int userId, int adminId) {
+    public void disableUser(int userId, int adminId) {
         if(!getUser(adminId).getRoles().contains(UserRole.ADMIN)) {
             throw new NotFoundInRepositoryException("User with ID " + userId + " is not admin.");
         }
