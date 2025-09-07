@@ -2,12 +2,10 @@ package com.github.countrybros.web.controllers.event;
 
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.mappers.EventMapper;
-import com.github.countrybros.application.models.dtos.event.EventDTO;
+import com.github.countrybros.application.models.dtos.event.EventDto;
 import com.github.countrybros.application.services.event.IEventService;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
-import com.github.countrybros.application.models.requests.event.EditEventRequest;
-import com.github.countrybros.application.models.requests.event.EventElement;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/event")
@@ -34,7 +31,7 @@ public class EventController {
     }
 
     @GetMapping(value="events")
-    public ResponseEntity<List<EventDTO>> getEvents(){
+    public ResponseEntity<List<EventDto>> getEvents(){
 
         return new ResponseEntity<>(eventMapper.toDTO(eventService.getAllEvents()), HttpStatus.OK);
     }
@@ -60,7 +57,7 @@ public class EventController {
 
     @GetMapping("pendingEvents")
     public ResponseEntity<Object> getPendingEvents(@PathParam("userId") int userId){
-        return new ResponseEntity<>(eventService.getPendingEvents(userId), HttpStatus.OK);
+        return new ResponseEntity<>(eventService.getPendingEvents(userId).stream().map(EventMapper::toDTO), HttpStatus.OK);
     }
 
     @PutMapping("delete")
@@ -93,7 +90,7 @@ public class EventController {
     @GetMapping("getParticipations")
     public ResponseEntity<Object> getParticipations(@PathParam("companyId") int companyId){
 
-        List<EventDTO> participations = eventMapper.toDTO(
+        List<EventDto> participations = eventMapper.toDTO(
                 orchestrator.getParticipations(companyId));
         return new ResponseEntity<>(participations, HttpStatus.OK);
     }
@@ -107,7 +104,7 @@ public class EventController {
     }
 
     @GetMapping("/subscribed")
-    public ResponseEntity<List<EventDTO>> getSubscribedEvents(@PathParam("userId") int userId) {
+    public ResponseEntity<List<EventDto>> getSubscribedEvents(@PathParam("userId") int userId) {
         List<Event> events = orchestrator.getEventsSubscribedByUser(userId);
 
         List<Event> eventDtos = new ArrayList<>(events);
@@ -116,7 +113,7 @@ public class EventController {
     }
 
     @GetMapping("/organizerEvents")
-    public ResponseEntity<List<EventDTO>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
+    public ResponseEntity<List<EventDto>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
         List<Event> events = orchestrator.getEventsByOrganizer(organizerId);
         List<Event> eventDtos = new ArrayList<>(events);
         return ResponseEntity.ok(eventMapper.toDTO(eventDtos));

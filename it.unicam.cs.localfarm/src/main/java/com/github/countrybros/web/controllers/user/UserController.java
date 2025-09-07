@@ -2,6 +2,7 @@ package com.github.countrybros.web.controllers.user;
 
 import com.github.countrybros.application.mappers.UserMapper;
 import com.github.countrybros.application.services.user.IUserService;
+import com.github.countrybros.model.user.User;
 import com.github.countrybros.model.user.UserRole;
 import com.github.countrybros.application.models.requests.user.AddUserRequest;
 import com.github.countrybros.application.models.requests.user.EditUserRequest;
@@ -73,13 +74,4 @@ public class UserController {
         boolean hasRole = userService.userHasRole(userId, role);
         return new ResponseEntity<>(hasRole, HttpStatus.OK);
     }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
-
-
 }

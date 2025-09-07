@@ -1,6 +1,5 @@
 package com.github.countrybros.application.models.dtos.event;
 
-import com.github.countrybros.application.models.dtos.company.CompanyDTO;
 import com.github.countrybros.application.models.dtos.user.UserDto;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Location;
@@ -9,7 +8,7 @@ import com.github.countrybros.model.user.User;
 
 import java.util.List;
 
-public class EventDTO {
+public class EventDto {
     private int id;
     private String name;
     private int maxSpots;
@@ -24,9 +23,9 @@ public class EventDTO {
 
     private String state;
 
-    public EventDTO() {}
+    public EventDto() {}
 
-    public EventDTO(int id,
+    public EventDto(int id,
                     String name,
                     int maxSpots,
                     Location location,
@@ -34,7 +33,7 @@ public class EventDTO {
                     UserDto organizer,
                     List<User> subscribers,
                     List<Company> guests,
-                    String state,String description) {
+                    String state, String description) {
         this.id = id;
         this.name = name;
         this.maxSpots = maxSpots;

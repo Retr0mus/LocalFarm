@@ -57,7 +57,7 @@ public interface IEventService {
      * @param userId    the organizer's ID.
      * @return          A list of the events.
      */
-    public List<EventElement> getPendingEvents(int userId);
+    public List<Event> getPendingEvents(int userId);
 
     /**
      * Returns all the events in the website.

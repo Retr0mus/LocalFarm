@@ -34,6 +34,4 @@ public interface IUserService {
 
      boolean userHasRole(int userId, UserRole role);
 
-     List<User> getAllUsers();
-
 }

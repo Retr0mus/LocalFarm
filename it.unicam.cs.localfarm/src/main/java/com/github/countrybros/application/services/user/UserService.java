@@ -118,11 +118,4 @@ public class UserService implements IUserService {
         User user = getUser(userId);
         return user.getRoles().contains(role);
     }
-
-    @Override
-    public List<User> getAllUsers() {
-        return List.of();
-    }
-
-
 }

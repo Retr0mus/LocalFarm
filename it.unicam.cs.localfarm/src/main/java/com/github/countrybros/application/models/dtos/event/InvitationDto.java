@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Represents alla the information that the client needs to display it at users.
  */
-public class InvitationDTO {
+public class InvitationDto {
 
     public int id;
     public String senderName;

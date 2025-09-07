@@ -1,11 +1,9 @@
 package com.github.countrybros.application.mappers;
 
-import com.github.countrybros.application.models.dtos.event.InvitationDTO;
+import com.github.countrybros.application.models.dtos.event.InvitationDto;
 import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.application.services.event.IEventService;
-import com.github.countrybros.application.services.event.InvitationService;
-import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Invitation;
 
 import java.util.ArrayList;
@@ -25,21 +23,21 @@ public class InvitationMapper {
         this.eventService = eventService;
     }
 
-    public static List<InvitationDTO> toDTO(List<Invitation> invitations) {
+    public static List<InvitationDto> toDTO(List<Invitation> invitations) {
 
-        List<InvitationDTO> invitationDTOs = new ArrayList<>();
+        List<InvitationDto> invitationDtos = new ArrayList<>();
 
         for (Invitation invitation : invitations) {
 
-            invitationDTOs.add(toDTO(invitation));
+            invitationDtos.add(toDTO(invitation));
         }
 
-        return invitationDTOs;
+        return invitationDtos;
     }
 
-    public static InvitationDTO toDTO(Invitation invitation) {
+    public static InvitationDto toDTO(Invitation invitation) {
 
-        InvitationDTO invitationDTO = new InvitationDTO();
+        InvitationDto invitationDTO = new InvitationDto();
         invitationDTO.id = invitation.getId();
         invitationDTO.senderName = invitation.getEvent().getOrganizer().getName();
         invitationDTO.eventDescription = invitation.getEvent().getDescription();

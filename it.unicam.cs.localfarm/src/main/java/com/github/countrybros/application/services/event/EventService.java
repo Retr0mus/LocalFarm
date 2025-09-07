@@ -3,7 +3,6 @@ package com.github.countrybros.application.services.event;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.mappers.EventMapper;
-import com.github.countrybros.application.models.dtos.event.EventDTO;
 import com.github.countrybros.infrastructure.repositories.event.IEventRepository;
 import com.github.countrybros.model.event.*;
 import com.github.countrybros.model.company.Company;
@@ -181,9 +180,7 @@ public class EventService implements IEventService {
      * @return A list of the events.
      */
     @Override
-    public List<EventDTO> getPendingEvents(int userId) {
-        return eventRepository.getAllByState(EventState.planning)
-                .stream().map(EventMapper::toDTO)
-                .collect(Collectors.toList());
+    public List<Event> getPendingEvents(int userId) {
+        return eventRepository.getAllByState(EventState.planning);
     }
 }

@@ -1,6 +1,6 @@
 package com.github.countrybros.application.mappers;
 
-import com.github.countrybros.application.models.dtos.event.EventDTO;
+import com.github.countrybros.application.models.dtos.event.EventDto;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.EventState;
@@ -22,8 +22,8 @@ public class EventMapper {
         return event;
     }
 
-    public EventDTO toDTO(Event event) {
-        return new EventDTO(
+    public static EventDto toDTO(Event event) {
+        return new EventDto(
                 event.getId(),
                 event.getName(),
                 event.getMaxSpots(),
@@ -37,9 +37,9 @@ public class EventMapper {
         );
     }
 
-    public List<EventDTO> toDTO(List<Event> events) {
+    public List<EventDto> toDTO(List<Event> events) {
 
-        List<EventDTO> dtos = new ArrayList<>();
+        List<EventDto> dtos = new ArrayList<>();
         for (Event event : events) {
             dtos.add(toDTO(event));
         }

@@ -12,9 +12,7 @@ import jakarta.validation.constraints.Size;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AddProductSubmissionRequest.class, name = "addProduct"),
-        @JsonSubTypes.Type(value = EditProductSubmissionRequest.class, name = "editProduct"),
-        @JsonSubTypes.Type(value = RecogniseProductSubmissionRequest.class, name = "recogniseProduct"),
-        @JsonSubTypes.Type(value = RemoveProductSubmissionRequest.class, name = "removeProduct")
+        @JsonSubTypes.Type(value = RecogniseProductSubmissionRequest.class, name = "recogniseProduct")
 })
 public abstract class SubmissionRequest {
 

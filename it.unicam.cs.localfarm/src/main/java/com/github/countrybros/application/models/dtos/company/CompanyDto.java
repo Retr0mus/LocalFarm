@@ -1,6 +1,6 @@
 package com.github.countrybros.application.models.dtos.company;
 
-public class CompanyDTO {
+public class CompanyDto {
 
     public int id;
     public String companyName;
