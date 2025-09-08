@@ -104,6 +104,8 @@ public class ItemMapper {
         dto.setProducerId(transformedProduct.getProducer().getId());
         dto.setCertifications(transformedProduct.getCertifications());
 
+
+
         for(TransformationStep step : transformedProduct.getSteps()) {
             TransformationStepDto dtoStep = new TransformationStepDto();
             dtoStep.location = step.getLocation();

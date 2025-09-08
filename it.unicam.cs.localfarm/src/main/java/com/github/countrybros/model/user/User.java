@@ -17,9 +17,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-    //TODO: See if there is a better way to manage users than this plain object
-    //TODO: see if it is possible to remove the password from the object, keppeing it only on a future DB
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;

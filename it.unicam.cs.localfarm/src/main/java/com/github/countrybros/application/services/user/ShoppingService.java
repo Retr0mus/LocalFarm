@@ -120,6 +120,9 @@ public class ShoppingService implements IShoppingService {
 
         Cart cart = cartRepository.findById(userId).orElseThrow(() -> new ImpossibleRequestException("User not found"));
 
+        if(cart.getShoppingItems().isEmpty())
+            return false;
+
         for(ShoppingItem shoppingItem : cart.getShoppingItems())
             if(shoppingItem.getQuantity() > shoppingItem.getStock().getQty())
                 return false;

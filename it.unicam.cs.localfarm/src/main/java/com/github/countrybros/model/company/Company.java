@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import com.github.countrybros.model.event.Invitation;
+import com.github.countrybros.model.utils.Location;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,8 +12,6 @@ import java.util.List;
 
 /**
  * Class to represent a company
- *
- * TODO: remove embeddable
  */
 @Entity
 public class Company {
@@ -27,8 +26,8 @@ public class Company {
     @JsonManagedReference
     @JsonIgnore
     private List<Invitation> invitations;
-    //TODO add location
     private CompanyStatus status;
+    private Location location;
 
     public String getName() {
         return name;
@@ -80,6 +79,14 @@ public class Company {
 
     public void setInvitations(List<Invitation> invitations) {
         this.invitations = invitations;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
 

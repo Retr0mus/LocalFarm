@@ -17,11 +17,11 @@ import jakarta.validation.constraints.Size;
 })
 public abstract class AddItemRequest {
 
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 50, message = ("name must be between 3 and 50"))
     public String name;
 
     @NotNull
-    @Size(max = 500)
+    @Size(max = 500, message = "max description character is 500")
     public String description;
 
     @Positive

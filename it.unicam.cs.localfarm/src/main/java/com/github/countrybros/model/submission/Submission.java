@@ -7,7 +7,7 @@ import com.github.countrybros.model.user.User;
 import jakarta.persistence.*;
 
 /**
- * Represents an abstract item acceptance submission
+ * Represents an abstract item submission
  */
 
 @JsonTypeInfo(

@@ -193,7 +193,18 @@ public class Event implements IPostable {
                 .get();
     }
 
-    //TODO
+    public boolean isParticipating(Company guest){
+        for (Company participant : participants){
+            if (participant.getId() == guest.getId())
+                return true;
+        }
+        return false;
+    }
+
+    public void removeGuest(Company guest){
+        participants.removeIf(participant -> participant.getId() == guest.getId());
+    }
+
     @Override
     public SocialPost getPost() {
 

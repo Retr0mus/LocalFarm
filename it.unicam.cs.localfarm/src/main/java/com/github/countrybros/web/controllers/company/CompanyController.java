@@ -46,6 +46,6 @@ public class CompanyController {
     public ResponseEntity<String> disableCompany(@PathParam("companyId") int companyId,
                                                  @PathParam("adminId") int adminId) {
         orchestrator.disableCompany(companyId, adminId);
-        return new ResponseEntity<>("Company deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Company disabled", HttpStatus.OK);
     }
 }

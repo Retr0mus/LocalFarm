@@ -337,7 +337,7 @@ public class Orchestrator {
                 orderService.setOrderItemsAsPaid(itemsPaid.get(company));
         }
 
-        if (failedPaymentCompanies.size() == itemsPaid.size())
+        if (failedPaymentCompanies.size() == itemsPaid.size() && !itemsPaid.isEmpty())
             return null;
 
         return failedPaymentCompanies;
@@ -417,17 +417,22 @@ public class Orchestrator {
         validateEventRequest(request);
         EventMapper eventMapper = new EventMapper(companyService, userService);
         Event event = eventMapper.toDomain(request);
+
+        for (Integer companyId : request.guestsId) {
+            companyService.getCompany(companyId);
+        }
+
         eventService.createEvent(event);
 
         InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
+
         for (Integer companyId : request.guestsId) {
             CreateInvitationRequest invReq = new CreateInvitationRequest();
             invReq.eventId = event.getId();
             invReq.receiverId = companyId;
             invReq.expiration = LocalDate.now().plusDays(7);
 
-            Invitation invitation = invitationMapper.toEntity(invReq);
-            invitationService.addInvitation(invitation);
+            invitationService.addInvitation(invitationMapper.toEntity(invReq));
         }
 
     }
@@ -456,6 +461,16 @@ public class Orchestrator {
             throw new ImpossibleRequestException("Location must be provided");
         }
 
+        // Check if the organizer exists and their role
+        User organizer = userService.getUser(request.organizerId);
+        if (organizer.getRoles() == null || !organizer.getRoles().contains(UserRole.ANIMATOR)) {
+            throw new ImpossibleRequestException("Only an ANIMATOR can create an event");
+        }
+
+        // Check if the organizer exists in the company
+        companyService.getCompany(request.organizerId);
+
+        // Check for overlapping time intervals
         for (int i = 0; i < request.dates.size(); i++) {
             var first = request.dates.get(i);
             for (int j = i + 1; j < request.dates.size(); j++) {
@@ -470,14 +485,6 @@ public class Orchestrator {
                     );
                 }
             }
-
-            User organizer = userService.getUser(request.organizerId);
-            if (organizer.getRoles() == null || !organizer.getRoles().contains(UserRole.ANIMATOR)) {
-                throw new ImpossibleRequestException("Only an ANIMATOR can create an event");
-            }
-
-            // Check if the organizer exits
-            companyService.getCompany(request.organizerId);
         }
 
     }
@@ -501,6 +508,10 @@ public class Orchestrator {
     public void unSubscribeToEvent(int userId, int eventId) {
         Event event = eventService.getEvent(eventId);
         User user = userService.getUser(userId);
+
+        if (event.getState() == EventState.planning) {
+            throw new ImpossibleRequestException("Impossible to unsubscribe on a planning event");
+        }
 
         if (!event.getSubscribers().contains(user)) {
             throw new RequestAlreadySatisfiedException("The user "+user.getId()+" is not subscribed to this event "+event.getId());
@@ -534,5 +545,11 @@ public class Orchestrator {
         User user = userService.getUser(userId);
 
         return eventService.getEventsSubscribedByUser(userId);
+    }
+
+    public List<Invitation> getInvitationsByCompany(int companyId) {
+
+        companyService.getCompany(companyId);
+        return invitationService.getInvitationsByCompany(companyId);
     }
 }

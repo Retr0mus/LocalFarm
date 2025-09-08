@@ -26,8 +26,8 @@ public class StockController {
     }
 
     @GetMapping("get")
-    public ResponseEntity<Object> getStock(@PathParam( "id" ) Integer id) {
-        return new ResponseEntity<>(StockMapper.toDto(stockService.getStock(id)), HttpStatus.OK);
+    public ResponseEntity<Object> getStock(@PathParam( "stockId" ) Integer stockId) {
+        return new ResponseEntity<>(StockMapper.toDto(stockService.getStock(stockId)), HttpStatus.OK);
     }
 
     @PostMapping( "add")
@@ -56,22 +56,10 @@ public class StockController {
     public ResponseEntity<Object> removeItemQuantity(@PathParam("stockId") int stockId,
                                                      @PathParam("quantity") int quantity,
                                                      @PathParam("sellerId") int sellerId) {
-        // TODO: Understand if this is necessary
-        try {
-            stockService.removeQuantityToStock(stockId, quantity, sellerId);
-        }catch (ImpossibleRequestException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+
+        stockService.removeQuantityToStock(stockId, quantity, sellerId);
 
         return new ResponseEntity<>("Quantity successfully removed", HttpStatus.OK);
     }
-
-    /*
-    @PutMapping( "setPrice")
-    public ResponseEntity<Object> setItemPrice(@PathParam("itemId") int itemId,
-                                               @PathParam("price") Float price) {
-        stockService.setPrice(itemId, price);
-        return new ResponseEntity<>("Price successfully set", HttpStatus.OK);
-    }*/
 
 }

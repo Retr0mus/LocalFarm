@@ -41,8 +41,6 @@ public interface ISubmissionService {
      */
      List<Submission> getSubmissionsByCurator(int curatorId);
 
-     //TODO: Add acceptance submission by sender.
-
     /**
      * Accepts the specified Submission.
      *

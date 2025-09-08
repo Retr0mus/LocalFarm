@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//TODO Those requests don't work, social API needed.
+// Those requests don't work, social API needed.
 @RestController
 @RequestMapping("/social")
 public class SocialController {

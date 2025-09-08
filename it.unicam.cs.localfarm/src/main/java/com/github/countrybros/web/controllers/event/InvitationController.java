@@ -32,7 +32,7 @@ public class InvitationController {
     @GetMapping("getCompanyInvitations")
     public ResponseEntity<Object> getCompanyInvitations(@PathParam("companyId") int companyId) {
 
-        return new ResponseEntity<>(InvitationMapper.toDTO(invitationService
+        return new ResponseEntity<>(InvitationMapper.toDTO(orchestrator
                 .getInvitationsByCompany(companyId)), HttpStatus.OK);
     }
 

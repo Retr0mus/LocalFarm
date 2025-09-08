@@ -107,18 +107,17 @@ public class EventController {
                                                              @PathParam("eventId") int eventId){
 
         orchestrator.cancelCompanyParticipation(companyId, eventId);
-        return new ResponseEntity<>("Event cancelled", HttpStatus.OK);
+        return new ResponseEntity<>("Participation canceled", HttpStatus.OK);
     }
 
 
 
     @GetMapping("/subscribed")
     public ResponseEntity<List<EventDto>> getSubscribedEvents(@PathParam("userId") int userId) {
+
         List<Event> events = orchestrator.getEventsSubscribedByUser(userId);
 
-        List<Event> eventDtos = new ArrayList<>(events);
-
-        return ResponseEntity.ok(EventMapper.toDTO(eventDtos));
+        return ResponseEntity.ok(EventMapper.toDTO(events));
     }
 
     @GetMapping("/organizerEvents")

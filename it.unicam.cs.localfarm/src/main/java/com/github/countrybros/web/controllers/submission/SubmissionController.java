@@ -30,14 +30,14 @@ public class SubmissionController {
 
     }
 
-    @GetMapping("submission")
+    @GetMapping("get")
     public ResponseEntity<Object> getSubmission(@PathParam("submissionId") int submissionId) {
 
         return new ResponseEntity<>(submissionService.getSubmission(submissionId), HttpStatus.OK);
     }
 
-    @GetMapping("getAccepted")
-    public ResponseEntity<Object> getAcceptedSubmission(@PathParam("curatorId") int curatorId) {
+    @GetMapping("SubmissionToReview")
+    public ResponseEntity<Object> getSubmissionToReview(@PathParam("curatorId") int curatorId) {
 
         return new ResponseEntity<>(SubmissionMapper.toDTO(submissionService
                 .getSubmissionToReview(curatorId)), HttpStatus.OK);

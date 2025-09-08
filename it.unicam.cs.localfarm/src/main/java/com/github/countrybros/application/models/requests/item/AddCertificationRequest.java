@@ -7,9 +7,9 @@ import jakarta.validation.constraints.Size;
  */
 public class AddCertificationRequest {
 
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50")
     public String name;
 
-    @Size(max = 500)
+    @Size(max = 500, message = "max description character is 500")
     public String description;
 }

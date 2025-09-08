@@ -17,7 +17,7 @@ public class CompanyMapper {
         company.setEmail(request.email);
         company.setDescription(request.description);
         company.setStatus(CompanyStatus.active);
-        // TODO: location
+        company.setLocation(request.location);
 
         return company;
     }
@@ -29,7 +29,7 @@ public class CompanyMapper {
         companyDto.companyName = company.getName();
         companyDto.email = company.getEmail();
         companyDto.description = company.getDescription();
-        // TODO: location
+        companyDto.location = company.getLocation();
 
         return companyDto;
     }

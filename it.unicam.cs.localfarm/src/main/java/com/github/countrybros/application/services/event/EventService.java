@@ -126,10 +126,10 @@ public class EventService implements IEventService {
         if (event.getState().equals(EventState.completed))
             throw new ImpossibleRequestException("Incoherent event status");
 
-        if (! event.getGuests().contains(company))
+        if (! event.isParticipating(company))
             throw new RequestAlreadySatisfiedException("Company is not participating");
 
-        event.getGuests().remove(company);
+        event.removeGuest(company);
         eventRepository.save(event);
     }
 

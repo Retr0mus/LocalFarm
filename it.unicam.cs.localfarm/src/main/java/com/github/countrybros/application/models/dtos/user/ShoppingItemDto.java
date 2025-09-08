@@ -1,11 +1,20 @@
 package com.github.countrybros.application.models.dtos.user;
 
 public class ShoppingItemDto {
+    private long id;
     private int itemId;
     private String itemName;
     private int sellerId;
     private String sellerName;
     private int quantity;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public int getItemId() {
         return itemId;

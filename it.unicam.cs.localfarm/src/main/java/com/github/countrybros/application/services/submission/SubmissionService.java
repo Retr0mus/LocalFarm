@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service that performs all the tasks related to the management of the item acceptance submissions.
+ * Service that performs all the tasks related to the management of the item submissions.
  */
 @Service
 public class SubmissionService implements ISubmissionService {
@@ -40,7 +40,7 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public Submission getSubmission(int submissionId) {
         return submissionRepository.findById(submissionId)
-                .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + submissionId));
+                .orElseThrow(() -> new NotFoundInRepositoryException("Submission not found with id " + submissionId));
     }
 
     /**

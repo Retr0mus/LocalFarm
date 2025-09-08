@@ -40,7 +40,7 @@ public class OrderService implements IOrderService {
      */
     @Override
     public Order getOrder(int id) {
-        return orderRepository.findById(id).orElseThrow(() -> new ImpossibleRequestException("The order with ID " + id + " does not exist."));
+        return orderRepository.findById(id).orElseThrow(() -> new NotFoundInRepositoryException("The order with ID " + id + " does not exist."));
     }
 
     @Override

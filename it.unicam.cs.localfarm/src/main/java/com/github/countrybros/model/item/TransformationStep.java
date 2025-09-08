@@ -15,7 +15,7 @@ public class TransformationStep {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<SimpleProduct> ingredients;
 
     private Location location;
