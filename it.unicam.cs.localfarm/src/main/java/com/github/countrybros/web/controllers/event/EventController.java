@@ -56,7 +56,7 @@ public class EventController {
         return new ResponseEntity<>(eventMapper.toDTO(eventService.getPublicEvents()), HttpStatus.OK);
     }
 
-    @GetMapping("pendingEvents")
+    @GetMapping("personalPendingEvents")
     public ResponseEntity<Object> getPendingEvents(@PathParam("userId") int userId){
         return new ResponseEntity<>(eventService.getPendingEvents(userId).stream().map(EventMapper::toDTO), HttpStatus.OK);
     }
@@ -88,6 +88,14 @@ public class EventController {
         return new ResponseEntity<>(eventMapper.toDTO(eventService.getEvent(eventId)), HttpStatus.OK);
     }
 
+    @PutMapping("/confirmCompanyParticipation")
+    public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
+            , @PathParam("companyId") int companyId) {
+
+        orchestrator.confirmCompanyParticipation(eventId, companyId);
+        return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
+    }
+
     @GetMapping("getParticipations")
     public ResponseEntity<Object> getParticipations(@PathParam("companyId") int companyId){
 
@@ -95,7 +103,6 @@ public class EventController {
                 orchestrator.getParticipations(companyId));
         return new ResponseEntity<>(participations, HttpStatus.OK);
     }
-
     @PostMapping("cancelCompanyParticipation")
     public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("companyId") int companyId,
                                                              @PathParam("eventId") int eventId){
@@ -103,6 +110,8 @@ public class EventController {
         orchestrator.cancelCompanyParticipation(eventId, companyId);
         return new ResponseEntity<>("Event cancelled", HttpStatus.OK);
     }
+
+
 
     @GetMapping("/subscribed")
     public ResponseEntity<List<EventDto>> getSubscribedEvents(@PathParam("userId") int userId) {

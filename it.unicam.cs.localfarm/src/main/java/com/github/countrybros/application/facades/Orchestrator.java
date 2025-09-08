@@ -384,8 +384,9 @@ public class Orchestrator {
     }
 
     public void disableCompany(int companyId, int adminId) {
-        if(!userService.getUser(adminId).getRoles().contains(UserRole.ADMIN))
-            throw new ImpossibleRequestException("You are not allowed to cancel this company");
+        User user = userService.getUser(adminId);
+        if(!user.getRoles().contains(UserRole.ADMIN))
+            throw new ImpossibleRequestException("User with ID " + user.getUserId() + " is not allowed to cancel this company");
 
         companyService.disableCompany(companyId);
         stockService.deleteAllCompanyStocks(companyId);
@@ -440,7 +441,6 @@ public class Orchestrator {
             for (int j = i + 1; j < request.dates.size(); j++) {
                 var second = request.dates.get(j);
 
-                // overlap se gli intervalli hanno un'intersezione
                 boolean overlap = !first.getEnd().isBefore(second.getStartTime())
                         && !second.getEnd().isBefore(first.getStartTime());
 
@@ -514,5 +514,8 @@ public class Orchestrator {
         User user = userService.getUser(userId);
 
         return eventService.getEventsSubscribedByUser(userId);
+    }
+
+    public void confirmCompanyParticipation(int eventId, int companyId) {
     }
 }

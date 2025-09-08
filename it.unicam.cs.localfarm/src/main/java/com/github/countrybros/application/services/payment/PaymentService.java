@@ -81,7 +81,6 @@ public class PaymentService implements IPaymentService {
             }
             return refundSuccess;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new IllegalStateException("Refund service unavailable, order blocked");
         }
     }

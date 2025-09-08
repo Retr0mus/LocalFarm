@@ -22,7 +22,6 @@ public abstract class SubmissionRequest {
     @NotNull
     private int senderId;
 
-
     private String typeForSpringBoot;
 
 
