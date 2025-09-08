@@ -535,5 +535,4 @@ public class Orchestrator {
 
         return eventService.getEventsSubscribedByUser(userId);
     }
-
 }
