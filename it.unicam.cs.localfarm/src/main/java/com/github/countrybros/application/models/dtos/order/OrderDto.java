@@ -1,6 +1,7 @@
 package com.github.countrybros.application.models.dtos.order;
 
 import com.github.countrybros.model.user.ShippingAddress;
+import com.github.countrybros.model.utils.Location;
 
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,7 @@ public class OrderDto {
     private String userName;
     private Date orderDate;
     private String orderStatus;
-    private ShippingAddress address;
+    private Location address;
     private List<OrderItemDto> items;
     private double total;
 
@@ -55,11 +56,11 @@ public class OrderDto {
         this.orderStatus = orderStatus;
     }
 
-    public ShippingAddress getAddress() {
+    public Location getAddress() {
         return address;
     }
 
-    public void setAddress(ShippingAddress address) {
+    public void setAddress(Location address) {
         this.address = address;
     }
 

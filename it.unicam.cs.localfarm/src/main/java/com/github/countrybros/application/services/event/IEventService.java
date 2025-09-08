@@ -21,9 +21,9 @@ public interface IEventService {
      * Creates an event, assigns it to the organizer, sets initial status,
      * and delegates sending invitations.
      *
-     * @param request the request of the event to create.
+     * @param event the event to create.
      */
-    void createEvent(CreateEventRequest request, User organizer);
+    void createEvent(Event event);
 
     /**
      * Removes an event from the repository.

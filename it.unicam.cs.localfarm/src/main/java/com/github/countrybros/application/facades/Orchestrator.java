@@ -4,7 +4,8 @@ import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.errors.EventsNotFoundException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.factories.PaymentMethodFactory;
-import com.github.countrybros.application.mappers.InvitationMapper;
+import com.github.countrybros.application.mappers.*;
+import com.github.countrybros.application.models.dtos.company.CompanyDto;
 import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.application.models.requests.event.CreateInvitationRequest;
@@ -17,13 +18,11 @@ import com.github.countrybros.application.services.order.OrderService;
 import com.github.countrybros.application.services.payment.IPaymentService;
 import com.github.countrybros.application.services.payment.PaymentService;
 import com.github.countrybros.application.services.submission.ISubmissionService;
-import com.github.countrybros.application.mappers.SubmissionMapper;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.services.item.ICertificationService;
 import com.github.countrybros.application.services.item.IItemService;
 import com.github.countrybros.application.services.stock.IStockService;
-import com.github.countrybros.application.mappers.ItemMapper;
 import com.github.countrybros.application.services.user.*;
 import com.github.countrybros.infrastructure.services.shopping.MockPaymentFactory;
 import com.github.countrybros.model.company.Company;
@@ -52,7 +51,9 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Facade that represents alla the use cases of the system.
@@ -301,7 +302,7 @@ public class Orchestrator {
         if(!paymentMethod.pay(order.getTotal(), "this.is@email.ofSystem"))
             throw new ImpossibleRequestException("Payment failed");
 
-        orderService.setAsPaid(orderId);
+        orderService.setOrderAsPaid(orderId);
 
         // Removing ordered items from the relative stocks
         for (OrderItem item : order.getItems())
@@ -320,11 +321,24 @@ public class Orchestrator {
     /**
      * Pay all the orders of the last 30 days to the companies.
      */
-    public void payMonthlyOrders() {
+    public List<CompanyDto> payMonthlyOrders() {
 
         List<Order> orders = orderService.getOrdersSince(LocalDate.now().minusDays(30));
 
-        paymentService.paySellers(orders);
+        Map<Company, List<OrderItem>> itemsPaid = paymentService.paySellers(orders);
+        List<CompanyDto> failedPaymentCompanies = new ArrayList<>();
+
+        for(Company company : itemsPaid.keySet()) {
+            if (itemsPaid.get(company).isEmpty())
+                failedPaymentCompanies.add(CompanyMapper.toDto(company));
+            else
+                orderService.setOrderItemsAsPaid(itemsPaid.get(company));
+        }
+
+        if (failedPaymentCompanies.size() == itemsPaid.size())
+            return null;
+
+        return failedPaymentCompanies;
     }
 
     /**
@@ -338,6 +352,11 @@ public class Orchestrator {
         Invitation invitation = invitationService.getInvitation(invitationId);
         Event event = eventService.getEvent(invitation.getEvent().getId());
         Company company = companyService.getCompany(invitation.getReceiver().getId());
+
+        if (invitation.isExpired()) {
+            invitationService.deleteInvitation(invitationId);
+            throw new ImpossibleRequestException("Invitation is expired");
+        }
 
         if (accepted)
             eventService.confirmCompanyParticipation(event, company);
@@ -393,20 +412,21 @@ public class Orchestrator {
     public void createEvent(CreateEventRequest request) {
 
         validateEventRequest(request);
-        User organizer = userService.getUser(request.organizerId);
-        eventService.createEvent(request,organizer);
-        Event event = eventService.getLastCreatedEvent();
+        EventMapper eventMapper = new EventMapper(userService);
+        Event event = eventMapper.toDomain(request);
+        eventService.createEvent(event);
 
+        InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
         for (Integer companyId : request.guestsId) {
-            CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
-            invitationRequest.eventId = event.getId();
-            invitationRequest.expiration = java.time.LocalDate.now().plusDays(7);
-            Company company = companyService.getCompany(companyId);
+            CreateInvitationRequest invReq = new CreateInvitationRequest();
+            invReq.eventId = event.getId();
+            invReq.receiverId = companyId;
+            invReq.expiration = LocalDate.now().plusDays(7);
 
-            InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
-
-            invitationService.addInvitation(invitationMapper.toEntity(invitationRequest));
+            Invitation invitation = invitationMapper.toEntity(invReq);
+            invitationService.addInvitation(invitation);
         }
+
 
     }
 

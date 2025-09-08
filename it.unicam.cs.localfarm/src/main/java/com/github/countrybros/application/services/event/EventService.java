@@ -50,8 +50,8 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void createEvent(CreateEventRequest request, User organizer) {
-        Event event = EventMapper.toDomain(request, organizer);
+    public void createEvent(Event event) {
+
         eventRepository.save(event);
     }
 

@@ -1,5 +1,6 @@
 package com.github.countrybros.application.services.user;
 
+import com.github.countrybros.application.errors.ExternalError;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.application.mappers.UserMapper;
@@ -13,6 +14,7 @@ import com.github.countrybros.model.utils.PasswordSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -43,7 +45,14 @@ public class UserService implements IUserService {
             throw new ImpossibleRequestException("Email " + request.email + " already exists.");
 
         UserMapper userMapper = new UserMapper();
-        User user = userMapper.toDomain(request);
+        User user;
+
+        try {
+            user = userMapper.toDomain(request);
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new ExternalError("Failed to use algorithm for password hash generation");
+        }
 
         cartService.save(user.getCart());
         userRepository.save(user);

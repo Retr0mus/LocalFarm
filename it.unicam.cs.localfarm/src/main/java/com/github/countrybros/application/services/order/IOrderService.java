@@ -1,14 +1,11 @@
 package com.github.countrybros.application.services.order;
 
-import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
-import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
+import com.github.countrybros.model.order.OrderItem;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Responsibility of managing the Orders
@@ -53,7 +50,14 @@ public interface IOrderService {
      *
      * @param id    the paid order.
      */
-    void setAsPaid(int id);
+    void setOrderAsPaid(int id);
+
+    /**
+     * Sets a list of OrderItem as paid
+     *
+     * @param orderItems the list of orderItem to set as paid
+     */
+    void setOrderItemsAsPaid(List<OrderItem> orderItems);
 
     /**
      *

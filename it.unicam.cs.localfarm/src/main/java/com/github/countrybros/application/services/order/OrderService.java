@@ -72,10 +72,19 @@ public class OrderService implements IOrderService {
      * @param id the paid order.
      */
     @Override
-    public void setAsPaid(int id) {
+    public void setOrderAsPaid(int id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new ImpossibleRequestException("The order with ID " + id + " does not exist."));
         order.setOrderStatus(OrderStatus.packing);
         orderRepository.save(order);
+    }
+
+    @Override
+    public void setOrderItemsAsPaid(List<OrderItem> orderItems) {
+
+        for (OrderItem orderItem : orderItems) {
+            orderItem.setPaid(true);
+            orderItemRepository.save(orderItem);
+        }
     }
 
     public void cancelOrder(RefundRequest request) {

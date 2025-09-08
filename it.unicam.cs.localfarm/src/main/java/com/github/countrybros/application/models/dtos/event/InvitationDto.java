@@ -1,6 +1,6 @@
 package com.github.countrybros.application.models.dtos.event;
 
-import com.github.countrybros.model.event.Location;
+import com.github.countrybros.model.utils.Location;
 import com.github.countrybros.model.event.TimeInterval;
 
 import java.time.LocalDate;

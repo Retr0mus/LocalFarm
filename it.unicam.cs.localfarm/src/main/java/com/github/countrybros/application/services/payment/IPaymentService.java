@@ -3,6 +3,7 @@ package com.github.countrybros.application.services.payment;
 import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
+import com.github.countrybros.model.order.OrderItem;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,13 @@ import java.util.Map;
  */
 public interface IPaymentService {
 
-    void paySellers(List<Order> orders);
+    /**
+     * Pay the debts about some orders.
+     *
+     * @param orders the orders to pay
+     * @return the map of companies with the orderItems paid
+     */
+    Map<Company, List<OrderItem>> paySellers(List<Order> orders);
 
     /**
      * The payment towards the platform.

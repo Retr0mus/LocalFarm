@@ -1,4 +1,4 @@
-package com.github.countrybros.model.event;
+package com.github.countrybros.model.utils;
 
 import jakarta.persistence.*;
 

@@ -1,9 +1,9 @@
 package com.github.countrybros.application.mappers;
 
 import com.github.countrybros.application.errors.SevereCodingErrorException;
-import com.github.countrybros.application.models.dtos.submission.AddProductSubmissionDTO;
-import com.github.countrybros.application.models.dtos.submission.RecogniseProductSubmissionDTO;
-import com.github.countrybros.application.models.dtos.submission.SubmissionDTO;
+import com.github.countrybros.application.models.dtos.submission.AddProductSubmissionDto;
+import com.github.countrybros.application.models.dtos.submission.RecogniseProductSubmissionDto;
+import com.github.countrybros.application.models.dtos.submission.SubmissionDto;
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.application.services.item.IItemService;
 import com.github.countrybros.application.services.stock.IStockService;
@@ -40,28 +40,32 @@ public class SubmissionMapper {
                 itemService.getItem(submissionRequest.getItemId()));
     }
 
-    public static SubmissionDTO toDTO(Submission submission) {
+    public static SubmissionDto toDTO(Submission submission) {
 
         if (submission instanceof RecogniseProductSubmission recogniseProductSubmission) {
 
-            RecogniseProductSubmissionDTO dto = new RecogniseProductSubmissionDTO();
-            dto.curatorName = recogniseProductSubmission.getCurator().getName();
+            RecogniseProductSubmissionDto dto = new RecogniseProductSubmissionDto();
+            if (recogniseProductSubmission.getCurator() != null)
+                dto.curatorName = recogniseProductSubmission.getCurator().getName();
             dto.senderName = recogniseProductSubmission.getSender().getName();
             dto.status = recogniseProductSubmission.getStatus().toString();
             dto.submissionID = recogniseProductSubmission.getId();
             dto.qta = recogniseProductSubmission.getQta();
             dto.itemName = recogniseProductSubmission.getStock().getItem().getName();
+            dto.type = "recogniseStock";
 
             return dto;
         }
         if (submission instanceof AddProductSubmission addProductSubmission) {
 
-            AddProductSubmissionDTO dto = new AddProductSubmissionDTO();
-            dto.curatorName = addProductSubmission.getCurator().getName();
+            AddProductSubmissionDto dto = new AddProductSubmissionDto();
+            if (addProductSubmission.getCurator() != null)
+                dto.curatorName = addProductSubmission.getCurator().getName();
             dto.senderName = addProductSubmission.getSender().getName();
             dto.status = addProductSubmission.getStatus().toString();
             dto.submissionID = addProductSubmission.getId();
             dto.itemName = addProductSubmission.getItem().getName();
+            dto.type = "addProduct";
 
             return dto;
         }
@@ -69,9 +73,9 @@ public class SubmissionMapper {
         throw new SevereCodingErrorException("Request for submission is not recognised");
     }
 
-    public static List<SubmissionDTO> toDTO(List<Submission> submissions) {
+    public static List<SubmissionDto> toDTO(List<Submission> submissions) {
 
-        List<SubmissionDTO> dtos = new ArrayList<>();
+        List<SubmissionDto> dtos = new ArrayList<>();
         for (Submission submission : submissions) {
             dtos.add(toDTO(submission));
         }
