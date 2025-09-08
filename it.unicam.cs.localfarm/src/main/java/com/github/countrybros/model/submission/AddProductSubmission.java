@@ -1,5 +1,7 @@
 package com.github.countrybros.model.submission;
 
+import com.github.countrybros.model.company.Company;
+import com.github.countrybros.model.item.Item;
 import jakarta.persistence.*;
 
 /**
@@ -9,22 +11,23 @@ import jakarta.persistence.*;
 @DiscriminatorValue("addProduct")
 public class AddProductSubmission extends Submission {
 
-    private int itemId;
+    @ManyToOne
+    private Item item;
 
     public AddProductSubmission() {
 
     }
 
-    public AddProductSubmission(int senderId, int itemId) {
-        super(senderId);
-        this.itemId = itemId;
+    public AddProductSubmission(Company company, Item item) {
+        super(company);
+        this.item = item;
     }
 
-    public int getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

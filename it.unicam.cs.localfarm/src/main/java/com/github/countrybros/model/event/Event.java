@@ -5,7 +5,9 @@ import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.social.IPostable;
 import com.github.countrybros.model.social.SocialPost;
 import com.github.countrybros.model.user.*;
+import com.github.countrybros.model.utils.Location;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,37 +19,64 @@ import java.util.List;
 public class Event implements IPostable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String name;
 
+    private String description;
+
     private int maxSpots;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Invitation> invitations = new ArrayList<>();
 
     @Embedded
     private Location location;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "event_dates", joinColumns = @JoinColumn(name = "event_id"))
     private List<TimeInterval> dates;
 
     @ManyToOne
-    private Company organizer;
+    private User organizer;
 
-    //TODO change to ManyToMany
-    @OneToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_subscribers",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscribers_user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"event_id", "subscribers_user_id"})
+    )
     private List<User> subscribers = new ArrayList<>();
 
     private EventState state;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private List<Company> participants = new ArrayList<>();
 
     public Event(String name, int maxSpots) {
         this.name = name;
         this.maxSpots = maxSpots;
         this.state = EventState.planning;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Event() {}
@@ -64,7 +93,7 @@ public class Event implements IPostable {
         return dates;
     }
 
-    public Company getOrganizer() {
+    public User getOrganizer() {
         return organizer;
     }
 
@@ -94,7 +123,7 @@ public class Event implements IPostable {
      * @return the boolean variable representing this condition.
      */
     public boolean isFull(){
-        return maxSpots >= subscribers.size();
+        return subscribers.size() >= maxSpots;
     }
 
     /**
@@ -117,13 +146,7 @@ public class Event implements IPostable {
 
     public List<Company> getGuests() {
 
-        List<Company> guests = new ArrayList<>();
-
-        for (Invitation invitation : invitations)
-            if (invitation.isAccepted())
-                guests.add(invitation.getReceiver());
-
-        return guests;
+        return participants;
     }
 
     public void setState(EventState eventState) {
@@ -134,7 +157,7 @@ public class Event implements IPostable {
         this.dates = dates;
     }
 
-    public void setOrganizer(Company organizer) {
+    public void setOrganizer(User organizer) {
         this.organizer = organizer;
     }
 
@@ -170,10 +193,30 @@ public class Event implements IPostable {
                 .get();
     }
 
-    //TODO
+    public boolean isParticipating(Company guest){
+        for (Company participant : participants){
+            if (participant.getId() == guest.getId())
+                return true;
+        }
+        return false;
+    }
+
+    public void removeGuest(Company guest){
+        participants.removeIf(participant -> participant.getId() == guest.getId());
+    }
+
     @Override
     public SocialPost getPost() {
 
         return new SocialPost(name, "Evento", "link");
     }
+
+    public List<Company> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Company> participants) {
+        this.participants = participants;
+    }
+
 }

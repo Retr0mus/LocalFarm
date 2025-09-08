@@ -3,6 +3,7 @@ package com.github.countrybros.model.order;
 
 import com.github.countrybros.model.user.ShippingAddress;
 import com.github.countrybros.model.user.User;
+import com.github.countrybros.model.utils.Location;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @Embedded
-    private ShippingAddress address;
+    private Location address;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<OrderItem> items;
@@ -56,7 +57,7 @@ public class Order {
     }
 
 
-    public ShippingAddress getAddress() {
+    public Location getAddress() {
         return address;
     }
 
@@ -72,7 +73,7 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public void setAddress(ShippingAddress address) {
+    public void setAddress(Location address) {
         this.address = address;
     }
 
@@ -91,7 +92,7 @@ public class Order {
     public float getTotal() {
         float total = 0;
         for (OrderItem item : getItems()) {
-            total += item.getUnitPrice() * item.getQuantity();
+            total += (float) (item.getUnitPrice() * item.getQuantity());
         }
         return total;
     }

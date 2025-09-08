@@ -5,12 +5,13 @@ import com.github.countrybros.application.errors.NotFoundInRepositoryException;
 import com.github.countrybros.infrastructure.repositories.submission.ISubmissionRepository;
 import com.github.countrybros.model.submission.Submission;
 import com.github.countrybros.model.submission.SubmissionStatus;
+import com.github.countrybros.model.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * Service that performs all the tasks related to the management of the item acceptance submissions.
+ * Service that performs all the tasks related to the management of the item submissions.
  */
 @Service
 public class SubmissionService implements ISubmissionService {
@@ -32,16 +33,6 @@ public class SubmissionService implements ISubmissionService {
     }
 
     /**
-     * Deletes an Submission.
-     *
-     * @param acceptanceSubmissionId the submission to delete.
-     */
-    @Override
-    public void deleteSubmission(int acceptanceSubmissionId) {
-        submissionRepository.deleteById(acceptanceSubmissionId);
-    }
-
-    /**
      * Gets the required Submission.
      *
      * @return the said AcceptanceSubmission.
@@ -49,7 +40,7 @@ public class SubmissionService implements ISubmissionService {
     @Override
     public Submission getSubmission(int submissionId) {
         return submissionRepository.findById(submissionId)
-                .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + submissionId));
+                .orElseThrow(() -> new NotFoundInRepositoryException("Submission not found with id " + submissionId));
     }
 
     /**
@@ -58,7 +49,7 @@ public class SubmissionService implements ISubmissionService {
      * @return a list with all the said AcceptanceSubmission.
      */
     @Override
-    public List<Submission> getAvailableAcceptanceSubmissions() {
+    public List<Submission> getAvailableSubmissions() {
         return submissionRepository.findAllByStatus(SubmissionStatus.pending);
     }
 
@@ -69,7 +60,7 @@ public class SubmissionService implements ISubmissionService {
      * @return a list with all the curator's AcceptanceSubmission.
      */
     @Override
-    public List<Submission> getAcceptanceSubmissionsByCurator(int curatorId) {
+    public List<Submission> getSubmissionsByCurator(int curatorId) {
         return List.of();
     }
 
@@ -79,7 +70,7 @@ public class SubmissionService implements ISubmissionService {
      * @param submissionId the id of the Submission.
      */
     @Override
-    public void onAcception(int submissionId) {
+    public void onAcceptance(int submissionId) {
         Submission submission = getSubmission(submissionId);
 
         if (!submission.getStatus().equals(SubmissionStatus.assigned)) {
@@ -113,18 +104,18 @@ public class SubmissionService implements ISubmissionService {
      * Assigns the review on a curator.
      *
      * @param submissionId The sub to assign.
-     * @param userId       the curator that takes care of the sub.
+     * @param user       the curator that takes care of the sub.
      */
     @Override
-    public void takeChargeOfSubmission(int submissionId, int userId) {
+    public void takeChargeOfSubmission(int submissionId, User user) {
 
-        Submission submission = getAcceptanceSubmission(submissionId);
+        Submission submission = getSubmission(submissionId);
 
         if (submission.getStatus() == SubmissionStatus.assigned) {
             throw new ImpossibleRequestException("Submission is already assigned");
         }
 
-        submission.assignCurator(userId);
+        submission.setCurator(user);
         submission.setStatus(SubmissionStatus.assigned);
         submissionRepository.save(submission);
     }
@@ -135,10 +126,5 @@ public class SubmissionService implements ISubmissionService {
         return submissionRepository.findAllByCuratorIdAndStatus(curatorId, SubmissionStatus.assigned);
     }
 
-    private Submission getAcceptanceSubmission(int submissionId) {
-        return submissionRepository.findById(submissionId)
-                .orElseThrow(() -> new NotFoundInRepositoryException("Acceptance submission not found with id " + submissionId));
-
-    }
 
 }

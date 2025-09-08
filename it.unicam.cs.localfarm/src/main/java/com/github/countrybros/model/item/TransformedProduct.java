@@ -16,7 +16,7 @@ public class TransformedProduct extends SimpleProduct {
     /**
      * Steps that defines the transformation process.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TransformationStep> steps = new ArrayList<>();
 
     public List<TransformationStep> getSteps() {

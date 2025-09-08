@@ -2,6 +2,8 @@ package com.github.countrybros.application.models.requests.submission;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -10,14 +12,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AddProductSubmissionRequest.class, name = "addProduct"),
-        @JsonSubTypes.Type(value = EditProductSubmissionRequest.class, name = "editProduct"),
-        @JsonSubTypes.Type(value = RecogniseProductSubmissionRequest.class, name = "recogniseProduct"),
-        @JsonSubTypes.Type(value = RemoveProductSubmissionRequest.class, name = "removeProduct")
+        @JsonSubTypes.Type(value = RecogniseProductSubmissionRequest.class, name = "recogniseProduct")
 })
 public abstract class SubmissionRequest {
 
+
     private String type;
+
+    @NotNull
     private int senderId;
+
     private String typeForSpringBoot;
 
 

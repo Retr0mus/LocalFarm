@@ -1,13 +1,7 @@
 package com.github.countrybros.application.mappers;
 
-import com.github.countrybros.application.models.dtos.item.BundleDto;
-import com.github.countrybros.application.models.dtos.item.ItemDto;
-import com.github.countrybros.application.models.dtos.item.SimpleProductDto;
-import com.github.countrybros.application.models.dtos.item.TransformedProductDto;
-import com.github.countrybros.application.models.requests.item.AddBundleRequest;
-import com.github.countrybros.application.models.requests.item.AddItemRequest;
-import com.github.countrybros.application.models.requests.item.AddSimpleProductRequest;
-import com.github.countrybros.application.models.requests.item.AddTransformedProductRequest;
+import com.github.countrybros.application.models.dtos.item.*;
+import com.github.countrybros.application.models.requests.item.*;
 import com.github.countrybros.application.services.item.ICertificationService;
 import com.github.countrybros.application.services.item.IItemService;
 import com.github.countrybros.application.services.company.ICompanyService;
@@ -17,7 +11,7 @@ import com.github.countrybros.model.company.Company;
 import java.util.ArrayList;
 
 /**
- * Director class to manage the building of different types of ItemDetails
+ * Director class to manage the building of different types of ItemDetails and their DTOs
  */
 public class ItemMapper {
 
@@ -100,14 +94,30 @@ public class ItemMapper {
     }
 
     private static TransformedProductDto toTransformedProductDto(TransformedProduct transformedProduct) {
+
         TransformedProductDto dto = new TransformedProductDto();
+
         dto.setId(transformedProduct.getId());
         dto.setName(transformedProduct.getName());
         dto.setDescription(transformedProduct.getDescription());
         dto.setStatus(transformedProduct.getStatus());
         dto.setProducerId(transformedProduct.getProducer().getId());
         dto.setCertifications(transformedProduct.getCertifications());
-        dto.setTransformationStepList(transformedProduct.getSteps());
+
+
+
+        for(TransformationStep step : transformedProduct.getSteps()) {
+            TransformationStepDto dtoStep = new TransformationStepDto();
+            dtoStep.location = step.getLocation();
+            dtoStep.description = step.getDescription();
+            for (SimpleProduct ingredient : step.getIngredients()) {
+                dtoStep.ingredients.add(ingredient.getName());
+                dtoStep.ingredientsIds.add(ingredient.getId());
+            }
+
+            dto.transformationStepList.add(dtoStep);
+        }
+
         return dto;
     }
 
@@ -126,8 +136,6 @@ public class ItemMapper {
 
         Company producer = companyService.getCompany(request.producerId);
 
-
-
         item.setName(request.name);
         item.setDescription(request.description);
         item.setProducer(producer);
@@ -137,7 +145,7 @@ public class ItemMapper {
 
         buildBaseItemDetails(request, bundle);
 
-        for (int i : request.items.values())
+        for (int i : request.items.keySet())
             itemService.getItem(i);
 
         bundle.setItems(request.items);
@@ -149,20 +157,20 @@ public class ItemMapper {
 
         ArrayList<Certification> certifications = new ArrayList<>();
         for (int id: request.certificationIds)
-            certifications.add(certificationService.getCertificationById(id));
+            certifications.add(certificationService.getCertification(id));
 
         product.setCertifications(certifications);
     }
 
     private void buildTransformedProductDetails (AddTransformedProductRequest request, TransformedProduct product) {
 
-        // TODO: Uncomment when the DTO will be added
-        /*buildSimpleProductDetails(request, item);
 
-        List<SimpleProduct> items = new ArrayList<>();
-        List<TransformationStep> steps = new ArrayList<>();
+        buildSimpleProductDetails(request, product);
 
-        for (TransformationStepDTO s : request.steps) {
+        ArrayList<SimpleProduct> ingredients = new ArrayList<>();
+        ArrayList<TransformationStep> steps = new ArrayList<>();
+
+        for (TransformationStepRequest s : request.steps) {
             TransformationStep step = new TransformationStep();
             step.setDescription(s.description);
             step.setLocation(s.location);
@@ -171,13 +179,13 @@ public class ItemMapper {
                 Item item = itemService.getItem(i);
                 if (!(item instanceof SimpleProduct))
                     throw new IllegalArgumentException("Unsupported item type");
-                items.add((SimpleProduct) item);
+                ingredients.add((SimpleProduct) item);
             }
-            step.setIngredients(items);
+            step.setIngredients(ingredients);
 
             steps.add(step);
         }
 
-        item.setSteps(steps);*/
+        product.setSteps(steps);
     }
 }

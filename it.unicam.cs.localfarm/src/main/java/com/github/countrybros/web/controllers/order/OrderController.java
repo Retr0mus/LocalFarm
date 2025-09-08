@@ -1,8 +1,9 @@
-package com.github.countrybros.web.controllers.order;
+package com.github.countrybros.web.user;
 
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.models.dtos.order.OrderDto;
 import com.github.countrybros.application.mappers.OrderMapper;
+import com.github.countrybros.application.services.order.IOrderService;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class OrderController {
 
     @Autowired
     private Orchestrator orchestrator;
+    @Autowired
+    private IOrderService orderService;
 
     @GetMapping("/orderList")
     public ResponseEntity<List<OrderDto>> getOrders(@RequestParam int userId) {
@@ -28,12 +31,6 @@ public class OrderController {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
-
-    /*@PostMapping("/add")
-    public ResponseEntity<String> addOrder(@RequestBody OrderRequest request) {
-        orchestrator.addOrder(request);
-        return new ResponseEntity<>("Order added", HttpStatus.CREATED);
-    }*/
 
     @PostMapping("/cancel")
     public ResponseEntity<String> cancelOrder(@RequestBody RefundRequest request) {

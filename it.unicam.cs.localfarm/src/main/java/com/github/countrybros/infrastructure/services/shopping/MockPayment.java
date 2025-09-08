@@ -1,7 +1,9 @@
 package com.github.countrybros.infrastructure.services.shopping;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MockPayment implements IPaymentMethod {
     /**
      * Payment to the marketplace
@@ -9,12 +11,8 @@ public class MockPayment implements IPaymentMethod {
      * @param price    The price to receive.
      */
     @Override
-    public boolean pay(float price) {
+    public boolean pay(float price, String receiverEmail) {
         return true;
     }
 
-    @Override
-    public boolean refund(float amount) {
-        return true;
-    }
 }

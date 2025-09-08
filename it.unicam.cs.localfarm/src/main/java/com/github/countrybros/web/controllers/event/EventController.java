@@ -1,16 +1,19 @@
 package com.github.countrybros.web.controllers.event;
 
+import com.github.countrybros.application.facades.Orchestrator;
+import com.github.countrybros.application.mappers.EventMapper;
+import com.github.countrybros.application.models.dtos.event.EventDto;
 import com.github.countrybros.application.services.event.IEventService;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
-import com.github.countrybros.application.models.requests.event.EditEventRequest;
-import com.github.countrybros.application.models.requests.event.EventElement;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,91 +21,109 @@ import java.util.List;
 public class EventController {
 
     private final IEventService eventService;
+    private final Orchestrator orchestrator;
 
     @Autowired
-    public EventController(IEventService eventService) {
+    public EventController(IEventService eventService, Orchestrator orchestrator) {
         this.eventService = eventService;
+        this.orchestrator = orchestrator;
     }
 
     @GetMapping(value="events")
-    public ResponseEntity<List<EventElement>> getEvents(){
+    public ResponseEntity<List<EventDto>> getEvents(){
 
-        return new ResponseEntity<>(eventService.getAllEvents(), HttpStatus.OK);
+        return new ResponseEntity<>(EventMapper.toDTO(eventService.getAllEvents()), HttpStatus.OK);
     }
 
-    @PutMapping("edit")
-    public ResponseEntity<Object> editEvent(@RequestBody EditEventRequest request){
-
-        eventService.editEvent(request);
-        return new ResponseEntity<>("Event modified.", HttpStatus.OK);
+    @PutMapping("/subscribe")
+    public ResponseEntity<Object> subscribeToEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId) {
+        orchestrator.subscribeToEvent(userId, eventId);
+        return ResponseEntity.ok("User successfully subscribed to the event.");
     }
 
-    @PutMapping("subscribe")
-    public ResponseEntity<Object> subscribeOnEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId){
+    @PutMapping("/unsubscribe")
+    public ResponseEntity<Object> unSubscribeOnEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId) {
 
-        eventService.subscribeOnEvent(userId, eventId);
-        return new ResponseEntity<>("Subscription successful", HttpStatus.OK);
-    }
-
-    @PutMapping("unsubscribe")
-    public ResponseEntity<Object> unSubscribeOnEvent(@PathParam("userId") int userId, @PathParam("eventId") int eventId){
-
-        eventService.unsubscribeOnEvent(userId, eventId);
+        orchestrator.unSubscribeToEvent(userId, eventId);
         return new ResponseEntity<>("Unsubscription successful", HttpStatus.OK);
     }
 
     @GetMapping("publicEvents")
-    public ResponseEntity<List<EventElement>> getPublicEvents(){
+    public ResponseEntity<Object> getPublicEvents(){
 
-        return new ResponseEntity<>(eventService.getPublicEvents(), HttpStatus.OK);
+        return new ResponseEntity<>(EventMapper.toDTO(eventService.getPublicEvents()), HttpStatus.OK);
+    }
+
+    @GetMapping("personalPendingEvents")
+    public ResponseEntity<Object> getPendingEvents(@PathParam("userId") int userId){
+        return new ResponseEntity<>(eventService.getPendingEvents(userId).stream().map(EventMapper::toDTO), HttpStatus.OK);
     }
 
     @PutMapping("delete")
-    public ResponseEntity<Object> cancelEvent(@PathParam("eventId") int eventId){
+    public ResponseEntity<Object> deleteEvent(@PathParam("eventId") int eventId, @PathParam("organizerId") int organizerId) {
 
-        eventService.setAsCanceled(eventId);
+        eventService.deleteEvent(eventId,organizerId);
         return new ResponseEntity<>("Event cancelled.", HttpStatus.OK);
     }
 
-    @PostMapping( "create")
-    public ResponseEntity<Object> createEvent(@RequestBody CreateEventRequest request){
+    @PostMapping("create")
+    public ResponseEntity<Object> createEvent(@Valid @RequestBody CreateEventRequest request) {
 
-        eventService.createEvent(request);
-        return new ResponseEntity<>("Event created", HttpStatus.OK);
+        orchestrator.createEvent(request);
+        return new ResponseEntity<>("Event created successfully", HttpStatus.OK);
     }
 
     @PutMapping("confirm")
-    public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId){
-
-        eventService.confirmEventPublication(eventId);
+    public ResponseEntity<Object> confirmEventPublication(@PathParam("eventID") int eventId,
+                                                          @PathParam("userId") int userId){
+        eventService.confirmEventPublication(eventId, userId);
         return new ResponseEntity<>("Event confirmed", HttpStatus.OK);
-    }
-
-    @PutMapping("cancelCompanyParticipation")
-    public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("eventId") int eventId
-                                                    , @PathParam("userId") int companyId){
-
-        eventService.cancelCompanyParticipation(companyId, eventId);
-        return new ResponseEntity<>("Participation cancelled", HttpStatus.OK);
-    }
-
-    @PutMapping("confirmCompanyParticipation")
-    public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
-                                                            ,@PathParam("companyId") int companyId){
-
-        eventService.confirmCompanyParticipation(eventId, companyId);
-        return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
     }
 
     @GetMapping("get")
     public ResponseEntity<Object> getEvent(@PathParam("eventId") int eventId){
 
-        //TODO: use a different DTO and implement mapper
-        Event event = eventService.getEvent(eventId);
-        EventElement dto  = new EventElement();
-        dto.id = eventId;
-        dto.name = event.getName();
+        return new ResponseEntity<>(EventMapper.toDTO(eventService.getEvent(eventId)), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+    @PutMapping("/confirmCompanyParticipation")
+    public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
+            , @PathParam("accepted") boolean accepted) {
+
+        orchestrator.acceptInvitation(eventId, accepted);
+        return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
+    }
+
+    @GetMapping("getParticipations")
+    public ResponseEntity<Object> getParticipations(@PathParam("companyId") int companyId){
+
+        List<EventDto> participations = EventMapper.toDTO(
+                orchestrator.getParticipations(companyId));
+        return new ResponseEntity<>(participations, HttpStatus.OK);
+    }
+
+    @PutMapping("cancelCompanyParticipation")
+    public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("companyId") int companyId,
+                                                             @PathParam("eventId") int eventId){
+
+        orchestrator.cancelCompanyParticipation(companyId, eventId);
+        return new ResponseEntity<>("Participation canceled", HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/subscribed")
+    public ResponseEntity<List<EventDto>> getSubscribedEvents(@PathParam("userId") int userId) {
+
+        List<Event> events = orchestrator.getEventsSubscribedByUser(userId);
+
+        return ResponseEntity.ok(EventMapper.toDTO(events));
+    }
+
+    @GetMapping("/organizerEvents")
+    public ResponseEntity<List<EventDto>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
+        List<Event> events = orchestrator.getEventsByOrganizer(organizerId);
+        List<Event> eventDtos = new ArrayList<>(events);
+        return ResponseEntity.ok(EventMapper.toDTO(eventDtos));
     }
 }

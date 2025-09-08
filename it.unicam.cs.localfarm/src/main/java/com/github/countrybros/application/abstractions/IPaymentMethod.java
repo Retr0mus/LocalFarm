@@ -1,26 +1,16 @@
 package com.github.countrybros.application.abstractions;
 
 /**
- * Represents the responsibilities of a generic payment service
- *
- * TODO: definire meglio la responsabilità.
+ * Represents the responsibilities of a generic payment service, based on Email
  */
 public interface IPaymentMethod {
 
     /**
-     * Payment
+     * Payment.
      *
      * @param price The price to receive.
+     * @param receiver the email of the receiver.
      */
-    boolean pay(float price);
-
-    /**
-     *
-     * Refund
-     *
-     * @param amount
-     * @return
-     */
-    boolean refund(float amount);
+    boolean pay(float price, String receiver);
 
 }

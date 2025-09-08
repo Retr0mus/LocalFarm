@@ -1,10 +1,12 @@
 package com.github.countrybros.web.controllers.submission;
 
 import com.github.countrybros.application.facades.Orchestrator;
+import com.github.countrybros.application.mappers.SubmissionMapper;
+import com.github.countrybros.application.models.dtos.submission.SubmissionDto;
 import com.github.countrybros.application.services.submission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
-import com.github.countrybros.model.submission.Submission;
 import com.github.countrybros.application.models.requests.submission.RecogniseProductSubmissionRequest;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,31 +20,31 @@ import java.util.List;
 public class SubmissionController {
 
     private final Orchestrator orchestrator;
-    private final ISubmissionService acceptanceSubmissionService;
-
+    private final ISubmissionService submissionService;
 
     @Autowired
     public SubmissionController(Orchestrator orchestrator,
-                                ISubmissionService acceptanceSubmissionService) {
-        this.acceptanceSubmissionService = acceptanceSubmissionService;
+                                ISubmissionService submissionService) {
+        this.submissionService = submissionService;
         this.orchestrator = orchestrator;
+
     }
 
-    @GetMapping("submission")
+    @GetMapping("get")
     public ResponseEntity<Object> getSubmission(@PathParam("submissionId") int submissionId) {
 
-        return new ResponseEntity<>(acceptanceSubmissionService.getSubmission(submissionId), HttpStatus.OK);
+        return new ResponseEntity<>(submissionService.getSubmission(submissionId), HttpStatus.OK);
     }
 
-    @GetMapping("getAccepted")
-    public ResponseEntity<Object> getAcceptedSubmission(@PathParam("curatorId") int curatorId) {
+    @GetMapping("SubmissionToReview")
+    public ResponseEntity<Object> getSubmissionToReview(@PathParam("curatorId") int curatorId) {
 
-        return new ResponseEntity<>(acceptanceSubmissionService
-                .getSubmissionToReview(curatorId), HttpStatus.OK);
+        return new ResponseEntity<>(SubmissionMapper.toDTO(submissionService
+                .getSubmissionToReview(curatorId)), HttpStatus.OK);
     }
 
     @PutMapping("addQuantityToStock")
-    public ResponseEntity<Object> addItemQuantity(@RequestBody RecogniseProductSubmissionRequest request) throws ImpossibleRequestException {
+    public ResponseEntity<Object> addItemQuantity(@Valid @RequestBody RecogniseProductSubmissionRequest request) throws ImpossibleRequestException {
         try {
             orchestrator.addSubmissionQuantityToStock(request);
         } catch (ImpossibleRequestException e) {
@@ -52,9 +54,9 @@ public class SubmissionController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Submission>> getAvailable() {
+    public ResponseEntity<List<SubmissionDto>> getAvailable() {
 
-        List<Submission> submissions = orchestrator.getAvailableSubmissions();
+        List<SubmissionDto> submissions = SubmissionMapper.toDTO(submissionService.getAvailableSubmissions());
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 
@@ -69,6 +71,6 @@ public class SubmissionController {
     @PutMapping("takeCharge")
     public ResponseEntity<String> takeChargeOfSubmission(@RequestParam("userId") int userId,@RequestParam("subId") int submissionId) {
         orchestrator.takeChargeOfSubmission(userId,submissionId);
-        return new ResponseEntity<>("Acceptance submission taken", HttpStatus.OK);
+        return new ResponseEntity<>("submission taken", HttpStatus.OK);
     }
 }

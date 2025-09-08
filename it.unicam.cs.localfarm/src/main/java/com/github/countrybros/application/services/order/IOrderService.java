@@ -1,10 +1,10 @@
 package com.github.countrybros.application.services.order;
 
 import com.github.countrybros.model.order.Order;
-import com.github.countrybros.model.user.User;
 import com.github.countrybros.application.models.requests.order.RefundRequest;
+import com.github.countrybros.model.order.OrderItem;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -29,8 +29,6 @@ public interface IOrderService {
      */
     List<Order> getOrders(int user);
 
-    List<Order> getOrders(User user);
-
     /**
      * Returns all the order made since the specified date.
      *
@@ -38,12 +36,12 @@ public interface IOrderService {
      *
      * @return the list of the order.
      */
-    List<Order> getOrdersSince(Date date);
+    List<Order> getOrdersSince(LocalDate date);
 
     /**
      * Saves an order in the repository.
      *
-     * @param request The order to save.
+     * @param order The order to save.
      */
     void addOrder(Order order);
 
@@ -52,7 +50,14 @@ public interface IOrderService {
      *
      * @param id    the paid order.
      */
-    void setAsPaid(int id);
+    void setOrderAsPaid(int id);
+
+    /**
+     * Sets a list of OrderItem as paid
+     *
+     * @param orderItems the list of orderItem to set as paid
+     */
+    void setOrderItemsAsPaid(List<OrderItem> orderItems);
 
     /**
      *
@@ -63,11 +68,5 @@ public interface IOrderService {
 
     void cancelOrder(RefundRequest request);
 
-    /**
-     *
-     * Block order when the payment doesn't go the right way
-     *
-     * @param orderId
-     */
     void blockOrder(int orderId);
 }

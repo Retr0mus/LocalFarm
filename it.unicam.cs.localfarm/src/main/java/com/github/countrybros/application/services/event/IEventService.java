@@ -1,12 +1,15 @@
 package com.github.countrybros.application.services.event;
 
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
 import com.github.countrybros.application.models.requests.event.EditEventRequest;
 import com.github.countrybros.application.models.requests.event.EventElement;
+import com.github.countrybros.model.user.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,9 +21,10 @@ public interface IEventService {
      * Creates an event, assigns it to the organizer, sets initial status,
      * and delegates sending invitations.
      *
-     * @param request the request of the event to create.
+     *
+     * @param event the event to create.
      */
-    public void createEvent(CreateEventRequest request);
+    void createEvent(Event event);
 
     /**
      * Removes an event from the repository.
@@ -29,7 +33,7 @@ public interface IEventService {
      *
      * @throws NotFoundInRepositoryException if the event searched doesn't exist
      */
-    public void deleteEvent(int eventId);
+    void deleteEvent(int eventId, int organizerId);
 
     /**
      * Returns the event associated with the specified ID.
@@ -39,86 +43,101 @@ public interface IEventService {
      *
      * @throws NotFoundInRepositoryException if the event is not found.
      */
-    public Event getEvent(int eventId);
-
-    /**
-     * Modifies the event specified, if present.
-     *
-     * @param request The request to modify an event.
-     *
-     * @throws NotFoundInRepositoryException if the event was not in the repo.
-     */
-    public void editEvent(EditEventRequest request);
+    Event getEvent(int eventId);
 
     /**
      * Returns a list of all public events.
      *
      * @return list of events with status PUBLIC.
      */
-    public List<EventElement> getPublicEvents();
+    List<Event> getPublicEvents();
+
+    /**
+     * Returns a list of the organizer's unconfirmed events
+     *
+     * @param userId    the organizer's ID.
+     * @return          A list of the events.
+     */
+    public List<Event> getPendingEvents(int userId);
 
     /**
      * Returns all the events in the website.
      *
      * @return a list with all the events.
      */
-    public List<EventElement> getAllEvents();
+    List<Event> getAllEvents();
 
     /**
      * Subscribes a user on an event.
      *
-     * @param userId the user ID who wants to subscribe.
+     * @param user the user who wants to subscribe.
      * @param eventId the identifier of the event to subscribe to.
      *
      * @throws RequestAlreadySatisfiedException if already subscribed.
      */
-    public void subscribeOnEvent(int userId, int eventId);
+    void subscribeToEvent(User user, int eventId);
 
     /**
      * Unsubscribes a user on an event.
      *
-     * @param userId the user ID who wants to unsubscribe.
+     * @param user the user ID who wants to unsubscribe.
      * @param eventId the identifier of the event to unsubscribe to.
      *
      * @throws RequestAlreadySatisfiedException if not subscribed
      */
-    public void unsubscribeOnEvent(int userId, int eventId);
-
-    /**
-     * Cancels an event by setting its status as CANCELED.
-     *
-     * @param eventId the ID of the event to cancel.
-     *
-     * @throws RequestAlreadySatisfiedException if the event is already canceled
-     */
-    public void setAsCanceled(int eventId);
+    void unSubscribeFromEvent(User user, int eventId);
 
     /**
      * Confirms the publication of an event by changing its status to PUBLIC.
      *
      * @param eventId the ID of the event to publish.
-     *
+     * @param userId
      * @throws RequestAlreadySatisfiedException if the event is already public.
 
      */
-    public void confirmEventPublication(int eventId);
+    public void confirmEventPublication(int eventId, int userId);
 
     /**
      * The invitation of a company on an event will be refused/deleted;
+     * If it's not participating, or the event is canceled or has ended, throws errors.
      *
-     * @param companyId the company ID that signs out.
-     * @param eventId the event.
+     * @param company the company that signs out.
+     * @param event the event.
      */
-    public void cancelCompanyParticipation(int companyId, int eventId);
+    void cancelCompanyParticipation(Company company, Event event);
 
     /**
      * Confirms the participation of a certain company to an event.
      *
-     * @param eventId the event to participate to.
-     * @param companyId the company who decided to participate
+     * @param event the event to participate to.
+     * @param company the company who decided to participate
      *
      * @throws RuntimeException if the company was already included among the event's guests
      */
-    public void confirmCompanyParticipation(int eventId, int companyId);
+    void confirmCompanyParticipation(Event event, Company company);
 
+    /**
+     * Returns all the participation of a company in a planning or public event.
+     *
+     * @param company id of the company.
+     *
+     * @return a list of all events in witch is participating.
+     */
+    List<Event> getParticipations(Company company);
+
+    /**
+     *
+     * Get the last event created
+     *
+     * @return
+     */
+    Event getLastCreatedEvent();
+
+    boolean existsByName(String name);
+
+    List<Event> getEventsSubscribedByUser(int userId);
+
+    List<Event> getEventsByOrganizer(User organizer);
+
+    List<Event> getEventsByDate(LocalDate localDate);
 }

@@ -18,12 +18,10 @@ public class Invitation {
     private int id;
 
     @ManyToOne
-    @JsonBackReference
+    @JoinColumn(name = "event_id")
     private Event event;
 
     private LocalDate expiration;
-
-    private boolean accepted;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -72,11 +70,4 @@ public class Invitation {
         return expiration.isBefore(LocalDate.now());
     }
 
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
-    }
 }

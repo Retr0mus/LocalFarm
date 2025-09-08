@@ -2,6 +2,7 @@ package com.github.countrybros.application.services.event;
 
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.application.errors.NotFoundInRepositoryException;
+import com.github.countrybros.application.mappers.InvitationMapper;
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.infrastructure.repositories.event.IInvitationRepository;
 import com.github.countrybros.model.event.Invitation;
@@ -17,27 +18,17 @@ import java.util.List;
 @Service
 public class InvitationService implements IInvitationService {
 
-    private final IInvitationRepository IInvitationRepository;
+    private final IInvitationRepository invitationRepository;
 
-    private final ICompanyService companyService;
+    public InvitationService(IInvitationRepository invitationRepository) {
 
-    public InvitationService(ICompanyService companyService, IInvitationRepository IInvitationRepository) {
 
-        this.companyService = companyService;
-        this.IInvitationRepository = IInvitationRepository;
+        this.invitationRepository = invitationRepository;
     }
 
     @Override
-    public Invitation addInvitation(CreateInvitationRequest request) {
-
-        Company company = companyService.getCompany(request.receiverId);
-
-        Invitation invitation = new Invitation();
-        invitation.setEvent(request.event);
-        invitation.setReceiver(company);
-        invitation.setExpiration(request.expiration);
-
-        return IInvitationRepository.save(invitation);
+    public void addInvitation(Invitation invitation) {
+        invitationRepository.save(invitation);
     }
 
     /**
@@ -51,7 +42,7 @@ public class InvitationService implements IInvitationService {
 
         Invitation invitation = getInvitation(invitationId);
 
-        IInvitationRepository.deleteById(invitationId);
+        invitationRepository.deleteById(invitationId);
     }
 
     /**
@@ -65,10 +56,10 @@ public class InvitationService implements IInvitationService {
      */
     public Invitation getInvitation(int invitationId) {
 
-        if (!IInvitationRepository.existsById(invitationId))
+        if (!invitationRepository.existsById(invitationId))
             throw new NotFoundInRepositoryException("Invitation not found");
 
-        return IInvitationRepository.getInvitationById(invitationId);
+        return invitationRepository.findById(invitationId).orElse(null);
     }
 
     /**
@@ -79,7 +70,15 @@ public class InvitationService implements IInvitationService {
      */
     public List<Invitation> getInvitationsByCompany(int companyId) {
 
-        return IInvitationRepository.findAllByReceiver_Id(companyId);
+        List<Invitation> invitations = invitationRepository.findAllByReceiver_Id(companyId);
+
+        for (Invitation invitation : invitations)
+            if (invitation.isExpired()) {
+                invitations.remove(invitation);
+                invitationRepository.delete(invitation);
+            }
+
+        return invitations;
     }
 
     /**
@@ -95,11 +94,10 @@ public class InvitationService implements IInvitationService {
 
         if (invitation.isExpired()) {
 
-            IInvitationRepository.deleteById(invitationId);
+            invitationRepository.deleteById(invitationId);
             throw new ImpossibleRequestException("The invitation is expired");
         }
 
-        invitation.setAccepted(true);
-        IInvitationRepository.save(invitation);
+        invitationRepository.save(invitation);
     }
 }

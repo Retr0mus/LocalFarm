@@ -19,7 +19,7 @@ public interface IStockService {
      *
      * @param request The addItem request.
      */
-    Stock addItem(AddStockRequest request);
+    Stock add(Stock request);
 
     /**
      * Adds the specified quantity to an @Item.
@@ -46,10 +46,11 @@ public interface IStockService {
     /**
      * Sets a specific price for an item.
      *
-     * @param itemId The item ID
-     * @param price The price to put.
+     * @param stockId   The item ID.
+     * @param sellerId  The seller ID.
+     * @param price     The price to put.
      */
-    void setPrice(int itemId, double price);
+    void setPrice(int stockId, int sellerId, double price);
 
     /**
      * Returns the selected item, if exists.
@@ -85,4 +86,11 @@ public interface IStockService {
      * @return          the associated stock.
      */
     Stock getStockByItemAndSeller(Item item, Company seller);
+
+    /**
+     * Deletes all stocks of a company.
+     *
+     * @param companyId     The give company's id.
+     */
+    void deleteAllCompanyStocks(int companyId);
 }

@@ -1,6 +1,8 @@
 package com.github.countrybros.model.event;
 
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -22,4 +24,12 @@ public class TimeInterval {
 
     public LocalDateTime getEnd() { return endTime; }
     public void setEnd(LocalDateTime end) { this.endTime = end; }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime( LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }

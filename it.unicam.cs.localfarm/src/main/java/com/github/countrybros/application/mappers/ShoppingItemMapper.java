@@ -7,6 +7,7 @@ public class ShoppingItemMapper {
 
     public static ShoppingItemDto toDto(ShoppingItem shoppingItem) {
         ShoppingItemDto dto = new ShoppingItemDto();
+        dto.setId(shoppingItem.getId());
         dto.setItemId(shoppingItem.getStock().getItem().getId());
         dto.setItemName(shoppingItem.getStock().getItem().getName());
         dto.setSellerId(shoppingItem.getStock().getSeller().getId());

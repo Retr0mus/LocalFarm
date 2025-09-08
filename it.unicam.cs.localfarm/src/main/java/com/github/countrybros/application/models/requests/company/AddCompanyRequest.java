@@ -1,10 +1,10 @@
 package com.github.countrybros.application.models.requests.company;
 
-public class AddComapanyRequest {
+import com.github.countrybros.model.utils.Location;
+
+public class AddCompanyRequest {
     public String name;
     public String email;
-    public String password;
     public String description;
-    //TODO location
-
+    public Location location;
 }

@@ -2,6 +2,7 @@ package com.github.countrybros.model.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.countrybros.model.utils.Location;
 import jakarta.persistence.*;
 import jakarta.persistence.*;
 
@@ -16,9 +17,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-    //TODO: See if there is a better way to manage users than this plain object
-    //TODO: see if it is possible to remove the password from the object, keppeing it only on a future DB
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
@@ -30,10 +28,23 @@ public class User {
     private List<UserRole> roles = new ArrayList<>();
     @OneToOne
     private Cart cart;
-    private ShippingAddress address;
+    @Embedded
+    private Location address;
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    private UserStatus status;
 
     public User() {
         cart = new Cart();
+        status = UserStatus.active;
+        roles.add(UserRole.BUYER);
     }
 
     public void setCart(Cart cart) {
@@ -76,16 +87,31 @@ public class User {
         this.password = password;
     }
 
-    public ShippingAddress getAddress() {
+    public Location getAddress() {
         return address;
     }
 
-    public void setAddress(ShippingAddress address) {
+    public void setAddress(Location address) {
         this.address = address;
     }
 
     public int getId() {
         return userId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return userId == user.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(userId);
+    }
+
+
 }
 
