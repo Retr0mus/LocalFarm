@@ -189,5 +189,5 @@ public class EventService implements IEventService {
                 organizerPendingEvents.add(event);
 
         return organizerPendingEvents;
-    }
+
 }
