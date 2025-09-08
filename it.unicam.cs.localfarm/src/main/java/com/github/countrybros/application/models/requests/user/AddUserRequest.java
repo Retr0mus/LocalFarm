@@ -1,6 +1,7 @@
 package com.github.countrybros.application.models.requests.user;
 
 
+import com.github.countrybros.model.utils.Location;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,6 +16,6 @@ public class AddUserRequest {
     @NotNull
     @Email(message = "Invalid email format.")
     public String email;
-
-
+    @NotNull
+    public Location location;
 }

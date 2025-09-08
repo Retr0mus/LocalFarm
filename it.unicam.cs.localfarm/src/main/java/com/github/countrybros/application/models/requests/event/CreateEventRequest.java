@@ -1,6 +1,6 @@
 package com.github.countrybros.application.models.requests.event;
 
-import com.github.countrybros.model.event.Location;
+import com.github.countrybros.model.utils.Location;
 import com.github.countrybros.model.event.TimeInterval;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;

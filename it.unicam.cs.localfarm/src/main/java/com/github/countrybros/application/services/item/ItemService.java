@@ -35,18 +35,14 @@ public class ItemService implements IItemService {
 
     @Override
     public Item getItem(int itemId) {
-        return itemRepository.findById(itemId).orElseThrow(() -> new NotFoundInRepositoryException("Item not found"));
+        return itemRepository.findById(itemId).orElseThrow(() ->
+                new NotFoundInRepositoryException("Item with Id " + itemId + " not found"));
     }
 
     @Override
     public void setStatus(ItemStatus newStatus, int itemId) {
 
         Item item = getItem(itemId);
-
-        if (newStatus.equals(ItemStatus.available)) {
-            if (item.getStatus().equals(ItemStatus.awaitingReview))
-                throw new ImpossibleRequestException("Cannot change the status of an ItemDetails that is awaiting review");
-        }
 
         if (newStatus.equals(ItemStatus.awaitingReview))
             throw new ImpossibleRequestException("Cannot update to awaiting review");

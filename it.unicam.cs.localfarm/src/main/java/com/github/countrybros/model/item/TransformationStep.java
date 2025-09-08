@@ -1,6 +1,6 @@
 package com.github.countrybros.model.item;
 
-import com.github.countrybros.model.event.Location;
+import com.github.countrybros.model.utils.Location;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -26,15 +26,15 @@ public class TransformationStep {
         return id;
     }
 
-    List<SimpleProduct> getIngredients() {
+    public List<SimpleProduct> getIngredients() {
         return ingredients;
     }
 
-    Location getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 

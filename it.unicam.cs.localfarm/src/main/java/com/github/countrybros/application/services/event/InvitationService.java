@@ -70,7 +70,15 @@ public class InvitationService implements IInvitationService {
      */
     public List<Invitation> getInvitationsByCompany(int companyId) {
 
-        return invitationRepository.findAllByReceiver_Id(companyId);
+        List<Invitation> invitations = invitationRepository.findAllByReceiver_Id(companyId);
+
+        for (Invitation invitation : invitations)
+            if (invitation.isExpired()) {
+                invitations.remove(invitation);
+                invitationRepository.delete(invitation);
+            }
+
+        return invitations;
     }
 
     /**

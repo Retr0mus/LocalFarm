@@ -2,10 +2,9 @@ package com.github.countrybros.web.controllers.submission;
 
 import com.github.countrybros.application.facades.Orchestrator;
 import com.github.countrybros.application.mappers.SubmissionMapper;
-import com.github.countrybros.application.models.dtos.submission.SubmissionDTO;
+import com.github.countrybros.application.models.dtos.submission.SubmissionDto;
 import com.github.countrybros.application.services.submission.ISubmissionService;
 import com.github.countrybros.application.errors.ImpossibleRequestException;
-import com.github.countrybros.model.submission.Submission;
 import com.github.countrybros.application.models.requests.submission.RecogniseProductSubmissionRequest;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
@@ -55,9 +54,9 @@ public class SubmissionController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<SubmissionDTO>> getAvailable() {
+    public ResponseEntity<List<SubmissionDto>> getAvailable() {
 
-        List<SubmissionDTO> submissions = SubmissionMapper.toDTO(submissionService.getAvailableSubmissions());
+        List<SubmissionDto> submissions = SubmissionMapper.toDTO(submissionService.getAvailableSubmissions());
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 

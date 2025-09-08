@@ -22,19 +22,17 @@ public class EventController {
 
     private final IEventService eventService;
     private final Orchestrator orchestrator;
-    private final EventMapper eventMapper;
 
     @Autowired
-    public EventController(IEventService eventService, Orchestrator orchestrator, EventMapper eventMapper) {
+    public EventController(IEventService eventService, Orchestrator orchestrator) {
         this.eventService = eventService;
         this.orchestrator = orchestrator;
-        this.eventMapper = eventMapper;
     }
 
     @GetMapping(value="events")
     public ResponseEntity<List<EventDto>> getEvents(){
 
-        return new ResponseEntity<>(eventMapper.toDTO(eventService.getAllEvents()), HttpStatus.OK);
+        return new ResponseEntity<>(EventMapper.toDTO(eventService.getAllEvents()), HttpStatus.OK);
     }
 
     @PutMapping("/subscribe")
@@ -53,7 +51,7 @@ public class EventController {
     @GetMapping("publicEvents")
     public ResponseEntity<Object> getPublicEvents(){
 
-        return new ResponseEntity<>(eventMapper.toDTO(eventService.getPublicEvents()), HttpStatus.OK);
+        return new ResponseEntity<>(EventMapper.toDTO(eventService.getPublicEvents()), HttpStatus.OK);
     }
 
     @GetMapping("personalPendingEvents")
@@ -85,7 +83,7 @@ public class EventController {
     @GetMapping("get")
     public ResponseEntity<Object> getEvent(@PathParam("eventId") int eventId){
 
-        return new ResponseEntity<>(eventMapper.toDTO(eventService.getEvent(eventId)), HttpStatus.OK);
+        return new ResponseEntity<>(EventMapper.toDTO(eventService.getEvent(eventId)), HttpStatus.OK);
     }
 
     @PutMapping("/confirmCompanyParticipation")
@@ -99,15 +97,16 @@ public class EventController {
     @GetMapping("getParticipations")
     public ResponseEntity<Object> getParticipations(@PathParam("companyId") int companyId){
 
-        List<EventDto> participations = eventMapper.toDTO(
+        List<EventDto> participations = EventMapper.toDTO(
                 orchestrator.getParticipations(companyId));
         return new ResponseEntity<>(participations, HttpStatus.OK);
     }
-    @PostMapping("cancelCompanyParticipation")
+
+    @PutMapping("cancelCompanyParticipation")
     public ResponseEntity<Object> cancelCompanyParticipation(@PathParam("companyId") int companyId,
                                                              @PathParam("eventId") int eventId){
 
-        orchestrator.cancelCompanyParticipation(eventId, companyId);
+        orchestrator.cancelCompanyParticipation(companyId, eventId);
         return new ResponseEntity<>("Event cancelled", HttpStatus.OK);
     }
 
@@ -119,13 +118,13 @@ public class EventController {
 
         List<Event> eventDtos = new ArrayList<>(events);
 
-        return ResponseEntity.ok(eventMapper.toDTO(eventDtos));
+        return ResponseEntity.ok(EventMapper.toDTO(eventDtos));
     }
 
     @GetMapping("/organizerEvents")
     public ResponseEntity<List<EventDto>> getEventsByOrganizer(@PathParam("organizerId") int organizerId) {
         List<Event> events = orchestrator.getEventsByOrganizer(organizerId);
         List<Event> eventDtos = new ArrayList<>(events);
-        return ResponseEntity.ok(eventMapper.toDTO(eventDtos));
+        return ResponseEntity.ok(EventMapper.toDTO(eventDtos));
     }
 }

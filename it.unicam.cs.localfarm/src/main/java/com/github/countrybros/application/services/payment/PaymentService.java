@@ -2,6 +2,7 @@ package com.github.countrybros.application.services.payment;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.errors.ExternalError;
+import com.github.countrybros.infrastructure.services.shopping.MockPayment;
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
@@ -20,6 +21,7 @@ import java.util.Map;
 @Service
 public class PaymentService implements IPaymentService {
 
+
     IPaymentMethod paymentMethod;
 
     @Autowired
@@ -31,7 +33,7 @@ public class PaymentService implements IPaymentService {
      * Payment of debts about some companies
      */
     @Override
-    public void paySellers(List<Order> orders) {
+    public Map<Company, List<OrderItem>> paySellers(List<Order> orders) {
 
         Map<Company, List<OrderItem>> itemsToPay = new HashMap<>();
 
@@ -51,10 +53,10 @@ public class PaymentService implements IPaymentService {
             for (OrderItem item : items)
                 total += item.getQuantity() * item.getUnitPrice();
             if (! paymentMethod.pay(Double.valueOf(total).floatValue(), company.getEmail()))
-                throw new ExternalError("Payment failed for " + company.getEmail());
-            for (OrderItem item : items)
-                item.setPaid(true);
+                itemsToPay.get(company).clear();
         }
+
+        return itemsToPay;
     }
 
     /**

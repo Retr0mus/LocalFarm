@@ -5,9 +5,10 @@ import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.social.IPostable;
 import com.github.countrybros.model.social.SocialPost;
 import com.github.countrybros.model.user.*;
+import com.github.countrybros.model.utils.Location;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 public class Event implements IPostable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String name;
@@ -27,8 +28,7 @@ public class Event implements IPostable {
 
     private int maxSpots;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Invitation> invitations = new ArrayList<>();
 
     @Embedded

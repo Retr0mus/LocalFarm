@@ -2,7 +2,7 @@ package com.github.countrybros.application.models.dtos.event;
 
 import com.github.countrybros.application.models.dtos.user.UserDto;
 import com.github.countrybros.model.company.Company;
-import com.github.countrybros.model.event.Location;
+import com.github.countrybros.model.utils.Location;
 import com.github.countrybros.model.event.TimeInterval;
 import com.github.countrybros.model.user.User;
 

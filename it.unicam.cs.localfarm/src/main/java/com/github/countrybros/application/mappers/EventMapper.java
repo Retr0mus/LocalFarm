@@ -5,6 +5,7 @@ import com.github.countrybros.application.models.requests.event.CreateEventReque
 import com.github.countrybros.application.services.company.ICompanyService;
 import com.github.countrybros.application.services.user.IUserService;
 import com.github.countrybros.model.company.Company;
+import com.github.countrybros.application.services.user.IUserService;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.model.user.User;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+
 public class EventMapper {
 
     private final ICompanyService companyService;
@@ -52,7 +53,7 @@ public class EventMapper {
         );
     }
 
-    public List<EventDto> toDTO(List<Event> events) {
+    public static List<EventDto> toDTO(List<Event> events) {
 
         List<EventDto> dtos = new ArrayList<>();
         for (Event event : events) {

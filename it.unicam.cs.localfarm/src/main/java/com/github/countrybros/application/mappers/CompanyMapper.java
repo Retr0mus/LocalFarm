@@ -5,7 +5,11 @@ import com.github.countrybros.application.models.requests.company.AddCompanyRequ
 import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.company.CompanyStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CompanyMapper {
+
     public static Company toDomain(AddCompanyRequest request) {
         Company company = new Company();
 
@@ -28,5 +32,15 @@ public class CompanyMapper {
         // TODO: location
 
         return companyDto;
+    }
+
+    public static List<CompanyDto> toDto(List<Company> companies) {
+
+        List<CompanyDto> companyDtos = new ArrayList<>();
+        for(Company company : companies) {
+            companyDtos.add(toDto(company));
+        }
+
+        return companyDtos;
     }
 }

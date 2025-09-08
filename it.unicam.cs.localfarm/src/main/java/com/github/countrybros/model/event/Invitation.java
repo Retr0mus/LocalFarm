@@ -18,7 +18,7 @@ public class Invitation {
     private int id;
 
     @ManyToOne
-    @JsonBackReference
+    @JoinColumn(name = "event_id")
     private Event event;
 
     private LocalDate expiration;
