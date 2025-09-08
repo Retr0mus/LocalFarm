@@ -9,7 +9,7 @@ public class RecogniseProductSubmissionRequest extends SubmissionRequest {
     @NotNull
     private int stockId;
 
-    @Positive
+    @Positive(message = "Quantity must be positive")
     private int qta;
 
     public int getQta() {

@@ -2,23 +2,43 @@ package com.github.countrybros.application.mappers;
 
 import com.github.countrybros.application.models.dtos.event.EventDto;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
+import com.github.countrybros.application.services.company.ICompanyService;
+import com.github.countrybros.application.services.user.IUserService;
+import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.event.Event;
 import com.github.countrybros.model.event.EventState;
 import com.github.countrybros.model.user.User;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Component
 public class EventMapper {
 
-    public static Event toDomain(CreateEventRequest request, User organizer) {
+    private final ICompanyService companyService;
+    private final IUserService userService;
+
+    public EventMapper(ICompanyService companyService, IUserService userService) {
+        this.companyService = companyService;
+        this.userService = userService;
+    }
+
+    public Event toDomain(CreateEventRequest request) {
+        User organizer = userService.getUser(request.organizerId);
+
         Event event = new Event(request.name, request.maxSpots);
         event.setLocation(request.location);
         event.setDates(request.dates);
         event.setOrganizer(organizer);
         event.setState(EventState.planning);
         event.setDescription(request.description);
+        List<Company> guests = new ArrayList<>();
+        for (Integer companyId : request.guestsId) {
+            guests.add(companyService.getCompany(companyId));
+        }
+        event.setParticipants(guests);
+
         return event;
     }
 

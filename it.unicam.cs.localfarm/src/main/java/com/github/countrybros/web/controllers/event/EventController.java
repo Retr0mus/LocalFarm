@@ -22,12 +22,13 @@ public class EventController {
 
     private final IEventService eventService;
     private final Orchestrator orchestrator;
-    private final EventMapper eventMapper = new EventMapper();
+    private final EventMapper eventMapper;
 
     @Autowired
-    public EventController(IEventService eventService, Orchestrator orchestrator) {
+    public EventController(IEventService eventService, Orchestrator orchestrator, EventMapper eventMapper) {
         this.eventService = eventService;
         this.orchestrator = orchestrator;
+        this.eventMapper = eventMapper;
     }
 
     @GetMapping(value="events")

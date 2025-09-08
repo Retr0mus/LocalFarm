@@ -6,6 +6,7 @@ import com.github.countrybros.model.company.Company;
 import com.github.countrybros.model.order.Order;
 import com.github.countrybros.model.order.OrderItem;
 import com.github.countrybros.model.order.OrderStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,8 +20,12 @@ import java.util.Map;
 @Service
 public class PaymentService implements IPaymentService {
 
-
     IPaymentMethod paymentMethod;
+
+    @Autowired
+    public PaymentService(IPaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
     /**
      * Payment of debts about some companies
@@ -76,6 +81,7 @@ public class PaymentService implements IPaymentService {
             }
             return refundSuccess;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalStateException("Refund service unavailable, order blocked");
         }
     }

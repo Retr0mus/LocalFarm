@@ -41,8 +41,14 @@ public class Event implements IPostable {
     @ManyToOne
     private User organizer;
 
-    //TODO change to ManyToMany
-    @OneToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_subscribers",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscribers_user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"event_id", "subscribers_user_id"})
+    )
     private List<User> subscribers = new ArrayList<>();
 
     private EventState state;

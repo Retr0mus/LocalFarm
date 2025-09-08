@@ -14,11 +14,10 @@ import java.util.List;
  */
 public class InvitationMapper {
 
-    ICompanyService companyService;
-    IEventService eventService;
+    private final ICompanyService companyService;
+    private final IEventService eventService;
 
     public InvitationMapper(ICompanyService companyService, IEventService eventService) {
-
         this.companyService = companyService;
         this.eventService = eventService;
     }

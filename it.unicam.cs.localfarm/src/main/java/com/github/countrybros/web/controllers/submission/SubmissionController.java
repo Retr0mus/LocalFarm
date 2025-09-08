@@ -7,6 +7,7 @@ import com.github.countrybros.application.services.submission.ISubmissionService
 import com.github.countrybros.application.errors.ImpossibleRequestException;
 import com.github.countrybros.model.submission.Submission;
 import com.github.countrybros.application.models.requests.submission.RecogniseProductSubmissionRequest;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class SubmissionController {
     }
 
     @PutMapping("addQuantityToStock")
-    public ResponseEntity<Object> addItemQuantity(@RequestBody RecogniseProductSubmissionRequest request) throws ImpossibleRequestException {
+    public ResponseEntity<Object> addItemQuantity(@Valid @RequestBody RecogniseProductSubmissionRequest request) throws ImpossibleRequestException {
         try {
             orchestrator.addSubmissionQuantityToStock(request);
         } catch (ImpossibleRequestException e) {
@@ -71,6 +72,6 @@ public class SubmissionController {
     @PutMapping("takeCharge")
     public ResponseEntity<String> takeChargeOfSubmission(@RequestParam("userId") int userId,@RequestParam("subId") int submissionId) {
         orchestrator.takeChargeOfSubmission(userId,submissionId);
-        return new ResponseEntity<>("Acceptance submission taken", HttpStatus.OK);
+        return new ResponseEntity<>("submission taken", HttpStatus.OK);
     }
 }
