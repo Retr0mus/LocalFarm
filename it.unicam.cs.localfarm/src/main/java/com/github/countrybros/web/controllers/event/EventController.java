@@ -90,9 +90,9 @@ public class EventController {
 
     @PutMapping("/confirmCompanyParticipation")
     public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
-            , @PathParam("companyId") int companyId) {
+            , @PathParam("accepted") boolean accepted) {
 
-        orchestrator.confirmCompanyParticipation(eventId, companyId);
+        orchestrator.acceptInvitation(eventId, accepted);
         return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
     }
 
