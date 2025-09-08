@@ -33,11 +33,6 @@ public class EventMapper {
         event.setOrganizer(organizer);
         event.setState(EventState.planning);
         event.setDescription(request.description);
-        List<Company> guests = new ArrayList<>();
-        for (Integer companyId : request.guestsId) {
-            guests.add(companyService.getCompany(companyId));
-        }
-        event.setParticipants(guests);
 
         return event;
     }

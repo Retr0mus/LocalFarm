@@ -400,10 +400,10 @@ public class Orchestrator {
         eventService.createEvent(event);
 
         InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
-        for (Company guest : event.getGuests()) {
+        for (Integer companyId : request.guestsId) {
             CreateInvitationRequest invReq = new CreateInvitationRequest();
             invReq.eventId = event.getId();
-            invReq.receiverId = guest.getId();
+            invReq.receiverId = companyId;
             invReq.expiration = LocalDate.now().plusDays(7);
 
             Invitation invitation = invitationMapper.toEntity(invReq);
