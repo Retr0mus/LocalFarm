@@ -515,4 +515,7 @@ public class Orchestrator {
 
         return eventService.getEventsSubscribedByUser(userId);
     }
+
+    public void confirmCompanyParticipation(int eventId, int companyId) {
+    }
 }

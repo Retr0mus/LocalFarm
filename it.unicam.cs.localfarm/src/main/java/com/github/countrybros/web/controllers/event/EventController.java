@@ -34,7 +34,7 @@ public class EventController {
     @GetMapping(value="events")
     public ResponseEntity<List<EventDto>> getEvents(){
 
-        return new ResponseEntity<>(eventMapper.toDto(eventService.getAllEvents()), HttpStatus.OK);
+        return new ResponseEntity<>(eventMapper.toDTO(eventService.getAllEvents()), HttpStatus.OK);
     }
 
     @PutMapping("/subscribe")
@@ -92,9 +92,10 @@ public class EventController {
     public ResponseEntity<Object> confirmCompanyParticipation(@PathParam("eventID") int eventId
             , @PathParam("companyId") int companyId) {
 
-        eventService.confirmCompanyParticipation(eventId, companyId);
+        orchestrator.confirmCompanyParticipation(eventId, companyId);
         return new ResponseEntity<>("Participation confirmed", HttpStatus.OK);
     }
+
     @GetMapping("getParticipations")
     public ResponseEntity<Object> getParticipations(@PathParam("companyId") int companyId){
 
@@ -110,11 +111,7 @@ public class EventController {
         return new ResponseEntity<>("Event cancelled", HttpStatus.OK);
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<EventDTO> getEvent(@PathParam("eventId") int eventId) {
-        Event event = eventService.getEvent(eventId);
-        return ResponseEntity.ok(EventMapper.toDTO(event));
-    }
+
 
     @GetMapping("/subscribed")
     public ResponseEntity<List<EventDto>> getSubscribedEvents(@PathParam("userId") int userId) {
