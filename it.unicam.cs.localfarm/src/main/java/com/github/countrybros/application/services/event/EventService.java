@@ -50,8 +50,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void createEvent(CreateEventRequest request, User organizer) {
-        Event event = EventMapper.toDomain(request, organizer);
+    public void createEvent(Event event) {
         eventRepository.save(event);
     }
 
@@ -75,6 +74,10 @@ public class EventService implements IEventService {
     public void subscribeToEvent(User user, int eventId) {
 
         Event event = getEvent(eventId);
+
+        if (event.getSubscribers().contains(user)) {
+            throw new RequestAlreadySatisfiedException("User is already subscribed to this event");
+        }
         if (event.isFull()) {
             throw new ImpossibleRequestException("No more spots available for this event");
         }
@@ -181,13 +184,6 @@ public class EventService implements IEventService {
      */
     @Override
     public List<Event> getPendingEvents(int userId) {
-
-        List<Event> organizerPendingEvents = new ArrayList<>();
-
-        for(Event event : eventRepository.getAllByState(EventState.planning))
-            if(event.getOrganizer().getId() == userId)
-                organizerPendingEvents.add(event);
-
-        return organizerPendingEvents;
-
+        return eventRepository.getAllByState(EventState.planning);
+    }
 }

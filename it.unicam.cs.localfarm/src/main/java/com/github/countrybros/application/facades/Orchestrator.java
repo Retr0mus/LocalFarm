@@ -4,6 +4,7 @@ import com.github.countrybros.application.abstractions.IPaymentMethod;
 import com.github.countrybros.application.errors.EventsNotFoundException;
 import com.github.countrybros.application.errors.RequestAlreadySatisfiedException;
 import com.github.countrybros.application.factories.PaymentMethodFactory;
+import com.github.countrybros.application.mappers.EventMapper;
 import com.github.countrybros.application.mappers.InvitationMapper;
 import com.github.countrybros.application.models.requests.item.AddStockRequest;
 import com.github.countrybros.application.models.requests.event.CreateEventRequest;
@@ -394,19 +395,19 @@ public class Orchestrator {
     public void createEvent(CreateEventRequest request) {
 
         validateEventRequest(request);
-        User organizer = userService.getUser(request.organizerId);
-        eventService.createEvent(request,organizer);
-        Event event = eventService.getLastCreatedEvent();
+        EventMapper eventMapper = new EventMapper(companyService, userService);
+        Event event = eventMapper.toDomain(request);
+        eventService.createEvent(event);
 
-        for (Integer companyId : request.guestsId) {
-            CreateInvitationRequest invitationRequest = new CreateInvitationRequest();
-            invitationRequest.eventId = event.getId();
-            invitationRequest.expiration = java.time.LocalDate.now().plusDays(7);
-            Company company = companyService.getCompany(companyId);
+        InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
+        for (Company guest : event.getGuests()) {
+            CreateInvitationRequest invReq = new CreateInvitationRequest();
+            invReq.eventId = event.getId();
+            invReq.receiverId = guest.getId();
+            invReq.expiration = LocalDate.now().plusDays(7);
 
-            InvitationMapper invitationMapper = new InvitationMapper(companyService, eventService);
-
-            invitationService.addInvitation(invitationMapper.toEntity(invitationRequest));
+            Invitation invitation = invitationMapper.toEntity(invReq);
+            invitationService.addInvitation(invitation);
         }
 
     }
@@ -440,37 +441,25 @@ public class Orchestrator {
             for (int j = i + 1; j < request.dates.size(); j++) {
                 var second = request.dates.get(j);
 
-                if (first.getStartTime().toLocalDate().equals(second.getStartTime().toLocalDate())) {
-                    boolean overlap = !first.getEnd().isBefore(second.getStartTime()) &&
-                            !second.getEnd().isBefore(first.getStartTime());
+                boolean overlap = !first.getEnd().isBefore(second.getStartTime())
+                        && !second.getEnd().isBefore(first.getStartTime());
 
-                    if (overlap) {
-                        throw new ImpossibleRequestException(
-                                "Overlapping time intervals are not allowed on the same day"
-                        );
-                    }
+                if (overlap) {
+                    throw new ImpossibleRequestException(
+                            "Overlapping time intervals are not allowed within the same event"
+                    );
                 }
             }
-        }
 
-        for (var interval : request.dates) {
-            List<Event> existingEvents = eventService.getEventsByDate(interval.getStartTime().toLocalDate());
-
-            for (Event existingEvent : existingEvents) {
-                for (TimeInterval existingInterval : existingEvent.getDates()) {
-                    boolean overlap = !interval.getEnd().isBefore(existingInterval.getStartTime()) &&
-                            !existingInterval.getEnd().isBefore(interval.getStartTime());
-                    if (overlap) {
-                        throw new ImpossibleRequestException(
-                                "New event interval overlaps with an existing event on the same day: " + existingEvent.getName()
-                        );
-                    }
-                }
+            User organizer = userService.getUser(request.organizerId);
+            if (organizer.getRoles() == null || !organizer.getRoles().contains(UserRole.ANIMATOR)) {
+                throw new ImpossibleRequestException("Only an ANIMATOR can create an event");
             }
+
+            // Check if the organizer exits
+            companyService.getCompany(request.organizerId);
         }
 
-        // Check if the organizer exits
-        companyService.getCompany(request.organizerId);
     }
 
     public void subscribeToEvent(int userId, int eventId) {

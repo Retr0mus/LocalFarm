@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Size;
 })
 public abstract class SubmissionRequest {
 
+
     private String type;
 
     @NotNull

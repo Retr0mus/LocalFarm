@@ -1,7 +1,9 @@
 package com.github.countrybros.infrastructure.services.shopping;
 
 import com.github.countrybros.application.abstractions.IPaymentMethod;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MockPayment implements IPaymentMethod {
     /**
      * Payment to the marketplace

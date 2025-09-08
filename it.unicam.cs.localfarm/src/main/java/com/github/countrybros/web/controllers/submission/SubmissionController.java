@@ -72,6 +72,6 @@ public class SubmissionController {
     @PutMapping("takeCharge")
     public ResponseEntity<String> takeChargeOfSubmission(@RequestParam("userId") int userId,@RequestParam("subId") int submissionId) {
         orchestrator.takeChargeOfSubmission(userId,submissionId);
-        return new ResponseEntity<>("Acceptance submission taken", HttpStatus.OK);
+        return new ResponseEntity<>("submission taken", HttpStatus.OK);
     }
 }

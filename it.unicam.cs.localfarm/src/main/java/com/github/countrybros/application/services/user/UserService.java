@@ -84,10 +84,12 @@ public class UserService implements IUserService {
     public void addUserRole(int userId, UserRole role) {
         User user = getUser(userId);
 
-        if (!user.getRoles().contains(role)) {
-            user.getRoles().add(role);
-            userRepository.save(user);
+        if (user.getRoles().contains(role)) {
+            throw new ImpossibleRequestException("User already has role " + role.toString());
         }
+
+        user.getRoles().add(role);
+        userRepository.save(user);
     }
 
     @Override

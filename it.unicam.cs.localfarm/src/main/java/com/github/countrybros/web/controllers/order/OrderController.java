@@ -25,7 +25,7 @@ public class OrderController {
 
     @GetMapping("/orderList")
     public ResponseEntity<List<OrderDto>> getOrders(@RequestParam int userId) {
-        List<Order> orders = orderService.getOrders(userId);
+        List<Order> orders = orchestrator.getOrders(userId);
         List<OrderDto> orderDtos = orders.stream()
                 .map(OrderMapper::toDto)
                 .collect(Collectors.toList());

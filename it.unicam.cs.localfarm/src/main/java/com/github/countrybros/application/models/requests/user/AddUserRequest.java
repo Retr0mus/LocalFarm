@@ -15,4 +15,6 @@ public class AddUserRequest {
     @NotNull
     @Email(message = "Invalid email format.")
     public String email;
+
+
 }

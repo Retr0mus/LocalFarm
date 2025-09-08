@@ -28,7 +28,6 @@ public class InvitationService implements IInvitationService {
 
     @Override
     public void addInvitation(Invitation invitation) {
-
         invitationRepository.save(invitation);
     }
 
