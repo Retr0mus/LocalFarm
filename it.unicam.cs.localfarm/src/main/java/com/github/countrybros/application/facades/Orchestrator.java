@@ -383,8 +383,9 @@ public class Orchestrator {
     }
 
     public void disableCompany(int companyId, int adminId) {
-        if(!userService.getUser(adminId).getRoles().contains(UserRole.ADMIN))
-            throw new ImpossibleRequestException("You are not allowed to cancel this company");
+        User user = userService.getUser(adminId);
+        if(!user.getRoles().contains(UserRole.ADMIN))
+            throw new ImpossibleRequestException("User with ID " + user.getUserId() + " is not allowed to cancel this company");
 
         companyService.disableCompany(companyId);
         stockService.deleteAllCompanyStocks(companyId);

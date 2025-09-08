@@ -16,13 +16,11 @@ import jakarta.validation.constraints.Size;
 })
 public abstract class SubmissionRequest {
 
-    @Size(min = 3, max = 15)
     private String type;
 
     @NotNull
     private int senderId;
 
-    @Size(min = 3, max = 15)
     private String typeForSpringBoot;
 
 

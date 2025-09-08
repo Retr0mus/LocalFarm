@@ -52,10 +52,14 @@ public class UserService implements IUserService {
     @Override
     public void disableUser(int userId, int adminId) {
         if(!getUser(adminId).getRoles().contains(UserRole.ADMIN)) {
-            throw new NotFoundInRepositoryException("User with ID " + userId + " is not admin.");
+            throw new ImpossibleRequestException("User with ID " + adminId + " is not admin.");
         }
 
         User user = getUser(userId);
+
+        if(user.getStatus() == UserStatus.inactive)
+            throw new ImpossibleRequestException("User with ID " + userId + " is already inactive.");
+
         user.setStatus(UserStatus.inactive);
         userRepository.save(user);
     }
